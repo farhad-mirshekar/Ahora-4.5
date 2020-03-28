@@ -41,6 +41,25 @@ namespace Ahora.WebApp.Areas.Admin
                                          "~/Areas/Admin/app/service/authenticationService.js"
                                          ));
 
+            bundles.Add(new ScriptBundle("~/bundles/froalajs").Include(
+                "~/Scripts/froala-editor/js/froala-angular.js",
+                "~/Scripts/froala-editor/js/froala_editor.min.js",
+                "~/Scripts/froala-editor/js/languages/fa.js",
+                "~/Scripts/froala-editor/js/plugins/align.min.js",
+                "~/Scripts/froala-editor/js/plugins/font_family.min.js",
+                "~/Scripts/froala-editor/js/plugins/font_size.min.js",
+                "~/Scripts/froala-editor/js/plugins/inline_style.min.js",
+                "~/Scripts/froala-editor/js/plugins/image.min.js",
+                "~/Scripts/froala-editor/js/plugins/link.min.js",
+                "~/Scripts/froala-editor/js/plugins/video.min.js"));
+
+            bundles.Add(new StyleBundle("~/bundles/froalacss").Include(
+                "~/Scripts/froala-editor/css/froala_editor.css",
+                "~/Scripts/froala-editor/css/plugins/image.css",
+                "~/Scripts/froala-editor/css/plugins/video.css",
+                "~/Scripts/froala-editor/css/plugins/fullscreen.css",
+                "~/Scripts/froala-editor/css/plugins/color.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/utility").Include(
                                         "~/Scripts/angular-ui/ui-bootstrap-tpls.min.js",
                                         "~/Scripts/ckeditor/angular-ckeditor.js",

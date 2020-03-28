@@ -1,4 +1,27 @@
-﻿(() => {
+﻿var froalaOption = {
+    toolbarButtons: {
+        'moreText': {
+            'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
+        },
+        'moreParagraph': {
+            'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
+        },
+        'moreRich': {
+            'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertFile', 'insertHR']
+        },
+        'moreMisc': {
+            'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
+            'align': 'right',
+            'buttonsVisible': 2
+        }
+    },
+    language: 'fa',
+    quickInsertEnabled: false,
+    charCounterCount: false,
+    toolbarSticky: false,
+    angularIgnoreAttrs: ['class', 'ng-model', 'id']
+};
+(() => {
     var app = angular.module('portal');
 
     app.controller('homeController', homeController);
@@ -1333,7 +1356,7 @@
         article.main.changeState = {
             add: add,
             edit: edit,
-            cartable:cartable
+            cartable: cartable
         }
         article.grid = {
             bindingObject: article
@@ -1496,6 +1519,7 @@
         news.state = '';
         news.pic = { type: '3', allowMultiple: false };
         news.pic.list = [];
+        news.froalaOption = angular.copy(froalaOption);
         news.goToPageAdd = goToPageAdd;
         news.addNews = addNews;
         news.editNews = editNews;
@@ -1552,7 +1576,7 @@
         }
         function edit(model) {
             return $q.resolve().then(() => {
-                news.Model = model;
+                news.Model = angular.copy(model);
                 if (news.Model.IsShow) {
                     news.Model.IsShow = 1;
                 }
@@ -1592,9 +1616,9 @@
                         if (!news.Model.listPicUploaded) {
                             news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
                         }
+                        return attachmentService.add(news.pics);
                     }
                     news.Model = result;
-                    return attachmentService.add(news.pics);
                 }).then((result) => {
                     return attachmentService.list({ ParentID: news.Model.ID });
                 }).then((result) => {
@@ -1633,9 +1657,9 @@
                         if (!news.Model.listPicUploaded) {
                             news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
                         }
+                        return attachmentService.add(news.pics);
                     }
                     news.Model = result;
-                    return attachmentService.add(news.pics);
                 }).then((result) => {
                     return attachmentService.list({ ParentID: news.Model.ID });
                 }).then((result) => {
@@ -1688,7 +1712,7 @@
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('pagesController', pagesController);
-    pagesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'pagesService', '$location', 'toaster', '$timeout','toolsService'];
+    pagesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'pagesService', '$location', 'toaster', '$timeout', 'toolsService'];
     function pagesController($scope, $q, loadingService, $routeParams, pagesService, $location, toaster, $timeout, toolsService) {
         let pages = $scope;
         pages.Model = {};
@@ -1863,19 +1887,19 @@
         function init() {
             loadingService.show();
             $q.resolve().then(() => {
-                    switch ($routeParams.state) {
-                        case 'cartable':
-                            cartable();
-                            break;
-                        case 'add':
-                            add();
-                            break;
-                        case 'edit':
-                            menuService.get($routeParams.id).then((result) => {
-                                edit(result);
-                            })
-                            break;
-                    }
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'add':
+                        add();
+                        break;
+                    case 'edit':
+                        menuService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
             }).finally(loadingService.hide);
 
         }
@@ -1897,10 +1921,10 @@
             loadingService.show();
             return $q.resolve().then(() => {
                 menu.Model = model;
-                return menuService.getbyParentNode({ParentNode:model.ParentNode });
+                return menuService.getbyParentNode({ ParentNode: model.ParentNode });
             }).then((result) => {
                 menu.state = 'edit';
-                menu.Model.ParentID= result.ID;
+                menu.Model.ParentID = result.ID;
                 $location.path(`/menu/edit/${menu.Model.ID}`);
             }).finally(loadingService.hide);
 
@@ -1965,7 +1989,7 @@
         slider.main = {};
         slider.main.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         }
         slider.grid = {
             bindingObject: slider
@@ -2128,8 +2152,8 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------
     app.controller('generalSettingController', generalSettingController);
-    generalSettingController.$inject = ['$scope', 'loadingService', 'generalSettingService', 'toaster','$q'];
-    function generalSettingController($scope, loadingService, generalSettingService, toaster,$q) {
+    generalSettingController.$inject = ['$scope', 'loadingService', 'generalSettingService', 'toaster', '$q'];
+    function generalSettingController($scope, loadingService, generalSettingService, toaster, $q) {
         let setting = $scope;
         setting.Model = {};
         setting.editSetting = editSetting;

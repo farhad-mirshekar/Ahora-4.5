@@ -9,6 +9,7 @@
         'ckeditor',
         'smart-table',
         'treeGrid',
-        'filepond'
+        'filepond',
+        'froala'
     ]);
 })();
