@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html ng-app="site">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @RenderSection("Head", false)
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+
+    <link href="~/Content/bootstrap3/bootstrap.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap3-rtl/bootstrap-rtl.css" rel="stylesheet" />
+    <link href="~/Content/main/Site.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery/jquery-3.4.1.js"></script>
+    <script src="~/Scripts/bootstrap3/bootstrap.js"></script>
+    <script src="~/scripts/jquery.unobtrusive-ajax.js"></script>
+    <script src="~/scripts/noty/packaged/jquery.noty.packaged.min.js"></script>
+    <script src="~/Scripts/jquery/jquery.validate.min.js"></script>
+    <script src="~/scripts/custom/ajaxcart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="navbar navbar-default navbar-inverse navbar-fixed-top">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("فروشگاه اهورا", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("خانه", "Index", "Home")</li>
+                    <li>@Html.ActionLink("ورود", "Login", "Account", new { returnurl = Request.Url.PathAndQuery },null)</li>
+                    <li>@Html.ActionLink("پرسش های متداول", "Index", "FaqGroup")</li>
+                </ul>
+                @if (User.Identity.Name != Guid.Empty.ToString() && User.Identity.Name != "")
+                {
+                    <div class="pull-left" style="margin:10px;">
+                        <div class="dropdown">
+                            <button class="btn" type="button" data-toggle="dropdown">
+                                خوش آمدید
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    @Html.ActionLink("ورود به پنل", "Index", "Home", new { Area = "User" }, new { })
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div><!--end container for menu-->
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="panel-content">
+                    <div class="row">
+                        <!--start cols-->
+                        <div class="col-lg-12">
+                            @RenderBody()
+                            @RenderSection("bodySection", false)
+                        </div><!--end cols 12-->
+                        <!--end cols-->
+                    </div><!--end row-->
+                </div><!--end panel content-->
+            </div><!--end panel default-->
+        </div>
+    </div><!--end container main-->
+
+
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

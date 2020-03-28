@@ -1,0 +1,76 @@
+﻿@using FM.Portal.FrameWork.MVC.Helpers.TreeView;
+@model List<FM.Portal.Core.Model.Comment>
+@using System.Globalization
+@{ PersianCalendar pc = new PersianCalendar();}
+@(Html.TreeView(Model)
+.EmptyContent("<i>اولین نفری باشید که نظر می دهید</i>")
+.Children(c => c.Children)
+.HtmlAttributes(new { id = "tree" })
+.ChildrenHtmlAttributes(new { @class = "subItem" })
+.ItemText(c => c.NameFamily)
+.ItemTemplate(
+    @<text>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="comment-detail">
+
+                    <span><i class="glyphicon glyphicon-calendar" style="top:5px"></i> تاریخ : </span>
+                    <span>@string.Format("{2}/{1}/{0}", pc.GetDayOfMonth(item.CreationDate), pc.GetMonth(item.CreationDate), pc.GetYear(item.CreationDate))</span>
+
+                    <span><i class="glyphicon glyphicon-dashboard"></i> زمان : </span>
+                    <span>@string.Format("{1}:{0}", @pc.GetMinute(item.CreationDate), pc.GetHour(item.CreationDate))</span>
+
+                    <span style="margin-right:10px"><i class="glyphicon glyphicon-thumbs-up"></i></span>
+                    <span id="comment-like-count-@(item.ID)">@item.LikeCount</span>
+                    <span style="margin-right:10px"><i class="glyphicon glyphicon-thumbs-down"></i></span>
+                    <span id="comment-dislike-count-@(item.ID)">@item.DisLikeCount</span>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-12" id="body_comment">
+                    @Html.Raw(item.Body)
+                   
+                </div>
+            </div>
+            <div class="panel-footer clearfix">
+                <div class="pull-right" style="margin-right:15px">
+
+                    <div class="comment-like comment-like-link" title="موافقم">
+                        <span><i class="glyphicon glyphicon-thumbs-up" style="top: 4px;"></i></span>
+                        <span data-href="@Url.Action("Like", "Comment", new {CommentID=@item.ID })" data-comment-id="@item.ID">موافقم</span>
+                    </div>
+
+                    <div class="comment-dis-like comment-like-link" title="مخالف">
+                        <span><i class="glyphicon glyphicon-thumbs-down" style="top: 4px;"></i></span>
+                        <span data-href="@Url.Action("DisLike", "Comment", new {CommentID=@item.ID })" data-comment-id="@item.ID">مخالفم</span>
+                    </div>
+                    <div id="comment-like-result-@(item.ID)" class="comment-like-result"></div>
+                </div>
+                @if (ViewBag.stateComment == true)
+                {
+                    <div class="pull-left" style="margin-left:15px">
+                        @Ajax.ActionLink("پاسخ دادن","Modify", "Comment", new { DocumentID = @ViewBag.DocumentID, ParentID = @item.ID }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comment-reply-" + @item.ID, OnBegin = "CommentReply.onBegin" }, new { rel = "nofollow",@class="btn btn-default" })
+                    </div>
+                }
+
+                <div class="clear clearfix"></div>
+                <div id="comment-reply-@(item.ID)" class="comment-reply-container" style="display: none;"></div>
+            </div>
+        </div>
+    </text>)
+)
+
+@if (ViewBag.stateComment == true)
+{
+    <div style="text-align: center;" class="comment-reply-container">
+        @Ajax.ActionLink("ارسال دیدگاه", "Modify", "Comment", new { DocumentID = ViewBag.DocumentID }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "addComment", OnSuccess = "AddComment.slideToggle", LoadingElementDuration = 300, LoadingElementId = "loadingMessage" }, new { @class = "btn btn-success", style = "width:80%;", rel = "nofollow" })
+    </div>
+}
+else
+{
+    <div class="alert alert-danger text-center">
+        <span>افزودن نظر برای این محصول توسط مدیریت، بسته شده است</span>
+    </div>
+}
+<div id="addComment">
+</div>

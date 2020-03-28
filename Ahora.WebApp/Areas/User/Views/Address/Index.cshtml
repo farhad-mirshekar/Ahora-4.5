@@ -1,0 +1,70 @@
+﻿@model PagedList.IPagedList<FM.Portal.Core.Model.UserAddress>
+@using PagedList.Mvc;
+@{ 
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+<div class="panel panel-default">
+    <div class="panel-heading"  style="height:50px;">
+        <span class="panel-title">
+            آدرس ها
+        </span>
+        <div class="pull-left">
+            <a href="address/create" class="btn btn-default">ثبت آدرس جدید</a>
+        </div>
+    </div>
+    <div class="panel-body">
+       <div class="row">
+           @if (Model != null && Model.Count > 0)
+           {
+               foreach (var item in Model)
+               {
+                <div class="col-xs-12" style="padding:20px;margin-bottom:10px;">
+                    <label>فرهاد میرشکار</label>
+                    <label>@item.Address</label>
+                    <div class="row">
+                        <div class="col-xs-5">
+                            <label class="pull-right">کد پستی : @item.PostalCode</label>
+                            <label class="pull-left">شماره همراه : @item.CellPhone</label>
+                        </div>
+                        <div class="col-xs-4 pull-left">
+                            @Html.ActionLink("ویرایش", "Edit", "Address", new { ID = @item.ID }, new { @class = "btn btn-primary" })
+                            <button class="btn btn-danger" onclick="Address.showModal('#deleteAddress','@item.Address','@item.ID')">حذف</button>
+                        </div>
+                    </div>
+                </div>
+               }
+
+            <div class="text-center">
+                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            </div>
+           }
+           else
+           {
+            <div class="col-xs-12">
+                <div class="alert alert-danger">آدرسی ثبت نشده است</div>
+            </div>
+           }
+
+       </div>
+    </div>
+</div>
+<div class="modal" id="deleteAddress" style="display:none;" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">حذف آدرس</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>آیا مایل به حذف آدرس زیر هستید ؟</p>
+                <p id="address"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="deleteButton" onclick="Address.remove();">هستم</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">نه</button>
+            </div>
+        </div>
+    </div>
+</div>

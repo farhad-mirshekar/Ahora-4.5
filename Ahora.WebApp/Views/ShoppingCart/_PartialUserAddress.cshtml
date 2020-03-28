@@ -1,0 +1,51 @@
+﻿@{
+    List<FM.Portal.Core.Model.UserAddress> drpAddress = ViewBag.drpAddress ?? null;
+}
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <label class="panel-title">اطلاعات خریدار</label>
+    </div>
+    <div class="panel-body" id="addressSection">
+        @{
+            if (drpAddress != null && drpAddress.Count > 0)
+            {
+                foreach (var item in drpAddress)
+                {
+                    <div class="radio">
+                        <input type="radio" name="radiobutton" id="@item.ID" value="@item.ID"><span style="margin-right:10px;">@item.Address</span>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="postalCode" class="col-md-1 control-label">کد پستی</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control" id="PostalCode" name="PostalCode" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Address" class="col-md-1 control-label">آدرس</label>
+                        <div class="col-md-9">
+                            <textarea class="form-control" id="Address" name="Address" style="resize:none;"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+    </div>
+    <div class="panel-footer text-left">
+        <div class="clearfix"></div>
+        @if (drpAddress != null && drpAddress.Count > 0)
+        {
+            <button type="submit" id="stepFirstShopping" data-type="haveAddress" class="btn btn-success input-lg">تکمیل فرآیند خرید</button>
+        }
+        else
+        {
+            <button type="submit" id="stepFirstShopping" data-type="notHaveAddress" class="btn btn-success input-lg">تکمیل فرآیند خرید</button>
+        }
+
+    </div>
+</div>

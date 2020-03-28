@@ -1,0 +1,77 @@
+﻿namespace FM.Portal.Core.Model
+{
+
+    public enum AttachmentType : byte
+    {
+        نامشخص = 0,
+        اصلی = 1,
+        ثانویه = 2,
+        اخبار = 3,
+        مقاله = 4,
+        اسلایدر = 5,
+        محصولات = 6
+    }
+    public enum PathType : byte
+    {
+        unknown = 0,
+        product = 6,
+        article = 4,
+        news = 3,
+        slider = 5
+    }
+    public enum UserType : byte
+    {
+        Unknown = 0,
+        کاربر_درون_سازمانی = 1,
+        کاربر_برون_سازمانی = 2
+    }
+    public enum CommandsType : byte
+    {
+        نامشخص = 0,
+
+        برنامه = 1,
+        منو = 2,
+        صفحه = 3
+    }
+    public enum ShowArticleType : byte
+    {
+        عدم_نمایش = 0,
+        نمایش = 1
+    }
+    public enum CommentArticleType : byte
+    {
+        بسته = 0,
+        باز = 1
+    }
+    public enum PositionType : byte
+    {
+        Unknown = 0,
+        راهبر = 100
+    }
+    public enum CommentType : byte
+    {
+        نامشخص = 0,
+        در_حال_بررسی = 1,
+        تایید = 2,
+        عدم_تایید = 3
+    }
+    public enum DiscountType : byte
+    {
+        مبلغی = 1,
+        درصدی = 2
+    }
+    public enum AttributeControlType : byte
+    {
+        کشویی = 1
+    }
+    public enum SendType : byte
+    {
+        آنلاین = 1,
+        درب_منزل = 2
+    }
+    public enum EnableMenuType : byte
+    {
+        فعال = 1,
+        غیرفعال = 2
+    }
+}

@@ -1,0 +1,144 @@
+﻿<!doctype html>
+
+<html ng-app="portal" lang="en">
+<head>
+    <title>پرتال</title>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" ontent="text/html; charset=UTF-8" />
+    @Styles.Render("~/bundles/bootstrap-rtl")
+    @Styles.Render("~/bundles/mainAdmin")
+    @Styles.Render("~/bundles/admin")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap-rtl-js")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/config")
+<script src="~/Areas/Admin/app/app.config.js"></script>
+    @Scripts.Render("~/bundles/angularadmin")
+    @Scripts.Render("~/bundles/utility")
+    <script src="~/Areas/Admin/Content/fileponed/js/filepond.module.js"></script>
+    @RenderSection("styles", required: false)
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar" id="sidebar">
+                <div id="sidebar-close">
+                    <i class="fa fa-remove" aria-hidden="true"></i>
+                </div>
+                <div id="sidebar-title">
+                    <div id="sidebar-title-image">
+                        <img class="m-auto d-block" src="Areas/Admin/Content/img/logo.png" />
+                    </div>
+                </div>
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column" ng-repeat="row in Menus" ng-if="row.hasShow()">
+                        <li class="nav-item">
+                            <div class="nav-link" ng-click="row.open = !row.open" data-toggle="collapse" href="#{{row.name}}">
+                                <span class="panel-title">{{row.title}}</span>
+                                <i ng-class="{'fa fa-angle-up':row.open,'fa fa-angle-down':!row.open}"></i>
+                            </div>
+                            <div id="{{row.name}}" class="collapse" aria-expanded="true">
+                                <ul class="nav flex-column sub-menu">
+                                    <li class="nav-item" ng-repeat="sub in row.subMenus" ng-if="!sub.hasShow || sub.hasShow()">
+                                        <a href="{{sub.route}}">{{sub.title}}<i class="fa {{sub.icon}} mr-2"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+
+            <div class="col-md-10" id="wrapper">
+                <div id="toolbar" class="row">
+
+                    <div class="col-md-9">
+                        <div class="d-inline-block">
+                            <div id="sidebar-switch">
+                                <i class="fa fa-align-justify"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-inline-block header-icon">
+                            <a href="#">
+                                <i class="fa fa-home home-icon"></i>
+                            </a>
+                            <a href="" ng-click="">
+                                <i class="fa fa-bell-o home-icon"></i>
+                            </a>
+                            <a href="" ng-click="">
+                                <i class="fa fa-envelope-o message-icon"></i>
+                            </a>
+
+                            <a href="" ng-click="">
+                                <i class="fa fa-power-off exit-icon"></i>
+                            </a>
+
+                            <a href="#profile" class="user_action_image"><img class="user-image" src="Areas/Admin/Content/img/avatar_11_tn.png" alt=""></a>
+
+                        </div>
+                    </div>
+                </div>
+                <div id="content" dir="rtl">
+                    @RenderBody()
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    @RenderSection("scripts", false)
+    <script>
+        (() => {
+            FilePond.registerPlugin(FilePondPluginImageEdit,FilePondPluginImagePreview);
+
+            // toggle sidebar
+            $("#sidebar-switch").click(function () {
+                $('#sidebar').toggleClass('toggle-sidebar');
+                $('#wrapper').toggleClass('col-md-12');
+            });
+            $("#sidebar-close").click(function () {
+                $('#sidebar').toggleClass('toggle-sidebar');
+                $('#wrapper').toggleClass('toggle-sidebar');
+            });
+
+
+            // first load on mobile
+            if (window, innerWidth < 767) {
+                $("#sidebar-close").click();
+            }
+
+            // click on sidebar menu items
+            $(".nav .nav-item .nav-link a").click(function () {
+                if (window, innerWidth < 767)
+                    $("#sidebar-close").click();
+            })
+
+            // sidebar footer functions - fullscreen toggle
+            $("#sidebar-footer-fullscreen").click(function () {
+                if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+                    if (document.documentElement.requestFullScreen) {
+                        document.documentElement.requestFullScreen();
+                    } else if (document.documentElement.mozRequestFullScreen) {
+                        document.documentElement.mozRequestFullScreen();
+                    } else if (document.documentElement.webkitRequestFullScreen) {
+                        document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+                    }
+                } else {
+                    if (document.cancelFullScreen) {
+                        document.cancelFullScreen();
+                    } else if (document.mozCancelFullScreen) {
+                        document.mozCancelFullScreen();
+                    } else if (document.webkitCancelFullScreen) {
+                        document.webkitCancelFullScreen();
+                    }
+                }
+            });
+        })();
+    </script>
+</body>
+</html>

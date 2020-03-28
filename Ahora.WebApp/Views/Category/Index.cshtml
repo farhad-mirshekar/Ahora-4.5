@@ -1,0 +1,15 @@
+﻿@model List<ListProductByCategoryIDVM>
+@{
+    ViewBag.Title = "دسه بندی محصولات";
+    Layout = "~/Views/Shared/_LayoutProduct.cshtml";
+}
+
+@section bodySection{
+    <div class="panel panel-default clearfix">
+        <div class="panel-heading heading">
+            <span class="panel-title">@Model.Select(x=>x.CategoryName).First()</span>
+        </div>
+        @Html.Partial("_PartialMain", Model)
+    </div>
+}
+

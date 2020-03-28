@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{13C5DFF7-5EC7-4879-ACC8-5EA7841FFA84}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FM.Portal.Infrastructure.DAL</RootNamespace>
+    <AssemblyName>FM.Portal.Infrastructure.DAL</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="FM.Portal.Core">
+      <HintPath>..\Ahora.WebApp\libs\FM.Portal.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FM.Portal.Core.Model">
+      <HintPath>..\Ahora.WebApp\libs\FM.Portal.Core.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="FM.Portal.DataSource">
+      <HintPath>..\Ahora.WebApp\libs\FM.Portal.DataSource.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DataSources\App\CategoryDataSource.cs" />
+    <Compile Include="DataSources\App\CategoryMapDiscountDataSource.cs" />
+    <Compile Include="DataSources\App\CommentDataSource.cs" />
+    <Compile Include="DataSources\App\CommentMapUserDataSource.cs" />
+    <Compile Include="DataSources\App\DiscountDataSource.cs" />
+    <Compile Include="DataSources\App\FaqDataSource.cs" />
+    <Compile Include="DataSources\App\FaqGroupDataSource.cs" />
+    <Compile Include="DataSources\App\OrderDataSource.cs" />
+    <Compile Include="DataSources\App\OrderDetailDataSource.cs" />
+    <Compile Include="DataSources\App\PaymentDataSource.cs" />
+    <Compile Include="DataSources\App\ProductAttributeDataSource.cs" />
+    <Compile Include="DataSources\App\ProductDataSource.cs" />
+    <Compile Include="DataSources\App\ProductMapAttributeDataSource.cs" />
+    <Compile Include="DataSources\App\ProductVariantAttributeDataSource.cs" />
+    <Compile Include="DataSources\App\ShoppingCartItemDataSource.cs" />
+    <Compile Include="DataSources\DataSource.cs" />
+    <Compile Include="DataSources\Org\CommandDataSource.cs" />
+    <Compile Include="DataSources\Org\PositionDataSource.cs" />
+    <Compile Include="DataSources\Org\RefreshTokenDataSource.cs" />
+    <Compile Include="DataSources\Org\RoleDataSource.cs" />
+    <Compile Include="DataSources\Org\UserAddressDataSource.cs" />
+    <Compile Include="DataSources\Org\UserDataSource.cs" />
+    <Compile Include="DataSources\Pbl\AttachmentDataSource.cs" />
+    <Compile Include="DataSources\Pbl\GeneralSettingDataSource.cs" />
+    <Compile Include="DataSources\Pbl\MenuDataSource.cs" />
+    <Compile Include="DataSources\Pbl\PagesDataSource.cs" />
+    <Compile Include="DataSources\Ptl\ArticleDataSource.cs" />
+    <Compile Include="DataSources\Ptl\CategoryDataSource.cs" />
+    <Compile Include="DataSources\Ptl\NewsDataSource.cs" />
+    <Compile Include="DataSources\Ptl\SliderDataSource.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataBaseScripts\Procedures\App\CategoryMapDiscount\app.spModifyCategoryMapDiscount.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetByParentCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetsCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Category\app.spModifyCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spGetCommentMapUser.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spIsUserLikeOrUnlike.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spModifyCommentMapUser.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spDisLikeComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComments ForAdmin.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComments.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetCommentsByParentID.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spLikeComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spModifyComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Discount\app.spGetDiscount.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Discount\app.spGetsDiscount.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Discount\app.spModifyDiscount.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\FAQGroup\app.spGetFaqGroup.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\FAQGroup\app.spGetsFaqGroup.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\FAQGroup\app.spListFaqGroup.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\FAQGroup\app.spModifyFaqGroup.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\FAQ\app.spGetFaq.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\FAQ\app.spGetsFaq.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\FAQ\app.spModifyFaq.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\OrderDetail\app.spModifyOrderDetail.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Order\app.spGetOrder.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Order\app.spModifyOrder.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Payment\app.spInsertPayment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spGetProductAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spGetsProductAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spModifyProductAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spGetProductMapAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spGetsProductMapAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spModifyProductMapAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spGeProductVariantAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spGetsProductVariantAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spModifyProductVariantAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Product\app.spGetProduct.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Product\app.spGetsProduct.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Product\app.spGetsProductByCategoryID.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Product\app.spListAttributeForProduct.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Product\app.spListProductShowOnHomePage.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Product\app.spListVarientForProduct.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Product\app.spModifyProduct.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ShoppingCartItem\app.spDeleteShoppingCartItem.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ShoppingCartItem\app.spGetShoppingCartItemByProductID.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ShoppingCartItem\app.spGetsShoppingCartItem.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ShoppingCartItem\app.spModifyShoppingCartItem.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Command\spDeleteCommand.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Command\spGetCommand.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Command\spGetCommandByNode.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Command\spGetCommands.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Command\spGetCommandsForRole.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Command\spGetCommandsForUser.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Command\spModifyCommand.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Position\org.spModifyPosition.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Position\org.spPositionDefault.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\RefreshToken\org.spCreateRefreshToken.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\RefreshToken\org.spDeleteRefreshToken.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\RefreshToken\org.spGetRefreshToken.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Role\spDeleteRole.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Role\spGetRole.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Role\spGetRoles.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Role\spModifyRole.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\UserAddress\org.spDeleteUserAddress.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\UserAddress\org.spGetsUserAddress.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\UserAddress\org.spGetUserAddress.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\UserAddress\org.spModifyUserAddress.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\User\app.spModifyUser.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\User\org.spGetUser.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\User\org.spSetUserPassword.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spDeleteAttachment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachmentByParentIDs.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachments.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spModifyAttachment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.GetsGeneralSetting.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.spModifyGeneralSetting.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetChildMenu.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetMenu.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetsMenu.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.spModifyMenu.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetsPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.spModifyPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spDeleteArticle.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetArticle.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetsArticle.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetsArticleByCount.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spModifyArticle.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetByParentCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetCountCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetsCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spModifyCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spDeleteNews.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetNews.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetsNews.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetsNewsByCount.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spModifyNews.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spDeleteSlider.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spGetSlider.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spGetsSlider.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spGetsSliderByCount.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spModifySlider.sql" />
+    <Content Include="DataBaseScripts\Updates\DataBase.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

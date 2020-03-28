@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1F0194F6-DE00-4793-867A-5A226AF6B2D4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FM.Portal.Core.Model</RootNamespace>
+    <AssemblyName>FM.Portal.Core.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App\Category\Category.cs" />
+    <Compile Include="App\Category_Map_Discount\CategoryMapDiscount.cs" />
+    <Compile Include="App\Comment\Comment.cs" />
+    <Compile Include="App\Comment\VM\CommentForProductAdminListVM.cs" />
+    <Compile Include="App\Comment\VM\CommentListVM.cs" />
+    <Compile Include="App\Comment_Map_User\CommentMapUser.cs" />
+    <Compile Include="App\Discount\Discount.cs" />
+    <Compile Include="App\FAQGroup\FAQGroup.cs" />
+    <Compile Include="App\FAQGroup\VM\FaqGroupListVM.cs" />
+    <Compile Include="App\FAQ\FAQ.cs" />
+    <Compile Include="App\OrderDetail\OrderDetail.cs" />
+    <Compile Include="App\Order\Order.cs" />
+    <Compile Include="App\Payment\Payment.cs" />
+    <Compile Include="App\ProductAttribute\ProductAttribute.cs" />
+    <Compile Include="App\ProductVariantAttribute\ProductVariantAttribute.cs" />
+    <Compile Include="App\ProductVariantAttribute\VM\AttributeJsonVM.cs" />
+    <Compile Include="App\Product\Product.cs" />
+    <Compile Include="App\Product\VM\ListAttributeForSelectCustomerVM.cs" />
+    <Compile Include="App\Product\VM\ListProductByCategoryIDVM.cs" />
+    <Compile Include="App\Product\VM\ListProductShowOnHomePageVM.cs" />
+    <Compile Include="App\Product_Map_Attribute\ProductMapAttribute.cs" />
+    <Compile Include="App\Product_Map_Attribute\VM\ListAttributeForProductVM.cs" />
+    <Compile Include="App\ShoppingCartItem\ShoppingCartItem.cs" />
+    <Compile Include="App\ShoppingCartItem\VM\DeleteCartItemVM.cs" />
+    <Compile Include="App\ShoppingCartItem\VM\ShoppingItemVM.cs" />
+    <Compile Include="Entity.cs" />
+    <Compile Include="Enum.cs" />
+    <Compile Include="EnumCast.cs" />
+    <Compile Include="FileModel.cs" />
+    <Compile Include="Org\Command\Command.cs" />
+    <Compile Include="Org\Command\VM\CommandListVM.cs" />
+    <Compile Include="Org\Command\VM\GetPermission.cs" />
+    <Compile Include="Org\Command\VM\NodeVM.cs" />
+    <Compile Include="Org\Position\Position.cs" />
+    <Compile Include="Org\Position\VM\PositionDefaultVM.cs" />
+    <Compile Include="Org\RefreshToken\RefreshToken.cs" />
+    <Compile Include="Org\Role\Role.cs" />
+    <Compile Include="Org\Token\Token.cs" />
+    <Compile Include="Org\Token\VM\TokenVM.cs" />
+    <Compile Include="Org\UserAddress\UserAddress.cs" />
+    <Compile Include="Org\User\User.cs" />
+    <Compile Include="Org\User\VM\LoginVM.cs" />
+    <Compile Include="Org\User\VM\SetPasswordVM.cs" />
+    <Compile Include="pbl\Attachment\Attachment.cs" />
+    <Compile Include="pbl\Attachment\VM\DeleteAttachmentVM.cs" />
+    <Compile Include="pbl\GeneralSetting\GeneralSetting.cs" />
+    <Compile Include="pbl\GeneralSetting\VM\SettingVM.cs" />
+    <Compile Include="pbl\Menu\Menu.cs" />
+    <Compile Include="pbl\Menu\VM\GetModelVM.cs" />
+    <Compile Include="pbl\Menu\VM\MenuVM.cs" />
+    <Compile Include="pbl\Pages\Pages.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ptl\Article\Article.cs" />
+    <Compile Include="Ptl\Article\VM\ArticleListVM.cs" />
+    <Compile Include="Ptl\Category\Category.cs" />
+    <Compile Include="Ptl\Category\VM\GetCountCategoryVM.cs" />
+    <Compile Include="Ptl\News\News.cs" />
+    <Compile Include="Ptl\News\VM\NewsListVM.cs" />
+    <Compile Include="Ptl\Slider\Slider.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,57 @@
+﻿<!doctype html>
+<html lang="fa">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    <link rel="icon" href="img/favicon.png">
+    @Styles.Render("~/bundles/bootstrap4")
+    @Styles.Render("~/bundles/main")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryvalidate")
+    @Scripts.Render("~/bundles/bootstrap4js")
+    @RenderSection("Head", false)
+</head>
+
+<body dir="rtl">
+    <div class="container-fluid">
+        <header class="sticky-top py-1">
+            @{Html.RenderAction("RenderMenu", "Home"); }
+        </header>
+        @RenderSection("BannerSection", false)
+
+        <main class="row" role="main">
+            <div class="col-md-9">
+                @RenderSection("BodySection", false)
+            </div>
+            <div class="col-md-3">
+                @{ Html.RenderAction("GetLastArticle", "Home");}
+                @{ Html.RenderAction("GetLastNews", "Home");}
+                @RenderSection("SideLeftSection", false)
+            </div>
+            @RenderBody()
+        </main>
+    </div>
+    @Html.Partial("_PartialFooter")
+
+    <script>
+        $('.dropdown-menu a.dropdown-toggle').on('click', function (e) {
+            if (!$(this).next().hasClass('show')) {
+                $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+            }
+            var $subMenu = $(this).next(".dropdown-menu");
+            $subMenu.toggleClass('show');
+
+
+            $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
+                $('.dropdown-submenu .show').removeClass("show");
+            });
+
+
+            return false;
+        });
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+
+</html>

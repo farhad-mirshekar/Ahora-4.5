@@ -1,0 +1,82 @@
+﻿<div class="card" ng-show="state ==='cartable'">
+    <div class="card-header">
+        <span class="card-title">کارتابل مدیریت دسته بندی اخبار و مقالات</span>
+        <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    </div>
+    <div class="card-body">
+        <portal-grid obj="grid"></portal-grid>
+    </div>
+</div>
+<div class="card" ng-show="['add','edit'].indexOf(state) !== -1">
+    <div class="card-header">
+        <label class="card-title" ng-show="state ==='add'">افزودن دسته بندی جدید</label>
+        <label class="card-title" ng-show="state ==='edit'">ویرایش دسته بندی</label>
+    </div>
+    <div class="card-body form-horizontal">
+        <div class="form-group">
+            <label for="CategorySub" class="control-label">نام</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" ng-model="Model.Title" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="hassubmenu"> آیا زیر منو شود ؟
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="CategorySub" class="control-label">نمایش منو</label>
+            <div class="col-md-10">
+                <select class="form-control" id="ParentID" ng-model="Model.ParentID">
+                    <option ng-repeat="row in selectCategory" ng-value="row.Model">{{row.Name}}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="Model.IncludeInTopMenu"> در منو (بالا) قرار گیرد ؟
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-6 col-md-offset-2">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" ng-model="Model.IncludeInLeftMenu"> در منو (چپ) قرار گیرد ؟
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="form-group pull-left">
+            <button type="submit" ng-click="addCategory()" ng-if="state ==='add'" class="btn btn-outline-success">افزودن</button>
+            <button type="submit" ng-click="editCategory()" ng-if="state ==='edit'" class="btn btn-outline-success">ویرایش</button>
+            <a href="#/category-portal/cartable" class="btn btn-outline-primary">بازگشت</a>
+        </div>
+    </div>
+</div>
+
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+
+<script>
+    $(document).ready(function () {
+        $("#ParentID").prop("disabled", true);
+        $("#hassubmenu").change(function () {
+            if ($(this).is(":checked")) {
+                $("#ParentID").prop("disabled", false);
+            } else {
+                $("#ParentID").prop("disabled", true);
+            }
+        })
+    })
+</script>
+

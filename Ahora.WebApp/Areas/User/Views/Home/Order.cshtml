@@ -1,0 +1,71 @@
+﻿
+@{
+    ViewBag.Title = "سفارش های من";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="panel-title">همه سفارش ها</span>
+    </div>
+    <div class="panel-body">
+        <table class="table table-responsive">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>شماره سفارش</th>
+                    <th>تاریخ ثبت سفارش</th>
+                    <th>مبلغ کل</th>
+                    <th>جزئیات</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>dkp-213</td>
+                    <td>1398/10/11</td>
+                    <td>123423235</td>
+                    <td>
+                        @Html.ActionLink("مشاهده جزئیات","OrderDetail","Home")
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>dkp-213</td>
+                    <td>1398/10/11</td>
+                    <td>123423235</td>
+                    <td>
+                        @Html.ActionLink("مشاهده جزئیات", "OrderDetail", "Home")
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>dkp-213</td>
+                    <td>1398/10/11</td>
+                    <td>123423235</td>
+                    <td>
+                       @Html.ActionLink("مشاهده جزئیات", "OrderDetail", "Home")
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>dkp-213</td>
+                    <td>1398/10/11</td>
+                    <td>123423235</td>
+                    <td>
+                        @Html.ActionLink("مشاهده جزئیات", "OrderDetail", "Home")
+                    </td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>dkp-213</td>
+                    <td>1398/10/11</td>
+                    <td>123423235</td>
+                    <td>
+                        @Html.ActionLink("مشاهده جزئیات", "OrderDetail", "Home")
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

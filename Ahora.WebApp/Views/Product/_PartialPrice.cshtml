@@ -1,0 +1,63 @@
+﻿@model FM.Portal.Core.Model.Product
+@{
+    List<FM.Portal.Core.Model.ListAttributeForSelectCustomerVM> attribute = ViewBag.attribute;
+}
+<div class="row form-horizontal">
+    <div class="col-xs-12">
+        <label>فروشنده : مرکز تامین کالای اهورا</label>
+    </div>
+    @if (Model.HasDiscountsApplied)
+    {
+        <div class="col-xs-12 text-center">
+            <label class="text-info">تخفیف ویژه به مناسبت » @Model.DiscountName</label>
+            <label class="text-info">قیمت محصول : </label>
+            <label class="text-danger">@Decimal.Truncate(Model.Price) تومان</label>
+            <label class="text-info">مبلغ تخفیف : </label>
+            <label class="text-danger">@Decimal.Truncate(Model.DiscountAmount) تومان</label>
+            <hr />
+            <label class="text-info">مبلغ نهایی : </label>
+            <label class="text-danger">@Decimal.Truncate(Model.Price - Model.DiscountAmount) تومان</label>
+        </div>
+
+    }
+    else
+    {
+        <div class="col-xs-12 text-center">
+            <label class="text-info">قیمت محصول : </label>
+            <label class="text-danger">@Decimal.Truncate(Model.Price) تومان</label>
+        </div>
+    }
+
+    @{
+        if (attribute.Count > 0)
+        {
+            <div class="col-xs-12">
+                    @foreach (var item in attribute)
+                    {
+                        string controlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", item.ProductID, item.AttributeID, item.ID,item.TextPrompt);
+                        string TextPrompt = !string.IsNullOrEmpty(item.TextPrompt) ? item.TextPrompt : item.TextPrompt;
+
+                        <label class="control-label col-xs-2">@TextPrompt</label>
+                        switch (item.AttributeControlType)
+                        {
+                            case AttributeControlType.کشویی:
+                                <div class="btn-group col-xs-8">
+                                    <select class="form-control" id="@controlId" name="@controlId" required="required">
+                                        <option value="-1"></option>
+                                        @foreach (var sub in item.ProductVariantAttributeValue)
+                                        {
+                                            <option name="@controlId" id="@controlId" value="@sub.ID">@sub.Name</option>
+                                        }
+                                    </select>
+                                </div>
+                                break;
+                        }
+                    }
+            </div>
+        }
+                    }
+
+    <div class="col-xs-12 text-center" style="margin-top:30px">
+        <button type="button" class="btn btn-danger" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddToCart", new { productId = Model.ID })', '#product-details-form');return false;">افزودن به سبد خرید</button>
+    </div>
+</div>

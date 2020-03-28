@@ -1,0 +1,68 @@
+﻿@model List<ShoppingItemVM>
+@{
+    ViewBag.Title = "سبد خرید";
+    Layout = "~/Views/Shared/_LayoutProduct.cshtml";
+}
+@section bodySection{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <label class="panel-title">سبد خرید</label>
+        </div>
+        <div class="panel-body">
+            @foreach (var item in Model)
+            {
+                <div class="row" style="border-bottom:1px solid #dcdcdc;padding-bottom:10px;">
+                    <div class="col-xs-2 text-center">
+                        <img style="width:100px;" src="~/Content/TemporaryFiles/@item.ImageUrl" />
+                    </div>
+                    <div class="col-xs-9" style="line-height:40px;">
+                        <div class="pull-right">
+                            <div class="">@item.ProductName</div>
+                            @if (item.Attribute.Count > 0)
+                            {
+                                foreach (var attribute in item.Attribute)
+                                {
+                                    <label>@attribute.AttributeName : @attribute.Name</label>
+                                }
+                            }
+
+                        </div>
+                        <div class="pull-left">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <label>قیمت واحد:</label>
+                                    <label>@Decimal.Truncate(item.ProductPrice) تومان</label>
+                                </div>
+                                <div class="col-xs-6" id="quantity">
+                                    <i class="glyphicon glyphicon-plus" data-href="@Url.Action("QuantityPlus","ShoppingCart",new {ProductID=item.ProductID })" style="color:blue;padding:10px"></i>
+                                    <label>@item.Quantity</label>
+                                    <i class="glyphicon glyphicon-minus" data-href="@Url.Action("QuantityMinus","ShoppingCart",new {ProductID=item.ProductID })" style="color:#ff0000;padding:10px"></i>
+                                </div>
+
+                                <div class="col-xs-12">
+                                    <label>مبلغ :</label>
+                                    <label>@Decimal.Truncate((item.ProductPrice * item.Quantity)) تومان</label>
+                                </div>
+
+                            </div>
+                            @using (Html.BeginForm("Delete", "ShoppingCart", new { ProductID = @item.ProductID, ShoppingID = @item.ShoppingID }, FormMethod.Post))
+                            {
+                                <button type="submit" class="btn btn-danger">حذف</button>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+        <div class="panel-footer text-left">
+            <div class="clearfix"></div>
+            <a href="@Url.RouteUrl("Shopping")">
+                ادامه فرایند خرید
+            </a>
+        </div>
+    </div>
+}
+@section scripts{
+<script src="~/scripts/custom/Quantity.js"></script>
+    }

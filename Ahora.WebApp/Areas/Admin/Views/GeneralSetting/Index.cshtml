@@ -1,0 +1,152 @@
+﻿<h2 class="main-title">تنظیمات کلی سایت</h2>
+<div class="card">
+    <div class="card-body">
+        <div class="form-horizontal">
+            <uib-tabset active="active" style="padding:10px">
+                <uib-tab heading="اطلاعات سایت">
+                    <div class="form-group">
+                        <label class="control-label">نام سایت</label>
+                        <input type="text" class="form-control" ng-model="Model.SiteName" placeholder="آدرس سایت شما در بالای سایت، در تگ ها و ... قرار می گیرد" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">آدرس سایت</label>
+                        <input type="text" class="form-control" ng-model="Model.SiteUrl" placeholder="جهت لینک ها مورد استفاده قرار می گیرد" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">توضیحات</label>
+                        <textarea rows="4" cols="4" class="form-control" ng-model="Model.SiteDescription" placeholder="از این خاصیت جهت سئو استفاده می شود" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">کلمات کلیدی</label>
+                        <input type="text" class="form-control" ng-model="Model.SiteKeyword" placeholder="از این خاصیت جهت سئو استفاده می شود" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">متاتگ</label>
+                        <input type="text" class="form-control" ng-model="Model.SiteMetaTag" placeholder="از این خاصیت جهت سئو استفاده می شود" />
+                    </div>
+                </uib-tab>
+                <uib-tab heading="اطلاعات مشتری">
+                    <div class="form-group">
+                        <label class="control-label">آدرس</label>
+                        <textarea rows="2" cols="2" class="form-control" ng-model="Model.Address" placeholder="در پایین سایت یا به اختصار footer قرار می گیرد" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">تلفن ثابت</label>
+                        <input type="tel" class="form-control" ng-model="Model.Phone" placeholder="021-12333322" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">تلفن همراه</label>
+                        <input type="tel" class="form-control" ng-model="Model.Mobile" placeholder="0912-1111111" pattern="09(0[1-2]|1[0-9]|3[0-9]|2[0-1])-?[0-9]{3}-?[0-9]{4}" title="مطابق با الگو وارد شود" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">فاکس</label>
+                        <input type="tel" class="form-control" ng-model="Model.Fax" placeholder="021-11111111" />
+                    </div>
+                </uib-tab>
+                <uib-tab heading="اطلاعات شبکه های اجتماعی">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">آدرس تلگرام <i class="fa fa-telegram text-primary"></i></label>
+                                    <input type="text" class="form-control" ng-model="Model.TelegramUrl" placeholder="telegram.me/@Html.Raw("@farhad_mirshekar")" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">آدرس اینستاگرام <i class="fa fa-instagram text-danger"></i></label>
+                                    <input type="text" class="form-control" ng-model="Model.InstagramUrl" placeholder="instagram.com/@Html.Raw("@farhad_mirshekar")" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">آدرس فیسبوک <i class="fa fa-facebook text-primary"></i></label>
+                                    <input type="text" class="form-control" ng-model="Model.FacebookUrl" placeholder="facebook.com/@Html.Raw("@farhad_mirshekar")" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">آدرس واتساپ <i class="fa fa-whatsapp text-success"></i></label>
+                                    <input type="text" class="form-control" ng-model="Model.WhatsAppUrl" placeholder="021-11111111" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">آدرس توئیتر <i class="fa fa-twitter text-primary"></i></label>
+                                    <input type="text" class="form-control" ng-model="Model.TwitterUrl" placeholder="twitter.com/@Html.Raw("@farhad_mirshekar")" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="اطلاعات داده">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        تعداد نمایش تصاویر کشویی
+                                        <i class="fa fa-info" data-container="body" title="نحوه استفاده" data-toggle="popover" data-placement="left" data-content="تعداد تصاویر کشویی در ابتدای سایت"></i>
+                                    </label>
+                                    <input type="number" class="form-control" ng-model="Model.CountShowSlider" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        تعداد نمایش محصولات
+                                        <i class="fa fa-info" data-container="body" title="نحوه استفاده" data-toggle="popover" data-placement="left" data-content="تعداد محصولات در ابتدای سایت"></i>
+                                    </label>
+                                    <input type="number" class="form-control" ng-model="Model.CountShowProduct" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        تعداد نمایش اخبار
+                                        <i class="fa fa-info" data-container="body" title="نحوه استفاده" data-toggle="popover" data-placement="left" data-content="تعداد اخبار در ابتدای سایت"></i>
+                                    </label>
+                                    <input type="number" class="form-control" ng-model="Model.CountShowNews" />
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        تعداد نمایش مقالات
+                                        <i class="fa fa-info" data-container="body" title="نحوه استفاده" data-toggle="popover" data-placement="left" data-content="تعداد مقالات در ابتدای سایت"></i>
+                                    </label>
+                                    <input type="number" class="form-control" ng-model="Model.CountShowArticle" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+            </uib-tabset>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="btn-group-justified pull-left">
+            <div class="btn-group" dropdown is-open="false">
+                <a class="btn btn-primary text-white" ng-click="editSetting();">ویرایش</a>
+            </div>
+        </div>
+    </div>
+</div>
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover({
+            trigger: 'hover'
+        })
+    })
+</script>
+
+
+

@@ -1,0 +1,60 @@
+﻿<div class="card">
+    <div class="card-header">
+        <h3 class="main-title" ng-show="pic.allowMultiple">آپلود تصاویر</h3>
+        <h3 class="main-title"  ng-show="!pic.allowMultiple">آپلود تصویر</h3>
+    </div>
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" ng-show="(pic.allowMultiple === false && main.listPicUploaded.length === 0) || pic.allowMultiple">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="main-title">آپلود</span>
+                        </div>
+                        <div class="card-body">
+                            <file-pond config="filePondConfig"></file-pond>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-if="main.listPicUploaded.length">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="main-title">تصاویر آپلود شده</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card ml-2 mt-2 d-sm-inline-block" ng-repeat="row in main.listPicUploaded track by $index" style="width: 10rem;">
+                                <img ng-src="../../../../../Content/TemporaryFiles/{{row.Path}}/{{row.FileName}}" class="card-img-top" />
+                                <div class="card-footer pull-left">
+                                    <i class="fa fa-close" ng-click="remove(row)" ng-show="(row.Type !== 1)"></i>
+                                    <span class="text-danger" ng-show="row.Type === 1">تصویر اصلی</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade upload-delete" dir="rtl"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="uploadDeleteLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h3 class="modal-title">تایید حذف</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                    آیا از حذف اطمینان دارید ؟
+                </p>
+            </div>
+            <div class="modal-footer pull-left">
+                <button class="btn btn-danger" ng-click="confirmRemove()">تایید</button>
+                <button class="btn btn-default" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>

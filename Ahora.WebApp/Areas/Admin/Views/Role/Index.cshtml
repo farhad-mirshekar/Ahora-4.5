@@ -1,0 +1,59 @@
+﻿<div ng-show="state ==='cartable'">
+    <h2 class="main-title">نقش ها</h2>
+    <div class="card">
+        <div class="card-header" style="height:50px;">
+            <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+        </div>
+        <div class="card-body">
+            <portal-grid obj="grid"></portal-grid>
+        </div>
+    </div>
+</div>
+<div ng-show="['add','edit'].indexOf(state) !== -1">
+    <div class="card">
+        <div class="card-header">
+            <span class="main-title" ng-show="state === 'add'">افزودن نقش جدید</span>
+            <span class="main-title" ng-show="state === 'edit'">ویرایش کردن نقش {{Model.Name}}</span>
+        </div>
+        <div class="card-body">
+            <form class="form-horizontal" novalidate name="roleSave">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="CategorySub" class="control-label">نام نقش</label>
+                            <input type="text" class="form-control" required ng-model="Model.Name" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xs-12" ng-if="state === 'edit'">
+                    <section class="card">
+                        <div class="card-header">
+                            <span class="card-title">
+                                لیست مجوزها
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <fm-checkboxes list="ListCommand"
+                                           selected="Model.Permissions"
+                                           display-name="Title"
+                                           display="tree"></fm-checkboxes>
+                            @*<div ng-repeat="row in ListCommand">
+                                    <input type="checkbox" checklist-model="selectCommand.selected" checklist-value="row.ID">
+                                    <label>{{row.Title}}</label>
+                                </div>*@
+                        </div>
+                    </section>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer pull-right">
+            <button class="btn btn-success" type="submit" ng-disabled="roleSave.$invalid" ng-click="editRole()" ng-if="state === 'edit'">ویرایش</button>
+            <button class="btn btn-success" type="submit" ng-disabled="roleSave.$invalid" ng-click="addRole()" ng-if="state === 'add'">ثبت</button>
+            <button class="btn btn-cancel" type="submit" ng-click="back()">انصراف</button>
+
+        </div>
+    </div>
+</div>
+
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>

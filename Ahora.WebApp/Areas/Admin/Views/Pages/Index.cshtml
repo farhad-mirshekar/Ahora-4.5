@@ -1,0 +1,67 @@
+﻿<div class="card" ng-show="state === 'cartable'">
+    <div class="card-header">
+        <span class="card-title">کارتابل مدیریت صفحات</span>
+        <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+
+    </div>
+    <div class="card-body">
+        <tree-grid tree-data="tree.data"
+                   col-defs="tree.colDefs"
+                   expand-on="tree.expandingProperty"
+                   expand-to="tree.expandTo"
+                   icon-leaf="fa fa-circle-o"
+                   icon-expand="fa fa-plus"
+                   icon-collapse="fa fa-minus"></tree-grid>
+    </div>
+</div>
+<div class="card" ng-show="['add','edit'].indexOf(state) !== -1">
+    <div class="card-header">
+        <span class="card-title" ng-show="state==='edit'">ویرایش</span>
+        <span class="card-title" ng-show="state==='add'">افزودن</span>
+    </div>
+    <div class="card-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="CategorySub" class="control-label">نام کنترل</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-required="true" ng-model="Model.ControllerName" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CategorySub" class="control-label">نام اکشن</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-required="true" ng-model="Model.ActionName" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CategorySub" class="control-label">نام فارسی</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-required="true" ng-model="Model.Title" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CategorySub" class="control-label">آدرس</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-required="true" ng-model="Model.RouteUrl" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CategorySub" class="control-label">توضیحات</label>
+                <div class="col-md-10">
+                    <textarea rows="4" cols="4" class="form-control" ng-required="true" ng-model="Model.Description" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="CategorySub" class="control-label">نمایش در لیست</label>
+                <div class="col-md-10">
+                    <input type="checkbox" class="form-control" ng-required="true" ng-model="Model.Enabled" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer pull-left">
+        <button type="submit" ng-click="addPages()" ng-show="state==='add'" class="btn btn-outline-success">افزودن</button>
+        <button type="submit" ng-click="editPages()" ng-show="state==='edit'" class="btn btn-outline-success">ویرایش</button>
+        <a href="" ng-click="changeState.cartable()" class="btn btn-outline-primary">بازگشت</a>
+    </div>
+</div>

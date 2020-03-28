@@ -1,0 +1,146 @@
+﻿@model FM.Portal.Core.Model.Product
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_LayoutProduct.cshtml";
+    List<FM.Portal.Core.Model.Attachment> pic = ViewBag.pic;
+
+}
+
+@section Head{
+<title>@Model.Name</title>
+<meta itemprop="name" name="twitter:title" property="dc.title" content="@Model.Name">
+<meta name="description" property="dc.description" content="@Model.MetaDescription">
+<meta property="og:type" content="product">
+<meta property="product:modified_time" content="@Model.UpdatedDate">
+<meta name="keywords" property="product:tag" content="@Model.MetaKeywords">
+<meta property="nastooh:publishDate" content="@Model.CreationDate.ToString("yyyy-MM-dd")">
+<meta property="og:title" itemprop="headline" content="@Model.MetaTitle">
+    }
+@section bodySection{
+    <div class="row">
+        <div class="col-xs-12">
+            <ol class="breadcrumb">
+                <li><a href="">خانه</a></li>
+                <li><a href="@Url.RouteUrl("Category",new {title=Model.Name , ID=Model.CategoryID })">محصولات</a></li>
+                <li><a href="">@Model.Name</a></li>
+            </ol>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3 col-xs-12">
+            @Html.Partial("~/Views/product/_PartialCarousel.cshtml", pic)
+        </div>
+        <div class="col-md-6 col-sm-7 col-xs-12">
+            <section id="productSection">
+                <h3>@Model.Name</h3>
+                <div class="well" id="shortDesc">
+                    @Html.Raw(Model.ShortDescription)
+                </div>
+            </section>
+        </div>
+        <div class="col-md-3 col-sm-5 col-xs-12" id="price">
+            @using (Html.BeginRouteForm("Product", FormMethod.Post, new { id = "product-details-form" }))
+            {
+                @Html.Partial("~/Views/product/_PartialPrice.cshtml", Model)
+            }
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-x-12">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a data-toggle="tab" href="#fullDescription">
+                        <i class="glyphicon glyphicon-zoom-in"></i>
+                        <label>نقد و بررسی</label>
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#informationProduct">
+                        <i class="glyphicon glyphicon-list"></i>
+                        <label>مشخصات</label>
+                    </a>
+                </li>
+                <li>
+                    <a data-toggle="tab" href="#commentProduct">
+                        <i class="glyphicon glyphicon-comment"></i>
+                        <label>نظرات کاربران</label>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="fullDescription" class="tab-pane fade in active">
+                    <div id="fullDesc" style="margin-top:10px;text-align:justify">
+                        @Html.Raw(Model.FullDescription)
+                    </div>
+
+                </div>
+                <div id="informationProduct" class="tab-pane fade">
+                    <ul class="c-params__list">
+                        <li>
+                            @if (Model.Weight > 0)
+                            {
+                                <div class="c-params__list-key">
+                                    <span class="block">وزن محصول</span>
+                                </div>
+                                <div class="c-params__list-value">
+                                    <span class="block">@Math.Round(Model.Weight,2) گرم</span>
+                                </div>
+                            }
+                        </li>
+                        <li>
+                            @if (Model.Length > 0)
+                            {
+                                <div class="c-params__list-key">
+                                    <span class="block">طول محصول</span>
+                                </div>
+                                <div class="c-params__list-value">
+                                    <span class="block">@Math.Round(Model.Length,2) سانتی متر</span>
+                                </div>
+                            }
+                        </li>
+                        <li>
+                            @if (Model.Width > 0)
+                            {
+                                <div class="c-params__list-key">
+                                    <span class="block">عرض محصول</span>
+                                </div>
+                                <div class="c-params__list-value">
+                                    <span class="block">@Math.Round(Model.Width,2) سانتی متر</span>
+                                </div>
+                            }
+                        </li>
+                        <li>
+                            @if (Model.Height > 0)
+                            {
+                                <div class="c-params__list-key">
+                                    <span class="block">ارتفاع محصول</span>
+                                </div>
+                                <div class="c-params__list-value">
+                                    <span class="block">@Math.Round(Model.Height,2) سانتی متر</span>
+                                </div>
+                            }
+                        </li>
+
+                    </ul>
+                </div>
+                <div id="commentProduct" class="tab-pane fade">
+                    <div class="col-xs-12 article-body">
+                        <div class="well well-lg">
+                            @Html.Action("Index", "Comment", new { DocumentID = Model.ID,State="Product" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+<script src="~/scripts/custom/comment.js"></script>
+    <script>
+        $('.dropdown-menu a').on('click', function () {
+            $('.dropdown-toggle').html($(this).html() + '<span class="caret pull-left" style="margin-top: 8px;"></span>');
+        })
+    </script>
+ }

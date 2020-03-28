@@ -1,0 +1,110 @@
+﻿<div class="card" ng-show="state ==='cartable'">
+    <div class="card-header">
+        <span class="card-title">کارتابل جایگاه های سازمانی</span>
+        <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+
+    </div>
+    <div class="card-body">
+        <table class="table table-striped table-bordered table-condensed table-hover th-center td-center">
+            <thead>
+                <tr style="background-color: #e5e5e5">
+                    <th>#</th>
+                    <th>نام جایگاه</th>
+                    <th>عملیات</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="li in Grid">
+                    <td>{{$index + 1}}</td>
+                    <td>{{li.Name}}</td>
+                    <td>
+                        <div class="btn-group" dropdown is-open="false">
+                            <a href="#/position/edit/{{li.ID}}" class="btn btn-primary dropdown-toggle"><i class="fa fa-edit"></i></a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="card" ng-if="['add','edit'].indexOf(state)!== -1">
+    <div class="card-header">
+        <span class="card-title" ng-show="state ==='add'">افزودن جایگاه سازمانی</span>
+        <span class="card-title" ng-show="state ==='edit'">ویرایش جایگاه سازمانی</span>
+    </div>
+    <div class="card-body">
+        <div class="container">
+            <div class="row form-inline">
+                <div class="form-group">
+                    <label for="nationalCode" class="control-label mr-sm-2">کد ملی</label>
+                    <input type="text" ng-model="Model.NationalCode" class="form-control mb-2 mr-sm-2" />
+                </div>
+                <button type="button" class="btn btn-outline-primary mb-2" ng-click="searchNationalCode();">جست و جو</button>
+            </div>
+        </div>
+        <div class="container mt-3" ng-show="search===true">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">نتیجه جست و جو</span>
+                        </div>
+                        <div class="card-body">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <td>نام</td>
+                                        <td>نام خانوادگی</td>
+                                        <td>کد ملی</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ResultSearch.FirstName}}</td>
+                                        <td>{{ResultSearch.LastName}}</td>
+                                        <td>{{ResultSearch.NationalCode}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div class="container mt-3">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="card-title">لیست نقش ها</span>
+                        </div>
+                        <div class="card-body">
+                            <div ng-repeat="row in listRole">
+                                <div class="form-check">
+                                    <input type="checkbox" checklist-model="selectCommand.selected" class="form-check-input" checklist-value="row.ID">
+                                    <label class="form-check-label">{{row.Name}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="btn-group-justified pull-left">
+            <button type="button" class="btn btn-outline-success" ng-click="addPosition();">افزودن</button>
+        </div>
+
+    </div>
+</div>
+
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+

@@ -1,0 +1,31 @@
+﻿@model List<ListProductShowOnHomePageVM>
+<section class="col-md-12">
+    <div class="card">
+        <div class="card-header">
+            <span class="card-title">محصولات جدید</span>
+        </div>
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4">
+                            <div class="card">
+                                <img src="~/Content/TemporaryFiles/@Enum.GetName(typeof(PathType), item.PathType)/@item.FileName" alt="@item.Name.Replace(' ', '_')" class="card-img-top img-rounded" />
+                                <div class="card-body">
+                                    <h5 class="card-title">@(item.Name.Length > 20 ? item.Name.Substring(0, 19) + " ...." : item.Name)</h5>
+                                </div>
+                                <div class="card-footer">
+                                    <div class="btn-group-justified" style="float:left">
+                                        <a href="@Url.RouteUrl("product",new { TrackingCode=item.TrackingCode,Title=item.Name.Replace(' ','_')})" class="btn btn-outline-primary">مشاهده</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

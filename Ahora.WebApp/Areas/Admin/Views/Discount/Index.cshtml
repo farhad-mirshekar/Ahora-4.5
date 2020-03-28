@@ -1,0 +1,57 @@
+﻿<div class="card" ng-show="state ==='cartable'">
+    <div class="card-header">
+        <span class="card-title">کارتابل مدیریت تخفیف محصولات</span>
+    </div>
+    <div class="card-body">
+        <portal-grid obj="grid"></portal-grid>
+    </div>
+</div>
+
+<div class="card" ng-show="['add','edit'].indexOf(state) !== -1">
+    <div class="card-header">
+        <label class="panel-title" ng-show="state ==='add'">افزودن</label>
+        <label class="panel-title" ng-show="state ==='edit'">ویرایش</label>
+    </div>
+    <div class="card-body form-horizontal">
+        <div class="form-group">
+            <label for="Name" class="control-label">نام</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" ng-model="Model.Name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="DiscountType" class="control-label">نوع تخفیف</label>
+            <div class="col-md-10">
+                <select class="form-control" ng-model="Model.DiscountType">
+                    <option ng-repeat="row in selectDiscountType" ng-value="row.Model">{{row.Name}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group" ng-show="Model.DiscountType === 2">
+
+            <label for="DiscountPercentage" class="control-label">درصد تخفیف</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" ng-model="Model.DiscountPercentage" />
+            </div>
+        </div>
+        <div class="form-group" ng-show="Model.DiscountType === 1">
+            <label for="DiscountAmount" class="control-label">مبلغ تخفیف</label>
+            <div class="col-md-10">
+                <input type="text" class="form-control" ng-model="Model.DiscountAmount" />
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="btn-group-justified pull-left">
+            <button type="submit" ng-click="editDiscount()" ng-if="state ==='edit'" class="btn btn-outline-success">ویرایش</button>
+            <button type="submit" ng-click="addDiscount()" ng-if="state ==='add'" class="btn btn-outline-success">افزودن</button>
+            <a href="#/discount/cartable" class="btn btn-outline-primary">بازگشت</a>
+        </div>
+    </div>
+</div>
+
+
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+
+
+

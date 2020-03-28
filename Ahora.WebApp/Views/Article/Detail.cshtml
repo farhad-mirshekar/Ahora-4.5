@@ -1,0 +1,30 @@
+﻿@model FM.Portal.Core.Model.Article
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section BodySection{
+    <article class="card">
+        <div class="card-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label class="control-label">کد خبر : </label> <label class="control-label">@Model.TrackingCode</label> -
+                        <label class="control-label">تاریخ انتشار :</label> <label class="control-label">@FM.Portal.Core.Common.Helper.GetPersianDay(Model.CreationDate) - @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(Model.CreationDate)) - @FM.Portal.Core.Common.Helper.GetPersianYear(Model.CreationDate)</label>
+                    </div>
+                    <div class="col-md-12"><h4 class="card-title">@Model.Title</h4></div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-light text-justify" role="alert">
+                <div class="alert-heading">
+                    <p>@Model.Description</p>
+                </div>
+                <hr />
+                <div class="p-1 text-dark">@Html.Raw(Model.Body)</div>
+            </div>
+        </div>
+    </article>
+}

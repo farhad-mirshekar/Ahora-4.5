@@ -1,0 +1,26 @@
+﻿@model List<ListProductByCategoryIDVM>
+
+<div class="panel-body">
+    <div class="row" id="list-result">
+        @foreach (var item in Model)
+            {
+            <div class="col-md-3 col-xs-6">
+                <div class="card clearfix">
+                    <img class="card-img-top text-center" src="~/Content/TemporaryFiles/@item.FileName" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.ProductName</h5>
+                        <p class="card-text"><span class="glyphicon glyphicon-home"></span></p>
+                        <div class="pull-left">
+                            <a href="/product/detail/@item.ProductID" class="btn text-center">مشاهده</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+

@@ -1,0 +1,23 @@
+﻿@model List<FM.Portal.Core.Model.ArticleListVM>
+@{ int count = 0;}
+<section class="card">
+    <div class="card-header">
+        <span class="card-title">
+            آخرین مقالات
+        </span>
+        <i class="fa fa-pencil pull-left"></i>
+    </div>
+    <div class="card-body">
+        <ul class="list-group">
+            @foreach (var item in Model)
+            {
+                <li class="list-group-item">
+                    <span class="badge badge-pill badge-primary">@(++count)</span>
+                    <a href="@Url.RouteUrl("ArticleDetail" , new { TrackingCode=item.TrackingCode , Seo=item.UrlDesc.Replace(" ","_")})">
+                        <span>@(item.Title.Length > 25 ? item.Title.Substring(0, 24) + " ...." : item.Title)</span>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+</section>

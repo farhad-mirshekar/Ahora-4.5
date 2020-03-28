@@ -1,0 +1,62 @@
+﻿<div class="card" ng-show="state ==='cartable'">
+    <div class="card-header">
+        <span class="main-title">کارتابل مدیریت تصاویر کشویی</span>
+        <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    </div>
+    <div class="card-body">
+        <portal-grid obj="grid"></portal-grid>
+    </div>
+</div>
+<div class="card" id="sliderSection" ng-show="['add','edit'].indexOf(state) !== -1">
+    <div class="card-header">
+        <label class="main-title" ng-show="state==='add'">افزودن اسلایدر جدید</label>
+        <label class="main-title" ng-show="state==='edit'">ویرایش اسلایدر</label>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div ng-show="Model.Errors.length" class="alert alert-danger">
+                    <ul ng-repeat="row in Model.Errors">
+                        <li>{{row}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="Title" class="control-label">عنوان اسلایدر</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="Model.Title" placeholder="عنوان اسلایدر شما در قسمت اسلایدر در زیر عکس در سایت قرار می گیرد">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Title" class="control-label">لینک</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-model="Model.Url" placeholder="آدرس را وارد نمایید">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="IsShow" class="control-label">نمایش</label>
+                <div class="col-md-10">
+                    <select class="form-control" ng-model="Model.Enabled">
+                        <option ng-repeat="row in typeEnable" ng-value="row.Model">{{row.Name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <portal-upload main="Model"
+                               pic="pic"></portal-upload>
+            </div>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="btn-group-justified pull-left">
+            <button type="submit" ng-click="addSlider()" ng-show="state==='add'" class="btn btn-success">افزودن</button>
+            <button type="submit" ng-click="editSlider()" ng-show="state==='edit'" class="btn btn-success">ویرایش</button>
+            <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
+        </div>
+    </div>
+</div>
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>

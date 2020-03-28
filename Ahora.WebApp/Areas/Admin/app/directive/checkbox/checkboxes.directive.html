@@ -1,0 +1,21 @@
+﻿<div class="row">
+    <!-- display tree -->
+    <div class="col-xs-12" ng-if="display === 'tree'">
+        <ul>
+            <li ng-repeat="checkbox in list" ng-include="'checkbox-tree.html'"></li>
+        </ul>
+    </div>
+</div>
+
+<script type="text/ng-template" id="checkbox-tree.html">
+    <label class="checkbox-label">
+        <input type="checkbox"
+               ng-click="updateSelection($event, checkbox)"
+               ng-checked="isSelected(checkbox)" />
+        <span>{{checkbox[displayName]}}</span>
+    </label>
+    <ul ng-if="checkbox.children.length">
+        <li ng-repeat="checkbox in checkbox.children"
+            ng-include="'checkbox-tree.html'"></li>
+    </ul>
+</script>
