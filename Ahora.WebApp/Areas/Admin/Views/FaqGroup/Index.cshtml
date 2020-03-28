@@ -8,68 +8,69 @@
         <portal-grid obj="grid"></portal-grid>
     </div>
 </div>
-
-<div class="card" ng-show="['add','edit'].indexOf(state) !== -1">
-    <div class="card-header">
-        <span class="card-title" ng-show="state === 'add'">اضافه کردن</span>
-        <span class="card-title" ng-show="state === 'edit'">ویرایش کردن</span>
-    </div>
-    <div class="card-body">
-        <form class="form-horizontal" novalidate name="faqGroupAdd">
-            <div class="form-group">
-                <label for="CategorySub" class="control-label">نام دسته بندی</label>
-                <div class="col-md-12">
-                    <input type="text" class="form-control" required ng-model="Model.Title" />
+<section>
+    <h2 class="main-title" ng-show="state === 'add'">اضافه کردن</h2>
+    <h2 class="main-title" ng-show="state === 'edit'">ویرایش کردن</h2>
+    <div class="card" ng-show="['add','edit'].indexOf(state) !== -1">
+        <div class="card-body">
+            <form class="form-horizontal" novalidate name="faqGroupAdd">
+                <div class="form-group">
+                    <label for="CategorySub" class="control-label">نام دسته بندی</label>
+                    <div class="col-md-12">
+                        <input type="text" class="form-control" required ng-model="Model.Title" />
+                    </div>
                 </div>
-            </div>
-        </form>
-        <div class="container" ng-if="Model.ID">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="card-title">مدیریت سوالات</span>
-                           <span class="btn btn-outline-info  pull-left mt-1"><i ng-click="openModalFaq();" class="fa fa-plus"></i></span>
-                        </div>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table st-safe-src="faq" st-table="grid" class="table table-striped table-bordered table-condensed table-hover th-center td-center">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th st-sort="isShow">دسته بندی سوال</th>
-                                            <th>عملیات</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr ng-repeat="row in faq">
-                                            <td>{{$index + 1}}</td>
-                                            <td>{{row.Question}}</td>
-                                            <td>
-                                                <div class="btn-group" dropdown is-open="false">
-                                                    <button ng-click="select(row);" class="btn btn-primary"><i class="fa fa-plus"></i></button>
-                                                </div>
-                                                <button class="btn btn-danger" ng-click="DeleteCategory(row)">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+            </form>
+            <div class="container" ng-if="Model.ID">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">مدیریت سوالات</span>
+                                <span class="btn btn-outline-info  pull-left mt-1"><i ng-click="openModalFaq();" class="fa fa-plus"></i></span>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table st-safe-src="faq" st-table="grid" class="table table-striped table-bordered table-condensed table-hover th-center td-center">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th st-sort="isShow">دسته بندی سوال</th>
+                                                <th>عملیات</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="row in faq">
+                                                <td>{{$index + 1}}</td>
+                                                <td>{{row.Question}}</td>
+                                                <td>
+                                                    <div class="btn-group" dropdown is-open="false">
+                                                        <button ng-click="select(row);" class="btn btn-primary"><i class="fa fa-plus"></i></button>
+                                                    </div>
+                                                    <button class="btn btn-danger" ng-click="DeleteCategory(row)">
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-footer">
-        <div class="btn-group-justified pull-left">
-            <button class="btn btn-outline-success" type="submit" ng-disabled="faqGroupAdd.$invalid" ng-click="add()">افزودن</button>
-            <button class="btn btn-outline-primary" type="submit" ng-click="back()">بازگشت</button>
+        <div class="card-footer">
+            <div class="btn-group-justified pull-left">
+                <button class="btn btn-success" type="submit" ng-show="state === 'add'" ng-disabled="faqGroupAdd.$invalid" ng-click="addFaqGroup()">ثبت</button>
+                <button class="btn btn-primary" type="submit" ng-show="state === 'edit'" ng-disabled="faqGroupAdd.$invalid" ng-click="editFaqGroup()">ویرایش</button>
+                <button class="btn btn-cancel" type="submit" ng-click="back()">بازگشت</button>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
 <script type="text/ng-template" id="faq.html">
             <div class="modal-content" dir="rtl">
                 <div class="modal-header">
@@ -92,9 +93,9 @@
                     </form>
                 </div>
                 <div class="modal-footer pull-left">
-                    <button class="btn btn-outline-success" ng-show="state === 'add'" ng-click="add();">اضافه کردن</button>
-                    <button class="btn btn-outline-success" ng-show="state === 'edit'" ng-click="edit();">ویرایش کردن</button>
-                    <button class="btn btn-outline-primary" ng-click="cancel()">انصراف</button>
+                    <button class="btn btn-success" ng-show="state === 'add'" ng-click="add();">ثبت</button>
+                    <button class="btn btn-primary" ng-show="state === 'edit'" ng-click="edit();">ویرایش</button>
+                    <button class="btn btn-back" ng-click="cancel()">انصراف</button>
                 </div>
             </div>
 

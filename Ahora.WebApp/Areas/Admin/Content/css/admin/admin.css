@@ -1,7 +1,9 @@
 input {
     direction: rtl;
 }
-
+ul{
+    list-style:none;
+}
 @font-face {
     font-family: "IRANSansBold";
     font-style: normal;

@@ -10,11 +10,9 @@
     </div>
 </div>
 <div ng-show="['add','edit'].indexOf(state) !== -1">
+    <h2 class="main-title" ng-show="state === 'add'">افزودن نقش جدید</h2>
+    <h2 class="main-title" ng-show="state === 'edit'">ویرایش کردن نقش {{Model.Name}}</h2>
     <div class="card">
-        <div class="card-header">
-            <span class="main-title" ng-show="state === 'add'">افزودن نقش جدید</span>
-            <span class="main-title" ng-show="state === 'edit'">ویرایش کردن نقش {{Model.Name}}</span>
-        </div>
         <div class="card-body">
             <form class="form-horizontal" novalidate name="roleSave">
                 <div class="card">
@@ -38,20 +36,17 @@
                                            selected="Model.Permissions"
                                            display-name="Title"
                                            display="tree"></fm-checkboxes>
-                            @*<div ng-repeat="row in ListCommand">
-                                    <input type="checkbox" checklist-model="selectCommand.selected" checklist-value="row.ID">
-                                    <label>{{row.Title}}</label>
-                                </div>*@
                         </div>
                     </section>
                 </div>
             </form>
         </div>
-        <div class="card-footer pull-right">
-            <button class="btn btn-success" type="submit" ng-disabled="roleSave.$invalid" ng-click="editRole()" ng-if="state === 'edit'">ویرایش</button>
-            <button class="btn btn-success" type="submit" ng-disabled="roleSave.$invalid" ng-click="addRole()" ng-if="state === 'add'">ثبت</button>
-            <button class="btn btn-cancel" type="submit" ng-click="back()">انصراف</button>
-
+        <div class="card-footer">
+            <div class="btn-group-justified pull-left">
+                <button class="btn btn-primary" type="submit" ng-disabled="roleSave.$invalid" ng-click="editRole()" ng-if="state === 'edit'">ویرایش</button>
+                <button class="btn btn-success" type="submit" ng-disabled="roleSave.$invalid" ng-click="addRole()" ng-if="state === 'add'">ثبت</button>
+                <button class="btn btn-cancel" type="submit" ng-click="back()">انصراف</button>
+            </div>
         </div>
     </div>
 </div>

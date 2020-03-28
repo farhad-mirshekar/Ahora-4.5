@@ -32,64 +32,64 @@
         </table>
     </div>
 </div>
-<div class="card" ng-if="['add','edit'].indexOf(state)!== -1">
-    <div class="card-header">
-        <span class="card-title" ng-show="state ==='add'">افزودن جایگاه سازمانی</span>
-        <span class="card-title" ng-show="state ==='edit'">ویرایش جایگاه سازمانی</span>
-    </div>
-    <div class="card-body">
-        <div class="container">
-            <div class="row form-inline">
-                <div class="form-group">
-                    <label for="nationalCode" class="control-label mr-sm-2">کد ملی</label>
-                    <input type="text" ng-model="Model.NationalCode" class="form-control mb-2 mr-sm-2" />
+<section ng-if="['add','edit'].indexOf(state)!== -1">
+    <span class="main-title" ng-show="state ==='add'">افزودن جایگاه سازمانی</span>
+    <span class="main-title" ng-show="state ==='edit'">ویرایش جایگاه سازمانی</span>
+    <div class="card">
+        <div class="card-body">
+            <div class="container">
+                <div class="row form-inline">
+                    <div class="form-group">
+                        <label for="nationalCode" class="control-label mr-sm-2">کد ملی</label>
+                        <input type="text" ng-model="Model.NationalCode" class="form-control mb-2 mr-sm-2" />
+                    </div>
+                    <button type="button" class="btn btn-outline-primary mb-2" ng-click="searchNationalCode();">جست و جو</button>
                 </div>
-                <button type="button" class="btn btn-outline-primary mb-2" ng-click="searchNationalCode();">جست و جو</button>
             </div>
-        </div>
-        <div class="container mt-3" ng-show="search===true">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="card-title">نتیجه جست و جو</span>
-                        </div>
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <td>نام</td>
-                                        <td>نام خانوادگی</td>
-                                        <td>کد ملی</td>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>{{ResultSearch.FirstName}}</td>
-                                        <td>{{ResultSearch.LastName}}</td>
-                                        <td>{{ResultSearch.NationalCode}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+            <div class="container mt-3" ng-show="search===true">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">نتیجه جست و جو</span>
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <td>نام</td>
+                                            <td>نام خانوادگی</td>
+                                            <td>کد ملی</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ResultSearch.FirstName}}</td>
+                                            <td>{{ResultSearch.LastName}}</td>
+                                            <td>{{ResultSearch.NationalCode}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
-
-
             </div>
-        </div>
-        <div class="container mt-3">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="card-title">لیست نقش ها</span>
-                        </div>
-                        <div class="card-body">
-                            <div ng-repeat="row in listRole">
-                                <div class="form-check">
-                                    <input type="checkbox" checklist-model="selectCommand.selected" class="form-check-input" checklist-value="row.ID">
-                                    <label class="form-check-label">{{row.Name}}</label>
+            <div class="container mt-3">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">لیست نقش ها</span>
+                            </div>
+                            <div class="card-body">
+                                <div ng-repeat="row in listRole">
+                                    <div class="form-check">
+                                        <input type="checkbox" checklist-model="selectCommand.selected" class="form-check-input" checklist-value="row.ID">
+                                        <label class="form-check-label">{{row.Name}}</label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -97,14 +97,14 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="card-footer">
-        <div class="btn-group-justified pull-left">
-            <button type="button" class="btn btn-outline-success" ng-click="addPosition();">افزودن</button>
-        </div>
+        <div class="card-footer">
+            <div class="btn-group-justified pull-left">
+                <button type="button" class="btn btn-success" ng-click="addPosition();">ثبت</button>
+            </div>
 
+        </div>
     </div>
-</div>
+</section>
 
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
 

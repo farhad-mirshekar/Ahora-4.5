@@ -37,7 +37,8 @@
         faqgroup.state = '';
         faqgroup.Model = {};
         faqgroup.faq = {};
-        faqgroup.add = add;
+        faqgroup.addFaqGroup = addFaqGroup;
+        faqgroup.editFaqGroup = editFaqGroup;
         faqgroup.back = back;
         faqgroup.select = select;
         faqgroup.openModalFaq = openModalFaq;
@@ -73,18 +74,21 @@
         function goToPageAdd() {
             $location.path('/faq-group/add');
         }
-        function add() {
-            if (!faqgroup.Model.ID)
-                return faqGroupService.add(faqgroup.Model).then((result) => {
-                    toaster.pop('success', '', 'تغییرات با موفقیت انجام گردید');
-                    faqgroup.Model = result;
+        function addFaqGroup() {
+            loadingService.show();
+            return faqGroupService.add(faqgroup.Model).then((result) => {
+                toaster.pop('success', '', 'تغییرات با موفقیت انجام گردید');
+                faqgroup.Model = result;
 
-                });
-            else
-                return faqGroupService.edit(faqgroup.Model).then((result) => {
-                    toaster.pop('success', '', 'تغییرات با موفقیت انجام گردید');
-                    faqgroup.Model = result;
-                });
+            }).finally(loadingService.hide);
+        }
+        function editFaqGroup() {
+            loadingService.show();
+            return faqGroupService.edit(faqgroup.Model).then((result) => {
+                toaster.pop('success', '', 'تغییرات با موفقیت انجام گردید');
+                faqgroup.Model = result;
+
+            }).finally(loadingService.hide);
         }
         function cartable() {
             faqgroup.state = 'cartable';
@@ -591,21 +595,18 @@
 
         function changePassword() {
             loadingService.show();
-            profile.Model.UserID = toolsService.userID();
-            return profileService.setPassword(profile.Model).then((result) => {
-                if (result.Code === 0) {
-                    toaster.pop('success', '', result.Message);
-                    $timeout(function () {
-
-                        localStorage.clear();
-                        $window.location.href('/account/login');
-
-                    }, 1000);
-                } else {
-                    toaster.pop('error', '', result.Message);
-                }
+            $q.resolve().then(() => {
+                profile.Model.UserID = toolsService.userID();
+                return profileService.setPassword(profile.Model)
+            }).then((result) => {
+                toaster.pop('success', '', result.Message);
+                $timeout(function () {
+                    localStorage.clear();
+                    $window.location.href('/account/login');
+                }, 1000);
             }).catch((error) => {
                 loadingService.hide();
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
         }
     }
@@ -621,6 +622,8 @@
         product.pic = { type: '1', allowMultiple: true };
         product.pic.list = [];
         product.Model.listPicUploaded = [];
+        product.froalaOption = angular.copy(froalaOption);
+        product.froalaOptions = angular.copy(froalaOption);
         product.Attribute.Sub = false;
         product.ProductVariant.showGrid = false;
         product.ProductVariant.Parent = true;
@@ -827,6 +830,7 @@
         attribute.state = '';
         attribute.goToPageAdd = goToPageAdd;
         attribute.addAttribute = addAttribute;
+        attribute.editAttribute = editAttribute;
         attribute.grid = {
             bindingObject: attribute
             , columns: [{ name: 'Name', displayName: 'عنوان' }]
@@ -875,36 +879,35 @@
         }
         function addAttribute() {
             loadingService.show();
-            $q.resolve().then(() => {
-                if (!attribute.Model.ID) {
-                    attributeService.add(attribute.Model).then((result) => {
-                        attribute.Model = result;
-                        toaster.pop('success', '', 'ویژگی جدید با موفقیت اضافه گردید');
-                        loadingService.hide();
-                        $timeout(function () {
-
-                            cartable();
-
-                        }, 1000);
-                    }).finally(loadingService.hide);
-                }
-                else {
-                    attributeService.edit(attribute.Model).then((result) => {
-                        attribute.Model = result;
-                        toaster.pop('success', '', 'ویژگی جدید با موفقیت ویرایش گردید');
-                        loadingService.hide();
-                        $timeout(function () {
-
-                            cartable();
-
-                        }, 1000);
-                    })
-                }
+            return $q.resolve().then(() => {
+                return attributeService.add(attribute.Model);
+            }).then((result) => {
+                attribute.Model = result;
+                toaster.pop('success', '', 'ویژگی جدید با موفقیت اضافه گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    cartable();
+                }, 1000);
             }).catch((error) => {
                 toaster.pop('error', '', 'خطا');
                 loadingService.hide();
-
-            })
+            }).finally(loadingService.hide);
+        }
+        function editAttribute() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return attributeService.edit(attribute.Model);
+            }).then((result) => {
+                attribute.Model = result;
+                toaster.pop('success', '', 'ویژگی جدید با موفقیت ویرایش گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    cartable();
+                }, 1000);
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطا');
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
@@ -1369,6 +1372,7 @@
             , globalSearch: true
             , displayNameFormat: ['Title']
         };
+        article.froalaOption = angular.copy(froalaOption);
         function init() {
             loadingService.show();
             $q.resolve().then(() => {

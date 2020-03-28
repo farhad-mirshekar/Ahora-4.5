@@ -21,11 +21,9 @@
         margin-right: 0px !important;
     }
 </style>
+<span class="main-title" ng-show="state === 'add'">افزودن محصول</span>
+<span class="main-title" ng-show="state === 'edit'">ویرایش محصول</span>
 <div class="card" ng-show="['add','edit'].indexOf(state) !== -1">
-    <div class="card-header">
-        <span class="card-title" ng-show="state === 'add'">افزودن محصول</span>
-        <span class="card-title" ng-show="state === 'edit'">ویرایش محصول</span>
-    </div>
     <div class="card-body">
         <div id="ProductError" ng-show="Model.Errors.length" class="alert alert-danger">
             <ul ng-repeat="row in Model.Errors">
@@ -55,7 +53,7 @@
                     <div class="form-group">
                         <label for="Description" class="control-label">توضیحات کوتاه</label>
                         <div class="col-md-10">
-                            <textarea ckeditor="editorOptions" class="form-control" ng-model="Model.ShortDescription" name="body" rows="4" style="height: auto;" ng-required="false"></textarea>
+                            <textarea froala="froalaOption" class="form-control" ng-model="Model.ShortDescription" name="ShortDescription"  ng-required="false"></textarea>
                         </div>
                     </div>
                     <div class="container record">
@@ -168,7 +166,7 @@
                 <uib-tab heading="بررسی تخصصی محصول">
                     <div class="form-group">
                         <div class="col-md-12">
-                            <textarea ckeditor="editorOptions" class="form-control" ng-model="Model.FullDescription" name="FullDescription" rows="4" style="height: auto;" ng-required="false"></textarea>
+                            <textarea froala="froalaOptions" class="form-control" ng-model="Model.FullDescription" name="FullDescription" ng-required="false"></textarea>
                         </div>
 
                     </div>
@@ -209,7 +207,7 @@
                                 <label for="attributeProduct" class="control-label mr-sm-2">توضیحات</label>
                                 <input type="text" ng-model="Attribute.TextPrompt" class="form-control mb-2 mr-sm-2" />
                             </div>
-                            <button type="button" class="btn btn-success mb-2" ng-click="addProductMapAttribute()">افزودن</button>
+                            <button type="button" class="btn btn-success mb-2" ng-click="addProductMapAttribute()">ثبت</button>
                         </div>
                     </div>
                     <div class="container" style="margin-top:20px;">
@@ -230,7 +228,7 @@
                                                 <td>{{row.Name}}</td>
                                                 <td>
                                                     <div class="btn-group" dropdown is-open="false">
-                                                        <button type="button" ng-click="Attribute.Sub = true;ProductVariant.ProductVariantAttributeID = row.ID;ProductVariant.Parent=false;Attribute.Sub=true;" class="btn btn-primary">افزودن</button>&nbsp;
+                                                        <button type="button" ng-click="Attribute.Sub = true;ProductVariant.ProductVariantAttributeID = row.ID;ProductVariant.Parent=false;Attribute.Sub=true;" class="btn btn-success">ثبت</button>&nbsp;
                                                         <button type="button" ng-click="listProductVarient(row.ID);ProductVariant.Parent=false;" class="btn btn-default">مشاهده زیر گروه</button>
                                                     </div>
                                                 </td>
@@ -292,7 +290,7 @@
                                             <label for="CategorySub" class="control-label mr-sm-2"> نام</label>
                                             <input type="text" class="form-control mb-2 mr-sm-2" ng-model="ProductVariant.Name" />
                                         </div>
-                                        <button type="button" class="btn btn-success mb-2" ng-click="addProductVarient()">افزودن</button>
+                                        <button type="button" class="btn btn-success mb-2" ng-click="addProductVarient()">ثبت</button>
                                     </div>
                                     <div class="card-footer">
                                         <button type="button" class="btn pull-left btn-danger" ng-click="ProductVariant.Parent=true;ProductVariant.showGrid=false;Attribute.Sub=false;">بازگشت</button>
@@ -321,9 +319,9 @@
     </div>
     <div class="card-footer">
         <div class="btn-group-justified pull-left">
-            <button type="button" class="btn btn-outline-success" ng-click="editProduct();" ng-if="state === 'edit'">ویرایش</button>
-            <button type="button" class="btn btn-outline-success" ng-click="addProduct();" ng-if="state === 'add'">افزودن</button>
-            <a type="button" class="btn btn-outline-primary" role="button" href="#product-cartable">بازگشت</a>
+            <button type="button" class="btn btn-primary" ng-click="editProduct();" ng-if="state === 'edit'">ویرایش</button>
+            <button type="button" class="btn btn-success" ng-click="addProduct();" ng-if="state === 'add'">ثبت</button>
+            <a type="button" class="btn btn-cancel" role="button" href="#product-cartable">بازگشت</a>
         </div>
 
 

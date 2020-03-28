@@ -291,6 +291,7 @@
     <Content Include="Content\toaster\toaster.css" />
     <Content Include="Content\toaster\toaster.min.css" />
     <Content Include="Content\ui-bootstrap-csp.css" />
+    <Content Include="Content\img\favicon.png" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\angular\angular-animate.js" />
