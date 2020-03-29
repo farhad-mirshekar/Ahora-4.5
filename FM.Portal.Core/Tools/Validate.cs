@@ -43,6 +43,7 @@ namespace FM.Portal.Core.Tools
                             , "image/gif"
                             , "image/bmp"
                             , "image/svg+xml"
+                            ,"video/mp4"
                         };
             string[] validExtensions = {
                 ".xls"
@@ -60,6 +61,7 @@ namespace FM.Portal.Core.Tools
                 , ".gif"
                 , ".bmp"
                 , ".svg"
+                , ".mp4"
             };
 
             // check content type

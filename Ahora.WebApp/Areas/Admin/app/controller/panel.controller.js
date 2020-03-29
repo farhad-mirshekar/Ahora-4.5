@@ -19,7 +19,20 @@
     quickInsertEnabled: false,
     charCounterCount: false,
     toolbarSticky: false,
-    angularIgnoreAttrs: ['class', 'ng-model', 'id']
+    angularIgnoreAttrs: ['class', 'ng-model', 'id'],
+    // Set the video upload URL.
+    videoUploadURL: '/attachment/upload?type=7',
+    // Set request type.
+    videoUploadMethod: 'POST',
+    events: {
+        'video.beforeUpload': function (videos) {
+            // Return false if you want to stop the video upload.
+        },
+        'video.uploaded': function (response) {
+
+            // Video was uploaded to the server.
+        },
+    }
 };
 (() => {
     var app = angular.module('portal');
