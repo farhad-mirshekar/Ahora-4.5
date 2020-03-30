@@ -839,3 +839,42 @@ CREATE TABLE [ptl].[Slider] (
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+
+
+-----------------------------------------------------------------------------------------
+
+GO
+
+CREATE TABLE [ptl].[Events](
+	[ID] [uniqueidentifier] NOT NULL,
+	[Title] [nvarchar](max) NOT NULL,
+	[CreationDate] [smalldatetime] NOT NULL,
+	[ModifiedDate] [datetime] NOT NULL,
+	[Body] [nvarchar](max) NOT NULL,
+	[MetaKeywords] [nvarchar](400) NULL,
+	[Description] [nvarchar](max) NULL,
+	[CommentStatus] [tinyint] NOT NULL,
+	[VisitedCount] [int] NOT NULL,
+	[LikeCount] [int] NULL,
+	[DisLikeCount] [int] NULL,
+	[UrlDesc] [nvarchar](max) NULL,
+	[CategoryID] [uniqueidentifier] NULL,
+	[UserID] [uniqueidentifier] NULL,
+	[RemoverID] [uniqueidentifier] NULL,
+	[TrackingCode] [nvarchar](100) NULL,
+	[IsShow] [tinyint] NULL,
+ CONSTRAINT [PK_Events] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+GO
+
+ALTER TABLE [ptl].[Events]  WITH CHECK ADD FOREIGN KEY([CategoryID])
+REFERENCES [ptl].[Category] ([ID])
+GO
+
+ALTER TABLE [ptl].[Events]  WITH CHECK ADD FOREIGN KEY([UserID])
+REFERENCES [org].[User] ([ID])
+GO

@@ -79,6 +79,7 @@
     <Compile Include="DataSources\Pbl\PagesDataSource.cs" />
     <Compile Include="DataSources\Ptl\ArticleDataSource.cs" />
     <Compile Include="DataSources\Ptl\CategoryDataSource.cs" />
+    <Compile Include="DataSources\Ptl\EventsDataSource.cs" />
     <Compile Include="DataSources\Ptl\NewsDataSource.cs" />
     <Compile Include="DataSources\Ptl\SliderDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -180,6 +181,11 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetCountCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetsCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spModifyCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spDeleteEvents.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spGetEvents.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spGetsEvents.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spGetsEventsByCount.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spModifyEvents.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spDeleteNews.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetNews.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetsNews.sql" />

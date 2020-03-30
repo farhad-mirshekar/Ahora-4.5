@@ -76,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ptl\IArticleDataSource.cs" />
     <Compile Include="Ptl\ICategoryDataSource.cs" />
+    <Compile Include="Ptl\IEventsDataSource.cs" />
     <Compile Include="Ptl\INewsDataSource.cs" />
     <Compile Include="Ptl\ISliderDataSource.cs" />
   </ItemGroup>

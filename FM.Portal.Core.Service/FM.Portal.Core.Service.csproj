@@ -75,6 +75,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ptl\IArticleService.cs" />
     <Compile Include="Ptl\ICategoryService.cs" />
+    <Compile Include="Ptl\IEventsService.cs" />
     <Compile Include="Ptl\INewsService.cs" />
     <Compile Include="Ptl\ISliderService.cs" />
   </ItemGroup>
