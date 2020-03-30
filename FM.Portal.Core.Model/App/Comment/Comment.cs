@@ -15,6 +15,7 @@ namespace FM.Portal.Core.Model
         public Guid RemoverID { get; set; }
         public Guid ParentID { get; set; }
         public string NameFamily { get; set; }
+        public CommentForType CommentForType { get; set; }
         public List<Comment> Children { get; set; }
     }
 }

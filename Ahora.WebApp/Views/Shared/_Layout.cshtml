@@ -4,10 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewBag.Title</title>
+    @RenderSection("Metatag",false)
     @Styles.Render("~/bundles/bootstrap4")
     @Styles.Render("~/bundles/main")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryvalidate")
+    @Scripts.Render("~/bundles/mainSite")
     @Scripts.Render("~/bundles/bootstrap4js")
     @RenderSection("Head", false)
 </head>
@@ -23,7 +25,7 @@
             <div class="col-md-9 mt-2">
                 @RenderSection("BodySection", false)
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 mt-2">
                 @{ Html.RenderAction("GetLastArticle", "Home");}
                 @{ Html.RenderAction("GetLastNews", "Home");}
                 @{ Html.RenderAction("GetLastEvents", "Home");}

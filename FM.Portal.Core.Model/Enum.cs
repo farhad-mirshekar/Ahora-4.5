@@ -78,4 +78,12 @@
         فعال = 1,
         غیرفعال = 2
     }
+    public enum CommentForType : byte
+    {
+        unknown = 0,
+        product = 6,
+        article = 4,
+        news = 3,
+        events = 8
+    }
 }

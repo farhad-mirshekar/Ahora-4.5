@@ -59,6 +59,9 @@ CREATE TABLE [org].[Application](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+ALTER TABLE app.Comment
+ADD CommentForType Tinyint
+GO
 CREATE TABLE [org].[Department](
 	[ID] [uniqueidentifier] NOT NULL,
 	[Type] [tinyint] NOT NULL,

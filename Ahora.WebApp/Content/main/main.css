@@ -1,17 +1,21 @@
 ﻿input {
     direction: rtl;
 }
-a{
-    text-decoration:none;
-}
-a:hover {
+
+a {
     text-decoration: none;
 }
+
+    a:hover {
+        text-decoration: none;
+    }
+
 p > span {
     font-family: yekannumbers, IRANSans !important;
     color: #343a40 !important;
-    font-size:15px !important;
+    font-size: 15px !important;
 }
+
 @font-face {
     font-family: "IRANSansBold";
     font-style: normal;
@@ -80,7 +84,7 @@ body {
         transform: rotate(90deg);
         position: absolute;
         top: .8em;
-        left:20px;
+        left: 20px;
     }
 
     .dropdown-submenu .dropdown-menu {
@@ -89,6 +93,7 @@ body {
         margin-left: .1rem;
         margin-right: .1rem;
     }
+
 .card-body label {
     color: #99a0ac;
 }
@@ -100,24 +105,31 @@ body {
     border-width: 1px;
     border-radius: .25rem;
 }
-a{
-    text-decoration:none;
+
+a {
+    text-decoration: none;
 }
-li.list-group-item > a:hover{
-    text-decoration:none;
+
+li.list-group-item > a:hover {
+    text-decoration: none;
 }
+
 .alert-light hr {
     border-top-color: #99a0ac !important;
 }
-.card-footer{
-    border:0px !important;
+
+.card-footer {
+    border: 0px !important;
 }
-ul.navbar-nav > li.nav-item{
-    margin-left:20px;
+
+ul.navbar-nav > li.nav-item {
+    margin-left: 20px;
 }
-footer{
-    background-color:rgba(135, 150, 165, .40);
+
+footer {
+    background-color: rgba(135, 150, 165, .40);
 }
-footer >div.row > div.col-md-6 >a > i{
-    font-size:24px !important;
-}
+
+    footer > div.row > div.col-md-6 > a > i {
+        font-size: 24px !important;
+    }

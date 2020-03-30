@@ -690,6 +690,11 @@
     <Content Include="Scripts\angular\angular-cookies.min.js.map" />
     <Content Include="Scripts\angular\angular-aria.min.js.map" />
     <Content Include="Scripts\angular\angular-animate.min.js.map" />
+    <Content Include="Scripts\custom\ajaxcart.js" />
+    <Content Include="Scripts\custom\chosen.jquery.js" />
+    <Content Include="Scripts\custom\comment.js" />
+    <Content Include="Scripts\custom\Quantity.js" />
+    <Content Include="Scripts\custom\UnderScore.js" />
     <Content Include="Scripts\esm\popper-utils.js" />
     <Content Include="Scripts\esm\popper-utils.min.js" />
     <Content Include="Scripts\esm\popper.js" />

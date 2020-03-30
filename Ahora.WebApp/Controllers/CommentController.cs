@@ -11,18 +11,22 @@ namespace Ahora.WebApp.Controllers
     public class CommentController : BaseController<ICommentService>
     {
         private readonly IProductService _productService;
+        private readonly IArticleService _articleService;
         private readonly ICommentMapUserService _commentMapuserService;
         public CommentController(ICommentService service
                                 , IProductService productService
-                                , ICommentMapUserService commentMapuserService) : base(service)
+                                , ICommentMapUserService commentMapuserService
+                                , IArticleService articleService) : base(service)
         {
             _productService = productService;
             _commentMapuserService = commentMapuserService;
+            _articleService = articleService;
         }
 
         // GET: Comment
         public ActionResult Index(Guid DocumentID,string State)
         {
+            var comment = new List<Comment>();
             switch (State)
             {
                 case "Product":
@@ -31,14 +35,31 @@ namespace Ahora.WebApp.Controllers
                         if (product.Success)
                         {
                             ViewBag.stateComment = product.Data.AllowCustomerReviews;
+                            comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
+                            ViewBag.user = HttpContext.User.Identity.Name;
+                            ViewBag.DocumentID = DocumentID;
+                        }
+                        break;
+                    }
+                case "Article":
+                    {
+                        var article = _articleService.Get(DocumentID);
+                        if (article.Success)
+                        {
+                            switch (article.Data.CommentStatus)
+                            {
+                                case CommentArticleType.باز:
+                                    ViewBag.stateComment = true;
+                                    break;
+                            }
+                            comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
+                            ViewBag.user = HttpContext.User.Identity.Name;
+                            ViewBag.DocumentID = DocumentID;
                         }
                         break;
                     }
             }
-            var comment = _service.List(new CommentListVM {DocumentID=DocumentID });
-            ViewBag.user = HttpContext.User.Identity.Name;
-            ViewBag.DocumentID = DocumentID;
-            return PartialView("_PartialComment",comment.Data);
+            return PartialView("_PartialComment",comment);
         }
         [HttpGet]
         public JsonResult CommentReply(Guid ParentID)
