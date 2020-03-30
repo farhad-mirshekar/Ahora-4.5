@@ -46,12 +46,12 @@ namespace FM.Portal.Domain
             return Result<List<Events>>.Failure();
         }
 
-        //public Result<List<EventsListVM>> List(int count)
-        //{
-        //    var table = ConvertDataTableToList.BindList<EventsListVM>(_dataSource.List(count));
-        //    if (table.Count > 0)
-        //        return Result<List<EventsListVM>>.Successful(data: table);
-        //    return Result<List<EventsListVM>>.Failure();
-        //}
+        public Result<List<EventsListVM>> List(int count)
+        {
+            var table = ConvertDataTableToList.BindList<EventsListVM>(_dataSource.List(count));
+            if (table.Count > 0)
+                return Result<List<EventsListVM>>.Successful(data: table);
+            return Result<List<EventsListVM>>.Failure();
+        }
     }
 }

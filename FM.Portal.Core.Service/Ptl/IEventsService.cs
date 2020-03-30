@@ -10,7 +10,7 @@ namespace FM.Portal.Core.Service
         Result<Events> Add(Events model);
         Result<Events> Edit(Events model);
         Result<List<Events>> List();
-        //Result<List<EventsListVM>> List(int count);
+        Result<List<EventsListVM>> List(int count);
         Result<Events> Get(Guid ID);
         Result<Events> Get(string TrackingCode);
         Result<int> Delete(Guid ID);
