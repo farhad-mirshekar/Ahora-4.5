@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Web;
+using System.Web.Mvc;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Result;
@@ -33,6 +35,7 @@ namespace FM.Portal.Domain
 
         public string GetMenuForWeb(string Node)
         {
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
             string str = "";
             var children = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(Node));
 
@@ -43,13 +46,13 @@ namespace FM.Portal.Domain
                     var child = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(children[i].Node));
                     if (child.Count > 0)
                     {
-                        str += $"<li class='nav-item dropdown'><a class='nav-link dropdown-toggle' href='{children[i].Url}' id='{children[i].ID}' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='{children[i].IconText}'></i> {children[i].Name}</a>";
+                        str += $"<li class='nav-item dropdown'><a class='nav-link dropdown-toggle' href='{urlHelper.RouteUrl(children[i].Url)}' id='{children[i].ID}' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='{children[i].IconText}'></i> {children[i].Name}</a>";
                         str += ChildRender(child, children[i].ID);
                         str += "</li>";
                     }
 
                     else
-                        str += $"<li class='nav-item'><a class='nav-link' href='{children[i].Url}'><i class='{children[i].IconText}'></i> {children[i].Name}</a></li>";
+                        str += $"<li class='nav-item'><a class='nav-link' href='{urlHelper.RouteUrl(children[i].Url)}'><i class='{children[i].IconText}'></i> {children[i].Name}</a></li>";
 
                 }
             }
@@ -57,6 +60,7 @@ namespace FM.Portal.Domain
         }
         private string ChildRender(List<Menu> child, Guid Parent)
         {
+            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
             string str = $"<ul class='dropdown-menu' aria-labelledby='{Parent}'>";
             if (child.Count > 0)
             {
@@ -65,13 +69,13 @@ namespace FM.Portal.Domain
                     var subchild = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(child[i].Node));
                     if (subchild.Count > 0)
                     {
-                        str += $"<li class='dropdown-submenu'><a class='dropdown-item dropdown-toggle' href='{child[i].Url}'><i class='{child[i].IconText}'></i> {child[i].Name}</a>";
+                        str += $"<li class='dropdown-submenu'><a class='dropdown-item dropdown-toggle' href='{urlHelper.RouteUrl(child[i].Url)}'><i class='{child[i].IconText}'></i> {child[i].Name}</a>";
                         str += ChildRender(subchild, child[i].ID);
                         str += "</li>";
                     }
                     else
                     {
-                        str += $"<li><a class='dropdown-item' href='{child[i].Url}'><i class='{child[i].IconText}'></i> {child[i].Name}</a></li>";
+                        str += $"<li><a class='dropdown-item' href='{urlHelper.RouteUrl(child[i].Url)}'><i class='{child[i].IconText}'></i> {child[i].Name}</a></li>";
                     }
                 }
             }

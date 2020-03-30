@@ -7,8 +7,10 @@ a{
 a:hover {
     text-decoration: none;
 }
-p>span {
+p > span {
     font-family: yekannumbers, IRANSans !important;
+    color: #343a40 !important;
+    font-size:15px !important;
 }
 @font-face {
     font-family: "IRANSansBold";
