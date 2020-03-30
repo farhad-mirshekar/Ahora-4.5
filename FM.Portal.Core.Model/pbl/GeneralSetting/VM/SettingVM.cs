@@ -20,5 +20,6 @@
         public string CountShowArticle { get; set; }
         public string CountShowNews { get; set; }
         public string CountShowProduct { get; set; }
+        public string CountShowEvents { get; set; }
     }
 }

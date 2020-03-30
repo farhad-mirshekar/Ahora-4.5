@@ -2197,4 +2197,207 @@
             }).finally(loadingService.hide);
         }
     }
+    //----------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('eventsController', eventsController);
+    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService'];
+    function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
+        let events = $scope;
+        events.Model = {};
+        events.Model.listPicUploaded = [];
+        events.Model.Errors = [];
+        events.state = '';
+        events.pic = { type: '8', allowMultiple: false };
+        events.pic.list = [];
+        events.froalaOption = angular.copy(froalaOption);
+        events.goToPageAdd = goToPageAdd;
+        events.addEvents = addEvents;
+        events.editEvents = editEvents;
+        init();
+        events.main = {};
+        events.main.changeState = {
+            add: add,
+            edit: edit,
+            cartable: cartable
+        }
+        events.grid = {
+            bindingObject: events
+            , columns: [{ name: 'Title', displayName: 'عنوان رویداد' }]
+            , listService: eventsService.list
+            , deleteService: eventsService.remove
+            , route: 'events'
+            , globalSearch: true
+            , displayNameFormat: ['Title']
+        };
+        function init() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'add':
+                        add();
+                        break;
+                    case 'edit':
+                        eventsService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+        }
+        function cartable() {
+            events.state = 'cartable';
+            $location.path('/events/cartable');
+        }
+        function add() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return fillDropIsShow();
+            }).then((result) => {
+                return fillDropComment();
+            }).then((result) => {
+                return fillDropCategory();
+            }).then(() => {
+                events.state = 'add';
+                $location.path('/events/add');
+            }).finally(loadingService.hide);
+
+        }
+        function edit(model) {
+            return $q.resolve().then(() => {
+                events.Model = angular.copy(model);
+                if (events.Model.IsShow) {
+                    events.Model.IsShow = 1;
+                }
+                else {
+                    events.Model.IsShow = 0;
+                }
+                if (events.Model.CommentStatus) {
+                    events.Model.CommentStatus = 1;
+                }
+                else {
+                    events.Model.CommentStatus = 0;
+                }
+                return fillDropIsShow();
+            }).then(() => {
+                return fillDropComment();
+            }).then(() => {
+                return fillDropCategory();
+            }).then(() => {
+                return attachmentService.list({ ParentID: events.Model.ID });
+            }).then((result) => {
+                if (result && result.length > 0)
+                    events.Model.listPicUploaded = [].concat(result);
+            }).then(() => {
+                events.state = 'edit';
+                //$location.path(`/article/edit/${model.ID}`);
+            })
+        }
+        function goToPageAdd() {
+            add();
+        }
+        function addEvents() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                eventsService.add(events.Model).then((result) => {
+                    if (events.pic.list.length) {
+                        events.pics = [];
+                        if (!events.Model.listPicUploaded) {
+                            events.pics.push({ ParentID: events.Model.ID, Type: 1, FileName: events.pic.list[0], PathType: events.pic.type });
+                        }
+                        return attachmentService.add(events.pics);
+                    }
+                    events.Model = result;
+                }).then((result) => {
+                    return attachmentService.list({ ParentID: events.Model.ID });
+                }).then((result) => {
+                    if (result && result.length > 0)
+                        events.Model.listPicUploaded = [].concat(result);
+                    events.pics = [];
+                    events.pic.list = [];
+                    toaster.pop('success', '', 'رویداد جدید با موفقیت اضافه گردید');
+                    loadingService.hide();
+                    $timeout(function () {
+                        events.main.changeState.cartable();
+                    }, 1000);//return cartable
+                }).catch((error) => {
+                    if (!error) {
+                        var listError = error.split('&&');
+                        events.Model.Errors = [].concat(listError);
+                        $('#content > div').animate({
+                            scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
+                        }, 'slow');
+                    } else {
+                        $('#content > div').animate({
+                            scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
+                        }, 'slow');
+                    }
+
+                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                }).finally(loadingService.hide);
+            })
+        }
+        function editEvents() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                eventsService.edit(events.Model).then((result) => {
+                    if (events.pic.list.length) {
+                        events.pics = [];
+                        if (!events.Model.listPicUploaded) {
+                            events.pics.push({ ParentID: events.Model.ID, Type: 1, FileName: events.pic.list[0], PathType: events.pic.type });
+                        }
+                        return attachmentService.add(events.pics);
+                    }
+                    events.Model = result;
+                }).then((result) => {
+                    return attachmentService.list({ ParentID: events.Model.ID });
+                }).then((result) => {
+                    if (result && result.length > 0)
+                        events.Model.listPicUploaded = [].concat(result);
+                    events.pics = [];
+                    events.pic.list = [];
+                    toaster.pop('success', '', 'رویداد جدید با موفقیت ویرایش گردید');
+                    loadingService.hide();
+                    $timeout(function () {
+                        cartable();
+                    }, 1000);//return cartable
+                }).catch((error) => {
+                    if (!error) {
+                        var listError = error.split('&&');
+                        events.Model.Errors = [].concat(listError);
+                        $('#content > div').animate({
+                            scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
+                        }, 'slow');
+                    } else {
+                        $('#content > div').animate({
+                            scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
+                        }, 'slow');
+                    }
+
+                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                }).finally(loadingService.hide);
+            })
+        }
+        function fillDropIsShow() {
+            return eventsService.typeShow().then((result) => {
+                events.typeshow = result;
+            })
+        }
+        function fillDropComment() {
+            eventsService.typeComment().then((result) => {
+                events.typecomment = result;
+            })
+        }
+        function fillDropCategory() {
+            categoryPortalService.list().then((result) => {
+                events.typecategory = [];
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].ParentID !== '00000000-0000-0000-0000-000000000000') {
+                        events.typecategory.push({ Name: result[i].Title, Model: result[i].ID });
+                    }
+                }
+            })
+        }
+    }
 })();

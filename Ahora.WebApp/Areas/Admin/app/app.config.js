@@ -60,7 +60,8 @@
                 .when("/pages/:state/:id?", { templateUrl: "/Admin/pages/index", controller: 'pagesController', reloadOnUrl: false })
                 .when("/menu/:state/:id?", { templateUrl: "/Admin/menu/index", controller: 'menuController', reloadOnUrl: false })
                 .when("/slider/:state/:id?", { templateUrl: "/Admin/slider/index", controller: 'sliderController', reloadOnUrl: false })
-                .when("/general-setting", { templateUrl: "/Admin/generalSetting/index", controller: 'generalSettingController'})// add;
+                .when("/general-setting", { templateUrl: "/Admin/generalSetting/index", controller: 'generalSettingController' })
+                .when("/events/:state/:id?", { templateUrl: "/Admin/events/index", controller: 'eventsController' })// add;
                 .otherwise({
                     templateUrl: './areas/admin/app/NotFound/not-found.html'
                 });

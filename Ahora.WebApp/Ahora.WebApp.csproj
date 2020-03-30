@@ -854,6 +854,7 @@
     <Content Include="Scripts\froala-editor\.git\hooks\commit-msg.sample" />
     <Content Include="Scripts\froala-editor\.git\hooks\applypatch-msg.sample" />
     <Content Include="Scripts\froala-editor\.github\ISSUE_TEMPLATE.md" />
+    <Content Include="Areas\Admin\Views\Events\Index.cshtml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
     <Content Include="Scripts\froala-editor\css\froala_editor.min.css" />
@@ -1999,6 +2000,7 @@
     <Compile Include="Areas\Admin\Controllers\pbl\PagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\ArticleController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\CategoryPortalController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Ptl\EventsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\NewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\SliderController.cs" />
     <Compile Include="Areas\ApiClient\ApiClientAreaRegistration.cs" />
@@ -2022,6 +2024,7 @@
     <Compile Include="Areas\ApiClient\Controllers\pbl\PagesController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\ArticleController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\CategoryPortalController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\Ptl\EventsController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\NewsController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\SliderController.cs" />
     <Compile Include="Areas\User\Controllers\AddressController.cs" />
@@ -2031,6 +2034,7 @@
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FaqGroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -2050,6 +2054,9 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery\jquery-3.4.1.slim.min.map" />
     <Content Include="Scripts\jquery\jquery-3.4.1.min.map" />
+    <Content Include="Views\Events\Index.cshtml" />
+    <Content Include="Views\Shared\_PartialSideEvents.cshtml" />
+    <Content Include="Views\Events\Detail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

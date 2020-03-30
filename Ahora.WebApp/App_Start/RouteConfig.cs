@@ -13,6 +13,18 @@ namespace Ahora.WebApp
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
+              "Events",
+              "Events/{Page}",
+              new { controller = "Events", action = "Index", Page = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+              );
+            routes.MapRoute(
+              "EventsDetail",
+              "Events/{TrackingCode}/{Seo}",
+              new { controller = "Events", action = "Detail", TrackingCode = UrlParameter.Optional, Seo = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+              );
+            routes.MapRoute(
               "Faq-Group",
               "FaqGroup",
                 new { controller = "FaqGroup", action = "Index" },
@@ -85,6 +97,12 @@ namespace Ahora.WebApp
                 new { controller = "Account", action = "Login" },
                 namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
                 );
+            routes.MapRoute(
+               name: "Home",
+               url: "Home",
+               defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",

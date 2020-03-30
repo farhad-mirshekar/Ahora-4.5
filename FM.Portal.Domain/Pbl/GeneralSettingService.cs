@@ -45,6 +45,7 @@ namespace FM.Portal.Domain
                 setting.CountShowArticle = result.FirstOrDefault(x => x.Name.Equals("CountShowArticle")).Value;
                 setting.CountShowNews = result.FirstOrDefault(x => x.Name.Equals("CountShowNews")).Value;
                 setting.CountShowProduct = result.FirstOrDefault(x => x.Name.Equals("CountShowProduct")).Value;
+                setting.CountShowEvents = result.FirstOrDefault(x => x.Name.Equals("CountShowEvents")).Value;
 
                 setting.CountShowSlider = result.FirstOrDefault(x => x.Name.Equals("CountShowSlider")).Value;
                 setting.FacebookUrl = result.FirstOrDefault(x => x.Name.Equals("FacebookUrl")).Value;

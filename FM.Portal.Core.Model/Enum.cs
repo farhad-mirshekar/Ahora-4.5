@@ -10,7 +10,8 @@
         مقاله = 4,
         اسلایدر = 5,
         محصولات = 6,
-        ویدیو = 7
+        ویدیو = 7,
+        رویداد=8
     }
     public enum PathType : byte
     {
@@ -19,7 +20,8 @@
         article = 4,
         news = 3,
         slider = 5,
-        video=7
+        video=7,
+        events=8
     }
     public enum UserType : byte
     {

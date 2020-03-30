@@ -89,6 +89,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IGeneralSettingDataSource, GeneralSettingDataSource>();
             container.RegisterType<IGeneralSettingService, GeneralSettingService>();
 
+            container.RegisterType<IEventsDataSource, EventsDataSource>();
+            container.RegisterType<IEventsService, EventsService>();
+
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

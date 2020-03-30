@@ -49,6 +49,7 @@ namespace FM.Portal.Infrastructure.DAL
                 setting.CountShowArticle = result.FirstOrDefault(x => x.Name.Equals("CountShowArticle")).Value;
                 setting.CountShowNews = result.FirstOrDefault(x => x.Name.Equals("CountShowNews")).Value;
                 setting.CountShowProduct = result.FirstOrDefault(x => x.Name.Equals("CountShowProduct")).Value;
+                setting.CountShowEvents = result.FirstOrDefault(x => x.Name.Equals("CountShowEvents")).Value;
 
                 setting.CountShowSlider = result.FirstOrDefault(x => x.Name.Equals("CountShowSlider")).Value;
                 setting.FacebookUrl = result.FirstOrDefault(x => x.Name.Equals("FacebookUrl")).Value;
@@ -189,6 +190,13 @@ namespace FM.Portal.Infrastructure.DAL
                 SqlParameter[] param = new SqlParameter[2];
                 param[0] = new SqlParameter("@Name", "WhatsAppUrl");
                 param[1] = new SqlParameter("@Value", model.WhatsAppUrl);
+                commands.Add(SQLHelper.CreateCommand("pbl.spModifyGeneralSetting", CommandType.StoredProcedure, param));
+            }
+            if (setting.CountShowEvents != model.CountShowEvents)
+            {
+                SqlParameter[] param = new SqlParameter[2];
+                param[0] = new SqlParameter("@Name", "CountShowEvents");
+                param[1] = new SqlParameter("@Value", model.CountShowEvents);
                 commands.Add(SQLHelper.CreateCommand("pbl.spModifyGeneralSetting", CommandType.StoredProcedure, param));
             }
             return commands;

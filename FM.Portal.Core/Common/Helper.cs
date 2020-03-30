@@ -23,7 +23,7 @@ namespace FM.Portal.Core.Common
             {
                 HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
                 var result = CacheManager.CacheRead<SettingVM>(httpContext, "SiteSettings");
-                var count = Convert.ToInt32(result.CountShowArticle);
+                var count = SQLHelper.CheckIntNull(result.CountShowArticle);
                 return count > 0 ? count : 4;
             }
         }
@@ -33,7 +33,7 @@ namespace FM.Portal.Core.Common
             {
                 HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
                 var result = CacheManager.CacheRead<SettingVM>(httpContext, "SiteSettings");
-                var count = Convert.ToInt32(result.CountShowNews);
+                var count = SQLHelper.CheckIntNull(result.CountShowNews);
                 return count > 0 ? count : 4;
             }
         }
@@ -43,7 +43,17 @@ namespace FM.Portal.Core.Common
             {
                 HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
                 var result = CacheManager.CacheRead<SettingVM>(httpContext, "SiteSettings");
-                var count = Convert.ToInt32(result.CountShowProduct);
+                var count = SQLHelper.CheckIntNull(result.CountShowProduct);
+                return count > 0 ? count : 4;
+            }
+        }
+        public static int CountShowEvents
+        {
+            get
+            {
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+                var result = CacheManager.CacheRead<SettingVM>(httpContext, "SiteSettings");
+                var count = SQLHelper.CheckIntNull(result.CountShowEvents);
                 return count > 0 ? count : 4;
             }
         }

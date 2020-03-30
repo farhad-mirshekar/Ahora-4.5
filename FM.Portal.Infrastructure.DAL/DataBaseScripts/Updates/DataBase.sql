@@ -729,6 +729,8 @@ INSERT INTO pbl.GeneralSetting
 VALUES('SiteKeyword','')
 INSERT INTO pbl.GeneralSetting
 VALUES('SiteDescription','')
+INSERT INTO pbl.GeneralSetting (Name,Value)
+VALUES('CountShowEvents','')
 Go
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
@@ -877,4 +879,7 @@ GO
 
 ALTER TABLE [ptl].[Events]  WITH CHECK ADD FOREIGN KEY([UserID])
 REFERENCES [org].[User] ([ID])
+GO
+ALTER TABLE ptl.Events  
+DROP CONSTRAINT FK__Events__Category__473C8FC7;  
 GO

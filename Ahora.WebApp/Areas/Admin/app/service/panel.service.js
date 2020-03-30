@@ -1899,6 +1899,161 @@
         }
     }
 
+    app.factory('eventsService', eventsService);
+    eventsService.$inject = ['$http', 'callbackService', '$q'];
+    function eventsService($http, callbackService, $q) {
+        var url = '/api/v1/events/'
+        var service = {
+            add: add,
+            edit: edit,
+            get: get,
+            list: list,
+            typeShow: typeShow,
+            typeComment: typeComment,
+            remove: remove
+
+        }
+        return service;
+
+        function add(model) {
+            model.Errors = [];
+            if (!model.Title || model.Title === '')
+                model.Errors.push('عنوان رویداد الزامی می باشد');
+            if (!model.Description || model.Description === '')
+                model.Errors.push('توضیحات کوتاه الزامی می باشد');
+            if (!model.Body || model.Body === '')
+                model.Errors.push('متن اصلی رویداد الزامی می باشد');
+            if (!model.MetaKeywords || model.MetaKeywords === '')
+                model.Errors.push('متاتگ الزامی می باشد');
+            if (!model.UrlDesc || model.UrlDesc === '')
+                model.Errors.push('سئو الزامی می باشد');
+            //if (!model.CategoryID || model.CategoryID === '')
+            //    model.Errors.push('انتخاب موضوع الزامی می باشد');
+
+            if (model.Errors && model.Errors.length > 0)
+                return $q.reject();
+            return $http({
+                method: 'POST',
+                url: url + 'Add',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function edit(model) {
+            model.Errors = [];
+            if (!model.Title || model.Title === '')
+                model.Errors.push('عنوان رویداد الزامی می باشد');
+            if (!model.Description || model.Description === '')
+                model.Errors.push('توضیحات کوتاه الزامی می باشد');
+            if (!model.Body || model.Body === '')
+                model.Errors.push('متن اصلی رویداد الزامی می باشد');
+            if (!model.MetaKeywords || model.MetaKeywords === '')
+                model.Errors.push('متاتگ الزامی می باشد');
+            if (!model.UrlDesc || model.UrlDesc === '')
+                model.Errors.push('سئو الزامی می باشد');
+            //if (!model.CategoryID || model.CategoryID === '')
+            //    model.Errors.push('انتخاب موضوع الزامی می باشد');
+
+            if (model.Errors && model.Errors.length > 0)
+                return $q.reject();
+
+            return $http({
+                method: 'POST',
+                url: url + 'edit',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            })
+                .catch(function (result) {
+                    callbackService.onError({ result: result });
+                })
+        }
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function remove(model) {
+            return $http({
+                method: 'POST',
+                url: url + `remove/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `remove/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function list() {
+            return $http({
+                method: 'post',
+                url: url + 'list',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'List' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function typeShow() {
+            return $http({
+                method: 'post',
+                url: url + 'TypeShowArticle',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'TypeShowArticle' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function typeComment() {
+            return $http({
+                method: 'post',
+                url: url + 'TypeCommentArticle',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'TypeCommentArticle' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+    }
+
     app.factory('callbackService', callbackService);
     callbackService.$inject = ['$q', '$http', 'authenticationService'];
     function callbackService($q, $http, authenticationService) {
