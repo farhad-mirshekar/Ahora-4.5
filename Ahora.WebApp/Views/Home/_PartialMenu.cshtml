@@ -10,7 +10,7 @@
             @RenderMenu(Model)
         </ul>
     </div>
-    @if (Session["login"] != null && SQLHelper.CheckBoolNull(Session["login"]))
+    @if ((Session["login"] != null && SQLHelper.CheckBoolNull(Session["login"])) || SQLHelper.CheckGuidNull(User.Identity.Name) != Guid.Empty)
     {
         <div class="pull-right mr-5">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">

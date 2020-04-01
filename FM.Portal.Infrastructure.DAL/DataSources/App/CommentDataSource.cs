@@ -24,7 +24,7 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[7];
+                    SqlParameter[] param = new SqlParameter[8];
                     param[0] = new SqlParameter("@ID", model.ID);
                     param[1] = new SqlParameter("@Body", model.Body);
                     param[2] = new SqlParameter("@UserID", model.UserID);
@@ -32,7 +32,7 @@ namespace FM.Portal.Infrastructure.DAL
                     param[4] = new SqlParameter("@CommentType", (CommentType)model.CommentType);
                     param[5] = new SqlParameter("@ParentID", model.ParentID);
                     param[6] = new SqlParameter("@IsNewRecord", IsNewRecord);
-
+                    param[7] = new SqlParameter("@CommentForType", (byte)model.CommentForType);
                     SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, param, "app.spModifyComment");
                     return Get(model.ID);
                 }
@@ -62,6 +62,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.CommentType = (CommentType)SQLHelper.CheckByteNull(dr["CommentType"]);
                             obj.DocumentID = SQLHelper.CheckGuidNull(dr["DocumentID"]);
                             obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
+                            obj.CommentForType = (CommentForType)SQLHelper.CheckByteNull(dr["CommentForType"]);
                         }
                     }
                     if (obj.ID != Guid.Empty)

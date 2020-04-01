@@ -1,30 +1,30 @@
 ﻿@model Comment
-<div class="comment-reply" id="commentReply">
-    <!--begin form-->
-    @using (Ajax.BeginForm("Modify","Comment", new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddComment.onSuccess", LoadingElementId = "loadingMessage", LoadingElementDuration = 300 }, new { @class = "form-horizontal", id = "frmCommentReply" }))
-    {
-        @Html.AntiForgeryToken()
-        @Html.Hidden("ParentID", ViewBag.ParentID as string)
-        @Html.Hidden("DocumentID", ViewBag.DocumentID as string)
-
-        <div class="form-group">
-            <label class="col-xs-5">نظر خود را وارد نمایید</label>
-            <div class="clearfix">&nbsp;</div>
-            <div class="col-lg-12">
-                @Html.TextAreaFor(c => c.Body, new { @class = "form-control", cols = "10", placeholder = "دیدگاه خود را بنویسید ...." })
-                @Html.ValidationMessageFor(c => c.Body, null, new { @class = "text-danger" })
+    <div class="comment-reply" id="commentReply">
+        <!--begin form-->
+        @using (Ajax.BeginForm("Modify", "Comment", new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddComment.onSuccess", LoadingElementId = "loadingMessage", LoadingElementDuration = 300 }, new { @class = "form-horizontal", id = "frmCommentReply" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.Hidden("ParentID", ViewBag.ParentID as string)
+            @Html.Hidden("DocumentID", ViewBag.DocumentID as string)
+            @Html.Hidden("CommentForType", ViewBag.CommentForType as string)
+            <div class="form-group">
+                <label class="col-xs-5">نظر خود را وارد نمایید</label>
+                <div class="clearfix">&nbsp;</div>
+                <div class="col-lg-12">
+                    @Html.TextAreaFor(c => c.Body, new { @class = "form-control", cols = "10", placeholder = "دیدگاه خود را بنویسید ...." })
+                    @Html.ValidationMessageFor(c => c.Body, null, new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
 
             <div class="form-group text-center">
                 <button type="submit" class="btn btn-success">ارسال</button>
             </div>
-    }
+        }
 
-    <div style="display:none" id="loading1">
-        <img src="~/Content/img/loading1.gif" />
+        <div style="display:none" id="loading1">
+            <img src="~/Content/img/loading1.gif" />
+        </div>
+        <div id="addCommentResult" class="text-center"></div>
+        <!--end form-->
+        <div class="clear"></div>
     </div>
-    <div id="addCommentResult" class="text-center"></div>
-    <!--end form-->
-    <div class="clear"></div>
-</div>

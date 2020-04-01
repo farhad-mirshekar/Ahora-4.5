@@ -11,6 +11,7 @@ CREATE PROCEDURE app.spModifyComment
 @ParentID uniqueidentifier,
 @UserID uniqueidentifier,
 @DocumentID uniqueidentifier,
+@CommentForType Tinyint,
 @IsNewRecord bit
 --WITH ENCRYPTION
 AS
@@ -18,9 +19,9 @@ BEGIN
 	IF @IsNewRecord = 1 --insert
 		BEGIN
 			INSERT INTO [app].[Comment]
-				([ID],Body,CommentType,CreationDate,DisLikeCount,DocumentID,LikeCount,ParentID,RemoverID,UserID)
+				([ID],Body,CommentType,CreationDate,DisLikeCount,DocumentID,LikeCount,ParentID,RemoverID,UserID,CommentForType)
 			VALUES
-				(NEWID() , @Body,@CommentType,GETDATE(),0,@DocumentID,0,@ParentID,null,@UserID)
+				(NEWID() , @Body,@CommentType,GETDATE(),0,@DocumentID,0,@ParentID,null,@UserID,@CommentForType)
 		END
 	ELSE -- update
 		BEGIN

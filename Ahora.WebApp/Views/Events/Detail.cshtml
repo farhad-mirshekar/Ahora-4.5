@@ -33,4 +33,15 @@
             </div>
         </div>
     </article>
+    <section class="card">
+        <div class="card-header">
+            <h5 class="card-title">
+                <i class="fa fa-comments-o"></i>
+                دیدگاه ها
+            </h5>
+            <div class="card-body">
+                @Html.Action("Index", "Comment", new { DocumentID = Model.ID, State = "Events" })
+            </div>
+        </div>
+    </section>
 }

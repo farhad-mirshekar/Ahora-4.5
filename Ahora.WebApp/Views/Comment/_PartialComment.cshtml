@@ -49,7 +49,7 @@
                 @if (ViewBag.stateComment == true)
                 {
                     <div class="pull-left" style="margin-left:15px">
-                        @Ajax.ActionLink("پاسخ دادن","Modify", "Comment", new { DocumentID = @ViewBag.DocumentID, ParentID = @item.ID }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comment-reply-" + @item.ID, OnBegin = "CommentReply.onBegin" }, new { rel = "nofollow",@class="btn btn-default" })
+                        @Ajax.ActionLink("پاسخ دادن","Modify", "Comment", new { DocumentID = @ViewBag.DocumentID, ParentID = @item.ID ,CommentForType=ViewBag.CommentForType }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comment-reply-" + @item.ID, OnBegin = "CommentReply.onBegin" }, new { rel = "nofollow",@class="btn btn-default" })
                     </div>
                 }
 
@@ -63,7 +63,7 @@
 @if (ViewBag.stateComment == true)
 {
     <div style="text-align: center;" class="comment-reply-container">
-        @Ajax.ActionLink("ارسال دیدگاه", "Modify", "Comment", new { DocumentID = ViewBag.DocumentID }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "addComment", OnSuccess = "AddComment.slideToggle", LoadingElementDuration = 300, LoadingElementId = "loadingMessage" }, new { @class = "btn btn-success", style = "width:80%;", rel = "nofollow" })
+        @Ajax.ActionLink("ارسال دیدگاه", "Modify", "Comment", new { DocumentID = ViewBag.DocumentID, CommentForType = ViewBag.CommentForType }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "addComment", OnSuccess = "AddComment.slideToggle", LoadingElementDuration = 300, LoadingElementId = "loadingMessage" }, new { @class = "btn btn-success", style = "width:80%;", rel = "nofollow" })
     </div>
 }
 else

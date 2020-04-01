@@ -12,15 +12,21 @@ namespace Ahora.WebApp.Controllers
     {
         private readonly IProductService _productService;
         private readonly IArticleService _articleService;
+        private readonly INewsService _newsService;
+        private readonly IEventsService _eventsService;
         private readonly ICommentMapUserService _commentMapuserService;
         public CommentController(ICommentService service
                                 , IProductService productService
                                 , ICommentMapUserService commentMapuserService
-                                , IArticleService articleService) : base(service)
+                                , IArticleService articleService
+                                , INewsService newsService
+                                , IEventsService eventsService) : base(service)
         {
             _productService = productService;
             _commentMapuserService = commentMapuserService;
             _articleService = articleService;
+            _newsService = newsService;
+            _eventsService = eventsService;
         }
 
         // GET: Comment
@@ -38,6 +44,7 @@ namespace Ahora.WebApp.Controllers
                             comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
+                            ViewBag.CommentForType = CommentForType.product;
                         }
                         break;
                     }
@@ -55,6 +62,43 @@ namespace Ahora.WebApp.Controllers
                             comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
+                            ViewBag.CommentForType = CommentForType.article;
+                        }
+                        break;
+                    }
+                case "Events":
+                    {
+                        var article = _eventsService.Get(DocumentID);
+                        if (article.Success)
+                        {
+                            switch (article.Data.CommentStatus)
+                            {
+                                case CommentArticleType.باز:
+                                    ViewBag.stateComment = true;
+                                    break;
+                            }
+                            comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
+                            ViewBag.user = HttpContext.User.Identity.Name;
+                            ViewBag.DocumentID = DocumentID;
+                            ViewBag.CommentForType = CommentForType.events;
+                        }
+                        break;
+                    }
+                case "News":
+                    {
+                        var article = _newsService.Get(DocumentID);
+                        if (article.Success)
+                        {
+                            switch (article.Data.CommentStatus)
+                            {
+                                case CommentArticleType.باز:
+                                    ViewBag.stateComment = true;
+                                    break;
+                            }
+                            comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
+                            ViewBag.user = HttpContext.User.Identity.Name;
+                            ViewBag.DocumentID = DocumentID;
+                            ViewBag.CommentForType = CommentForType.news;
                         }
                         break;
                     }
@@ -67,10 +111,11 @@ namespace Ahora.WebApp.Controllers
             return Json(new {status=1 }, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public ActionResult Modify(Guid DocumentID, Guid? ParentID)
+        public ActionResult Modify(Guid DocumentID, Guid? ParentID,CommentForType CommentForType)
         {
             if(ParentID.HasValue)
                 ViewBag.ParentID = ParentID.Value;
+            ViewBag.CommentForType = CommentForType;
             return PartialView("~/Views/Comment/_PartialModify.cshtml");
         }
         [HttpPost]
