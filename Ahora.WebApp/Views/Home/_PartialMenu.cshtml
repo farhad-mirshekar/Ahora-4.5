@@ -1,12 +1,84 @@
-﻿<nav class="navbar navbar-expand-lg navbar-light bg-light">
+﻿@model List<FM.Portal.Core.Model.MenuVM>
+@using FM.Portal.Core.Common;
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarAhora" aria-controls="navbarAhora" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarAhora">
         <a class="navbar-brand" href="@Url.RouteUrl("Home")">نام فروشگاه شما</a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            @Html.Raw(Model)
+            @RenderMenu(Model)
         </ul>
     </div>
+    @if (SQLHelper.CheckBoolNull(Session["login"]))
+    {
+        <div class="pull-right">
+            <ul class="navbar-nav">
+                <li class='nav-item dropdown'>
+                    <a class='nav-link dropdown-toggle' href="#" id="welcome" data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>خوش آمدید</a>
+                    <ul class='dropdown-menu' aria-labelledby="welcome">
+                        <li class='dropdown-submenu'>
+                            <a href="/admin"><i class="fa fa-user mr-1"></i>ورود به حساب کاربری</a>
+                        </li>
+
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    }
 </nav>
 
+@helper RenderMenu(List<MenuVM> model)
+{
+    foreach (var item in model)
+    {
+        if (item.Children != null && item.Children.Count > 0)
+        {
+            <li class='nav-item dropdown'>
+                <a class='nav-link dropdown-toggle' href='@item.Url' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                @ChildRender(item.Children, item.ID)
+            </li>
+        }
+        else
+        {
+            if (SQLHelper.CheckBoolNull(Session["login"]))
+            {
+                if (item.Url.ToLower() != "/login")
+                {
+                    <li class="nav-item">
+                        <a class='nav-link' href='@item.Url' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                    </li>
+                }
+            }
+            else
+            {
+                <li class="nav-item">
+                    <a class='nav-link' href='@item.Url' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                </li>
+            }
+
+        }
+    }
+}
+@helper ChildRender(List<MenuVM> child, Guid parent)
+{
+    <ul class='dropdown-menu' aria-labelledby='@parent'>
+        @if (child.Count > 0)
+        {
+            foreach (var item in child)
+            {
+                if (item.Children != null && item.Children.Count > 0)
+                {
+                    <li class='dropdown-submenu'>
+                        <a class='dropdown-item dropdown-toggle' href='@item.Url'><i class='@item.IconText mr-1'></i>&nbsp;@item.Name</a>";
+                        @ChildRender(item.Children, item.ID);
+                    </li>
+                }
+                else
+                {
+                    <li><a class='dropdown-item' href='@item.Url'><i class='@item.IconText mr-1'></i>@item.Name</a></li>
+                }
+            }
+        }
+    </ul>
+}

@@ -33,35 +33,41 @@ namespace FM.Portal.Domain
         public Result<Menu> Get(string ParentNode)
         => _dataSource.Get(ParentNode);
 
-        public string GetMenuForWeb(string Node)
+        public Result<List<MenuVM>> GetMenuForWeb(string Node)
         {
-            var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            string str = "";
-            var children = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(Node));
-
-            if (children.Count > 0)
+            try
             {
-                for (int i = 0; i < children.Count; i++)
+                var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
+                List<MenuVM> menus = new List<MenuVM>();
+
+                var children = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(Node));
+
+                if (children.Count > 0)
                 {
-                    var child = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(children[i].Node));
-                    if (child.Count > 0)
+                    for (int i = 0; i < children.Count; i++)
                     {
-                        str += $"<li class='nav-item dropdown'><a class='nav-link dropdown-toggle' href='{urlHelper.RouteUrl(children[i].Url)}' id='{children[i].ID}' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='{children[i].IconText}'></i> {children[i].Name}</a>";
-                        str += ChildRender(child, children[i].ID);
-                        str += "</li>";
+                        var child = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(children[i].Node));
+                        if (child.Count > 0)
+                        {
+                            menus.Add(new MenuVM { IconText = children[i].IconText, Url = urlHelper.RouteUrl(children[i].Url), ID = children[i].ID, Name = children[i].Name, Children = ChildRender(child) });
+                            //str += ChildRender(child, children[i].ID);
+                        }
+
+                        else
+                            menus.Add(new MenuVM { IconText = children[i].IconText, Url = urlHelper.RouteUrl(children[i].Url), ID = children[i].ID, Name = children[i].Name, Children = null });
+
                     }
-
-                    else
-                        str += $"<li class='nav-item'><a class='nav-link' href='{urlHelper.RouteUrl(children[i].Url)}'><i class='{children[i].IconText}'></i> {children[i].Name}</a></li>";
-
                 }
+                return Result<List<MenuVM>>.Successful(data:menus);
+
             }
-            return str;
+            catch(Exception e) { return Result<List<MenuVM>>.Failure(); }
+           
         }
-        private string ChildRender(List<Menu> child, Guid Parent)
+        private List<MenuVM> ChildRender(List<Menu> child)
         {
             var urlHelper = new UrlHelper(HttpContext.Current.Request.RequestContext);
-            string str = $"<ul class='dropdown-menu' aria-labelledby='{Parent}'>";
+            List<MenuVM> menus = new List<MenuVM>();
             if (child.Count > 0)
             {
                 for (int i = 0; i < child.Count; i++)
@@ -69,18 +75,15 @@ namespace FM.Portal.Domain
                     var subchild = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(child[i].Node));
                     if (subchild.Count > 0)
                     {
-                        str += $"<li class='dropdown-submenu'><a class='dropdown-item dropdown-toggle' href='{urlHelper.RouteUrl(child[i].Url)}'><i class='{child[i].IconText}'></i> {child[i].Name}</a>";
-                        str += ChildRender(subchild, child[i].ID);
-                        str += "</li>";
+                        menus.Add(new MenuVM { IconText = child[i].IconText, Url = urlHelper.RouteUrl(child[i].Url), ID = child[i].ID, Name = child[i].Name, Children = ChildRender(subchild) });
                     }
                     else
                     {
-                        str += $"<li><a class='dropdown-item' href='{urlHelper.RouteUrl(child[i].Url)}'><i class='{child[i].IconText}'></i> {child[i].Name}</a></li>";
+                        menus.Add(new MenuVM { IconText = child[i].IconText, Url = urlHelper.RouteUrl(child[i].Url), ID = child[i].ID, Name = child[i].Name});
                     }
                 }
             }
-            str += "</ul>";
-            return str;
+            return menus;
         }
         public Result<List<Menu>> List()
         {

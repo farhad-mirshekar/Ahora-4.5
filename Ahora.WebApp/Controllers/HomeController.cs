@@ -65,7 +65,7 @@ namespace Ahora.WebApp.Controllers
         public ActionResult RenderMenu()
         {
             var result = _menuService.GetMenuForWeb("/1/");
-            return PartialView("~/Views/Home/_PartialMenu.cshtml", result);
+            return PartialView("~/Views/Home/_PartialMenu.cshtml", result.Data);
         }
         [ChildActionOnly]
         public ActionResult RenderSlide()

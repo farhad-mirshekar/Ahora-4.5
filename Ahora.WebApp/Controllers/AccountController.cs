@@ -75,6 +75,9 @@ namespace Ahora.WebApp.Controllers
                         {
                             case System.Net.HttpStatusCode.OK:
                                 {
+                                    Session.RemoveAll();
+                                    Session.Add("login", true);
+                                    Session.Timeout = 30;
                                     return Json(new { status = 1, token = tokenvm, userid = user.Data.ID, type = user.Data.Type, authorizationData = tokenvm });
                                 }
                             default:
@@ -85,6 +88,9 @@ namespace Ahora.WebApp.Controllers
                 else
                 {
                     SetAuthCookie(user.Data.ID.ToString(), "User", false);
+                    Session.RemoveAll();
+                    Session.Add("login", true);
+                    Session.Timeout = 30;
                     return Json(new { status = 1, token = "", userid = "", type = user.Data.Type, url = returnUrl });
                 }
             }

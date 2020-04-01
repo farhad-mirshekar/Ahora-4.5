@@ -12,6 +12,6 @@ namespace FM.Portal.Core.Service
         Result<Menu> Get(Guid ID);
         Result<Menu> Get(string ParentNode);
         Result<List<Menu>> List();
-        string GetMenuForWeb(string Node);
+        Result<List<MenuVM>> GetMenuForWeb(string Node);
     }
 }
