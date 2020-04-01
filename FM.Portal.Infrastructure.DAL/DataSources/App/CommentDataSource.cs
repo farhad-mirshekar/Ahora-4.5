@@ -143,11 +143,35 @@ namespace FM.Portal.Infrastructure.DAL
             catch { throw; }
         }
 
-        public DataTable List()
+        public DataTable List(CommentForType commentForType)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsForAdmin", null);
+                SqlParameter[] param = new SqlParameter[1];
+                switch (commentForType)
+                {
+                    case CommentForType.اخبار:
+                        {
+                            param[0] = new SqlParameter("@commentForType", commentForType);
+                            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsForAdmin", param);
+                        }
+                    case CommentForType.رویدادها:
+                        {
+                            param[0] = new SqlParameter("@commentForType", commentForType);
+                            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsForAdmin", param);
+                        }
+                    case CommentForType.محصولات:
+                        {
+                            param[0] = new SqlParameter("@commentForType", commentForType);
+                            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsForAdmin", param);
+                        }
+                    case CommentForType.مقالات:
+                        {
+                            param[0] = new SqlParameter("@commentForType", commentForType);
+                            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsForAdmin", param);
+                        }
+                }
+                return null;
 
             }
             catch (Exception e) { throw; }

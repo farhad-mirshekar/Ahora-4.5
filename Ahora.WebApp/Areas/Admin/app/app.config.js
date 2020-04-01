@@ -61,7 +61,9 @@
                 .when("/menu/:state/:id?", { templateUrl: "/Admin/menu/index", controller: 'menuController', reloadOnUrl: false })
                 .when("/slider/:state/:id?", { templateUrl: "/Admin/slider/index", controller: 'sliderController', reloadOnUrl: false })
                 .when("/general-setting", { templateUrl: "/Admin/generalSetting/index", controller: 'generalSettingController' })
-                .when("/events/:state/:id?", { templateUrl: "/Admin/events/index", controller: 'eventsController' })// add;
+                .when("/events/:state/:id?", { templateUrl: "/Admin/events/index", controller: 'eventsController' })
+                .when("/comment-portal/:state/:id?", { templateUrl: "/Admin/comment/listForportal", controller: 'commentPortalController', reloadOnUrl: false })// add;
+
                 .otherwise({
                     templateUrl: './areas/admin/app/NotFound/not-found.html'
                 });

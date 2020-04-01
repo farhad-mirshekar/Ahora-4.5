@@ -1082,7 +1082,8 @@
             edit: edit,
             get: get,
             list: list,
-            commentStatusType: commentStatusType
+            commentStatusType: commentStatusType,
+            commentForType: commentForType
 
         }
         return service;
@@ -1134,16 +1135,16 @@
                    return callbackService.onError({ result: result });
                })
         }
-        function list() {
+        function list(model) {
             return $http({
                 method: 'post',
-                url: url + 'list',
+                url: url + `list/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + localStorage.access_token
                 }
             }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'List' });
+                return callbackService.onSuccess({ result: result, request: url + `list/${model}` });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
@@ -1158,6 +1159,20 @@
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'commentStatusType' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function commentForType() {
+            return $http({
+                method: 'post',
+                url: url + 'commentForType',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'commentForType' });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })

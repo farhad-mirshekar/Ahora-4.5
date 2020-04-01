@@ -84,10 +84,10 @@ namespace FM.Portal.Domain
         public Result<int> DisLike(Guid ID)
         => _dataSource.DisLike(ID);
 
-        public Result<List<CommentForProductAdminListVM>> ListCommentForProduct()
+        public Result<List<CommentForProductAdminListVM>> List(CommentForType commentForType)
         {
-            var model = ConvertDataTableToList.BindList<CommentForProductAdminListVM>(_dataSource.List());
-            if (model.Count > 0)
+            var model = ConvertDataTableToList.BindList<CommentForProductAdminListVM>(_dataSource.List(commentForType));
+            if (model.Count > 0 || model.Count == 0)
             {
                 return Result<List<CommentForProductAdminListVM>>.Successful(data: model);
             }

@@ -10,8 +10,8 @@
 .ItemText(c => c.NameFamily)
 .ItemTemplate(
     @<text>
-        <div class="panel panel-default">
-            <div class="panel-heading">
+        <div class="card">
+            <div class="card-heading">
                 <div class="comment-detail">
 
                     <span><i class="glyphicon glyphicon-calendar" style="top:5px"></i> تاریخ : </span>
@@ -26,22 +26,22 @@
                     <span id="comment-dislike-count-@(item.ID)">@item.DisLikeCount</span>
                 </div>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <div class="col-md-12" id="body_comment">
                     @Html.Raw(item.Body)
                    
                 </div>
             </div>
-            <div class="panel-footer clearfix">
+            <div class="card-footer clearfix">
                 <div class="pull-right" style="margin-right:15px">
 
                     <div class="comment-like comment-like-link" title="موافقم">
-                        <span><i class="glyphicon glyphicon-thumbs-up" style="top: 4px;"></i></span>
+                        <span><i class="fa fa-thumbs-up" style="top: 4px;"></i></span>
                         <span data-href="@Url.Action("Like", "Comment", new {CommentID=@item.ID })" data-comment-id="@item.ID">موافقم</span>
                     </div>
 
                     <div class="comment-dis-like comment-like-link" title="مخالف">
-                        <span><i class="glyphicon glyphicon-thumbs-down" style="top: 4px;"></i></span>
+                        <span><i class="fa fa-thumbs-down" style="top: 4px;"></i></span>
                         <span data-href="@Url.Action("DisLike", "Comment", new {CommentID=@item.ID })" data-comment-id="@item.ID">مخالفم</span>
                     </div>
                     <div id="comment-like-result-@(item.ID)" class="comment-like-result"></div>

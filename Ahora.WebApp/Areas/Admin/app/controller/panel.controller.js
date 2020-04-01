@@ -34,6 +34,18 @@
         },
     }
 };
+var froalaOptionComment = {
+    toolbarButtons: {
+        'moreText': {
+            'buttons': ['bold', 'italic', 'underline', 'fontFamily', 'fontSize', 'textColor']
+        },
+        'moreParagraph': {
+            'buttons': ['alignLeft', 'alignCenter', 'alignRight', 'alignJustify']
+        }
+    },
+    language: 'fa'
+  
+};
 (() => {
     var app = angular.module('portal');
 
@@ -1185,6 +1197,8 @@
             , route: 'comment'
             , globalSearch: true
             , showRemove: true
+            , options: () => {
+                return 6; }
         };
         init();
 
@@ -2398,6 +2412,110 @@
                     }
                 }
             })
+        }
+    }
+    //----------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('commentPortalController', commentPortalController);
+    commentPortalController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout'];
+    function commentPortalController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout) {
+        let comment = $scope;
+        comment.Model = {};
+        comment.Search = {};
+        comment.state = '';
+        comment.main = {};
+        comment.froalaOptionComment = froalaOptionComment;
+        comment.main.changeState = {
+            cartable: cartable,
+            edit:edit
+        }
+        comment.editComment = editComment;
+        comment.changeDrop = changeDrop;
+        comment.grid = {
+            bindingObject: comment
+            , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
+                { name: 'ProductName', displayName: 'عنوان' },
+                { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: {1:'درحال بررسی',2:'تایید',3:'عدم تایید'} }]
+            , listService: commentService.list
+            , onEdit: comment.main.changeState.edit
+            , globalSearch: true
+            , showRemove: true
+            , options: () => { return comment.Search.CommentForType }
+        };
+        init();
+
+        function init() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                if (!comment.Search.CommentForType)
+                    commentForTypeDropDown();
+                comment.Search.CommentForType = 3;
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'edit':
+                        commentService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+
+        }
+
+        function cartable() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                comment.state = 'cartable';
+                $location.path('/comment-portal/cartable');
+            }).finally(loadingService.hide);
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return commentTypeDropDown();
+            }).then(() => {
+                comment.state = 'edit';
+                comment.Model = model;
+                $location.path(`/comment-portal/edit/${model.ID}`);
+            }).finally(loadingService.hide);
+        }
+        function commentTypeDropDown() {
+            commentService.commentStatusType().then((result) => {
+                comment.selectCommentType = result;
+            })
+        }
+        function commentForTypeDropDown() {
+            commentService.commentForType().then((result) => {
+                comment.selectCommentForType = result;
+            })
+        }
+        function editComment() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (comment.Model.CommentType === 0) {
+                    loadingService.hide();
+                    toaster.pop('error', '', 'وضعیت نظر را تعیین نمایید');
+                } else {
+                    commentService.edit(comment.Model).then((result) => {
+                        loadingService.hide();
+                        $timeout(function () {
+                            toaster.pop('success', '', 'نظر ویرایش گردید');
+                            cartable();
+
+                        }, 1000);
+                    }).finally(loadingService.hide);
+                }
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            })
+        }
+        function changeDrop() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                comment.grid.getlist(false);
+            }).finally(loadingService.hide);
+            
         }
     }
 })();

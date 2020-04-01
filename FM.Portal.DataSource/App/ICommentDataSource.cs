@@ -11,7 +11,7 @@ namespace FM.Portal.DataSource
         Result<Comment> Insert(Comment model);
         Result<Comment> Update(Comment model);
         Result<Comment> Get(Guid ID);
-        DataTable List();
+        DataTable List(CommentForType commentForType);
         DataTable List(CommentListVM listVM);
         DataTable List(Guid ParentID,Guid DocumentID);
         Result<int> Like(Guid ID);

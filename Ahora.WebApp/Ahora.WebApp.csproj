@@ -885,6 +885,7 @@
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.eot" />
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.ttf" />
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.woff" />
+    <Content Include="Areas\Admin\Views\Comment\ListForPortal.cshtml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
     <Content Include="Scripts\froala-editor\css\froala_editor.min.css" />

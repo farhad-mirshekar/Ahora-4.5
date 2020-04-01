@@ -54,6 +54,7 @@
                     { route: '#/news/cartable', title: 'کارتابل اخبار', hasShow: () => { return toolsService.checkPermission('pgnews') }, icon: 'fa-newspaper-o' },
                     { route: '#/slider/cartable', title: 'کارتابل تصاویر کشویی', hasShow: () => { return toolsService.checkPermission('pgsliders')}, icon: 'fa-sliders' },
                     { route: '#/events/cartable', title: 'کارتابل رویداد', hasShow: () => { return toolsService.checkPermission('pgevents') }, icon: 'fa-sliders' },
+                    { route: '#/comment-portal/cartable', title: 'کارتابل نظرات', hasShow: () => { return true; }, icon: 'fa-comments-o' },
                 ]
              }
         ]

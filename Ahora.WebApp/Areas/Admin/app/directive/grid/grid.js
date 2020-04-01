@@ -18,6 +18,11 @@
         function preLink(scope, element) {
             let grid = scope;
             scope.obj.getlist = getlist;
+            scope.obj.options =
+                scope.obj.options ||
+                function () {
+                    return {};
+                };
             grid.obj.actions = scope.obj.actions || [
                 {
                     title: "ویرایش",
@@ -48,7 +53,7 @@
             getItems();
             function getItems() {
                 return $q.resolve().then(() => {
-                    return grid.obj.listService();
+                    return grid.obj.listService(scope.obj.options());
                 }).then((result) => {
                     grid.obj.items = [].concat(result);
                 })
@@ -59,7 +64,12 @@
                     function (item) {
                         return item;
                     };
-                return process(getValue(item, column), item);
+                switch (column.type) {
+                    case "enum":
+                        return process(column.source[getValue(item, column)], item);
+                    default:
+                        return process(getValue(item, column), item);
+                }
             }
             function getValue(item, column) {
                 let keys = column.name.split(".");

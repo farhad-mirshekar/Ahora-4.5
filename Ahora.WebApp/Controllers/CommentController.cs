@@ -44,7 +44,7 @@ namespace Ahora.WebApp.Controllers
                             comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
-                            ViewBag.CommentForType = CommentForType.product;
+                            ViewBag.CommentForType = CommentForType.محصولات;
                         }
                         break;
                     }
@@ -62,7 +62,7 @@ namespace Ahora.WebApp.Controllers
                             comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
-                            ViewBag.CommentForType = CommentForType.article;
+                            ViewBag.CommentForType = CommentForType.مقالات;
                         }
                         break;
                     }
@@ -80,7 +80,7 @@ namespace Ahora.WebApp.Controllers
                             comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
-                            ViewBag.CommentForType = CommentForType.events;
+                            ViewBag.CommentForType = CommentForType.رویدادها;
                         }
                         break;
                     }
@@ -98,7 +98,7 @@ namespace Ahora.WebApp.Controllers
                             comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
-                            ViewBag.CommentForType = CommentForType.news;
+                            ViewBag.CommentForType = CommentForType.اخبار;
                         }
                         break;
                     }

@@ -81,9 +81,9 @@
     public enum CommentForType : byte
     {
         unknown = 0,
-        product = 6,
-        article = 4,
-        news = 3,
-        events = 8
+        محصولات = 6,
+        مقالات = 4,
+        اخبار = 3,
+        رویدادها = 8
     }
 }

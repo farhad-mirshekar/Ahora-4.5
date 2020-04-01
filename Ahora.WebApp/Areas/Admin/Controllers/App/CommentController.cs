@@ -13,5 +13,9 @@ namespace Ahora.WebApp.Areas.Admin.Controllers
         {
             return View();
         }
+        public ActionResult ListForPortal()
+        {
+            return View();
+        }
     }
 }

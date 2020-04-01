@@ -15,12 +15,12 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         {
         }
 
-        [HttpPost, Route("List")]
-        public IHttpActionResult List()
+        [HttpPost, Route("List/{commentForType}")]
+        public IHttpActionResult List(CommentForType commentForType)
         {
             try
             {
-                var result = _service.ListCommentForProduct();
+                var result = _service.List(commentForType);
                 return Ok(result);
             }
             catch (Exception e)
@@ -47,6 +47,19 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         {
             var CommentStatusType = EnumExtensions.GetValues<CommentType>();
             var result = Result<List<EnumCast>>.Successful(data: CommentStatusType);
+            return Ok(result);
+        }
+        [HttpPost, Route("CommentForType")]
+        public IHttpActionResult CommentForType()
+        {
+            var CommentForType = EnumExtensions.GetValues<CommentForType>();
+            List<EnumCast> enumCasts = new List<EnumCast>();
+            foreach (var item in CommentForType)
+            {
+                if (item.Model != 0 && item.Model != 6 )
+                    enumCasts.Add(new EnumCast {Model=item.Model , Name=item.Name });
+            }
+            var result = Result<List<EnumCast>>.Successful(data: enumCasts);
             return Ok(result);
         }
         [HttpPost, Route("Edit")]
