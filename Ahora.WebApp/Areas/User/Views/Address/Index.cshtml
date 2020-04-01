@@ -1,51 +1,48 @@
 ﻿@model PagedList.IPagedList<FM.Portal.Core.Model.UserAddress>
 @using PagedList.Mvc;
-@{ 
+@{
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
 }
-<div class="panel panel-default">
-    <div class="panel-heading"  style="height:50px;">
-        <span class="panel-title">
-            آدرس ها
-        </span>
-        <div class="pull-left">
-            <a href="address/create" class="btn btn-default">ثبت آدرس جدید</a>
-        </div>
-    </div>
-    <div class="panel-body">
-       <div class="row">
-           @if (Model != null && Model.Count > 0)
-           {
-               foreach (var item in Model)
-               {
-                <div class="col-xs-12" style="padding:20px;margin-bottom:10px;">
-                    <label>فرهاد میرشکار</label>
-                    <label>@item.Address</label>
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <label class="pull-right">کد پستی : @item.PostalCode</label>
-                            <label class="pull-left">شماره همراه : @item.CellPhone</label>
+<h2 class="main-title">لیست آدرس های من</h2>
+<a href="create" class="btn btn-success btn-circle"><i class="fa fa-plus"></i></a>
+<div class="card">
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                @if (Model != null && Model.Count > 0)
+                {
+                    foreach (var item in Model)
+                    {
+                        <div class="col-md-12">
+                            <label>فرهاد میرشکار</label>
+                            <label>@item.Address</label>
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <label class="pull-right">کد پستی : @item.PostalCode</label>
+                                    <label class="pull-left">شماره همراه : @item.CellPhone</label>
+                                </div>
+                                <div class="col-md-4 pull-left">
+                                    @Html.ActionLink("ویرایش", "Edit", "Address", new { ID = @item.ID }, new { @class = "btn btn-primary" })
+                                    <button class="btn btn-danger" onclick="Address.showModal('#deleteAddress','@item.Address','@item.ID')">حذف</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-xs-4 pull-left">
-                            @Html.ActionLink("ویرایش", "Edit", "Address", new { ID = @item.ID }, new { @class = "btn btn-primary" })
-                            <button class="btn btn-danger" onclick="Address.showModal('#deleteAddress','@item.Address','@item.ID')">حذف</button>
-                        </div>
+                    }
+
+                    <div class="text-center">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
                     </div>
-                </div>
-               }
+                }
+                else
+                {
+                    <div class="col-md-12">
+                        <div class="alert alert-danger">آدرسی ثبت نشده است</div>
+                    </div>
+                }
 
-            <div class="text-center">
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
             </div>
-           }
-           else
-           {
-            <div class="col-xs-12">
-                <div class="alert alert-danger">آدرسی ثبت نشده است</div>
-            </div>
-           }
-
-       </div>
+        </div>
+        
     </div>
 </div>
 <div class="modal" id="deleteAddress" style="display:none;" tabindex="-1" role="dialog">

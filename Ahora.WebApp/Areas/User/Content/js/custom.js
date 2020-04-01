@@ -6,7 +6,6 @@
         $(modal).modal('show');
     },
     remove: function () {
-        debugger
         var url = '/address/delete';
         var id = $('#deleteButton').attr('attr-id');
         $.ajax({

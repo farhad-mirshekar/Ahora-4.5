@@ -5,146 +5,85 @@
     <title>پرتال</title>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link href="~/Content/bootstrap/bootstrap.css" rel="stylesheet" />
-    <link href="~/Content/bootstrap-rtl/bootstrap-rtl.css" rel="stylesheet" />
-    <link href="~/Areas/user/Content/css/admin/admin.css" rel="stylesheet" />
-    <link href="~/Areas/user/Content/css/admin-rtl/admin-rtl.css" rel="stylesheet" />
+    <link href="~/Areas/User/Content/bootstrap-rtl/bootstrap-rtl.css" rel="stylesheet" />
+    <link href="~/Areas/User/Content/admin/admin.css" rel="stylesheet" />
     <link href="~/Content/fontawesome/font-awesome.css" rel="stylesheet" />
-    <link href="~/Content/toaster/toaster.css" rel="stylesheet" />
-    <link href="~/Areas/user/Content/css/admin/chosen.css" rel="stylesheet" />
-
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryvalidate")
-    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/bootstrap4js")
     <script src="~/Areas/User/Content/js/custom.js"></script>
     @RenderSection("styles", required: false)
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
-            <div id="wrapper">
-                <div class="col-xs-12" id="sidebar">
-                    <div id="sidebar-close">
-                        <i class="glyphicon glyphicon-remove" aria-hidden="true" style="margin-right:10px;"></i>
-                    </div>
-
-                    <div id="sidebar-title" class="row">
-                        <div id="sidebar-title-image">
-                            <img src="~/Areas/User/Content/img/logo.png" style="width:60px;height:100px;" />
-                        </div>
-                    </div>
-                    <div id="#sidebar-user" class="row">
-                        <div id="sidebar-user-info" class="col-xs-12">
-                            <span>فرهاد میرشکار</span>
-                        </div>
-                        @*<div id="sidebar-position-info" class="col-xs-12">
-                            <span>راهبر</span>
-                        </div>*@
-                    </div>
-                    <div id="sidebar-menu" class="row">
-                        <div class="col-xs-12">
-                            <div id="sidebar-menu-container">
-                                <div class="panel panel-default menu">
-                                    <div class="panel-heading" data-toggle="collapse" data-parent="#sidebar-menu-container" href="#main">
-                                        <i class="glyphicon glyphicon-home"></i>
-                                        <span class="panel-title">منو</span>
-                                    </div>
-                                    <div id="main" class="panel-collapse collapse" aria-expanded="true" style="">
-                                        <ul class="list-group">
-                                            <li class="list-group-item">
-                                                @Html.ActionLink("سفارش های من" , "Order", "Home")
-                                            </li>
-                                            <li class="list-group-item">
-                                                @Html.ActionLink("آدرس ها", "Index", "Address")
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="sidebar-footer" class="row">
-                        <a href="" ng-click="">
-                            <div class="col-xs-4">
-                                <span class="temp-fix">صفحه اصلی</span>
-                                <i class="glyphicon glyphicon-home"></i>
-                            </div>
-                        </a>
-                        <a href="" ng-click="">
-                            <div class="col-xs-3">
-                                <span>خروج</span>
-                                <i class="glyphicon glyphicon-off"></i>
-                            </div>
-                        </a>
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar" id="sidebar">
+                <div id="sidebar-close">
+                    <i class="fa fa-remove" aria-hidden="true"></i>
+                </div>
+                <div id="sidebar-title">
+                    <div id="sidebar-title-image">
+                        <img class="m-auto d-block" src="~/Areas/User/Content/img/logo.png" />
                     </div>
                 </div>
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/home/order">
+                                سفارش های من
+                                <i class="fa fa-first-order"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/address/index">
+                                آدرس های من
+                                <i class="fa fa-address-card"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
+            <div class="col-md-10" id="wrapper">
                 <div id="toolbar" class="row">
-                    <div class="col-xs-12">
-                        <div id="sidebar-switch">
-                            <i class="glyphicon glyphicon-align-justify"></i>
-                        </div>
-                    </div>
-                </div>
-                <div id="content" class="row">
-                    <div class="col-xs-12">
-                        <div class="row">
-                            <div class="col-xs-12">
-                                @RenderBody()
+
+                    <div class="col-md-9">
+                        <div class="d-inline-block">
+                            <div id="sidebar-switch">
+                                <i class="fa fa-align-justify"></i>
                             </div>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="d-inline-block header-icon">
+                            <a href="#">
+                                <i class="fa fa-home home-icon"></i>
+                            </a>
+                            <a href="" ng-click="">
+                                <i class="fa fa-bell-o home-icon"></i>
+                            </a>
+                            <a href="" ng-click="">
+                                <i class="fa fa-envelope-o message-icon"></i>
+                            </a>
+
+                            <a href="" ng-click="signOut()">
+                                <i class="fa fa-power-off exit-icon"></i>
+                            </a>
+
+                            <a href="#profile" class="user_action_image"><img class="user-image" src="Areas/Admin/Content/img/avatar_11_tn.png" alt=""></a>
+
+                        </div>
+                    </div>
                 </div>
-            </div><!--end wrapper-->
+                <div id="content" dir="rtl">
+                    @RenderBody()
+                </div>
+
+            </div>
+
         </div>
+
     </div>
     @RenderSection("scripts", false)
-    <script>
-        (() => {
-            // toggle sidebar
-            $("#sidebar-switch").click(function () {
-                $('#sidebar').toggleClass('toggle-sidebar');
-                $('#wrapper').toggleClass('toggle-sidebar');
-            });
-            $("#sidebar-close").click(function () {
-                $('#sidebar').toggleClass('toggle-sidebar');
-                $('#wrapper').toggleClass('toggle-sidebar');
-            });
-
-
-            // first load on mobile
-            if (window, innerWidth < 767) {
-                $("#sidebar-close").click();
-            }
-
-            // click on sidebar menu items
-            $("#sidebar-menu-container .list-group-item a").click(function () {
-                if (window, innerWidth < 767)
-                    $("#sidebar-close").click();
-            })
-
-            // sidebar footer functions - fullscreen toggle
-            $("#sidebar-footer-fullscreen").click(function () {
-                if ((document.fullScreenElement && document.fullScreenElement !== null) || (!document.mozFullScreen && !document.webkitIsFullScreen)) {
-                    if (document.documentElement.requestFullScreen) {
-                        document.documentElement.requestFullScreen();
-                    } else if (document.documentElement.mozRequestFullScreen) {
-                        document.documentElement.mozRequestFullScreen();
-                    } else if (document.documentElement.webkitRequestFullScreen) {
-                        document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
-                    }
-                } else {
-                    if (document.cancelFullScreen) {
-                        document.cancelFullScreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.webkitCancelFullScreen) {
-                        document.webkitCancelFullScreen();
-                    }
-                }
-            });
-        })();
-    </script>
 </body>
 </html>
