@@ -2,14 +2,15 @@
 (() => {
     var app = angular.module('portal');
     app.factory('toolsService', toolsService);
-    toolsService.$inject = ['commandService', '$window'];
-    function toolsService(commandService, $window) {
+    toolsService.$inject = ['commandService', '$window', 'profileService', '$q', 'loadingService','authenticationService'];
+    function toolsService(commandService, $window, profileService, $q, loadingService, authenticationService) {
         let service = {
             hasuser:hasuser,
             userID:userID,
             getPermission: getPermission,
             checkPermission: checkPermission,
-            getTreeObject: getTreeObject
+            getTreeObject: getTreeObject,
+            signOut: signOut
         };
         return service;
         function hasuser() {
@@ -95,7 +96,14 @@
 
             return tree;
         }
-
+        function signOut() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                 profileService.signOut();
+                authenticationService.clearCredentials();
+                $window.location.href = '/account/login';
+            }).finally(loadingService.hide);
+        }
 
     }
 })();

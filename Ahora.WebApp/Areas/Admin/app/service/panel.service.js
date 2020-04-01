@@ -227,7 +227,8 @@
             save: save,
             get: get,
             setPassword: setPassword,
-            searchByNationalCode: searchByNationalCode
+            searchByNationalCode: searchByNationalCode,
+            signOut: signOut
         };
         return service;
 
@@ -293,6 +294,17 @@
             }).then((result) => {
                 return callbackService.onSuccess({result:result , url:url+'searchByNationalCode'});
             }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function signOut() {
+            return $http({
+                method: 'POST',
+                url: '/account/SignOut',
+                data: { type:'admin'}
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: '/account/logoutAdmin' });
+            }).catch(function (result) {
                 return callbackService.onError({ result: result });
             })
         }

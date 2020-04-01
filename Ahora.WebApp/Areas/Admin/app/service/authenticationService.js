@@ -5,7 +5,8 @@
     function authenticationService($window) {
         let service = {
             setCredentials: setCredentials,
-            isAuthenticated: isAuthenticated
+            isAuthenticated: isAuthenticated,
+            clearCredentials: clearCredentials
         };
         return service;
         function setCredentials(model) {
@@ -24,6 +25,12 @@
         }
         function isAuthenticated() {
             return (angular.element('input[name="__isAuthenticated"]').attr('value') === 'true');
+        }
+        function clearCredentials() {
+            $window.localStorage.removeItem('access_token');
+            $window.localStorage.removeItem('userid');
+            $window.localStorage.removeItem('refresh_token');
+            $window.localStorage.removeItem('type');
         }
     }
 })();

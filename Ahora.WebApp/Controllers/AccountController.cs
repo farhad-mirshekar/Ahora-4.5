@@ -149,6 +149,23 @@ namespace Ahora.WebApp.Controllers
             }
 
         }
+        [Route("SignOut")]
+        public ActionResult SignOut(string type)
+        {
+            Session.Clear();
+            Session.Abandon();
+
+            if (type == "admin")
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                FormsAuthentication.SignOut();
+                return RedirectToAction("Index","Home");
+            }
+
+        }
 
         #region Authentication
         [NonAction]

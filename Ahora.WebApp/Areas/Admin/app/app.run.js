@@ -7,6 +7,7 @@
     function run($rootScope, toolsService) {
         toolsService.getPermission();
         var hasuser = toolsService.hasuser();
+        $rootScope.signOut = signOut;
         if (!hasuser)
             window.location.href = '/account/login';
         $rootScope.Menus = [
@@ -56,5 +57,9 @@
                 ]
              }
         ]
+
+        function signOut() {
+            toolsService.signOut();
+        }
     }
 })();
