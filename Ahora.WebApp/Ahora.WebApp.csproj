@@ -278,6 +278,9 @@
     <Content Include="Content\main\main.css" />
     <Content Include="Content\main\PagedList.css" />
     <Content Include="Content\main\Site.css" />
+    <Content Include="Content\TemporaryFiles\article\5372f221-7b28-4798-bfab-1eb85d6b078c.png" />
+    <Content Include="Content\TemporaryFiles\article\91f99722-777d-4f16-adaf-6a124148c8ff.jpg" />
+    <Content Include="Content\TemporaryFiles\events\c8d7596b-2960-40c4-a90b-03c7fedec6a3.jpg" />
     <Content Include="Content\TemporaryFiles\news\9de0b04d-2ffc-4c35-b4bb-0c00d334d40e.jpg" />
     <Content Include="Content\TemporaryFiles\product\076ce4ec-0046-4a74-94a8-52bd494700cc.jpg" />
     <Content Include="Content\TemporaryFiles\product\202d5f69-7768-42ae-8261-bec899c43ceb.jpg" />
@@ -2099,6 +2102,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="Areas\User\Models\" />
+    <Folder Include="Content\TemporaryFiles\video\" />
     <Folder Include="Models\" />
     <Folder Include="Views\Redirect\" />
   </ItemGroup>

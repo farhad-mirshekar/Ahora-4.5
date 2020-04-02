@@ -19,7 +19,7 @@
                         خوش آمدید
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @if (User.Identity != null)
+                        @if (!string.IsNullOrEmpty(User.Identity.Name))
                         {
                             <a class="dropdown-item" href="/user/home">
                                 <i class="fa fa-arrow-right"></i> ورود به پنل
@@ -27,6 +27,12 @@
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/account/signout">
                                 <i class="fa fa-sign-out"></i> خروج
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="dropdown-item" href="/admin#">
+                                <i class="fa fa-arrow-right"></i> ورود به پنل
                             </a>
                         }
                     </div>

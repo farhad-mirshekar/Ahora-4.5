@@ -49,7 +49,8 @@ BEGIN
 					[ControllerName] = @ControllerName ,
 					[ActionName] = @ActionName,
 					[Title] = @Title,
-					[RouteUrl] = @RouteUrl
+					[RouteUrl] = @RouteUrl,
+					[Description] = @Description
 				WHERE ID = @ID
 
 				IF(@Node <> @NewNode)

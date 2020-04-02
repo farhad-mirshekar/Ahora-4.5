@@ -1448,12 +1448,15 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('articleController', articleController);
-    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService'];
-    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService) {
+    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService','attachmentService'];
+    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
         let article = $scope;
         article.Model = {};
         article.Model.Errors = [];
         article.state = '';
+        article.Model.listPicUploaded = [];
+        article.pic = { type: '4', allowMultiple: false };
+        article.pic.list = [];
         article.goToPageAdd = goToPageAdd;
         article.addArticle = addArticle;
         article.editArticle = editArticle;
@@ -1533,6 +1536,11 @@ var froalaOptionComment = {
             }).then(() => {
                 return fillDropCategory();
             }).then(() => {
+                return attachmentService.list({ ParentID: article.Model.ID });
+            }).then((result) => {
+                article.Model.listPicUploaded = [];
+                if (result && result.length > 0)
+                    article.Model.listPicUploaded = [].concat(result);
                 article.state = 'edit';
                 $location.path(`/article/edit/${model.ID}`);
             })
@@ -1543,56 +1551,84 @@ var froalaOptionComment = {
         function addArticle() {
             loadingService.show();
             return $q.resolve().then(() => {
-                articleService.add(article.Model).then((result) => {
-                    article.Model = result;
-                    article.grid.getlist(false);
-                    toaster.pop('success', '', 'مقاله جدید با موفقیت اضافه گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 1000);//return cartable
-                }).catch((error) => {
-                    if (!error) {
-                        $('#content > div').animate({
-                            scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
-                        }, 'slow');
-                    } else {
-                        var listError = error.split('&&');
-                        article.Model.Errors = [].concat(listError);
-                        $('#content > div').animate({
-                            scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
-                        }, 'slow');
+                return articleService.add(article.Model);
+            }).then((result) => {
+                if (article.pic.list.length) {
+                    article.pics = [];
+                    if (article.Model.listPicUploaded === 0) {
+                        article.pics.push({ ParentID: article.Model.ID, Type: 2, FileName: article.pic.list[0], PathType: article.pic.type });
                     }
-
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                }).finally(loadingService.hide);
-            })
-        }
-        function editArticle() {
-            loadingService.show();
-            return $q.resolve().then(() => {
-                return articleService.edit(article.Model).then((result) => {
-                    article.Model = result;
-                    article.grid.getlist(false);
-                    toaster.pop('success', '', 'مقاله جدید با موفقیت ویرایش گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 1000);
-                })
+                    return attachmentService.add(article.pics);
+                }
+                article.Model = result;
+            }).then(() => {
+                return attachmentService.list({ ParentID: news.Model.ID });
+            }).then((result) => {
+                if (result && result.length > 0)
+                    article.Model.listPicUploaded = [].concat(result);
+                article.pics = [];
+                article.pic.list = [];
+                article.grid.getlist(false);
+                toaster.pop('success', '', 'مقاله جدید با موفقیت اضافه گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    cartable();
+                }, 1000);//return cartable
             }).catch((error) => {
-                if (error && !error) {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
                     var listError = error.split('&&');
                     article.Model.Errors = [].concat(listError);
                     $('#content > div').animate({
                         scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
                     }, 'slow');
-                } else {
+                }
 
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
+        }
+        function editArticle() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return articleService.edit(article.Model);
+            }).then((result) => {
+                if (article.pic.list.length) {
+                    article.pics = [];
+                    if (article.Model.listPicUploaded.length === 0) {
+                        article.pics.push({ ParentID: article.Model.ID, Type:2, FileName: article.pic.list[0], PathType: article.pic.type });
+                    }
+                    return attachmentService.add(article.pics);
+                }
+                article.Model = result;
+            }).then(() => {
+                return attachmentService.list({ ParentID: article.Model.ID });
+            }).then((result) => {
+                if (result && result.length > 0)
+                    article.Model.listPicUploaded = [].concat(result);
+                article.pics = [];
+                article.pic.list = [];
+                article.grid.getlist(false);
+                toaster.pop('success', '', 'مقاله با موفقیت ویرایش گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    cartable();
+                }, 1000);//return cartable
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    article.Model.Errors = [].concat(listError);
                     $('#content > div').animate({
                         scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
                     }, 'slow');
                 }
+
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
         }
@@ -1836,6 +1872,31 @@ var froalaOptionComment = {
         pages.changeState = {
             cartable: cartable
         }
+        pages.tree = {
+            data: []
+            , colDefs: [
+                { field: 'Title', displayName: 'عنوان' }
+                , { field: 'RouteUrl', displayName: 'آدرس' }
+                , {
+                    field: ''
+                    , displayName: ''
+                    , cellTemplate: (
+                        `<div style='float: left'>
+                            <i class='fa fa-plus tgrid-action' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
+                            <i class='fa fa-pencil tgrid-action' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
+                            <i class='fa fa-trash tgrid-action' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
+                        </div>`)
+                    , cellTemplateScope: {
+                        edit: edit,
+                        add: addFirst
+                    }
+                }
+            ]
+            , expandingProperty: {
+                field: "Title"
+                , displayName: "عنوان"
+            }
+        };
         init();
 
 
@@ -1860,32 +1921,6 @@ var froalaOptionComment = {
         }
 
         function cartable() {
-            pages.tree = {
-                data: []
-                , colDefs: [
-                    { field: 'Title', displayName: 'عنوان' }
-                    , { field: 'ControllerName', displayName: 'نام کنترل' }
-                    , { field: 'ActionName', displayName: 'نام اکشن' }
-                    , {
-                        field: ''
-                        , displayName: ''
-                        , cellTemplate: (
-                            `<div style='float: left'>
-                            <i class='fa fa-plus tgrid-action' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
-                            <i class='fa fa-pencil tgrid-action' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
-                            <i class='fa fa-trash tgrid-action' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
-                        </div>`)
-                        , cellTemplateScope: {
-                            edit: edit,
-                            add: addFirst
-                        }
-                    }
-                ]
-                , expandingProperty: {
-                    field: "Title"
-                    , displayName: "عنوان"
-                }
-            };
             pagesService.list().then((result) => {
                 setTreeObject(result);
             });
@@ -2388,6 +2423,7 @@ var froalaOptionComment = {
             }).then(() => {
                 return attachmentService.list({ ParentID: events.Model.ID });
             }).then((result) => {
+                events.Model.listPicUploaded = [];
                 if (result && result.length > 0)
                     events.Model.listPicUploaded = [].concat(result);
             }).then(() => {
@@ -2404,8 +2440,8 @@ var froalaOptionComment = {
                 eventsService.add(events.Model).then((result) => {
                     if (events.pic.list.length) {
                         events.pics = [];
-                        if (!events.Model.listPicUploaded) {
-                            events.pics.push({ ParentID: events.Model.ID, Type: 1, FileName: events.pic.list[0], PathType: events.pic.type });
+                        if (events.Model.listPicUploaded.length === 0) {
+                            events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
                         }
                         return attachmentService.add(events.pics);
                     }
@@ -2446,8 +2482,8 @@ var froalaOptionComment = {
                 eventsService.edit(events.Model).then((result) => {
                     if (events.pic.list.length) {
                         events.pics = [];
-                        if (!events.Model.listPicUploaded) {
-                            events.pics.push({ ParentID: events.Model.ID, Type: 1, FileName: events.pic.list[0], PathType: events.pic.type });
+                        if (events.Model.listPicUploaded.length === 0) {
+                            events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
                         }
                         return attachmentService.add(events.pics);
                     }
