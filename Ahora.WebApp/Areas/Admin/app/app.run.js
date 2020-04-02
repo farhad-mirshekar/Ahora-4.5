@@ -34,6 +34,7 @@
                     { route: '#/faq-group/cartable', title: 'پرسش های متداول', hasShow: () => { return toolsService.checkPermission('pgfaq') }, icon: 'fa-question' },
                     { route: '#/menu/cartable', title: 'مدیریت منو', hasShow: () => { return toolsService.checkPermission('pgmenu') }, icon: 'fa-bars' },
                     { route: '#/general-setting', title: 'تنظیمات سایت', hasShow: () => { return toolsService.checkPermission('pggeneral-setting') }, icon: 'fa-gear' },
+                    { route: '#/pages/cartable', title: 'تنظیمات سایت', hasShow: () => { return true; }, icon: 'fa-gear' },
                 ]
             },
             {

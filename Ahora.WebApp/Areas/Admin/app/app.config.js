@@ -28,7 +28,8 @@
                 .when("/slider/:state/:id?", { templateUrl: "/Admin/slider/index", controller: 'sliderController', reloadOnUrl: false })
                 .when("/general-setting", { templateUrl: "/Admin/generalSetting/index", controller: 'generalSettingController' })
                 .when("/events/:state/:id?", { templateUrl: "/Admin/events/index", controller: 'eventsController', reloadOnUrl: false })
-                .when("/comment-portal/:state/:id?", { templateUrl: "/Admin/comment/listForportal", controller: 'commentPortalController', reloadOnUrl: false })// add;
+                .when("/comment-portal/:state/:id?", { templateUrl: "/Admin/comment/listForportal", controller: 'commentPortalController', reloadOnUrl: false })
+                .when("/pages/:state/:id?", { templateUrl: "/Admin/pages/index", controller: 'pagesController', reloadOnUrl: false })// add;
 
                 .otherwise({
                     templateUrl: './areas/admin/app/NotFound/not-found.html'

@@ -11,6 +11,7 @@ namespace FM.Portal.DataSource
         Result<Pages> Update(Pages model);
         Result<Pages> Get(Guid ID);
         DataTable List();
+        Result<int> Delete(Guid ID);
 
     }
 }

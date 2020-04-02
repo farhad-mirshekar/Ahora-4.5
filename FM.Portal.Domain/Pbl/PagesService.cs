@@ -22,6 +22,8 @@ namespace FM.Portal.Domain
            return _dataSource.Create(model);
         }
 
+        public Result<int> Delete(Guid ID)
+        => _dataSource.Delete(ID);
         public Result<Pages> Edit(Pages model)
         => _dataSource.Update(model);
 

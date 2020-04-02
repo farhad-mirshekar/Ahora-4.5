@@ -1601,7 +1601,8 @@
             add: add,
             edit: edit,
             get: get,
-            list: list
+            list: list,
+            remove:remove
 
         }
         return service;
@@ -1666,6 +1667,21 @@
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
+        }
+        function remove(model) {
+            return $http({
+                method: 'POST',
+                url: url + `remove/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `remove/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
         }
     }
 

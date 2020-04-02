@@ -1863,15 +1863,17 @@ var froalaOptionComment = {
     function pagesController($scope, $q, loadingService, $routeParams, pagesService, $location, toaster, $timeout, toolsService) {
         let pages = $scope;
         pages.Model = {};
-        pages.list = [];
-        pages.lists = [];
+        pages.main = {};
         pages.state = 'cartable';
         pages.goToPageAdd = goToPageAdd;
         pages.addPages = addPages;
         pages.editPages = editPages;
-        pages.changeState = {
-            cartable: cartable
+        pages.main.changeState = {
+            cartable: cartable,
+            edit:edit
         }
+            //< i class='fa fa-plus tgrid-action' ng-click='cellTemplateScope.add(row.branch)' title ='افزودن'></i >
+            //< i class='fa fa-trash tgrid-action' ng-click='cellTemplateScope.remove(row.branch)' title ='حذف'></i >
         pages.tree = {
             data: []
             , colDefs: [
@@ -1882,13 +1884,13 @@ var froalaOptionComment = {
                     , displayName: ''
                     , cellTemplate: (
                         `<div style='float: left'>
-                            <i class='fa fa-plus tgrid-action' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
                             <i class='fa fa-pencil tgrid-action' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
-                            <i class='fa fa-trash tgrid-action' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
                         </div>`)
                     , cellTemplateScope: {
-                        edit: edit,
-                        add: addFirst
+                        edit: view
+                        //add: addFirst,
+                        //remove:remove,
+
                     }
                 }
             ]
@@ -1897,9 +1899,10 @@ var froalaOptionComment = {
                 , displayName: "عنوان"
             }
         };
+        pagesService.list().then((result) => {
+            setTreeObject(result);
+        });
         init();
-
-
         function init() {
             loadingService.show();
             $q.resolve().then(() => {
@@ -1915,15 +1918,17 @@ var froalaOptionComment = {
                             edit(result);
                         })
                         break;
+                    case 'view':
+                        pagesService.get($routeParams.id).then((result) => {
+                            view(result);
+                        })
+                        break;
                 }
             }).finally(loadingService.hide);
 
         }
-
         function cartable() {
-            pagesService.list().then((result) => {
-                setTreeObject(result);
-            });
+            pages.Model = {};
             pages.state = 'cartable';
             $location.path('pages/cartable');
         }
@@ -1954,6 +1959,9 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 return pagesService.add(pages.Model)
             }).then((result) => {
+                return pagesService.list();
+            }).then((result) => {
+                setTreeObject(result);
                 toaster.pop('success', '', 'دسته بندی جدید با موفقیت اضافه گردید');
                 loadingService.hide();
                 $timeout(function () {
@@ -1970,6 +1978,9 @@ var froalaOptionComment = {
                 return pagesService.edit(pages.Model)
             }).then((result) => {
                 pages.Model = result;
+                return pagesService.list();
+            }).then((result) => {
+                setTreeObject(result);
                 toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
                 $timeout(function () {
@@ -1986,6 +1997,25 @@ var froalaOptionComment = {
                     item.expanded = true;
             });
             pages.tree.data = toolsService.getTreeObject(items, 'Node', 'ParentNode', '/');
+        }
+        function remove(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return pagesService.remove(model.ID);
+            }).then((result) => {
+                return pagesService.list();
+            }).then((result) => {
+                setTreeObject(result);
+            }).finally(loadingService.hide);
+        }
+        function view(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                pages.state = 'view';
+                pages.Model = model;
+                $location.path(`/pages/view/${pages.Model.ID}`);
+            }).finally(loadingService.hide);
+
         }
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------

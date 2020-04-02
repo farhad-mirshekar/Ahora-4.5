@@ -67,5 +67,18 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
                 return NotFound();
             }
         }
+        [HttpPost, Route("Remove/{ID:guid}")]
+        public IHttpActionResult Remove(Guid ID)
+        {
+            try
+            {
+                var result = _service.Delete(ID);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
+        }
     }
 }

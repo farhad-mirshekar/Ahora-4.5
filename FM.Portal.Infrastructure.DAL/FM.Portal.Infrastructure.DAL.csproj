@@ -165,6 +165,7 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.GetsGeneralSetting.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.spModifyGeneralSetting.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetChildMenu.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.DeleteMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetsMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.spModifyMenu.sql" />
