@@ -56,15 +56,19 @@ var froalaOptionComment = {
     }
     //-------------------------------------------------------------------------------------------------------
     app.controller('faqGroupController', faqGroupController);
-    faqGroupController.$inject = ['$scope', '$routeParams', '$location', '$uibModal', 'toaster', 'loadingService', 'data', 'faqGroupService', 'faqService'];
-    function faqGroupController($scope, $routeParams, $location, $uibModal, toaster, loadingService, data, faqGroupService, faqService) {
+    faqGroupController.$inject = ['$scope', '$routeParams', '$location', '$uibModal', 'toaster', 'loadingService', 'faqGroupService', 'faqService', '$q','$timeout'];
+    function faqGroupController($scope, $routeParams, $location, $uibModal, toaster, loadingService, faqGroupService, faqService, $q, $timeout) {
         let faqgroup = $scope;
         faqgroup.state = '';
         faqgroup.Model = {};
         faqgroup.faq = {};
+        faqgroup.main = {};
+        faqgroup.main.changeState = {
+            cartable: cartable,
+            edit:edit
+        };
         faqgroup.addFaqGroup = addFaqGroup;
         faqgroup.editFaqGroup = editFaqGroup;
-        faqgroup.back = back;
         faqgroup.select = select;
         faqgroup.openModalFaq = openModalFaq;
         faqgroup.goToPageAdd = goToPageAdd;
@@ -72,7 +76,7 @@ var froalaOptionComment = {
             bindingObject: faqgroup
             , columns: [{ name: 'Title', displayName: 'دسته بندی سوال' }]
             , listService: faqGroupService.list
-            , route: 'faq-group'
+            , onEdit: faqgroup.main.changeState.edit
             , globalSearch: true
         };
         init();
@@ -102,32 +106,42 @@ var froalaOptionComment = {
         function addFaqGroup() {
             loadingService.show();
             return faqGroupService.add(faqgroup.Model).then((result) => {
+                faqgroup.grid.getlist(false);
                 toaster.pop('success', '', 'تغییرات با موفقیت انجام گردید');
                 faqgroup.Model = result;
-
+                $timeout(function () {
+                    cartable();
+                }, 1000);
             }).finally(loadingService.hide);
         }
         function editFaqGroup() {
             loadingService.show();
-            return faqGroupService.edit(faqgroup.Model).then((result) => {
+            return $q.resolve().then(() => {
+                return faqGroupService.edit(faqgroup.Model);
+            }).then((result) => {
+                faqgroup.grid.getlist(false);
                 toaster.pop('success', '', 'تغییرات با موفقیت انجام گردید');
                 faqgroup.Model = result;
-
+                $timeout(function () {
+                    cartable();
+                }, 1000);
             }).finally(loadingService.hide);
         }
         function cartable() {
+            faqgroup.Model = {};
             faqgroup.state = 'cartable';
             $location.path('faq-group/cartable');
         }
-        function back() {
-            $location.path('faq-group/cartable');
-        }
         function edit(model) {
-            faqService.list(model.ID).then((result) => {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return faqService.list(model.ID);
+            }).then((result) => {
                 faqgroup.faq = result;
-            })
-            faqgroup.state = 'edit';
-            faqgroup.Model = model;
+                faqgroup.state = 'edit';
+                faqgroup.Model = model;
+                $location.path(`faq-group/edit/${faqgroup.Model.ID}`);
+            }).finally(loadingService.hide);
         }
         function openModalFaq() {
 
@@ -376,8 +390,12 @@ var froalaOptionComment = {
     roleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'roleService', 'toaster', 'commandService', '$location', 'toolsService'];
     function roleController($scope, $q, loadingService, $routeParams, roleService, toaster, commandService, $location, toolsService) {
         let role = $scope;
-        role.Grid = [];
         role.Model = {};
+        role.main = {};
+        role.main.changeState = {
+            cartable: cartable,
+            edit: edit
+        };
         role.Model.Permissions = [];
         role.ListCommand = [];
         role.addRole = addRole;
@@ -388,7 +406,7 @@ var froalaOptionComment = {
             bindingObject: role
             , columns: [{ name: 'Name', displayName: 'نام نقش' }]
             , listService: roleService.list
-            , route: 'role'
+            , onEdit: role.main.changeState.edit
             , globalSearch: true
         };
         init();
@@ -402,7 +420,9 @@ var froalaOptionComment = {
                         cartable();
                         break;
                     case 'edit':
-                        edit($routeParams.id);
+                        roleService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
                         break;
                     case 'add':
                         add();
@@ -413,21 +433,20 @@ var froalaOptionComment = {
         } // end init
 
         function cartable() {
+            role.Model = {};
             role.state = 'cartable';
             $location.path('role/cartable');
         }
         function edit(model) {
             loadingService.show;
             return $q.resolve().then(() => {
-                return roleService.get(model);
-            }).then((result) => {
-                role.Model = result;
+                role.Model = model;
                 return commandService.list();
             }).then((result) => {
                 if (result.length > 0) {
                     role.ListCommand = toolsService.getTreeObject(result, 'Node', 'ParentNode', '/');
                 }
-                return commandService.listForRole({ RoleID: $routeParams.id });
+                return commandService.listForRole({ RoleID: role.Model.ID });
             }).then((result) => {
                 if (result.length > 0) {
                     role.Model.Permissions = [];
@@ -467,6 +486,7 @@ var froalaOptionComment = {
                         role.Model.Permissions.push(result[i]);
                     }
                 }
+                role.grid.getlist(false);
                 toaster.pop('success', '', 'ویرایش با موفقیت انجام شد');
             }).catch(() => {
                 toaster.pop('error', '', 'خطا');
@@ -851,6 +871,11 @@ var froalaOptionComment = {
     function attributeController($scope, $q, loadingService, $routeParams, $location, toaster, $timeout, attributeService) {
         let attribute = $scope;
         attribute.Model = {};
+        attribute.main = {};
+        attribute.main.changeState = {
+            cartable: cartable,
+            edit:edit
+        };
         attribute.Model.Errors = [];
         attribute.state = '';
         attribute.goToPageAdd = goToPageAdd;
@@ -860,8 +885,7 @@ var froalaOptionComment = {
             bindingObject: attribute
             , columns: [{ name: 'Name', displayName: 'عنوان' }]
             , listService: attributeService.list
-            , onEdit: edit
-            , route: 'attribute'
+            , onEdit: attribute.main.changeState.edit
             , globalSearch: true
         };
         init();
@@ -887,6 +911,7 @@ var froalaOptionComment = {
         }
 
         function cartable() {
+            attribute.Model = {};
             attribute.state = 'cartable';
             $location.path('/attribute/cartable');
         }
@@ -895,9 +920,12 @@ var froalaOptionComment = {
             $location.path('/attribute/add');
         }
         function edit(model) {
-            attribute.state = 'edit';
-            attribute.Model = model;
-            $location.path(`/attribute/edit/${attribute.Model.ID}`);
+            loadingService.show();
+            return $q.resolve().then(() => {
+                attribute.state = 'edit';
+                attribute.Model = model;
+                $location.path(`/attribute/edit/${attribute.Model.ID}`);
+            }).finally(loadingService.hide);
         }
         function goToPageAdd() {
             add();
@@ -908,6 +936,7 @@ var froalaOptionComment = {
                 return attributeService.add(attribute.Model);
             }).then((result) => {
                 attribute.Model = result;
+                attribute.grid.getlist(false);
                 toaster.pop('success', '', 'ویژگی جدید با موفقیت اضافه گردید');
                 loadingService.hide();
                 $timeout(function () {
@@ -924,6 +953,7 @@ var froalaOptionComment = {
                 return attributeService.edit(attribute.Model);
             }).then((result) => {
                 attribute.Model = result;
+                attribute.grid.getlist(false);
                 toaster.pop('success', '', 'ویژگی جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
                 $timeout(function () {
@@ -941,6 +971,11 @@ var froalaOptionComment = {
     function categoryController($scope, $q, loadingService, $routeParams, categoryService, $location, toaster, $timeout, categoryMapDiscountService, discountService) {
         let category = $scope;
         category.Model = {};
+        category.main = {};
+        category.main.changeState = {
+            cartable: cartable,
+            edit:edit
+        }
         category.state = '';
         category.error = {};
         category.error.show = false;;
@@ -951,7 +986,7 @@ var froalaOptionComment = {
             bindingObject: category
             , columns: [{ name: 'Title', displayName: 'عنوان' }]
             , listService: categoryService.list
-            , onEdit: edit
+            , onEdit: category.main.changeState.edit
             , route: 'category'
             , globalSearch: true
         };
@@ -994,15 +1029,20 @@ var froalaOptionComment = {
         function edit(model) {
             loadingService.show();
             return $q.resolve().then(() => {
+                return categoryService.get(model.ID);
+            }).then((result) => {
+                category.Model = result;
                 return select();
             }).then(() => {
                 return listDiscount();
             }).then(() => {
-                category.Model = model;
                 category.state = 'edit';
                 if (category.Model.ParentID !== "00000000-0000-0000-0000-000000000000") {
                     $('#hassubmenu').prop('checked', true);
                     $("#ParentID").prop("disabled", false);
+                } else {
+                    $('#hassubmenu').prop('checked', false);
+                    $("#ParentID").prop("disabled", true);
                 }
                 $location.path(`/category/edit/${category.Model.ID}`);;
             }).finally(loadingService.hide);
@@ -1013,14 +1053,15 @@ var froalaOptionComment = {
         function addCategory() {
             loadingService.show();
             $q.resolve().then(() => {
-                categoryService.add(category.Model).then((result) => {
-                    category.Model = result;
-                    toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 100);
-                })
+                return categoryService.add(category.Model);
+            }).then((result) => {
+                category.Model = result;
+                category.grid.getlist(false);
+                toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    cartable();
+                }, 100);
             }).catch((error) => {
                 if (!error) {
                     $('#content > div').animate({
@@ -1040,14 +1081,15 @@ var froalaOptionComment = {
         function editCategory() {
             loadingService.show();
             $q.resolve().then(() => {
-                return categoryService.edit(category.Model).then((result) => {
-                    category.Model = result;
-                    toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 100);
-                })
+                return categoryService.edit(category.Model);
+            }).then((result) => {
+                category.Model = result;
+                category.grid.getlist(false);
+                toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    cartable();
+                }, 100);
             }).catch((error) => {
                 category.error.show = true;
                 $('#content > div').animate({
@@ -1084,6 +1126,11 @@ var froalaOptionComment = {
     function discountController($scope, $q, loadingService, $routeParams, discountService, $location, toaster, $timeout) {
         let discount = $scope;
         discount.Model = {};
+        discount.main = {};
+        discount.main.changeState = {
+            cartable: cartable,
+            edit:edit
+        };
         discount.Errors = [];
         discount.state = '';
         discount.goToPageAdd = goToPageAdd;
@@ -1093,8 +1140,7 @@ var froalaOptionComment = {
             bindingObject: discount
             , columns: [{ name: 'Name', displayName: 'عنوان تخفیف' }]
             , listService: discountService.list
-            , onEdit: edit
-            , route: 'discount'
+            , onEdit: discount.main.changeState.edit
             , globalSearch: true
         };
         init();
@@ -1121,13 +1167,19 @@ var froalaOptionComment = {
         }
 
         function cartable() {
+            discount.Model = {};
             discount.state = 'cartable';
             $location.path('/discount/cartable');
         }
         function add() {
-            discount.state = 'add';
-            select();
-            $location.path('/discount/add');
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return select();
+            }).then(() => {
+                discount.state = 'add';
+                $location.path('/discount/add');
+            }).finally(loadingService.hide);
+
         }
         function edit(model) {
             loadingService.show();
@@ -1148,6 +1200,7 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 return discountService.add(discount.Model)
             }).then((result) => {
+                discount.grid.getlist(false);
                 toaster.pop('success', '', 'دسته بندی جدید با موفقیت اضافه گردید');
                 loadingService.hide();
                 $timeout(function () {
@@ -1163,6 +1216,7 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 return discountService.edit(discount.Model)
             }).then((result) => {
+                discount.grid.getlist(false);
                 discount.Model = result;
                 toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
@@ -1187,14 +1241,20 @@ var froalaOptionComment = {
         let comment = $scope;
         comment.Model = {};
         comment.state = '';
+        comment.main = {};
+        comment.froalaOptionComment = froalaOption;
+        comment.main.changeState = {
+            cartable: cartable,
+            edit: edit
+        }
         comment.editComment = editComment;
         comment.grid = {
             bindingObject: comment
             , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
-            { name: 'ProductName', displayName: 'نام محصول' }]
+                { name: 'ProductName', displayName: 'نام محصول' },
+                { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: { 1: 'درحال بررسی', 2: 'تایید', 3: 'عدم تایید' } }]
             , listService: commentService.list
-            , onEdit: edit
-            , route: 'comment'
+            , onEdit: comment.main.changeState.edit
             , globalSearch: true
             , showRemove: true
             , options: () => {
@@ -1249,6 +1309,7 @@ var froalaOptionComment = {
                 } else {
                     commentService.edit(comment.Model).then((result) => {
                         loadingService.hide();
+                        comment.grid.getlist(false);
                         $timeout(function () {
                             toaster.pop('success', '', 'نظر ویرایش گردید');
                             cartable();
@@ -1267,6 +1328,11 @@ var froalaOptionComment = {
     function categoryPortalController($scope, $q, loadingService, $routeParams, categoryPortalService, $location, toaster, $timeout) {
         let category = $scope;
         category.Model = {};
+        category.main = {};
+        category.main.changeState = {
+            cartable: cartable,
+            edit:edit
+        }
         category.state = '';
         category.goToPageAdd = goToPageAdd;
         category.addCategory = addCategory;
@@ -1275,9 +1341,7 @@ var froalaOptionComment = {
             bindingObject: category
             , columns: [{ name: 'Title', displayName: 'عنوان مقاله' }]
             , listService: categoryPortalService.list
-            , onAdd: add
-            , onEdit: edit
-            , route: 'category-portal'
+            , onEdit: category.main.changeState.edit
             , globalSearch: true
         };
         init();
@@ -1307,22 +1371,32 @@ var froalaOptionComment = {
             $location.path('/category-portal/cartable');
         }
         function add() {
-            category.state = 'add';
-            select();
-            $location.path('/category-portal/add');
-        }
-        function edit(model) {
             loadingService.show();
             return $q.resolve().then(() => {
                 return select();
             }).then(() => {
+                category.state = 'add';
+                $location.path('/category-portal/add');
+            }).finally(loadingService.hide)
+
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return categoryPortalService.get(model.ID);
+            }).then((result) => {
+                category.Model = result;
                 if (category.Model.ParentID !== "00000000-0000-0000-0000-000000000000") {
                     $('#hassubmenu').prop('checked', true);
                     $("#ParentID").prop("disabled", false);
-                    category.state = 'edit';
-                    category.Model = model;
-                    $location.path(`/category-portal/edit/${category.Model.ID}`);
+                } else {
+                    $('#hassubmenu').prop('checked', false);
+                    $("#ParentID").prop("disabled", true);
                 }
+                return select();
+            }).then(() => {
+                category.state = 'edit';
+                $location.path(`/category-portal/edit/${category.Model.ID}`);
             }).finally(loadingService.hide);
 
         }
@@ -1334,6 +1408,7 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 return categoryPortalService.add(category.Model);
             }).then((result) => {
+                category.grid.getlist(false);
                 category.Model = result;
                 toaster.pop('success', '', 'دسته بندی جدید با موفقیت درج گردید');
                 loadingService.hide();
@@ -1350,6 +1425,7 @@ var froalaOptionComment = {
                 return categoryPortalService.edit(category.Model);
             }).then((result) => {
                 category.Model = result;
+                category.grid.getlist(false);
                 toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
                 $timeout(function () {
@@ -1469,6 +1545,7 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 articleService.add(article.Model).then((result) => {
                     article.Model = result;
+                    article.grid.getlist(false);
                     toaster.pop('success', '', 'مقاله جدید با موفقیت اضافه گردید');
                     loadingService.hide();
                     $timeout(function () {
@@ -1496,6 +1573,7 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 return articleService.edit(article.Model).then((result) => {
                     article.Model = result;
+                    article.grid.getlist(false);
                     toaster.pop('success', '', 'مقاله جدید با موفقیت ویرایش گردید');
                     loadingService.hide();
                     $timeout(function () {
@@ -1545,6 +1623,11 @@ var froalaOptionComment = {
     function newsController($scope, $q, loadingService, $routeParams, newsService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
         let news = $scope;
         news.Model = {};
+        news.main = {};
+        news.main.changeState = {
+            cartable: cartable,
+            edit:edit
+        }
         news.Model.listPicUploaded = [];
         news.Model.Errors = [];
         news.state = '';
@@ -1555,17 +1638,12 @@ var froalaOptionComment = {
         news.addNews = addNews;
         news.editNews = editNews;
         init();
-        news.main = {};
-        news.main.changeState = {
-            add: add,
-            edit: edit
-        }
         news.grid = {
             bindingObject: news
             , columns: [{ name: 'Title', displayName: 'عنوان خبر' }]
             , listService: newsService.list
             , deleteService: newsService.remove
-            , route: 'news'
+            , onEdit: news.main.changeState.edit
             , globalSearch: true
             , displayNameFormat: ['Title']
         };
@@ -1632,7 +1710,7 @@ var froalaOptionComment = {
                     news.Model.listPicUploaded = [].concat(result);
             }).then(() => {
                 news.state = 'edit';
-                //$location.path(`/article/edit/${model.ID}`);
+                $location.path(`/news/edit/${model.ID}`);
             })
         }
         function goToPageAdd() {
@@ -1657,6 +1735,7 @@ var froalaOptionComment = {
                         news.Model.listPicUploaded = [].concat(result);
                     news.pics = [];
                     news.pic.list = [];
+                    news.grid.getlist(false);
                     toaster.pop('success', '', 'خبر جدید با موفقیت اضافه گردید');
                     loadingService.hide();
                     $timeout(function () {
@@ -1682,43 +1761,44 @@ var froalaOptionComment = {
         function editNews() {
             loadingService.show();
             return $q.resolve().then(() => {
-                newsService.edit(news.Model).then((result) => {
-                    if (news.pic.list.length) {
-                        news.pics = [];
-                        if (!news.Model.listPicUploaded) {
-                            news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
-                        }
-                        return attachmentService.add(news.pics);
-                    }
-                    news.Model = result;
-                }).then((result) => {
-                    return attachmentService.list({ ParentID: news.Model.ID });
-                }).then((result) => {
-                    if (result && result.length > 0)
-                        news.Model.listPicUploaded = [].concat(result);
+                return newsService.edit(news.Model);
+            }).then((result) => {
+                if (news.pic.list.length) {
                     news.pics = [];
-                    news.pic.list = [];
-                    toaster.pop('success', '', 'خبر جدید با موفقیت ویرایش گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 1000);//return cartable
-                }).catch((error) => {
-                    if (!error) {
-                        var listError = error.split('&&');
-                        news.Model.Errors = [].concat(listError);
-                        $('#content > div').animate({
-                            scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
-                        }, 'slow');
-                    } else {
-                        $('#content > div').animate({
-                            scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
-                        }, 'slow');
+                    if (!news.Model.listPicUploaded) {
+                        news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
                     }
+                    return attachmentService.add(news.pics);
+                }
+                news.Model = result;
+            }).then((result) => {
+                return attachmentService.list({ ParentID: news.Model.ID });
+            }).then((result) => {
+                if (result && result.length > 0)
+                    news.Model.listPicUploaded = [].concat(result);
+                news.pics = [];
+                news.pic.list = [];
+                news.grid.getlist(false);
+                toaster.pop('success', '', 'خبر جدید با موفقیت ویرایش گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    cartable();
+                }, 1000);//return cartable
+            }).catch((error) => {
+                if (!error) {
+                    var listError = error.split('&&');
+                    news.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    $('#content > div').animate({
+                        scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
+                    }, 'slow');
+                }
 
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                }).finally(loadingService.hide);
-            })
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
         }
         function fillDropIsShow() {
             return newsService.typeShow().then((result) => {
@@ -1886,7 +1966,8 @@ var froalaOptionComment = {
         menu.addMenu = addMenu;
         menu.editMenu = editMenu;
         menu.changeState = {
-            cartable: cartable
+            cartable: cartable,
+            edit:edit
         }
         menu.tree = {
             data: []
@@ -2217,11 +2298,17 @@ var froalaOptionComment = {
     function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
         let events = $scope;
         events.Model = {};
+        events.main = {};
         events.Model.listPicUploaded = [];
         events.Model.Errors = [];
         events.state = '';
         events.pic = { type: '8', allowMultiple: false };
         events.pic.list = [];
+        events.main.changeState = {
+            cartable: cartable,
+            edit: edit,
+            add:add
+        }
         events.froalaOption = angular.copy(froalaOption);
         events.goToPageAdd = goToPageAdd;
         events.addEvents = addEvents;
@@ -2238,7 +2325,7 @@ var froalaOptionComment = {
             , columns: [{ name: 'Title', displayName: 'عنوان رویداد' }]
             , listService: eventsService.list
             , deleteService: eventsService.remove
-            , route: 'events'
+            , onEdit: events.main.changeState.edit
             , globalSearch: true
             , displayNameFormat: ['Title']
         };
@@ -2305,7 +2392,7 @@ var froalaOptionComment = {
                     events.Model.listPicUploaded = [].concat(result);
             }).then(() => {
                 events.state = 'edit';
-                //$location.path(`/article/edit/${model.ID}`);
+                $location.path(`/events/edit/${model.ID}`);
             })
         }
         function goToPageAdd() {
@@ -2330,6 +2417,7 @@ var froalaOptionComment = {
                         events.Model.listPicUploaded = [].concat(result);
                     events.pics = [];
                     events.pic.list = [];
+                    events.grid.getlist(false);
                     toaster.pop('success', '', 'رویداد جدید با موفقیت اضافه گردید');
                     loadingService.hide();
                     $timeout(function () {
@@ -2371,6 +2459,7 @@ var froalaOptionComment = {
                         events.Model.listPicUploaded = [].concat(result);
                     events.pics = [];
                     events.pic.list = [];
+                    events.grid.getlist(false);
                     toaster.pop('success', '', 'رویداد جدید با موفقیت ویرایش گردید');
                     loadingService.hide();
                     $timeout(function () {
@@ -2498,6 +2587,7 @@ var froalaOptionComment = {
                     toaster.pop('error', '', 'وضعیت نظر را تعیین نمایید');
                 } else {
                     commentService.edit(comment.Model).then((result) => {
+                        comment.grid.getlist(false);
                         loadingService.hide();
                         $timeout(function () {
                             toaster.pop('success', '', 'نظر ویرایش گردید');

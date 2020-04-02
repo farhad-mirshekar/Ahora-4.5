@@ -61,7 +61,7 @@
             <div class="form-group pull-left">
                 <button type="submit" ng-click="addCategory()" ng-if="state ==='add'" class="btn btn-success">ثبت</button>
                 <button type="submit" ng-click="editCategory()" ng-if="state ==='edit'" class="btn btn-primary">ویرایش</button>
-                <a href="#/category-portal/cartable" class="btn btn-cancel">بازگشت</a>
+                <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
             </div>
         </div>
     </div>

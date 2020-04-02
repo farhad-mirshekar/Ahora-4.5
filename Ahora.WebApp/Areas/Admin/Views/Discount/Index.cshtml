@@ -1,6 +1,7 @@
 ﻿<div class="card" ng-show="state ==='cartable'">
     <div class="card-header">
         <span class="card-title">کارتابل مدیریت تخفیف محصولات</span>
+        <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
     </div>
     <div class="card-body">
         <portal-grid obj="grid"></portal-grid>
@@ -44,7 +45,7 @@
             <div class="btn-group-justified pull-left">
                 <button type="submit" ng-click="editDiscount()" ng-if="state ==='edit'" class="btn btn-primary">ویرایش</button>
                 <button type="submit" ng-click="addDiscount()" ng-if="state ==='add'" class="btn btn-success">افزودن</button>
-                <a href="#/discount/cartable" class="btn btn-cancel">بازگشت</a>
+                <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
             </div>
         </div>
     </div>
