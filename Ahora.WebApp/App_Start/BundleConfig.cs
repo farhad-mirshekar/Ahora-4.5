@@ -24,8 +24,7 @@ namespace Ahora.WebApp
                 "~/scripts/bootstrap4/bootstrap.min.js"
                 ));
             bundles.Add(new ScriptBundle("~/bundles/mainSite").Include(
-                "~/scripts/jquery.unobtrusive-ajax.js",
-                "~/scripts/custom/comment.js"
+                "~/scripts/jquery.unobtrusive-ajax.js"
                 ));
 
         }

@@ -2,102 +2,7 @@
 Messsage.success = '<div id="alert" class="alert alert-success"><button type="button" class="close" data-dismiss="alert">&times;</button> رای شما با موفقیت ثبت شد </div>';
 Messsage.login = '<div id="alert" class="alert alert-danger"><button type="button" class="close" data-dismiss="alert">&times;</button> برای رای دادن باید عضو سایت باشید </div>';
 Messsage.duplicate = '<div id="alert" class="alert alert-info"><button type="button" class="close" data-dismiss="alert">×</button>قبلا رای داده اید!</div>';
-////////////////////////////////////////////////////////////////////////////
-(function ($) {
-    $.fn.InfiniteScroll = function (options) {
-        var defaults = {
-            moreInfoDiv: '#MoreInfoDiv',
-            progressDiv: '#Progress',
-            loadInfoUrl: '/',
-            loginUrl: '/login',
-            errorHandler: null,
-            completeHandler: null,
-            noMoreInfoHandler: null
-        };
-        options = $.extend(defaults, options);
-
-        var showProgress = function () {
-            $("#Progress").fadeIn('slow');
-        };
-
-        var hideProgress = function () {
-            $("#Progress").fadeOut('fast');
-
-        };
-
-        var showbutton = function () {
-            $('#moreInfoButton').show();
-        }
-
-        return this.each(function () {
-            var moreInfoButton = $(this);
-            var page = 1;
-            $(moreInfoButton).click(function (event) {
-                event.preventDefault();
-
-                showProgress();
-                $('#moreInfoButton').hide();
-                $.ajax({
-                    type: "POST",
-                    url: options.loadInfoUrl,
-                    data: JSON.stringify({ page: page }),
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    complete: function (xhr, status) {
-                        hideProgress();
-                        window.setTimeout(showbutton, 800);
-                        var data = xhr.responseText;
-
-                        if (xhr.status == 403) {
-                            window.location = options.loginUrl;
-                        }
-                        else if (status === 'error' || !data) {
-                            if (options.errorHandler) {
-                                hideProgress();
-
-                                options.errorHandler(this);
-                            }
-                        }
-                        else {
-                            if (data === 'no-more') {
-                                if (options.noMoreInfoHandler) {
-                                    hideProgress();
-
-                                    options.noMoreInfoHandler(this);
-                                }
-                            }
-                            else {
-                                hideProgress();
-
-                                var $boxes = $(data);
-                                $(options.moreInfoDiv).append($boxes);
-                                console.log(++page);
-                            }
-
-                        }
-                        hideProgress();
-
-                        if (options.completeHandler)
-                            options.completeHandler(this);
-                    }
-                });
-            });
-        });
-    };
-})(jQuery);
-
-$("#moreInfoButton").InfiniteScroll({
-    moreInfoDiv: '#MoreInfoDiv',
-    progressDiv: '#loadingMessage',
-    loadInfoUrl: $("#moreInfoButton").attr('href'),
-    errorHandler: function () {
-        var noty = window.noty({ text: "خطایی رخ داده است", type: 'error', timeout: 2500 });
-    },
-    noMoreInfoHandler: function () {
-
-        var noty = window.noty({ text: "مطلب بیشتری در دسترس نیست", type: 'information', timeout: 2500 });
-    }
-});
+Messsage.duplicate = '<div id="alert" class="alert alert-info"><button type="button" class="close" data-dismiss="alert">×</button>قبلا رای داده اید!</div>';
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 var AddComment = new Object();
 
@@ -128,7 +33,7 @@ $('div.comment-like-link').children('span').on('click', function (event) {
     event.preventDefault();
 });
 
-$('div.comment-like-link').on('click', function () {
+$('div.card-footer >div.pull-right> div.comment-like-link').on('click', function () {
     var $this = $(this).children('span:nth-child(2)');
     var $loading = $('div#commentLikeLoading' + $this.attr('data-comment-id')).fadeIn('slow');
     $.ajax({

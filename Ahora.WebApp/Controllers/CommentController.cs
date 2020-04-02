@@ -135,7 +135,7 @@ namespace Ahora.WebApp.Controllers
         {
             string result = "";
             int count = 0;
-            if (SQLHelper.CheckGuidNull(User.Identity.Name) == null)
+            if (string.IsNullOrEmpty(User.Identity.Name))
                 return Json(new { result = "login", CommentID = CommentID });
 
             var isUserLike = _commentMapuserService.IsUserLike(new CommentMapUser {CommentID=CommentID,UserID= SQLHelper.CheckGuidNull(User.Identity.Name) });

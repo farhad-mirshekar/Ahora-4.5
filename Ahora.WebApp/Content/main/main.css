@@ -133,3 +133,20 @@ footer {
     footer > div.row > div.col-md-6 > a > i {
         font-size: 24px !important;
     }
+/**************************Start Css Comment**********************/
+ul#tree li {
+    list-style: none;
+}
+
+.comment-container {
+    margin: 10px;
+    padding: 0;
+    text-align: right;
+}
+
+div.comment-container li {
+    list-style-type: none;
+}
+
+
+/**************************End Css Comment**********************/
