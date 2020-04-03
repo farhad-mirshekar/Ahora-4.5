@@ -735,6 +735,26 @@ VALUES('SiteDescription','')
 INSERT INTO pbl.GeneralSetting (Name,Value)
 VALUES('CountShowEvents','')
 Go
+CREATE TABLE [pbl].[Tags](
+	[ID] [uniqueidentifier]  NOT NULL,
+	[Name] [Nvarchar](MAX) NOT NULL,
+	[CreationDate] [smalldatetime] NULL,
+CONSTRAINT [PK_Tags] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+CREATE TABLE [pbl].[Tags_Mapping](
+	[TagID] [uniqueidentifier]  NOT NULL,
+	[DocumentID] [uniqueidentifier] NOT NULL
+)
+GO
+ALTER TABLE [pbl].[Tags_Mapping]  WITH CHECK ADD  CONSTRAINT [Tags_Mapping_Tag] FOREIGN KEY([TagID])
+REFERENCES [pbl].[Tags] ([ID])
+ON DELETE CASCADE
+GO
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
 GO

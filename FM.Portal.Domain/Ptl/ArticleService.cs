@@ -12,9 +12,12 @@ namespace FM.Portal.Domain
     public class ArticleService : IArticleService
     {
         private readonly IArticleDataSource _dataSource;
-        public ArticleService(IArticleDataSource dataSource)
+        private readonly ITagsService _tagsService; 
+        public ArticleService(IArticleDataSource dataSource
+                             ,ITagsService tagsService)
         {
             _dataSource = dataSource;
+            _tagsService = tagsService;
         }
         public Result<Article> Add(Article model)
         {
@@ -23,6 +26,15 @@ namespace FM.Portal.Domain
             string trackingCode = pc.GetYear(dt).ToString().Substring(2, 2) +
                                   pc.GetMonth(dt).ToString();
             model.TrackingCode = trackingCode;
+            if(model.Tags.Count > 0)
+            {
+                var tags =new List<Tags>();
+                foreach (var item in model.Tags)
+                {
+                    tags.Add(new Tags { Name = item });
+                }
+                //_tagsService.Insert(tags);
+            }
             return _dataSource.Insert(model);
         }
 
@@ -30,10 +42,40 @@ namespace FM.Portal.Domain
         => _dataSource.Delete(ID);
 
         public Result<Article> Edit(Article model)
-        => _dataSource.Update(model);
+        {
+            if (model.Tags.Count > 0)
+            {
+                var tags = new List<Tags>();
+                foreach (var item in model.Tags)
+                {
+                    tags.Add(new Tags { Name = item });
+                }
+                _tagsService.Insert(tags,model.ID);
+            }
+            else
+            {
+                _tagsService.Delete(model.ID);
+            }
+
+            return _dataSource.Update(model);
+        }
 
         public Result<Article> Get(Guid ID)
-        => _dataSource.Get(ID);
+        {
+            var article = _dataSource.Get(ID);
+            var resultTag = _tagsService.List(ID);
+            if (resultTag.Success)
+            {
+                List<string> tags = new List<string>();
+                foreach (var item in resultTag.Data)
+                {
+                    tags.Add(item.Name);
+                }
+                article.Data.Tags = tags;
+            }
+
+            return article;
+        }
 
         public Result<Article> Get(string TrackingCode)
         => _dataSource.Get(TrackingCode);

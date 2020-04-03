@@ -77,6 +77,7 @@
     <Compile Include="DataSources\Pbl\GeneralSettingDataSource.cs" />
     <Compile Include="DataSources\Pbl\MenuDataSource.cs" />
     <Compile Include="DataSources\Pbl\PagesDataSource.cs" />
+    <Compile Include="DataSources\Pbl\TagsDataSource.cs" />
     <Compile Include="DataSources\Ptl\ArticleDataSource.cs" />
     <Compile Include="DataSources\Ptl\CategoryDataSource.cs" />
     <Compile Include="DataSources\Ptl\EventsDataSource.cs" />
@@ -172,6 +173,10 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetsPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.spModifyPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Tags\pbl.spGetTagsByDocumentID.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Tags\pbl.spDeleteTagsByDocumnetID.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Tags\pbl.spModifyTags.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Tags_Mapping\pbl.spModifyTagsMapping.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spDeleteArticle.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetArticle.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetsArticle.sql" />

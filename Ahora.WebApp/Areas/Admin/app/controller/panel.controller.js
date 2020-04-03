@@ -1448,11 +1448,12 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('articleController', articleController);
-    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService','attachmentService'];
+    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService'];
     function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
         let article = $scope;
         article.Model = {};
         article.Model.Errors = [];
+        article.Tags = [];
         article.state = '';
         article.Model.listPicUploaded = [];
         article.pic = { type: '4', allowMultiple: false };
@@ -1498,6 +1499,9 @@ var froalaOptionComment = {
             }).finally(loadingService.hide);
         }
         function cartable() {
+            $('.js-example-tags').empty();
+            article.Model = {};
+            article.Tags = [];
             article.state = 'cartable';
             $location.path('/article/cartable');
         }
@@ -1517,7 +1521,20 @@ var froalaOptionComment = {
         }
         function edit(model) {
             return $q.resolve().then(() => {
+                return articleService.get(model.ID);
+            }).then((model) => {
                 article.Model = model;
+                if (article.Model.Tags !== null && article.Model.Tags.length > 0) {
+                    for (var i = 0; i < article.Model.Tags.length; i++) {
+                        article.Tags.push({ id: i, text: article.Model.Tags[i], selected: true });
+                    }
+                }
+                $('.js-example-tags').select2({
+                    tags: true,
+                    placeholder: 'کلمات کلیدی خود را وارد و جهت جداسازی از Enter استفاده نمایید',
+                    closeOnSelect: false,
+                    data: article.Tags
+                });
                 if (article.Model.IsShow) {
                     article.Model.IsShow = 1;
                 }

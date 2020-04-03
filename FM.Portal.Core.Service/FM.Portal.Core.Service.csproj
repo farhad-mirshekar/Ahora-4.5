@@ -72,6 +72,7 @@
     <Compile Include="Pbl\IGeneralSettingService.cs" />
     <Compile Include="Pbl\IMenuService .cs" />
     <Compile Include="Pbl\IPagesService.cs" />
+    <Compile Include="Pbl\ITagsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ptl\IArticleService.cs" />
     <Compile Include="Ptl\ICategoryService.cs" />

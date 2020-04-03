@@ -73,6 +73,7 @@
     <Compile Include="Pbl\IGeneralSettingDataSource.cs" />
     <Compile Include="Pbl\IMenuDataSource.cs" />
     <Compile Include="Pbl\IPagesDataSource.cs" />
+    <Compile Include="Pbl\ITagsDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ptl\IArticleDataSource.cs" />
     <Compile Include="Ptl\ICategoryDataSource.cs" />
