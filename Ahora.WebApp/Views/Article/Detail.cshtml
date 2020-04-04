@@ -1,4 +1,5 @@
 ﻿@model FM.Portal.Core.Model.Article
+@using System.Linq;
 @{
     ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -41,6 +42,27 @@
                 <div class="p-1 text-dark">@Html.Raw(Model.Body)</div>
             </div>
         </div>
+        @if (Model.Tags != null && Model.Tags.Count > 0)
+        {
+            <div class="card-footer">
+                <label>برچسب ها :</label>
+                @{
+                    var lastitem = Model.Tags.Last();
+                    foreach (var item in Model.Tags)
+                    {
+                        if (item != lastitem)
+                        {
+                            <label class="badge badge-info p-2">@item</label> @:|
+                        }
+                        else
+                        {
+                            <label class="badge badge-info p-2">@item</label>
+                        }
+
+                    }
+                }
+            </div>
+        }
     </article>
     <section class="card">
         <div class="card-header">

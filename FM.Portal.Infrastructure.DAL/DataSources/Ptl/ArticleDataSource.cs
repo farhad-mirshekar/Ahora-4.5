@@ -25,12 +25,12 @@ namespace FM.Portal.Infrastructure.DAL
                 param[0] = new SqlParameter("@ID", ID);
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    var result= SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteArticle", param);
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteArticle", param);
                     return Result<int>.Successful(data: result);
                 }
-                    
+
             }
-            catch (Exception) { return Result<int>.Failure(message:"خطایی اتفاق افتاده است"); }
+            catch (Exception) { return Result<int>.Failure(message: "خطایی اتفاق افتاده است"); }
         }
 
         public Result<Article> Get(Guid ID)
@@ -74,7 +74,7 @@ namespace FM.Portal.Infrastructure.DAL
                 }
                 return Result<Article>.Successful(data: obj);
             }
-            catch(Exception e) { return Result<Article>.Failure(); }
+            catch (Exception e) { return Result<Article>.Failure(); }
         }
 
         public Result<Article> Get(string TrackingCode)
@@ -123,10 +123,8 @@ namespace FM.Portal.Infrastructure.DAL
         }
 
         public Result<Article> Insert(Article model)
-        {
-            model.ID = Guid.NewGuid();
-            return Modify(true, model);
-        }
+            => Modify(true, model);
+
 
         public DataTable List()
         {
@@ -149,10 +147,9 @@ namespace FM.Portal.Infrastructure.DAL
         }
 
         public Result<Article> Update(Article model)
-        {
-            return Modify(false, model);
-        }
-        private Result<Article> Modify(bool isNewRecord , Article model)
+            => Modify(false, model);
+
+        private Result<Article> Modify(bool isNewRecord, Article model)
         {
             try
             {

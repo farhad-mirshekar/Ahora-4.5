@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Result;

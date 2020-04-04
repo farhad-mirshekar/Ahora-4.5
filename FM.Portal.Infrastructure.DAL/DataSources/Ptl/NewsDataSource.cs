@@ -121,10 +121,8 @@ namespace FM.Portal.Infrastructure.DAL
         }
 
         public Result<News> Insert(News model)
-        {
-            model.ID = Guid.NewGuid();
-            return Modify(true, model);
-        }
+            => Modify(true, model);
+
 
         public DataTable List()
         {
@@ -147,9 +145,8 @@ namespace FM.Portal.Infrastructure.DAL
         }
 
         public Result<News> Update(News model)
-        {
-            return Modify(false, model);
-        }
+            => Modify(false, model);
+
         private Result<News> Modify(bool isNewRecord, News model)
         {
             try

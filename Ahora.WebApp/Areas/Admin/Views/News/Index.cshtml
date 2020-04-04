@@ -92,7 +92,12 @@
                                 <span class="input-group-text"> {{Model.UrlDesc.length > 0 ? Model.UrlDesc.length : 0}}/70</span>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label for="Body" class="control-label">کلمات کلیدی</label>
+                            <div class="col-md-10">
+                                <select class="js-example-tags form-control" ng-model="Model.Tags" multiple="multiple"></select>
+                            </div>
+                        </div>
                     </uib-tab>
                     <uib-tab heading="آپلود">
                         <portal-upload main="Model"

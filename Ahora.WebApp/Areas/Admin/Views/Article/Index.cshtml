@@ -1,9 +1,4 @@
-﻿<style>
-    .select2-container {
-        width: 100% !important;
-    }
-</style>
-<div class="card" ng-show="state ==='cartable'">
+﻿<div class="card" ng-show="state ==='cartable'">
     <div class="card-header">
         <span class="main-title">کارتابل مدیریت مقالات</span>
         <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
@@ -120,14 +115,12 @@
 </section>
 
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
-
-
-@*<script>
-    $(document).ready(function () {
-        $('.js-example-tags').select2({
-            tags: true,
-            placeholder: 'کلمات کلیدی خود را وارد و جهت جداسازی از Enter استفاده نمایید',
-            closeOnSelect: false
+<script>
+        $(document).ready(function () {
+            $('.js-example-tags').select2({
+                tags: true,
+                placeholder: 'کلمات کلیدی خود را وارد و جهت جداسازی از Enter استفاده نمایید',
+                closeOnSelect: false
+            });
         });
-    });
-</script>*@
+    </script>

@@ -122,10 +122,8 @@ namespace FM.Portal.Infrastructure.DAL
         }
 
         public Result<Events> Insert(Events model)
-        {
-            model.ID = Guid.NewGuid();
-            return Modify(true, model);
-        }
+            => Modify(true, model);
+
 
         public DataTable List()
         {
@@ -148,9 +146,8 @@ namespace FM.Portal.Infrastructure.DAL
         }
 
         public Result<Events> Update(Events model)
-        {
-            return Modify(false, model);
-        }
+            => Modify(false, model);
+
         private Result<Events> Modify(bool isNewRecord, Events model)
         {
             try

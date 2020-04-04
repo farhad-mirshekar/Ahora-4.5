@@ -1530,9 +1530,6 @@ var froalaOptionComment = {
                     }
                 }
                 $('.js-example-tags').select2({
-                    tags: true,
-                    placeholder: 'کلمات کلیدی خود را وارد و جهت جداسازی از Enter استفاده نمایید',
-                    closeOnSelect: false,
                     data: article.Tags
                 });
                 if (article.Model.IsShow) {
@@ -1677,6 +1674,7 @@ var froalaOptionComment = {
         let news = $scope;
         news.Model = {};
         news.main = {};
+        news.Tags = [];
         news.main.changeState = {
             cartable: cartable,
             edit:edit
@@ -1719,6 +1717,8 @@ var froalaOptionComment = {
             }).finally(loadingService.hide);
         }
         function cartable() {
+            $('.js-example-tags').empty();
+            news.Tags = [];
             news.state = 'cartable';
             $location.path('/news/cartable');
         }
@@ -1731,6 +1731,7 @@ var froalaOptionComment = {
             }).then((result) => {
                 return fillDropCategory();
             }).then(() => {
+                news.Model = {};
                 news.state = 'add';
                 $location.path('/news/add');
             }).finally(loadingService.hide);
@@ -1738,7 +1739,9 @@ var froalaOptionComment = {
         }
         function edit(model) {
             return $q.resolve().then(() => {
-                news.Model = angular.copy(model);
+                return newsService.get(model.ID);
+            }).then((result) => {
+                news.Model = angular.copy(result);
                 if (news.Model.IsShow) {
                     news.Model.IsShow = 1;
                 }
@@ -1751,6 +1754,15 @@ var froalaOptionComment = {
                 else {
                     news.Model.CommentStatus = 0;
                 }
+                if (news.Model.Tags !== null && news.Model.Tags.length > 0) {
+                    for (var i = 0; i < news.Model.Tags.length; i++) {
+                        news.Tags.push({ id: i, text: news.Model.Tags[i], selected: true });
+                    }
+                }
+                $('.js-example-tags').select2({
+                    tags: true,
+                    data: news.Tags
+                });
                 return fillDropIsShow();
             }).then(() => {
                 return fillDropComment();
@@ -2381,6 +2393,7 @@ var froalaOptionComment = {
         let events = $scope;
         events.Model = {};
         events.main = {};
+        events.Tags = [];
         events.Model.listPicUploaded = [];
         events.Model.Errors = [];
         events.state = '';
@@ -2430,6 +2443,8 @@ var froalaOptionComment = {
             }).finally(loadingService.hide);
         }
         function cartable() {
+            $('.js-example-tags').empty();
+            events.Tags = [];
             events.state = 'cartable';
             $location.path('/events/cartable');
         }
@@ -2449,7 +2464,9 @@ var froalaOptionComment = {
         }
         function edit(model) {
             return $q.resolve().then(() => {
-                events.Model = angular.copy(model);
+                return eventsService.get(model.ID);
+            }).then((result) => {
+                events.Model = angular.copy(result);
                 if (events.Model.IsShow) {
                     events.Model.IsShow = 1;
                 }
@@ -2462,6 +2479,14 @@ var froalaOptionComment = {
                 else {
                     events.Model.CommentStatus = 0;
                 }
+                if (events.Model.Tags !== null && events.Model.Tags.length > 0) {
+                    for (var i = 0; i < events.Model.Tags.length; i++) {
+                        events.Tags.push({ id: i, text: events.Model.Tags[i], selected: true });
+                    }
+                }
+                $('.js-example-tags').select2({
+                    data: events.Tags
+                }); 
                 return fillDropIsShow();
             }).then(() => {
                 return fillDropComment();

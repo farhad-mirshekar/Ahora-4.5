@@ -26,6 +26,7 @@ namespace FM.Portal.Domain
             string trackingCode = pc.GetYear(dt).ToString().Substring(2, 2) +
                                   pc.GetMonth(dt).ToString();
             model.TrackingCode = trackingCode;
+            model.ID = Guid.NewGuid();
             if(model.Tags.Count > 0)
             {
                 var tags =new List<Tags>();
@@ -33,7 +34,7 @@ namespace FM.Portal.Domain
                 {
                     tags.Add(new Tags { Name = item });
                 }
-                //_tagsService.Insert(tags);
+                _tagsService.Insert(tags,model.ID);
             }
             return _dataSource.Insert(model);
         }
@@ -63,22 +64,40 @@ namespace FM.Portal.Domain
         public Result<Article> Get(Guid ID)
         {
             var article = _dataSource.Get(ID);
-            var resultTag = _tagsService.List(ID);
-            if (resultTag.Success)
+            if (article.Success)
             {
-                List<string> tags = new List<string>();
-                foreach (var item in resultTag.Data)
+                var resultTag = _tagsService.List(ID);
+                if (resultTag.Success)
                 {
-                    tags.Add(item.Name);
+                    List<string> tags = new List<string>();
+                    foreach (var item in resultTag.Data)
+                    {
+                        tags.Add(item.Name);
+                    }
+                    article.Data.Tags = tags;
                 }
-                article.Data.Tags = tags;
             }
-
             return article;
         }
 
         public Result<Article> Get(string TrackingCode)
-        => _dataSource.Get(TrackingCode);
+        {
+            var article = _dataSource.Get(TrackingCode);
+            if (article.Success)
+            {
+                var resultTag = _tagsService.List(article.Data.ID);
+                if (resultTag.Success)
+                {
+                    List<string> tags = new List<string>();
+                    foreach (var item in resultTag.Data)
+                    {
+                        tags.Add(item.Name);
+                    }
+                    article.Data.Tags = tags;
+                }
+            }
+            return article;
+        }
 
         public Result<List<Article>> List()
         {

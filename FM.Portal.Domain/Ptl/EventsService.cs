@@ -12,9 +12,12 @@ namespace FM.Portal.Domain
     public class EventsService :IEventsService
     {
         private readonly IEventsDataSource _dataSource;
-        public EventsService(IEventsDataSource dataSource)
+        private readonly ITagsService _tagsService;
+        public EventsService(IEventsDataSource dataSource
+                            , ITagsService tagsService)
         {
             _dataSource = dataSource;
+            _tagsService = tagsService;
         }
         public Result<Events> Add(Events model)
         {
@@ -24,19 +27,76 @@ namespace FM.Portal.Domain
                                   pc.GetMonth(dt).ToString() +
                                   pc.GetDayOfMonth(dt).ToString();
             model.TrackingCode = trackingCode;
+            model.ID = Guid.NewGuid();
+            if (model.Tags.Count > 0)
+            {
+                var tags = new List<Tags>();
+                foreach (var item in model.Tags)
+                {
+                    tags.Add(new Tags { Name = item });
+                }
+                _tagsService.Insert(tags, model.ID);
+            }
             return _dataSource.Insert(model);
         }
 
         public Result<int> Delete(Guid ID)
        => _dataSource.Delete(ID);
         public Result<Events> Edit(Events model)
-        => _dataSource.Update(model);
+        {
+            if (model.Tags.Count > 0)
+            {
+                var tags = new List<Tags>();
+                foreach (var item in model.Tags)
+                {
+                    tags.Add(new Tags { Name = item });
+                }
+                _tagsService.Insert(tags, model.ID);
+            }
+            else
+            {
+                _tagsService.Delete(model.ID);
+            }
+            return _dataSource.Update(model);
+        }
 
         public Result<Events> Get(Guid ID)
-        => _dataSource.Get(ID);
+        {
+            var events = _dataSource.Get(ID);
+            if (events.Success)
+            {
+                var resultTag = _tagsService.List(ID);
+                if (resultTag.Success)
+                {
+                    List<string> tags = new List<string>();
+                    foreach (var item in resultTag.Data)
+                    {
+                        tags.Add(item.Name);
+                    }
+                    events.Data.Tags = tags;
+                }
+            }
+            return events;
+        }
 
         public Result<Events> Get(string TrackingCode)
-        => _dataSource.Get(TrackingCode);
+        {
+            var events = _dataSource.Get(TrackingCode);
+            if (events.Success)
+            {
+                var resultTag = _tagsService.List(events.Data.ID);
+                if (resultTag.Success)
+                {
+                    List<string> tags = new List<string>();
+                    foreach (var item in resultTag.Data)
+                    {
+                        tags.Add(item.Name);
+                    }
+                    events.Data.Tags = tags;
+                }
+            }
+            return events;
+        }
 
         public Result<List<Events>> List()
         {
