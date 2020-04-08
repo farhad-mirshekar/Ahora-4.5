@@ -4,13 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>@ViewBag.Title</title>
-    @RenderSection("Metatag",false)
+    @RenderSection("Metatag", false)
     @Styles.Render("~/bundles/bootstrap4")
     @Styles.Render("~/bundles/main")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryvalidate")
     @Scripts.Render("~/bundles/mainSite")
     @Scripts.Render("~/bundles/bootstrap4js")
+    <script src="~/scripts/noty/packaged/jquery.noty.packaged.min.js"></script>
+    <script src="~/scripts/custom/ajaxcart.js"></script>
     @RenderSection("Head", false)
 </head>
 
@@ -21,16 +23,8 @@
         </header>
         @RenderSection("BannerSection", false)
 
-        <main class="row" role="main">
-            <div class="col-md-9 mt-2">
-                @RenderSection("BodySection", false)
-            </div>
-            <div class="col-md-3 mt-2">
-                @{ Html.RenderAction("GetLastArticle", "Home");}
-                @{ Html.RenderAction("GetLastNews", "Home");}
-                @{ Html.RenderAction("GetLastEvents", "Home");}
-                @RenderSection("SideLeftSection", false)
-            </div>
+        <main role="main">
+            @RenderSection("BodySection", false)
             @RenderBody()
         </main>
     </div>
@@ -43,13 +37,9 @@
             }
             var $subMenu = $(this).next(".dropdown-menu");
             $subMenu.toggleClass('show');
-
-
             $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function (e) {
                 $('.dropdown-submenu .show').removeClass("show");
             });
-
-
             return false;
         });
     </script>

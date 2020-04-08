@@ -62,9 +62,9 @@ namespace Ahora.WebApp.Controllers
                     var product = _productService.Get(item.ProductID);
                     if (product.Success)
                     {
-                        var attachment = _attachmentService.List(product.Data.ID);
-                        var data = attachment.Data;
-                        var picUrl = data.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault();
+                        var attachmentResult = _attachmentService.List(product.Data.ID);
+                        var attachment = attachmentResult.Data;
+                        var picUrl = $"{attachment.Select(x=>x.Path).First()}/{attachment.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
                         List<AttributeJsonVM> attribute = new List<AttributeJsonVM>();
                         if(item.AttributeJson != "")
                         {
@@ -118,9 +118,9 @@ namespace Ahora.WebApp.Controllers
                     var product = _productService.Get(item.ProductID);
                     if (product.Success)
                     {
-                        var attachment = _attachmentService.List(product.Data.ID);
-                        var data = attachment.Data;
-                        var picUrl = data.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault();
+                        var attachmentResult = _attachmentService.List(product.Data.ID);
+                        var attachment = attachmentResult.Data;
+                        var picUrl = $"{attachment.Select(x => x.Path).First()}/{attachment.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
                         List<AttributeJsonVM> attribute = new List<AttributeJsonVM>();
                         if (item.AttributeJson != "")
                         {

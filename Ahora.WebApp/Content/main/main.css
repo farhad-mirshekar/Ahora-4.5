@@ -147,6 +147,69 @@ ul#tree li {
 div.comment-container li {
     list-style-type: none;
 }
-
-
 /**************************End Css Comment**********************/
+/**************************Start Css Product********************/
+#product-description {
+}
+
+    #product-description > p {
+        margin-top:30px;
+        font-size:20px;
+        color:red;
+    }
+
+    #product-description > ul {
+        list-style-type: circle;
+        line-height: 30px;
+    }
+.c-params__list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 70px;
+}
+
+    .c-params__list li {
+        display: -ms-flexbox;
+        display: -webkit-box;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin: 8px -8px;
+    }
+
+.c-params__list-key, .c-params__list-value {
+    padding-right: 8px;
+    padding-left: 8px;
+}
+
+    .c-params__list-key .block, .c-params__list-value .block {
+        display: block;
+        background: #fafafa;
+        padding: 14px 18px 12px;
+        font-size: 14px;
+        line-height: 1.692;
+        color: #000000;
+        letter-spacing: -.3px;
+        min-height: 47px;
+        position: relative;
+    }
+#fullDesc {
+    margin-top: 15px;
+}
+
+    #fullDesc > p {
+        padding: 5px 30px;
+        line-height: 30px;
+    }
+
+    #fullDesc > ul {
+        font-size: 20px;
+        list-style: none;
+    }
+
+    #fullDesc > blockquote p {
+        font-size: 14px;
+        padding: 5px 30px;
+        line-height: 30px;
+    }
+/**************************End Css Product**********************/

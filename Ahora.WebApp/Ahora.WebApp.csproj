@@ -1883,6 +1883,24 @@
     <Content Include="Scripts\bootstrap4\popper-utils.min.js" />
     <Content Include="Scripts\bootstrap4\popper.js" />
     <Content Include="Scripts\bootstrap4\popper.min.js" />
+    <Content Include="Scripts\noty\jquery.noty.js" />
+    <Content Include="Scripts\noty\layouts\bottom.js" />
+    <Content Include="Scripts\noty\layouts\bottomCenter.js" />
+    <Content Include="Scripts\noty\layouts\bottomLeft.js" />
+    <Content Include="Scripts\noty\layouts\bottomRight.js" />
+    <Content Include="Scripts\noty\layouts\center.js" />
+    <Content Include="Scripts\noty\layouts\centerLeft.js" />
+    <Content Include="Scripts\noty\layouts\centerRight.js" />
+    <Content Include="Scripts\noty\layouts\inline.js" />
+    <Content Include="Scripts\noty\layouts\top.js" />
+    <Content Include="Scripts\noty\layouts\topCenter.js" />
+    <Content Include="Scripts\noty\layouts\topLeft.js" />
+    <Content Include="Scripts\noty\layouts\topRight.js" />
+    <Content Include="Scripts\noty\packaged\jquery.noty.packaged.js" />
+    <Content Include="Scripts\noty\packaged\jquery.noty.packaged.min.js" />
+    <Content Include="Scripts\noty\themes\bootstrap.js" />
+    <Content Include="Scripts\noty\themes\default.js" />
+    <Content Include="Scripts\noty\themes\relax.js" />
     <Content Include="Scripts\sitemap.xml" />
     <Content Include="Scripts\smart-table.js" />
     <Content Include="Scripts\smart-table.min.js" />
@@ -2003,7 +2021,7 @@
     <Content Include="Views\Shared\_PartialFooter.cshtml" />
     <Content Include="Views\Shared\_PartialSideArticle.cshtml" />
     <Content Include="Views\Shared\_PartialSideNews.cshtml" />
-    <Content Include="Views\ShoppingCart\CartEmpty.cshtml" />
+    <Content Include="Views\ShoppingCart\_PartialCartEmpty.cshtml" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\ShoppingCart\Shopping.cshtml" />
     <Content Include="Views\ShoppingCart\_PartialBasket.cshtml" />
@@ -2091,6 +2109,7 @@
     <Content Include="Views\Events\Index.cshtml" />
     <Content Include="Views\Shared\_PartialSideEvents.cshtml" />
     <Content Include="Views\Events\Detail.cshtml" />
+    <Content Include="Views\Product\_PartialMain.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

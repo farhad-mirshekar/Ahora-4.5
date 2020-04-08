@@ -1,11 +1,11 @@
 ﻿@{
     List<FM.Portal.Core.Model.UserAddress> drpAddress = ViewBag.drpAddress ?? null;
 }
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <label class="panel-title">اطلاعات خریدار</label>
+<div class="card">
+    <div class="card-header">
+        <label class="card-title">اطلاعات خریدار</label>
     </div>
-    <div class="panel-body" id="addressSection">
+    <div class="card-body" id="addressSection">
         @{
             if (drpAddress != null && drpAddress.Count > 0)
             {
@@ -36,15 +36,21 @@
             }
         }
     </div>
-    <div class="panel-footer text-left">
-        <div class="clearfix"></div>
+    <div class="card-footer">
+        <div class="btn-group-justified">
+
+        </div>
         @if (drpAddress != null && drpAddress.Count > 0)
         {
-            <button type="submit" id="stepFirstShopping" data-type="haveAddress" class="btn btn-success input-lg">تکمیل فرآیند خرید</button>
+            <div class="pull-left">
+                <button type="submit" id="stepFirstShopping" data-type="haveAddress" class="btn btn-success input-lg">تکمیل فرآیند خرید</button>
+            </div>
         }
         else
         {
-            <button type="submit" id="stepFirstShopping" data-type="notHaveAddress" class="btn btn-success input-lg">تکمیل فرآیند خرید</button>
+            <div class="pull-left">
+                <button type="submit" id="stepFirstShopping" data-type="notHaveAddress" class="btn btn-success input-lg">تکمیل فرآیند خرید</button>
+            </div>
         }
 
     </div>

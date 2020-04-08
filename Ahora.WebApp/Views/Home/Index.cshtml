@@ -2,6 +2,15 @@
     @{Html.RenderAction("RenderSlide", "Home");}
 }
 @section BodySection{
-    @{Html.RenderAction("SaleProduct", "Home");}
-    @{Html.RenderAction("TrendingProduct", "Home");}
+    <div class="row">
+        <div class="col-md-9 mt-2">
+            @{Html.RenderAction("SaleProduct", "Home");}
+            @{Html.RenderAction("TrendingProduct", "Home");}
+        </div>
+        <div class="col-md-3 mt-2">
+            @{ Html.RenderAction("GetLastArticle", "Home");}
+            @{ Html.RenderAction("GetLastNews", "Home");}
+            @{ Html.RenderAction("GetLastEvents", "Home");}
+        </div>
+    </div>
 }

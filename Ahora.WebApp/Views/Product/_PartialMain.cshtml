@@ -1,0 +1,91 @@
+﻿@model FM.Portal.Core.Model.Product
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#fullDescription" role="tab" aria-controls="home" aria-selected="true">
+                        <i class="fa fa-files-o"></i>
+                        <label>نقد و بررسی</label>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="home-tab" data-toggle="tab" href="#informationProduct" role="tab" aria-controls="home" aria-selected="true">
+                        <i class="fa fa-files-o"></i>
+                        <label>مشخصات</label>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="home-tab" data-toggle="tab" href="#commentProduct" role="tab" aria-controls="home" aria-selected="true">
+                        <i class="fa fa-comment-o"></i>
+                        <label>نظرات کاربران</label>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="fullDescription" class="tab-pane fade show active">
+                    <div id="fullDesc" class="mt-3">
+                        @Html.Raw(Model.FullDescription)
+                    </div>
+
+                </div>
+                <div id="informationProduct" class="tab-pane fade">
+                    <ul class="c-params__list mt-3">
+                        <li>
+                            @if (Model.Weight > 0)
+                            {
+                                <div class="c-params__list-key">
+                                    <span class="block">وزن محصول</span>
+                                </div>
+                                <div class="c-params__list-value">
+                                    <span class="block">@Math.Round(Model.Weight, 2) گرم</span>
+                                </div>
+                            }
+                        </li>
+                        <li>
+                            @if (Model.Length > 0)
+                            {
+                                <div class="c-params__list-key">
+                                    <span class="block">طول محصول</span>
+                                </div>
+                                <div class="c-params__list-value">
+                                    <span class="block">@Math.Round(Model.Length, 2) سانتی متر</span>
+                                </div>
+                            }
+                        </li>
+                        <li>
+                            @if (Model.Width > 0)
+                            {
+                                <div class="c-params__list-key">
+                                    <span class="block">عرض محصول</span>
+                                </div>
+                                <div class="c-params__list-value">
+                                    <span class="block">@Math.Round(Model.Width, 2) سانتی متر</span>
+                                </div>
+                            }
+                        </li>
+                        <li>
+                            @if (Model.Height > 0)
+                            {
+                                <div class="c-params__list-key">
+                                    <span class="block">ارتفاع محصول</span>
+                                </div>
+                                <div class="c-params__list-value">
+                                    <span class="block">@Math.Round(Model.Height, 2) سانتی متر</span>
+                                </div>
+                            }
+                        </li>
+
+                    </ul>
+                </div>
+                <div id="commentProduct" class="tab-pane fade">
+                    <div class="col-md-12 mt-3">
+                        @Html.Action("Index", "Comment", new { DocumentID = Model.ID, State = "Product" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

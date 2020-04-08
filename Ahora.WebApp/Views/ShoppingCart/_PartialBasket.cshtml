@@ -1,44 +1,52 @@
 ﻿@model List<ShoppingItemVM>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <label class="panel-title">اطلاعات محصول</label>
+<div class="card">
+    <div class="card-header">
+        <label class="card-title">اطلاعات محصول</label>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         @foreach (var item in Model)
             {
-            <div class="row" style="border-bottom:1px solid #dcdcdc;padding-bottom:10px;">
-                <div class="col-xs-2 text-center">
-                    <img style="width:100px;" src="~/Content/TemporaryFiles/@item.ImageUrl" />
+        <div class="container">
+            <div class="row p-3">
+                <div class="col-md-2">
+                    <img class="img-fluid img-thumbnail" src="~/Content/TemporaryFiles/@item.ImageUrl" title="" />
                 </div>
-                <div class="col-xs-9" style="line-height:40px;">
-                    <div class="pull-right">
-                        <div class="">@item.ProductName</div>
-                        @if (item.Attribute.Count > 0)
-                        {
-                            foreach (var attribute in item.Attribute)
-                            {
-                                <label>@attribute.AttributeName : @attribute.Name</label>
-                            }
-                        }
-                       
-                    </div>
-                    <div class="pull-left">
+                <div class="col-md-9">
+                    <div class="container">
                         <div class="row">
-                            <div class="col-xs-12">
-                                <label>قیمت واحد:</label>
-                                <label>@Decimal.Truncate(item.ProductPrice) تومان</label>
-                            </div>
-                            <div class="col-xs-12">
-                                <label>مبلغ :</label>
-                                <label>@Decimal.Truncate((item.ProductPrice * item.Quantity)) تومان</label>
-                            </div>
+                            <div class="col-md-6">
+                                <div class="pull-right">
+                                    <div class="">@item.ProductName</div>
+                                    @if (item.Attribute.Count > 0)
+                                    {
+                                        foreach (var attribute in item.Attribute)
+                                        {
+                                            <label>@attribute.AttributeName : @attribute.Name</label>
+                                        }
+                                    }
 
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pull-left">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label>قیمت واحد:</label>
+                                            <label>@Decimal.Truncate(item.ProductPrice) تومان</label>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label>مبلغ :</label>
+                                            <label>@Decimal.Truncate((item.ProductPrice * item.Quantity)) تومان</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         }
-
     </div>
 </div>
 
