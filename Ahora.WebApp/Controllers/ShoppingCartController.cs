@@ -151,69 +151,78 @@ namespace Ahora.WebApp.Controllers
         {
             try
             {
-                Order order = new Order();
-                OrderDetail orderDetail = new OrderDetail();
-                Payment payment = new Payment();
-
-                order.ID = Guid.NewGuid();
-                payment.ID = Guid.NewGuid();
-                orderDetail.ID = Guid.NewGuid();
-                payment.OrderID = order.ID;
-                orderDetail.OrderID = order.ID;
-
-                decimal amount = 0;
-
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
                 var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
-
-                if (result.Data == null)
-                    return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") });
-                if (!result.Success)
-                    return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") });
-
-                string attributeJson = null;
-                string productJson = null;
-
-                foreach (var item in result.Data)
-                {
-                    var product = _productService.Get(item.ProductID);
-                    if (product.Success)
-                    {
-                        amount += product.Data.Price * item.Quantity;
-                        attributeJson += JsonConvert.SerializeObject(item.AttributeJson);
-                        productJson += JsonConvert.SerializeObject(new Product { Name = product.Data.Name, Price = product.Data.Price });
-                    }
-                }
-
-                if (model.ID == Guid.Empty)
-                {
-                    _addressService.Add(model);
-                }
-
-                order.AddressID = model.ID;
-
-                order.SendType = SendType.آنلاین;
-                order.ShoppingID = SQLHelper.CheckGuidNull(shoppingID);
-                order.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
-                orderDetail.ProductJson = productJson;
-                orderDetail.AttributeJson = attributeJson;
-                orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name)));
-
-                payment.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
-
-                var firstStep = _paymentService.FirstStepPayment(order, orderDetail, payment);
-                if (!firstStep.Success)
+                if(!result.Success)
                     return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
 
-                var orders = _orderService.Get(order.ID);
-                //var bank = await Melli((long)amount, orders.Data.TrackingCode.ToString());
+                var orderResult = _orderService.Get(new GetOrderVM {ShoppingID = SQLHelper.CheckGuidNull(shoppingID) });
+                if(!orderResult.Success)
+                    return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
 
-                //switch (bank.ResCode)
-                //{
-                //    case "1":
-                //        return Json(new { status = true,url="http://www.google.com" });
-                //}
-                return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
+                if(orderResult.Data.ShoppingID != Guid.Empty)
+                {
+                    return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
+                }
+                else
+                {
+                    Order order = new Order();
+                    OrderDetail orderDetail = new OrderDetail();
+                    Payment payment = new Payment();
+
+                    decimal amount = 0;
+                    if (result.Data == null)
+                        return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") });
+                    if (!result.Success)
+                        return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") });
+
+                    string attributeJson = null;
+                    string productJson = null;
+
+                    foreach (var item in result.Data)
+                    {
+                        var product = _productService.Get(item.ProductID);
+                        if (product.Success)
+                        {
+                            amount += product.Data.Price * item.Quantity;
+                            attributeJson += JsonConvert.SerializeObject(item.AttributeJson);
+                            productJson += JsonConvert.SerializeObject(new Product { Name = product.Data.Name, Price = product.Data.Price });
+                        }
+                    }
+
+                    if (model.ID == Guid.Empty)
+                    {
+                        _addressService.Add(model);
+                    }
+
+                    order.AddressID = model.ID;
+
+                    order.SendType = SendType.آنلاین;
+                    order.ShoppingID = SQLHelper.CheckGuidNull(shoppingID);
+                    order.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
+                    order.Price = amount;
+                    orderDetail.ProductJson = productJson;
+                    orderDetail.AttributeJson = attributeJson;
+                    orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name)));
+
+                    payment.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
+                    payment.Price = amount;
+
+                    var firstStep = _paymentService.FirstStepPayment(order, orderDetail, payment);
+                    if (!firstStep.Success)
+                        return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
+
+                    ////var orders = _orderService.Get(order.ID);
+                    ////var bank = await Melli((long)amount, orders.Data.TrackingCode.ToString());
+
+                    ////switch (bank.ResCode)
+                    ////{
+                    ////    case "1":
+                    ////        return Json(new { status = true,url="http://www.google.com" });
+                    ////}
+                    return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
+                }
+               
             }
             catch (Exception e) { return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") }); }
 

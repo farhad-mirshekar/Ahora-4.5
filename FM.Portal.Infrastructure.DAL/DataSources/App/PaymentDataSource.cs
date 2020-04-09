@@ -15,6 +15,12 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
+                order.ID = Guid.NewGuid();
+                payment.ID = Guid.NewGuid();
+                detail.ID = Guid.NewGuid();
+                payment.OrderID = order.ID;
+                detail.OrderID = order.ID;
+
                 var commands = new List<SqlCommand>();
 
                 #region Order

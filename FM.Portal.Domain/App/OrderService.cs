@@ -24,7 +24,7 @@ namespace FM.Portal.Domain
             detail.OrderID = model.ID;
            return _detailDataSource.Insert(detail);
         }
-        public Result<Order> Get(Guid ID)
-        => _dataSource.Get(ID);
+        public Result<Order> Get(GetOrderVM model)
+        => _dataSource.Get(model);
     }
 }

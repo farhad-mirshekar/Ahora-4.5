@@ -17,13 +17,19 @@ namespace FM.Portal.Infrastructure.DAL
             _requestInfo = requestInfo;
         }
 
-        public Result<Order> Get(Guid ID)
+        public Result<Order> Get(GetOrderVM model)
         {
             try
             {
                 Order obj = new Order();
-                SqlParameter[] param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ID", ID);
+                SqlParameter[] param = new SqlParameter[2];
+                param[0] = new SqlParameter("@ID", SqlDbType.UniqueIdentifier);
+                if (!model.ID.HasValue)
+                    param[0].Value = DBNull.Value;
+                else
+                    param[0].Value = model.ID;
+                param[1] = new SqlParameter("@ShoppingID",SqlDbType.UniqueIdentifier);
+                param[1].Value = model.ShoppingID;
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
@@ -32,6 +38,11 @@ namespace FM.Portal.Infrastructure.DAL
                         while (dr.Read())
                         {
                             obj.TrackingCode = SQLHelper.CheckIntNull(dr["TrackingCode"]);
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.Price = SQLHelper.CheckDecimalNull(dr["Price"]);
+                            obj.SendType =(SendType) SQLHelper.CheckByteNull(dr["SendType"]);
+                            obj.ShoppingID = SQLHelper.CheckGuidNull(dr["ShoppingID"]);
+                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
                         }
                     }
 

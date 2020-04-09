@@ -7,6 +7,6 @@ namespace FM.Portal.DataSource
    public interface IOrderDataSource:IDataSource
     {
         Result Insert(Order model);
-        Result<Order> Get(Guid ID);
+        Result<Order> Get(GetOrderVM model);
     }
 }

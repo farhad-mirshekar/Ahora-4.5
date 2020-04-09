@@ -53,6 +53,7 @@
     <Compile Include="App\FAQ\FAQ.cs" />
     <Compile Include="App\OrderDetail\OrderDetail.cs" />
     <Compile Include="App\Order\Order.cs" />
+    <Compile Include="App\Order\VM\GetOrderVM.cs" />
     <Compile Include="App\Payment\Payment.cs" />
     <Compile Include="App\ProductAttribute\ProductAttribute.cs" />
     <Compile Include="App\ProductVariantAttribute\ProductVariantAttribute.cs" />

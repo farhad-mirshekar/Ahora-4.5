@@ -5,7 +5,8 @@ IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('app.spGetO
 GO
 
 CREATE PROCEDURE app.spGetOrder
-@ID UNIQUEIDENTIFIER
+@ID UNIQUEIDENTIFIER,
+@ShoppingID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -14,5 +15,6 @@ BEGIN
 	FROM	
 		[app].[Order] orders
 	WHERE 
-		orders.ID = @ID
+		(@ID IS NULL OR orders.ID = @ID) AND
+		(@ShoppingID IS NULL OR orders.ShoppingID = @ShoppingID)
 END
