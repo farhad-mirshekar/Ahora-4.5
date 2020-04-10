@@ -1,4 +1,5 @@
 ﻿using FM.Portal.BaseModel;
+using FM.Portal.Core.Common;
 using System;
 
 namespace FM.Portal.Core.Model
@@ -13,6 +14,7 @@ namespace FM.Portal.Core.Model
         public string Token { get; set; }
         public string RetrivalRefNo { get; set; }
         public string SystemTraceNo { get; set; }
+        public string CreationDatePersian =>Helper.GetPersianDate(CreationDate);
 
     }
 }

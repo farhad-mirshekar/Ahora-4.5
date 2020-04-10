@@ -2804,7 +2804,7 @@ var froalaOptionComment = {
             );
             popupWin.document.open();
             popupWin.document.write(
-                '<html><link href="~/Areas/Admin/Content/css/bootstrap-rtl/bootstrap-rtl.css" rel="stylesheet" /><link href="~/Areas/Admin/Content/css/admin/admin.css" rel="stylesheet" /></head><body onload="window.print()">'
+                '<html dir="rtl"><link href="http://localhost:61837/Areas/Admin/Content/css/bootstrap-rtl/bootstrap-rtl.css" rel="stylesheet" /><link href="http://localhost:61837/Areas/Admin/Content/css/admin/admin.css" rel="stylesheet" /></head><body onload="window.print()">'
             );
             popupWin.document.write(toPrint.innerHTML);
             popupWin.document.write("</html>");

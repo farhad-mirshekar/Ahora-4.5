@@ -110,5 +110,11 @@
     <Compile Include="Ptl\News\VM\NewsListVM.cs" />
     <Compile Include="Ptl\Slider\Slider.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FM.Portal.Core\FM.Portal.Core.csproj">
+      <Project>{A7CF9A04-620F-4A89-8216-CE032E62B24D}</Project>
+      <Name>FM.Portal.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

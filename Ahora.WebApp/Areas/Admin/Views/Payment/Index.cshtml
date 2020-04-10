@@ -81,6 +81,27 @@
                     </table>
                 </div>
             </div>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-header">اطلاعات فروشنده</span>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label class="control-label">آدرس</label>
+                                    <span class="text-success">{{Model.UserAddress.Address}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="control-label">محل مهر فروشگاه</label><br />
+                                <label class="control-label">{{Model.Payment.CreationDatePersian}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-footer">
             <div class="btn-group-justified pull-left">
