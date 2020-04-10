@@ -213,3 +213,11 @@ div.comment-container li {
         line-height: 30px;
     }
 /**************************End Css Product**********************/
+#load {
+    display:none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 9999;
+    background: url("../../Areas/Admin/Content/img/loading.gif") no-repeat center center rgba(0,0,0,0.25)
+}

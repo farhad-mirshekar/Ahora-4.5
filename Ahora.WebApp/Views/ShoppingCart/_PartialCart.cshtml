@@ -1,0 +1,57 @@
+﻿@model List<ShoppingItemVM>
+<section id="cart">
+    @foreach (var item in Model)
+    {
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    <img class="img-fluid img-thumbnail" src="~/Content/TemporaryFiles/@item.ImageUrl" title="" />
+                </div>
+                <div class="col-md-10">
+                    <div class="container mt-4">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="pull-right">
+                                    <h6>@item.ProductName</h6>
+                                    @if (item.Attribute.Count > 0)
+                                    {
+                                        foreach (var attribute in item.Attribute)
+                                        {
+                                            <label>@attribute.AttributeName : @attribute.Name</label>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="pull-left">
+                                    <div class="container m-auto">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label>قیمت واحد:</label>
+                                                <label>@Decimal.Truncate(item.ProductPrice) تومان</label>
+                                            </div>
+                                            <div class="col-md-6 quantity">
+                                                <i class="fa fa-plus" data-href="@Url.Action("QuantityPlus","ShoppingCart",new {ProductID=item.ProductID })" style="color:blue;padding:10px"></i>
+                                                <label>@item.Quantity</label>
+                                                <i class="fa fa-minus" data-href="@Url.Action("QuantityMinus","ShoppingCart",new {ProductID=item.ProductID })" style="color:#ff0000;padding:10px"></i>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label>مبلغ :</label>
+                                                <label>@Decimal.Truncate((item.ProductPrice * item.Quantity)) تومان</label>
+                                            </div>
+                                        </div>
+                                        @using (Html.BeginForm("Delete", "ShoppingCart", new { ProductID = @item.ProductID, ShoppingID = @item.ShoppingID }, FormMethod.Post))
+                                        {
+                                            <button type="submit" class="btn btn-danger">حذف</button>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+<script src="~/scripts/custom/Quantity.js"></script>

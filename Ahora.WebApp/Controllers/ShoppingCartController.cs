@@ -47,49 +47,7 @@ namespace Ahora.WebApp.Controllers
         [OutputCache(Location = System.Web.UI.OutputCacheLocation.None)]
         public ActionResult Index()
         {
-            try
-            {
-                var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
-                var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
-                if (result.Data == null)
-                    return View("~/Views/ShoppingCart/_PartialCartEmpty.cshtml");
-                if (!result.Success)
-                    return View("error");
-
-                List<ShoppingItemVM> cart = new List<ShoppingItemVM>();
-                foreach (var item in result.Data)
-                {
-                    var product = _productService.Get(item.ProductID);
-                    if (product.Success)
-                    {
-                        var attachmentResult = _attachmentService.List(product.Data.ID);
-                        var attachment = attachmentResult.Data;
-                        var picUrl = $"{attachment.Select(x=>x.Path).First()}/{attachment.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
-                        List<AttributeJsonVM> attribute = new List<AttributeJsonVM>();
-                        if(item.AttributeJson != "")
-                        {
-                            var json = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
-                            attribute.Add(json);
-                        }
-                        cart.Add(new ShoppingItemVM
-                        {
-                            ProductID = product.Data.ID,
-                            ProductName = product.Data.Name,
-                            ProductPrice = product.Data.Price,
-                            ShoppingID = SQLHelper.CheckGuidNull(shoppingID),
-                            ImageUrl = picUrl,
-                            Attribute = attribute,
-                            Quantity = item.Quantity,
-                            HasDiscountsApplied=item.HasDiscountsApplied,
-                            DiscountAmount=item.DiscountAmount,
-                            DiscountName = item.DiscountName
-                        });
-                    }
-
-                }
-                return View(cart);
-            }
-            catch (Exception e) { return View("error"); }
+            return View();
 
         }
 
@@ -243,7 +201,7 @@ namespace Ahora.WebApp.Controllers
         }
 
         [HttpPost]
-        public JsonResult QuantityPlus(Guid ProductID)
+        public ActionResult QuantityPlus(Guid ProductID)
         {
             try
             {
@@ -252,12 +210,58 @@ namespace Ahora.WebApp.Controllers
 
                 result.Data.Quantity += 1;
                 _service.Edit(result.Data);
-                return Json(new { success = true, url = Url.RouteUrl("cart") });
+                return RedirectToAction("Cart");
             }
             catch { throw; }
         }
+        public ActionResult Cart()
+        {
+            try
+            {
+                var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
+                var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
+                if (result.Data == null)
+                    return View("~/Views/ShoppingCart/_PartialCartEmpty.cshtml");
+                if (!result.Success)
+                    return View("error");
+
+                List<ShoppingItemVM> cart = new List<ShoppingItemVM>();
+                foreach (var item in result.Data)
+                {
+                    var product = _productService.Get(item.ProductID);
+                    if (product.Success)
+                    {
+                        var attachmentResult = _attachmentService.List(product.Data.ID);
+                        var attachment = attachmentResult.Data;
+                        var picUrl = $"{attachment.Select(x => x.Path).First()}/{attachment.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
+                        List<AttributeJsonVM> attribute = new List<AttributeJsonVM>();
+                        if (item.AttributeJson != "")
+                        {
+                            var json = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
+                            attribute.Add(json);
+                        }
+                        cart.Add(new ShoppingItemVM
+                        {
+                            ProductID = product.Data.ID,
+                            ProductName = product.Data.Name,
+                            ProductPrice = product.Data.Price,
+                            ShoppingID = SQLHelper.CheckGuidNull(shoppingID),
+                            ImageUrl = picUrl,
+                            Attribute = attribute,
+                            Quantity = item.Quantity,
+                            HasDiscountsApplied = item.HasDiscountsApplied,
+                            DiscountAmount = item.DiscountAmount,
+                            DiscountName = item.DiscountName
+                        });
+                    }
+
+                }
+                return PartialView("_PartialCart",cart);
+            }
+            catch (Exception e) { return View("error"); }
+        }
         [HttpPost]
-        public JsonResult QuantityMinus(Guid ProductID)
+        public ActionResult QuantityMinus(Guid ProductID)
         {
             try
             {
@@ -268,7 +272,7 @@ namespace Ahora.WebApp.Controllers
                 if (result.Data.Quantity == 0)
                     result.Data.Quantity = 1;
                 _service.Edit(result.Data);
-                return Json(new { success = true, url = Url.RouteUrl("cart") });
+                return RedirectToAction("Cart");
             }
             catch { throw; }
         }

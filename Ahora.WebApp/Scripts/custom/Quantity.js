@@ -1,7 +1,8 @@
 ﻿var Quantity = new Object();
-$('#quantity').children('i').on('click', function (event) {
+$('.quantity').children('i').on('click', function (event) {
     event.preventDefault();
     var $this = $(this);
+    $('#load').css('display', 'block');
     $.ajax({
         type: "POST",
         url: $this.attr('data-href'),
@@ -10,9 +11,9 @@ $('#quantity').children('i').on('click', function (event) {
 })
 
 Quantity.success = function (data) {
-    if (data.success) {
-        window.location = data.url;
-    }
+    $('#cart').empty();
+    $('#load').css('display', 'none');
+    $('#cart').html(data);
 }
 
 //////////////////////////////////////////////////

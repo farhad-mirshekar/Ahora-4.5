@@ -2117,6 +2117,7 @@
     <Content Include="Views\Shared\_PartialSideEvents.cshtml" />
     <Content Include="Views\Events\Detail.cshtml" />
     <Content Include="Views\Product\_PartialMain.cshtml" />
+    <Content Include="Views\ShoppingCart\_PartialCart.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
