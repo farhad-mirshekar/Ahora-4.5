@@ -94,6 +94,17 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<ITagsDataSource, TagsDataSource>();
             _container.RegisterType<ITagsService, TagsService>();
 
+            _container.RegisterType<IPaymentDataSource, PaymentDataSource>();
+            _container.RegisterType<IPaymentService, PaymentService>();
+
+            _container.RegisterType<IOrderDataSource, OrderDataSource>();
+            _container.RegisterType<IOrderService, OrderService>();
+
+            _container.RegisterType<IOrderDetailDataSource, OrderDetailDataSource>();
+
+            _container.RegisterType<IUserAddressDataSource, UserAddressDataSource>();
+            _container.RegisterType<IUserAddressService, UserAddressService>();
+
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

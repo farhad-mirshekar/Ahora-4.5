@@ -2097,6 +2097,77 @@
         }
     }
 
+    app.factory('paymentService', paymentService);
+    paymentService.$inject = ['$http', 'callbackService', '$q'];
+    function paymentService($http, callbackService, $q) {
+        var url = '/api/v1/Payment/'
+        var service = {
+            get: get,
+            list: list,
+            resCodeType: resCodeType,
+            getDetail: getDetail
+
+        }
+        return service;
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function list(model) {
+            return $http({
+                method: 'post',
+                url: url + `list/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + `List/${model}` });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function getDetail(model) {
+            return $http({
+                method: 'post',
+                url: url + `GetDetail/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + `GetDetail/${model}` });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function resCodeType() {
+            return $http({
+                method: 'post',
+                url: url + 'ResCodeType',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'ResCodeType' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+    }
+
     app.factory('callbackService', callbackService);
     callbackService.$inject = ['$q', '$http', 'authenticationService'];
     function callbackService($q, $http, authenticationService) {

@@ -1,0 +1,93 @@
+﻿<div class="card" ng-show="state ==='cartable'">
+    <div class="card-header">
+        <h2 class="main-title">کارتابل پیگیری خرید</h2>
+        <button class="btn btn-success btn-circle pull-left" ng-click=""><i class="fa fa-plus"></i></button>
+    </div>
+    <div class="card-body">
+        <portal-grid obj="grid"></portal-grid>
+    </div>
+</div>
+<section ng-show="state ==='view'">
+    <h2 class="main-title">مشاهده جزئیات خرید مشتری</h2>
+    <div class="card">
+        <div class="card-body" id="factor">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">اطلاعات مشتری</span>
+                </div>
+                <div class="card-body form-horizontal">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">نام و نام خانوادگی</label>
+                                    <span class="text-success">{{Model.User.FirstName}} {{Model.User.LastName}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">تلفن همراه</label>
+                                    <span class="text-success">{{Model.User.CellPhone}}</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">پست الکترونیکی</label>
+                                    <span class="text-success">{{Model.User.Email === null ? '-' :Model.User.Email }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">آدرس</label>
+                                    <span class="text-success">{{Model.UserAddress.Address}}</span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">کد پستی</label>
+                                    <span class="text-success">{{Model.UserAddress.PostalCode}}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">اطلاعات محصول</span>
+                </div>
+                <div class="card-body form-horizontal">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <td>ردیف</td>
+                                <td>نام محصول</td>
+                                <td>قیمت</td>
+                                <td>نوع تخفیف</td>
+                                <td>مبلغ تخفیف</td>
+                                <td>قیمت نهایی</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="row in Model.Products">
+                                <td>{{$index + 1}}</td>
+                                <td>{{row.Name}}</td>
+                                <td>{{row.Price}}</td>
+                                <td>{{row.DiscountName}}</td>
+                                <td>{{row.DiscountAmount}}</td>
+                                <td>2000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="btn-group-justified pull-left">
+                <button type="button" class="btn btn-primary" ng-click="print('factor');">چاپ فاکتور</button>
+                <button type="button" class="btn btn-cancel" ng-click="main.changeState.cartable();">بازگشت</button>
+            </div>
+        </div>
+    </div>
+</section>
+

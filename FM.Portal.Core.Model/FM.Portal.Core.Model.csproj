@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FM.Bank.Core.Model">
+      <HintPath>..\Ahora.WebApp\libs\FM.Bank.Core.Model.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -55,6 +58,8 @@
     <Compile Include="App\Order\Order.cs" />
     <Compile Include="App\Order\VM\GetOrderVM.cs" />
     <Compile Include="App\Payment\Payment.cs" />
+    <Compile Include="App\Payment\VM\GetPaymentVM.cs" />
+    <Compile Include="App\Payment\VM\PaymentListVM.cs" />
     <Compile Include="App\ProductAttribute\ProductAttribute.cs" />
     <Compile Include="App\ProductVariantAttribute\ProductVariantAttribute.cs" />
     <Compile Include="App\ProductVariantAttribute\VM\AttributeJsonVM.cs" />

@@ -28,8 +28,12 @@ namespace FM.Portal.Infrastructure.DAL
                     param[0].Value = DBNull.Value;
                 else
                     param[0].Value = model.ID;
+
                 param[1] = new SqlParameter("@ShoppingID",SqlDbType.UniqueIdentifier);
-                param[1].Value = model.ShoppingID;
+                if (!model.ShoppingID.HasValue)
+                    param[1].Value = DBNull.Value;
+                else
+                    param[1].Value = model.ShoppingID;
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
@@ -43,6 +47,8 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.SendType =(SendType) SQLHelper.CheckByteNull(dr["SendType"]);
                             obj.ShoppingID = SQLHelper.CheckGuidNull(dr["ShoppingID"]);
                             obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                            obj.AddressID = SQLHelper.CheckGuidNull(dr["AddressID"]);
+                            obj.BankID = SQLHelper.CheckGuidNull(dr["BankID"]);
                         }
                     }
 

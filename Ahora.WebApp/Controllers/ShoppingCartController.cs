@@ -178,18 +178,21 @@ namespace Ahora.WebApp.Controllers
 
                     string attributeJson = null;
                     string productJson = null;
-
+                    var listAttribute = new List<AttributeJsonVM>();
+                    var productList = new List<Product>();
                     foreach (var item in result.Data)
                     {
                         var product = _productService.Get(item.ProductID);
                         if (product.Success)
                         {
                             amount += product.Data.Price * item.Quantity;
-                            attributeJson += JsonConvert.SerializeObject(item.AttributeJson);
-                            productJson += JsonConvert.SerializeObject(new Product { Name = product.Data.Name, Price = product.Data.Price });
+                            if(item.AttributeJson != "")
+                                listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
+                            productList.Add(product.Data);
                         }
                     }
-
+                    attributeJson = JsonConvert.SerializeObject(listAttribute);
+                    productJson = JsonConvert.SerializeObject(productList);
                     if (model.ID == Guid.Empty)
                     {
                         _addressService.Add(model);
@@ -203,7 +206,7 @@ namespace Ahora.WebApp.Controllers
                     order.Price = amount;
                     orderDetail.ProductJson = productJson;
                     orderDetail.AttributeJson = attributeJson;
-                    orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name)));
+                    orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name)).Data);
 
                     payment.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
                     payment.Price = amount;

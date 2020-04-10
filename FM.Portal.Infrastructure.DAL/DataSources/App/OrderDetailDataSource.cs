@@ -10,6 +10,32 @@ namespace FM.Portal.Infrastructure.DAL
 {
     public class OrderDetailDataSource : IOrderDetailDataSource
     {
+        public Result<OrderDetail> Get(Guid ID)
+        {
+            try
+            {
+                var obj = new OrderDetail();
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ID", ID);
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetOrderDetail", param))
+                    {
+                        while (dr.Read())
+                        {
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.AttributeJson = SQLHelper.CheckStringNull(dr["AttributeJson"]);
+                            obj.OrderID = SQLHelper.CheckGuidNull(dr["OrderID"]);
+                            obj.ProductJson = SQLHelper.CheckStringNull(dr["ProductJson"]);
+                            obj.UserJson = SQLHelper.CheckStringNull(dr["UserJson"]);
+                        }
+                    }
+                }
+                return Result<OrderDetail>.Successful(data: obj);
+            }
+            catch (Exception e) { return Result<OrderDetail>.Failure(); }
+        }
+
         public Result Insert(OrderDetail model)
         {
             try

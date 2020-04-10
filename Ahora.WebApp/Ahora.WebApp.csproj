@@ -49,6 +49,10 @@
     <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="FM.Bank.Core.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>libs\FM.Bank.Core.Model.dll</HintPath>
+    </Reference>
     <Reference Include="FM.Portal.Core">
       <HintPath>libs\FM.Portal.Core.dll</HintPath>
     </Reference>
@@ -889,6 +893,7 @@
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.ttf" />
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.woff" />
     <Content Include="Areas\Admin\Views\Comment\ListForPortal.cshtml" />
+    <Content Include="Areas\Admin\Views\Payment\Index.cshtml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
     <Content Include="Scripts\froala-editor\css\froala_editor.min.css" />
@@ -2041,6 +2046,7 @@
     <Compile Include="Areas\Admin\Controllers\App\DiscountController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\FaqGroupController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\HomeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\App\PaymentController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\ProductAttributeController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\CommandController.cs" />
@@ -2062,6 +2068,7 @@
     <Compile Include="Areas\ApiClient\Controllers\app\DiscountController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\FaqController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\FaqGroupController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\app\PaymentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductAttributeController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductMapAttributeController.cs" />

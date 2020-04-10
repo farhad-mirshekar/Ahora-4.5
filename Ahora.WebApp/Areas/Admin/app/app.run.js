@@ -57,7 +57,14 @@
                     { route: '#/events/cartable', title: 'کارتابل رویداد', hasShow: () => { return toolsService.checkPermission('pgevents') }, icon: 'fa-sliders' },
                     { route: '#/comment-portal/cartable', title: 'کارتابل نظرات', hasShow: () => { return true; }, icon: 'fa-comments-o' },
                 ]
-             }
+            }
+            , {
+                name: 'payment', title: 'سفارشات', icon: 'fa-angle-down', hasShow: () => { return true; }
+                , subMenus: [
+                   { route: '#/payment/cartable', title: 'پیگیری سفارشات', hasShow: () => { return true; }, icon: 'fa-archive' },
+                ]
+
+            }
         ]
 
         function signOut() {

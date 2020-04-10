@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FM.Bank.Core.Model">
+      <HintPath>..\Ahora.WebApp\libs\FM.Bank.Core.Model.dll</HintPath>
+    </Reference>
     <Reference Include="FM.Portal.Core">
       <HintPath>..\Ahora.WebApp\libs\FM.Portal.Core.dll</HintPath>
     </Reference>
@@ -111,9 +114,12 @@
     <Content Include="DataBaseScripts\Procedures\App\FAQ\app.spGetFaq.sql" />
     <Content Include="DataBaseScripts\Procedures\App\FAQ\app.spGetsFaq.sql" />
     <Content Include="DataBaseScripts\Procedures\App\FAQ\app.spModifyFaq.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\OrderDetail\app.spGetOrderDetail.sql" />
     <Content Include="DataBaseScripts\Procedures\App\OrderDetail\app.spModifyOrderDetail.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Order\app.spGetOrder.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Order\app.spModifyOrder.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Payment\app.spGetPayment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Payment\app.spGetsPayment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Payment\app.spInsertPayment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spGetProductAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spGetsProductAttribute.sql" />

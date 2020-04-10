@@ -44,7 +44,7 @@ var froalaOptionComment = {
         }
     },
     language: 'fa'
-  
+
 };
 (() => {
     var app = angular.module('portal');
@@ -56,7 +56,7 @@ var froalaOptionComment = {
     }
     //-------------------------------------------------------------------------------------------------------
     app.controller('faqGroupController', faqGroupController);
-    faqGroupController.$inject = ['$scope', '$routeParams', '$location', '$uibModal', 'toaster', 'loadingService', 'faqGroupService', 'faqService', '$q','$timeout'];
+    faqGroupController.$inject = ['$scope', '$routeParams', '$location', '$uibModal', 'toaster', 'loadingService', 'faqGroupService', 'faqService', '$q', '$timeout'];
     function faqGroupController($scope, $routeParams, $location, $uibModal, toaster, loadingService, faqGroupService, faqService, $q, $timeout) {
         let faqgroup = $scope;
         faqgroup.state = '';
@@ -65,7 +65,7 @@ var froalaOptionComment = {
         faqgroup.main = {};
         faqgroup.main.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         };
         faqgroup.addFaqGroup = addFaqGroup;
         faqgroup.editFaqGroup = editFaqGroup;
@@ -874,7 +874,7 @@ var froalaOptionComment = {
         attribute.main = {};
         attribute.main.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         };
         attribute.Model.Errors = [];
         attribute.state = '';
@@ -974,7 +974,7 @@ var froalaOptionComment = {
         category.main = {};
         category.main.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         }
         category.state = '';
         category.error = {};
@@ -1129,7 +1129,7 @@ var froalaOptionComment = {
         discount.main = {};
         discount.main.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         };
         discount.Errors = [];
         discount.state = '';
@@ -1251,14 +1251,15 @@ var froalaOptionComment = {
         comment.grid = {
             bindingObject: comment
             , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
-                { name: 'ProductName', displayName: 'نام محصول' },
-                { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: { 1: 'درحال بررسی', 2: 'تایید', 3: 'عدم تایید' } }]
+            { name: 'ProductName', displayName: 'نام محصول' },
+            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: { 1: 'درحال بررسی', 2: 'تایید', 3: 'عدم تایید' } }]
             , listService: commentService.list
             , onEdit: comment.main.changeState.edit
             , globalSearch: true
             , showRemove: true
             , options: () => {
-                return 6; }
+                return 6;
+            }
         };
         init();
 
@@ -1331,7 +1332,7 @@ var froalaOptionComment = {
         category.main = {};
         category.main.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         }
         category.state = '';
         category.goToPageAdd = goToPageAdd;
@@ -1612,7 +1613,7 @@ var froalaOptionComment = {
                 if (article.pic.list.length) {
                     article.pics = [];
                     if (article.Model.listPicUploaded.length === 0) {
-                        article.pics.push({ ParentID: article.Model.ID, Type:2, FileName: article.pic.list[0], PathType: article.pic.type });
+                        article.pics.push({ ParentID: article.Model.ID, Type: 2, FileName: article.pic.list[0], PathType: article.pic.type });
                     }
                     return attachmentService.add(article.pics);
                 }
@@ -1677,7 +1678,7 @@ var froalaOptionComment = {
         news.Tags = [];
         news.main.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         }
         news.Model.listPicUploaded = [];
         news.Model.Errors = [];
@@ -1899,10 +1900,10 @@ var froalaOptionComment = {
         pages.editPages = editPages;
         pages.main.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         }
-            //< i class='fa fa-plus tgrid-action' ng-click='cellTemplateScope.add(row.branch)' title ='افزودن'></i >
-            //< i class='fa fa-trash tgrid-action' ng-click='cellTemplateScope.remove(row.branch)' title ='حذف'></i >
+        //< i class='fa fa-plus tgrid-action' ng-click='cellTemplateScope.add(row.branch)' title ='افزودن'></i >
+        //< i class='fa fa-trash tgrid-action' ng-click='cellTemplateScope.remove(row.branch)' title ='حذف'></i >
         pages.tree = {
             data: []
             , colDefs: [
@@ -2061,7 +2062,7 @@ var froalaOptionComment = {
         menu.editMenu = editMenu;
         menu.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         }
         menu.tree = {
             data: []
@@ -2402,7 +2403,7 @@ var froalaOptionComment = {
         events.main.changeState = {
             cartable: cartable,
             edit: edit,
-            add:add
+            add: add
         }
         events.froalaOption = angular.copy(froalaOption);
         events.goToPageAdd = goToPageAdd;
@@ -2486,7 +2487,7 @@ var froalaOptionComment = {
                 }
                 $('.js-example-tags').select2({
                     data: events.Tags
-                }); 
+                });
                 return fillDropIsShow();
             }).then(() => {
                 return fillDropComment();
@@ -2623,15 +2624,15 @@ var froalaOptionComment = {
         comment.froalaOptionComment = froalaOptionComment;
         comment.main.changeState = {
             cartable: cartable,
-            edit:edit
+            edit: edit
         }
         comment.editComment = editComment;
         comment.changeDrop = changeDrop;
         comment.grid = {
             bindingObject: comment
             , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
-                { name: 'ProductName', displayName: 'عنوان' },
-                { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: {1:'درحال بررسی',2:'تایید',3:'عدم تایید'} }]
+            { name: 'ProductName', displayName: 'عنوان' },
+            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: { 1: 'درحال بررسی', 2: 'تایید', 3: 'عدم تایید' } }]
             , listService: commentService.list
             , onEdit: comment.main.changeState.edit
             , globalSearch: true
@@ -2713,7 +2714,101 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 comment.grid.getlist(false);
             }).finally(loadingService.hide);
-            
+
+        }
+    }
+    //-----------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('paymentController', paymentController);
+    paymentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'paymentService', '$location', 'toaster', '$timeout'];
+    function paymentController($scope, $q, loadingService, $routeParams, paymentService, $location, toaster, $timeout) {
+        let payment = $scope;
+        payment.Model = {};
+        payment.Search = {};
+        payment.state = '';
+        payment.main = {};
+        payment.main.changeState = {
+            cartable: cartable,
+            view: view
+        }
+        payment.changeDrop = changeDrop;
+        payment.print = print;
+        payment.grid = {
+            bindingObject: payment
+            , columns: [{ name: 'BuyerInfo', displayName: 'نام و نام خانوادگی خریدار' },
+            { name: 'BuyerPhone', displayName: 'اطلاعات تماس' }]
+            , listService: paymentService.list
+            , globalSearch: true
+            , onEdit: payment.main.changeState.view
+            , options: () => { return payment.Search.ResCodeType }
+        };
+        init();
+
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (!payment.Search.ResCodeType)
+                    resCodeTypeDropDown();
+                payment.Search.ResCodeType = 0;
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'view':
+                        payment.main.changeState.view($routeParams.id);
+                        break;
+                }
+            }).finally(loadingService.hide);
+
+        }
+
+        function cartable() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                payment.state = 'cartable';
+                $location.path('/payment/cartable');
+            }).finally(loadingService.hide);
+        }
+        function view(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (model && model.ID)
+                    return paymentService.getDetail(model.ID);
+                else
+                    return paymentService.getDetail($routeParams.id);
+            }).then((result => {
+                payment.Model = angular.copy(result);
+                payment.state = 'view';
+                $location.path(`/payment/view/${result.ID}`);
+            }))
+                .finally(loadingService.hide);
+        }
+    
+        function resCodeTypeDropDown() {
+            paymentService.resCodeType().then((result) => {
+                payment.selectResCodeType = result;
+            })
+        }
+        function changeDrop() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                payment.grid.getlist(false);
+            }).finally(loadingService.hide);
+
+        }
+        function print(elementId) {
+            let toPrint = document.getElementById(elementId);
+            let popupWin = window.open(
+                "",
+                "_blank",
+                "width=1000,height=800,location=no,left=200px"
+            );
+            popupWin.document.open();
+            popupWin.document.write(
+                '<html><link href="~/Areas/Admin/Content/css/bootstrap-rtl/bootstrap-rtl.css" rel="stylesheet" /><link href="~/Areas/Admin/Content/css/admin/admin.css" rel="stylesheet" /></head><body onload="window.print()">'
+            );
+            popupWin.document.write(toPrint.innerHTML);
+            popupWin.document.write("</html>");
+            popupWin.document.close();
         }
     }
 })();

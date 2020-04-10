@@ -1,4 +1,8 @@
-﻿using FM.Portal.Core.Result;
+﻿using FM.Bank.Core.Model;
+using FM.Portal.Core.Model;
+using FM.Portal.Core.Result;
+using System;
+using System.Data;
 
 namespace FM.Portal.DataSource
 {
@@ -6,7 +10,8 @@ namespace FM.Portal.DataSource
     {
         Result FirstStepPayment(Core.Model.Order order, Core.Model.OrderDetail detail, Core.Model.Payment payment);
         Result<Core.Model.Payment> Update(Core.Model.Payment model);
-        Result<Core.Model.Payment> Get(System.Guid? ID , System.Guid? OrderID , System.Guid? UserID);
+        Result<Core.Model.Payment> Get(Guid ID);
+        DataTable List(ResCode resCode);
 
     }
 }

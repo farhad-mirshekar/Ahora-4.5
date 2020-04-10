@@ -6,6 +6,7 @@ using FM.Portal.Core.Common;
 using System.Data.SqlClient;
 using FM.Portal.Core.Result;
 using System.Collections.Generic;
+using FM.Bank.Core.Model;
 
 namespace FM.Portal.Infrastructure.DAL
 {
@@ -61,9 +62,49 @@ namespace FM.Portal.Infrastructure.DAL
             catch { return Result.Failure(); }
         }
 
-        public Result<Payment> Get(Guid? ID, Guid? OrderID, Guid? UserID)
+        public Result<Payment> Get(Guid ID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var obj = new Payment();
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ID", ID);
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetPayment", param))
+                    {
+                        while (dr.Read())
+                        {
+                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.Price = SQLHelper.CheckDecimalNull(dr["Price"]);
+                            obj.OrderID = SQLHelper.CheckGuidNull(dr["OrderID"]);
+                            obj.RetrivalRefNo = SQLHelper.CheckStringNull(dr["RetrivalRefNo"]);
+                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                            obj.SystemTraceNo = SQLHelper.CheckStringNull(dr["SystemTraceNo"]);
+                            //obj.TransactionStatus = (ResCodeForMelliInPaymentRequest)SQLHelper.CheckByteNull(dr["UserID"]);
+                            obj.TransactionStatusMessage =SQLHelper.CheckStringNull(dr["TransactionStatusMessage"]);
+                        }
+                    }
+
+                }
+                return Result<Payment>.Successful(data: obj);
+            }
+            catch(Exception e) { return Result<Payment>.Failure(); }
+        }
+
+        public DataTable List(ResCode resCode)
+        {
+            try
+            {
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ResCode",(byte) resCode);
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsPayment", param);
+            }
+            catch
+            {
+                throw;
+            }
         }
 
         public Result<Payment> Update(Payment model)
@@ -87,7 +128,7 @@ namespace FM.Portal.Infrastructure.DAL
 
                     SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyPayment", param);
 
-                    return Get(model.ID,null , null);
+                    return Get(model.ID);
                 }
             }
             catch (Exception e) { throw; }
