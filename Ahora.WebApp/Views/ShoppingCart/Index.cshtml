@@ -3,23 +3,5 @@
     ViewBag.Title = "سبد خرید";
 }
 @section bodySection{
-    <div class="card">
-        <div class="card-header">
-            <label class="card-title">سبد خرید</label>
-        </div>
-        <div class="card-body" id="cart">
-            @{Html.RenderAction("Cart", "ShoppingCart");}
-        </div>
-        <div id="load"></div>
-        <div class="card-footer">
-            <div class="btn-group-justified pull-left">
-                <a class="btn btn-success" href="@Url.RouteUrl("Shopping")">
-                    ادامه فرایند خرید
-                </a>
-            </div>
-        </div>
-    </div>
-}
-@section scripts{
-
+    @{Html.RenderAction("Cart", "ShoppingCart");}
 }

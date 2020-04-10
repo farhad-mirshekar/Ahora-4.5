@@ -111,14 +111,14 @@ namespace Ahora.WebApp.Controllers
             {
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
                 var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
-                if(!result.Success)
+                if (!result.Success)
                     return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
 
-                var orderResult = _orderService.Get(new GetOrderVM {ShoppingID = SQLHelper.CheckGuidNull(shoppingID) });
-                if(!orderResult.Success)
+                var orderResult = _orderService.Get(new GetOrderVM { ShoppingID = SQLHelper.CheckGuidNull(shoppingID) });
+                if (!orderResult.Success)
                     return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
 
-                if(orderResult.Data.ShoppingID != Guid.Empty)
+                if (orderResult.Data.ShoppingID != Guid.Empty)
                 {
                     return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
                 }
@@ -144,7 +144,7 @@ namespace Ahora.WebApp.Controllers
                         if (product.Success)
                         {
                             amount += product.Data.Price * item.Quantity;
-                            if(item.AttributeJson != "")
+                            if (item.AttributeJson != "")
                                 listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
                             productList.Add(product.Data);
                         }
@@ -183,7 +183,7 @@ namespace Ahora.WebApp.Controllers
                     ////}
                     return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
                 }
-               
+
             }
             catch (Exception e) { return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") }); }
 
@@ -195,7 +195,7 @@ namespace Ahora.WebApp.Controllers
             try
             {
                 _service.Delete(model);
-                return RedirectToAction("Index");
+                return RedirectToAction("Cart");
             }
             catch { throw; }
         }
@@ -205,12 +205,24 @@ namespace Ahora.WebApp.Controllers
         {
             try
             {
+                var productResult = _productService.Get(ProductID);
+                if (!productResult.Success)
+                    return View("error");
+                var product = productResult.Data;
+
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
                 var result = _service.Get(SQLHelper.CheckGuidNull(shoppingID), ProductID);
-
                 result.Data.Quantity += 1;
-                _service.Edit(result.Data);
-                return RedirectToAction("Cart");
+                if (result.Data.Quantity > product.StockQuantity)
+                {
+                    return Json(new { error = 2 }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    _service.Edit(result.Data);
+                    return RedirectToAction("Cart");
+                }
+
             }
             catch { throw; }
         }
@@ -256,7 +268,7 @@ namespace Ahora.WebApp.Controllers
                     }
 
                 }
-                return PartialView("_PartialCart",cart);
+                return PartialView("_PartialCart", cart);
             }
             catch (Exception e) { return View("error"); }
         }
@@ -265,14 +277,23 @@ namespace Ahora.WebApp.Controllers
         {
             try
             {
+                var productResult = _productService.Get(ProductID);
+                if (!productResult.Success)
+                    return View("error");
+                var product = productResult.Data;
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
                 var result = _service.Get(SQLHelper.CheckGuidNull(shoppingID), ProductID);
 
                 result.Data.Quantity -= 1;
-                if (result.Data.Quantity == 0)
-                    result.Data.Quantity = 1;
-                _service.Edit(result.Data);
-                return RedirectToAction("Cart");
+                if (result.Data.Quantity > 0)
+                {
+                    //if (result.Data.Quantity == 0)
+                    //    result.Data.Quantity = 1;
+                    _service.Edit(result.Data);
+                    return RedirectToAction("Cart");
+                }
+                else
+                    return Json(new { error = 1 }, JsonRequestBehavior.AllowGet);
             }
             catch { throw; }
         }
