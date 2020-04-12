@@ -52,7 +52,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
                 if(type != PathType.video)
                     return Json(new { Success = true, Data = new { FileName = fileName } });
                 else
-                return Json(new { link=$"/content/TemporaryFiles/{Enum.GetName(typeof(PathType), type)}/{fileName}" });
+                return Json(new { Success = true, Data = new { FileName = fileName }, link =$"/content/TemporaryFiles/{Enum.GetName(typeof(PathType), type)}/{fileName}" });
             }
             catch (Exception e)
             {

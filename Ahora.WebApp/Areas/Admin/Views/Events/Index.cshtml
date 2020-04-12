@@ -92,11 +92,20 @@
                                 <span class="input-group-text"> {{Model.UrlDesc.length > 0 ? Model.UrlDesc.length : 0}}/70</span>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label for="Body" class="control-label">کلمات کلیدی</label>
+                            <div class="col-md-10">
+                                <select class="js-example-tags form-control" ng-model="Model.Tags" multiple="multiple"></select>
+                            </div>
+                        </div>
                     </uib-tab>
-                    <uib-tab heading="آپلود">
+                    <uib-tab heading="آپلود عکس">
                         <portal-upload main="Model"
                                        pic="pic"></portal-upload>
+                    </uib-tab>
+                    <uib-tab heading="آپلود ویدیو">
+                        <portal-upload-video main="Model"
+                                       video="video"></portal-upload-video>
                     </uib-tab>
                 </uib-tabset>
             </div>
@@ -114,4 +123,12 @@
 
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
 
-
+<script>
+        $(document).ready(function () {
+            $('.js-example-tags').select2({
+                tags: true,
+                placeholder: 'کلمات کلیدی خود را وارد و جهت جداسازی از Enter استفاده نمایید',
+                closeOnSelect: false
+            });
+        });
+</script>

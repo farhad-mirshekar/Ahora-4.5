@@ -109,7 +109,7 @@ namespace FM.Portal.Domain
         public Result<List<EventsListVM>> List(int count)
         {
             var table = ConvertDataTableToList.BindList<EventsListVM>(_dataSource.List(count));
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<EventsListVM>>.Successful(data: table);
             return Result<List<EventsListVM>>.Failure();
         }

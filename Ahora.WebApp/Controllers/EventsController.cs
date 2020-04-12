@@ -8,8 +8,11 @@ namespace Ahora.WebApp.Controllers
 {
     public class EventsController : BaseController<IEventsService>
     {
-        public EventsController(IEventsService service) : base(service)
+        private readonly IAttachmentService _attachmentService;
+        public EventsController(IEventsService service
+                                ,IAttachmentService attachmentService) : base(service)
         {
+            _attachmentService = attachmentService;
         }
 
         // GET: Events
@@ -18,7 +21,7 @@ namespace Ahora.WebApp.Controllers
             ViewBag.Title = "لیست رویدادها";
             int pageSize = Helper.CountShowEvents;
             int pageNumber = (page ?? 1);
-            var result = _service.List(4);
+            var result = _service.List(Helper.CountShowEvents);
             return View(result.Data.ToPagedList(pageNumber, pageSize));
         }
         [Route("EventsDetail/{TrackingCode}/{Seo}")]
@@ -27,8 +30,14 @@ namespace Ahora.WebApp.Controllers
             if (TrackingCode != null && TrackingCode != string.Empty)
             {
                 var result = _service.Get(TrackingCode);
-                if (result.Success)
-                    return View(result.Data);
+                if (!result.Success)
+                    return View("Error");
+                var events = result.Data;
+                var resultVideo = _attachmentService.GetVideo(events.ID);
+                if (resultVideo.Success)
+                    ViewBag.video = resultVideo.Data;
+                return View(events);
+
             }
             return View("Error");
         }

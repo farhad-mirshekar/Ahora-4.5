@@ -10,7 +10,7 @@ CREATE PROCEDURE ptl.spGetsEventsByCount
 AS
 BEGIN
 	;WITH main AS(
-	SELECT 
+		SELECT 
 		Events.*,
 		attachment.[FileName],
 		attachment.PathType
@@ -19,7 +19,8 @@ BEGIN
 	LEFT JOIN 
 		pbl.Attachment attachment ON Events.ID = attachment.ParentID
 	WHERE 
-		Events.RemoverID IS NULL 
+		Events.RemoverID IS NULL AND
+		attachment.PathType != 7 OR attachment.PathType IS NULL -- not show video in list
 	)
 
 	SELECT * 

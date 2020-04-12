@@ -59,6 +59,39 @@ namespace FM.Portal.Infrastructure.DAL
             }
         }
 
+        public Result<Attachment> GetVideo(Guid ParentID)
+        {
+            try
+            {
+                Attachment obj = new Attachment();
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ParentID", ParentID);
+
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "pbl.spGetAttachmentVideo", param))
+                    {
+                        while (dr.Read())
+                        {
+                            obj.Comment = SQLHelper.CheckStringNull(dr["Comment"]);
+                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
+                            obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
+                            obj.Type = (AttachmentType)SQLHelper.CheckByteNull(dr["Type"]);
+                            obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
+                        }
+                    }
+
+                }
+                return Result<Attachment>.Successful(data: obj);
+            }
+            catch
+            {
+                return Result<Attachment>.Failure();
+            }
+        }
+
         public Result<Attachment> Insert(Attachment model)
         {
             model.ID = Guid.NewGuid();

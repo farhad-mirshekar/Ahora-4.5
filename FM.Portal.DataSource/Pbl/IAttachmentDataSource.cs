@@ -12,5 +12,6 @@ namespace FM.Portal.DataSource
         Result<Attachment> Get(Guid ID);
         DataTable List(Guid ParentID);
         Result<int> Delete(Guid ID);
+        Result<Attachment> GetVideo(Guid ParentID);
     }
 }

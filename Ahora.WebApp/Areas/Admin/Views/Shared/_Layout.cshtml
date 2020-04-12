@@ -18,6 +18,8 @@
     <script src="~/Areas/Admin/app/app.config.js"></script>
     @Scripts.Render("~/bundles/angularadmin")
     @Scripts.Render("~/bundles/utility")
+    <script src="https://unpkg.com/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.js"></script>
+    <script src="~/Areas/Admin/app/directive/upload-video/upload-video.js"></script>
     <script src="~/Areas/Admin/Content/fileponed/js/filepond.module.js"></script>
     @Scripts.Render("~/bundles/froalajs")
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
@@ -99,7 +101,7 @@
     @RenderSection("scripts", false)
     <script>
         (() => {
-            FilePond.registerPlugin(FilePondPluginImageEdit, FilePondPluginImagePreview);
+            FilePond.registerPlugin(FilePondPluginImageEdit, FilePondPluginImagePreview, FilePondPluginFileValidateType);
 
             // toggle sidebar
             $("#sidebar-switch").click(function () {

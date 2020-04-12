@@ -2,6 +2,7 @@
 
 namespace Ahora.WebApp.Areas.Admin.Controllers
 {
+    [FM.Portal.FrameWork.Attributes.Authorize.Authorize]
     public partial class HomeController : Controller
     {
         // GET: Admin/Home

@@ -12,5 +12,7 @@ namespace FM.Portal.Core.Service
         Result<Attachment> Get(Guid ID);
         Result<List<Attachment>> List(Guid ParentID);
         Result<int> Delete(Guid ID);
+        Result<Attachment> GetVideo(Guid ParentID);
+
     }
 }

@@ -2396,10 +2396,13 @@ var froalaOptionComment = {
         events.main = {};
         events.Tags = [];
         events.Model.listPicUploaded = [];
+        events.Model.listVideoUploaded = [];
         events.Model.Errors = [];
         events.state = '';
         events.pic = { type: '8', allowMultiple: false };
         events.pic.list = [];
+        events.video = { type: '7', allowMultiple: false };
+        events.video.list = [];
         events.main.changeState = {
             cartable: cartable,
             edit: edit,
@@ -2497,8 +2500,15 @@ var froalaOptionComment = {
                 return attachmentService.list({ ParentID: events.Model.ID });
             }).then((result) => {
                 events.Model.listPicUploaded = [];
-                if (result && result.length > 0)
-                    events.Model.listPicUploaded = [].concat(result);
+                events.Model.listVideoUploaded = [];
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 8)
+                            events.Model.listPicUploaded = [].concat(result[i]);
+                        if (result[i].PathType === 7)
+                            events.Model.listVideoUploaded = [].concat(result[i]);
+                    }
+                }
             }).then(() => {
                 events.state = 'edit';
                 $location.path(`/events/edit/${model.ID}`);
@@ -2553,14 +2563,20 @@ var froalaOptionComment = {
             loadingService.show();
             return $q.resolve().then(() => {
                 eventsService.edit(events.Model).then((result) => {
-                    if (events.pic.list.length) {
+                    if (events.pic.list.length || events.video.list.length) {
                         events.pics = [];
+                        events.videos = [];
                         if (events.Model.listPicUploaded.length === 0) {
                             events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
+                            attachmentService.add(events.pics);
                         }
-                        return attachmentService.add(events.pics);
+                        if (events.Model.listVideoUploaded.length === 0) {
+                            events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
+                            attachmentService.add(events.videos);
+                        }
                     }
                     events.Model = result;
+                    return true;
                 }).then((result) => {
                     return attachmentService.list({ ParentID: events.Model.ID });
                 }).then((result) => {

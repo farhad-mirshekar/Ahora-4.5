@@ -24,6 +24,9 @@ namespace FM.Portal.Domain
 
         public Result<Attachment> Get(Guid ID) => _dataSource.Get(ID);
 
+        public Result<Attachment> GetVideo(Guid ParentID)
+        => _dataSource.GetVideo(ParentID);
+
         public Result<List<Attachment>> List(Guid ParentID)
         {
           var table = ConvertDataTableToList.BindList<Attachment>(_dataSource.List(ParentID));

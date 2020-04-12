@@ -165,6 +165,7 @@
     <Content Include="DataBaseScripts\Procedures\Org\User\org.spGetUser.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\User\org.spSetUserPassword.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spDeleteAttachment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachmentVideo.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachment.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachmentByParentIDs.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachments.sql" />
