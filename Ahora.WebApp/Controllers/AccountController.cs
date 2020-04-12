@@ -43,6 +43,22 @@ namespace Ahora.WebApp.Controllers
             var result = await GetToken(new Token { username = model.UserName, password = model.Password }, returnUrl);
             return result;
         }
+        public ActionResult Create()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult Create(RegisterVM registerVM)
+        {
+            if (!ModelState.IsValid)
+                return View(registerVM);
+            return View();
+        }
+        [HttpPost]
+        public JsonResult IsAlreadyUserName(string UserName)
+        {
+            return Json(false);
+        }
         public async Task<JsonResult> RefreshToken(LoginVM model)
         {
             var result = await GetRefreshToken(new Token { grant_type = "refresh_token", RefreshToken = model.RefreshToken });

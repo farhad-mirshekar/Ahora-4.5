@@ -11,8 +11,8 @@ namespace Ahora.WebApp
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery/jquery-{version}.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/jqueryvalidate").Include(
-                        "~/Scripts/jquery/jquery-validate.js"));
+            bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
+                        "~/Scripts/jquery/jquery.validate*"));
             bundles.Add(new StyleBundle("~/bundles/bootstrap4").Include(
                 "~/Content/bootstrap4-rtl/bootstrap4-rtl.css"));
             bundles.Add(new StyleBundle("~/bundles/main").Include(
