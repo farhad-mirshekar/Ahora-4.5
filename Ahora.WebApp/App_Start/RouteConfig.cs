@@ -92,6 +92,12 @@ namespace Ahora.WebApp
                 namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
                 );
             routes.MapRoute(
+                "SignUp",
+                "SignUp",
+                new { controller = "Account", action = "Create" },
+                namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+                );
+            routes.MapRoute(
                 "Login",
                 "Login",
                 new { controller = "Account", action = "Login" },

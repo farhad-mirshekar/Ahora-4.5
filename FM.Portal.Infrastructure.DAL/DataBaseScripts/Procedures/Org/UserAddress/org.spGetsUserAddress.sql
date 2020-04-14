@@ -23,6 +23,9 @@ BEGIN
 		org.[User] users
 	ON
 		useraddress.UserID = users.ID
+	WHERE
+		users.ID = @UserID AND
+		users.Enabled = 1
 	)
 	SELECT * FROM MainSelect		 
 	ORDER BY [CreationDate] DESC

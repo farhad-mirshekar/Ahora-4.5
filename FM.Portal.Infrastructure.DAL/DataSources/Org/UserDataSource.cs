@@ -23,22 +23,21 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[13];
+                    SqlParameter[] param = new SqlParameter[14];
                     param[0] = new SqlParameter("@ID", model.ID);
-
-                    param[1] = new SqlParameter("@ID", model.ID);
-                    param[2] = new SqlParameter("@isNewRecord", isNewRecord);
-                    param[3] = new SqlParameter("@Enabled", model.Enabled);
-                    param[4] = new SqlParameter("@Username", model.Username);
-                    param[5] = new SqlParameter("@Password", model.Password);
-                    param[6] = new SqlParameter("@FirstName", model.FirstName);
-                    param[7] = new SqlParameter("@LastName", model.LastName);
-                    param[8] = new SqlParameter("@NationalCode", model.NationalCode);
-                    param[9] = new SqlParameter("@Email", model.Email);
-                    param[10] = new SqlParameter("@EmailVerified", model.EmailVerified);
-                    param[11] = new SqlParameter("@CellPhone", model.CellPhone);
-                    param[12] = new SqlParameter("@CellPhoneVerified", model.CellPhoneVerified);
-                    param[13] = new SqlParameter("@PasswordExpireDate", model.PasswordExpireDate);
+                    param[1] = new SqlParameter("@isNewRecord", isNewRecord);
+                    param[2] = new SqlParameter("@Enabled", model.Enabled);
+                    param[3] = new SqlParameter("@Username", model.Username);
+                    param[4] = new SqlParameter("@Password", model.Password);
+                    param[5] = new SqlParameter("@FirstName", model.FirstName);
+                    param[6] = new SqlParameter("@LastName", model.LastName);
+                    param[7] = new SqlParameter("@NationalCode", model.NationalCode);
+                    param[8] = new SqlParameter("@Email", model.Email);
+                    param[9] = new SqlParameter("@EmailVerified", model.EmailVerified);
+                    param[10] = new SqlParameter("@CellPhone", model.CellPhone);
+                    param[11] = new SqlParameter("@CellPhoneVerified", model.CellPhoneVerified);
+                    param[12] = new SqlParameter("@PasswordExpireDate", model.PasswordExpireDate);
+                    param[13] = new SqlParameter("@Type", (byte)model.Type);
 
                     SQLHelper.ExecuteNonQuery(con, System.Data.CommandType.StoredProcedure, param, "org.spModifyUser");
 

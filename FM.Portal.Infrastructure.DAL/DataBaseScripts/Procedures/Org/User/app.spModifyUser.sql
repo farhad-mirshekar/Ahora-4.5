@@ -17,7 +17,8 @@ CREATE PROCEDURE org.spModifyUser
 @EmailVerified bit,
 @CellPhone varchar(20),
 @CellPhoneVerified bit,
-@PasswordExpireDate smalldatetime
+@PasswordExpireDate smalldatetime,
+@Type TINYINT
 
 --WITH ENCRYPTION
 AS
@@ -37,7 +38,8 @@ BEGIN
 					[EmailVerified] ,
 					[CellPhone] ,
 					[CellPhoneVerified] ,
-					[PasswordExpireDate]
+					[PasswordExpireDate],
+					[UserType]
 				)
 			VALUES
 				(
@@ -52,7 +54,8 @@ BEGIN
 				@EmailVerified ,
 				@CellPhone,
 				@CellPhoneVerified ,
-				@PasswordExpireDate 
+				@PasswordExpireDate,
+				@Type 
 				)
 		END
 	ELSE -- update

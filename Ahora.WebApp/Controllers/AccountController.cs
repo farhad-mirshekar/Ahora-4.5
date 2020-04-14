@@ -52,12 +52,37 @@ namespace Ahora.WebApp.Controllers
         {
             if (!ModelState.IsValid)
                 return View(registerVM);
-            return View();
+            var user = new User();
+            user.CellPhone = registerVM.CellPhone.Trim();
+            user.FirstName = registerVM.FirstName.Trim();
+            user.LastName = registerVM.LastName.Trim();
+            user.NationalCode = registerVM.NationalCode.Trim();
+            user.Password = registerVM.Password.Trim();
+            user.Username = registerVM.UserName.Trim();
+            user.Type = UserType.کاربر_برون_سازمانی;
+            user.Enabled = true;
+
+           var result =  _service.Add(user);
+            if (!result.Success)
+                return View(registerVM);
+            else
+            {
+                SetAuthCookie(result.Data.ID.ToString(), "User", false);
+                Session.RemoveAll();
+                Session.Add("login", true);
+                Session.Timeout = 30;
+                return RedirectToRoute("Home");
+            }
         }
         [HttpPost]
         public JsonResult IsAlreadyUserName(string UserName)
         {
-            return Json(false);
+            var getUserResult = _service.Get(UserName.Trim(), null, null);
+            var user = getUserResult.Data;
+            if (user.ID != Guid.Empty)
+                return Json(false);
+            else
+                return Json(true);
         }
         public async Task<JsonResult> RefreshToken(LoginVM model)
         {
