@@ -6,6 +6,7 @@ using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
 using System.Globalization;
+using FM.Portal.FrameWork.MVC.Helpers.Files;
 
 namespace FM.Portal.Domain
 {
@@ -13,11 +14,14 @@ namespace FM.Portal.Domain
     {
         private readonly IEventsDataSource _dataSource;
         private readonly ITagsService _tagsService;
+        private readonly IAttachmentService _attachmentService;
         public EventsService(IEventsDataSource dataSource
-                            , ITagsService tagsService)
+                            , ITagsService tagsService
+                            , IAttachmentService attachmentService)
         {
             _dataSource = dataSource;
             _tagsService = tagsService;
+            _attachmentService = attachmentService;
         }
         public Result<Events> Add(Events model)
         {
@@ -41,7 +45,20 @@ namespace FM.Portal.Domain
         }
 
         public Result<int> Delete(Guid ID)
-       => _dataSource.Delete(ID);
+        {
+            var attachment = _attachmentService.List(ID);
+            _tagsService.Delete(ID);
+            if(attachment.Data.Count > 0)
+            {
+                foreach (var item in attachment.Data)
+                {
+                    string path = $"{Enum.GetName(typeof(PathType), item.PathType)}/{item.FileName}";
+                    _attachmentService.Delete(item.ID);
+                    FileHelper.DeleteFile(path);
+                }
+            }
+           return _dataSource.Delete(ID);
+        }
         public Result<Events> Edit(Events model)
         {
             if (model.Tags.Count > 0)

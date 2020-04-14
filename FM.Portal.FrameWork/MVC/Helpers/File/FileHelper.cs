@@ -25,5 +25,13 @@ namespace FM.Portal.FrameWork.MVC.Helpers.Files
             }
             catch (Exception e) { return false; }
         }
+        public static void DeleteFile(string path)
+        {
+            string filePath = HttpContext.Current.Server.MapPath($@"~/content/TemporaryFiles/{path}");
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+        }
     }
 }

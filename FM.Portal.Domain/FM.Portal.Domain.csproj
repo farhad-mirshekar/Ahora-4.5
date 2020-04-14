@@ -46,6 +46,10 @@
     <Reference Include="FM.Portal.DataSource">
       <HintPath>..\Ahora.WebApp\libs\FM.Portal.DataSource.dll</HintPath>
     </Reference>
+    <Reference Include="FM.Portal.FrameWork, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Ahora.WebApp\libs\FM.Portal.FrameWork.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>

@@ -2393,10 +2393,11 @@ var froalaOptionComment = {
     function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
         let events = $scope;
         events.Model = {};
+        events.attachment = {};
         events.main = {};
         events.Tags = [];
-        events.Model.listPicUploaded = [];
-        events.Model.listVideoUploaded = [];
+        events.attachment.listPicUploaded = [];
+        events.attachment.listVideoUploaded = [];
         events.Model.Errors = [];
         events.state = '';
         events.pic = { type: '8', allowMultiple: false };
@@ -2499,14 +2500,14 @@ var froalaOptionComment = {
             }).then(() => {
                 return attachmentService.list({ ParentID: events.Model.ID });
             }).then((result) => {
-                events.Model.listPicUploaded = [];
-                events.Model.listVideoUploaded = [];
+                events.attachment.listPicUploaded = [];
+                events.attachment.listVideoUploaded = [];
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         if (result[i].PathType === 8)
-                            events.Model.listPicUploaded = [].concat(result[i]);
+                            events.attachment.listPicUploaded = [].concat(result[i]);
                         if (result[i].PathType === 7)
-                            events.Model.listVideoUploaded = [].concat(result[i]);
+                            events.attachment.listVideoUploaded = [].concat(result[i]);
                     }
                 }
             }).then(() => {
@@ -2521,19 +2522,36 @@ var froalaOptionComment = {
             loadingService.show();
             return $q.resolve().then(() => {
                 eventsService.add(events.Model).then((result) => {
+                    debugger
+                    events.Model = angular.copy(result);
                     if (events.pic.list.length) {
                         events.pics = [];
-                        if (events.Model.listPicUploaded.length === 0) {
+                        if (events.attachment.listPicUploaded.length === 0) {
                             events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
+                            return attachmentService.add(events.pics);
                         }
-                        return attachmentService.add(events.pics);
                     }
-                    events.Model = result;
+                }).then(() => {
+                    if (events.video.list.length) {
+                        events.videos = [];
+                        if (events.attachment.listVideoUploaded.length === 0) {
+                            events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
+                            return attachmentService.add(events.videos);
+                        }
+                    }
                 }).then((result) => {
                     return attachmentService.list({ ParentID: events.Model.ID });
                 }).then((result) => {
-                    if (result && result.length > 0)
-                        events.Model.listPicUploaded = [].concat(result);
+                    events.attachment.listPicUploaded = [];
+                    events.attachment.listVideoUploaded = [];
+                    if (result && result.length > 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i].PathType === 8)
+                                events.attachment.listPicUploaded = [].concat(result[i]);
+                            if (result[i].PathType === 7)
+                                events.attachment.listVideoUploaded = [].concat(result[i]);
+                        }
+                    }
                     events.pics = [];
                     events.pic.list = [];
                     events.grid.getlist(false);
@@ -2563,25 +2581,35 @@ var froalaOptionComment = {
             loadingService.show();
             return $q.resolve().then(() => {
                 eventsService.edit(events.Model).then((result) => {
-                    if (events.pic.list.length || events.video.list.length) {
+                    events.Model = angular.copy(result);
+                    if (events.pic.list.length) {
                         events.pics = [];
-                        events.videos = [];
-                        if (events.Model.listPicUploaded.length === 0) {
+                        if (events.attachment.listPicUploaded.length === 0) {
                             events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
-                            attachmentService.add(events.pics);
-                        }
-                        if (events.Model.listVideoUploaded.length === 0) {
-                            events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
-                            attachmentService.add(events.videos);
+                            return attachmentService.add(events.pics);
                         }
                     }
-                    events.Model = result;
-                    return true;
+                }).then(() => {
+                    if (events.video.list.length) {
+                        events.videos = [];
+                        if (events.attachment.listVideoUploaded.length === 0) {
+                            events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
+                            return attachmentService.add(events.videos);
+                        }
+                    }
                 }).then((result) => {
                     return attachmentService.list({ ParentID: events.Model.ID });
                 }).then((result) => {
-                    if (result && result.length > 0)
-                        events.Model.listPicUploaded = [].concat(result);
+                    events.attachment.listPicUploaded = [];
+                    events.attachment.listVideoUploaded = [];
+                    if (result && result.length > 0) {
+                        for (var i = 0; i < result.length; i++) {
+                            if (result[i].PathType === 8)
+                                events.attachment.listPicUploaded = [].concat(result[i]);
+                            if (result[i].PathType === 7)
+                                events.attachment.listVideoUploaded = [].concat(result[i]);
+                        }
+                    }
                     events.pics = [];
                     events.pic.list = [];
                     events.grid.getlist(false);
@@ -2798,7 +2826,7 @@ var froalaOptionComment = {
             }))
                 .finally(loadingService.hide);
         }
-    
+
         function resCodeTypeDropDown() {
             paymentService.resCodeType().then((result) => {
                 payment.selectResCodeType = result;
