@@ -1454,7 +1454,6 @@ var froalaOptionComment = {
         let article = $scope;
         article.Model = {};
         article.Model.Errors = [];
-        article.Tags = [];
         article.state = '';
         article.Model.listPicUploaded = [];
         article.pic = { type: '4', allowMultiple: false };
@@ -1502,7 +1501,6 @@ var froalaOptionComment = {
         function cartable() {
             $('.js-example-tags').empty();
             article.Model = {};
-            article.Tags = [];
             article.state = 'cartable';
             $location.path('/article/cartable');
         }
@@ -1527,12 +1525,12 @@ var froalaOptionComment = {
                 article.Model = model;
                 if (article.Model.Tags !== null && article.Model.Tags.length > 0) {
                     for (var i = 0; i < article.Model.Tags.length; i++) {
-                        article.Tags.push({ id: i, text: article.Model.Tags[i], selected: true });
+                        var newOption = new Option(article.Model.Tags[i], i + 1, false, true);
+                        $timeout(() => {
+                            $('.js-example-tags').append(newOption).trigger('change');
+                        }, 0);
                     }
                 }
-                $('.js-example-tags').select2({
-                    data: article.Tags
-                });
                 if (article.Model.IsShow) {
                     article.Model.IsShow = 1;
                 }
@@ -1577,7 +1575,7 @@ var froalaOptionComment = {
                 }
                 article.Model = result;
             }).then(() => {
-                return attachmentService.list({ ParentID: news.Model.ID });
+                return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
                 if (result && result.length > 0)
                     article.Model.listPicUploaded = [].concat(result);
@@ -1675,7 +1673,6 @@ var froalaOptionComment = {
         let news = $scope;
         news.Model = {};
         news.main = {};
-        news.Tags = [];
         news.main.changeState = {
             cartable: cartable,
             edit: edit
@@ -1719,7 +1716,6 @@ var froalaOptionComment = {
         }
         function cartable() {
             $('.js-example-tags').empty();
-            news.Tags = [];
             news.state = 'cartable';
             $location.path('/news/cartable');
         }
@@ -1757,13 +1753,13 @@ var froalaOptionComment = {
                 }
                 if (news.Model.Tags !== null && news.Model.Tags.length > 0) {
                     for (var i = 0; i < news.Model.Tags.length; i++) {
-                        news.Tags.push({ id: i, text: news.Model.Tags[i], selected: true });
+                        var newOption = new Option(news.Model.Tags[i], i + 1, false, true);
+                        $timeout(() => {
+                            $('.js-example-tags').append(newOption).trigger('change');
+                        }, 0);
                     }
                 }
-                $('.js-example-tags').select2({
-                    tags: true,
-                    data: news.Tags
-                });
+
                 return fillDropIsShow();
             }).then(() => {
                 return fillDropComment();
@@ -2395,7 +2391,6 @@ var froalaOptionComment = {
         events.Model = {};
         events.attachment = {};
         events.main = {};
-        events.Tags = [];
         events.attachment.listPicUploaded = [];
         events.attachment.listVideoUploaded = [];
         events.Model.Errors = [];
@@ -2423,13 +2418,13 @@ var froalaOptionComment = {
         events.grid = {
             bindingObject: events
             , columns: [{ name: 'Title', displayName: 'عنوان رویداد' },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
-                { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
+            { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
             , listService: eventsService.list
             , deleteService: eventsService.remove
             , onEdit: events.main.changeState.edit
             , globalSearch: true
-            , searchBy:'Title'
+            , searchBy: 'Title'
             , displayNameFormat: ['Title']
         };
         function init() {
@@ -2489,13 +2484,11 @@ var froalaOptionComment = {
                 }
                 if (events.Model.Tags !== null && events.Model.Tags.length > 0) {
                     for (var i = 0; i < events.Model.Tags.length; i++) {
-                        events.Tags.push({ id: i, text: events.Model.Tags[i], selected: true });
+                        var newOption = new Option(events.Model.Tags[i], i + 1, false, true);
+                        $timeout(() => {
+                            $('.js-example-tags').append(newOption).trigger('change');
+                        }, 0);
                     }
-                }
-                if (events.Tags.length > 0) {
-                    $(".js-example-tags").select2({
-                        data: events.Tags,
-                    })
                 }
                 return fillDropIsShow();
             }).then(() => {
@@ -2660,7 +2653,6 @@ var froalaOptionComment = {
             })
         }
         function clearModel() {
-            events.Tags = [];
             events.Model = {};
             events.attachment.listPicUploaded = [];
             events.attachment.listVideoUploaded = [];
