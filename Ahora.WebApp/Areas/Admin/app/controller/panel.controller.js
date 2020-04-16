@@ -2422,11 +2422,14 @@ var froalaOptionComment = {
         }
         events.grid = {
             bindingObject: events
-            , columns: [{ name: 'Title', displayName: 'عنوان رویداد' }]
+            , columns: [{ name: 'Title', displayName: 'عنوان رویداد' },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
+                { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
             , listService: eventsService.list
             , deleteService: eventsService.remove
             , onEdit: events.main.changeState.edit
             , globalSearch: true
+            , searchBy:'Title'
             , displayNameFormat: ['Title']
         };
         function init() {

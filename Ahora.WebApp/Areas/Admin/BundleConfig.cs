@@ -66,7 +66,7 @@ namespace Ahora.WebApp.Areas.Admin
                                         "~/Scripts/ckeditor/angular-ckeditor.js",
                                         "~/Scripts/ckeditor/ckeditor.js",
                                         "~/Areas/Admin/app/directive/upload/upload.js",
-                                        "~/Areas/Admin/app/directive/upload/upload-video.js",
+                                        "~/Areas/Admin/app/directive/upload-video/upload-video.js",
                                         "~/Scripts/toaster/toaster.min.js",
                                         "~/Scripts/custom/UnderScore.js",
                                         "~/Scripts/smart-table.min.js",

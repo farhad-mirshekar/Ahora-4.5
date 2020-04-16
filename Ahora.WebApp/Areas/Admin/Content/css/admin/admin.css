@@ -336,3 +336,6 @@ textarea{
 .select2-container {
     width: 100% !important;
 }
+.cursor-grid{
+    cursor:pointer;
+}

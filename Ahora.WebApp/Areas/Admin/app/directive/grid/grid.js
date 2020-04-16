@@ -26,14 +26,14 @@
             grid.obj.actions = scope.obj.actions || [
                 {
                     title: "ویرایش",
-                    class: "fa fa-pencil mr-2",
+                    class: "fa fa-pencil text-info mr-2 cursor-grid",
                     onclick: edit,
                     name: "edit",
                     condinatin: true
                 },
                 {
                     title: "حذف",
-                    class: "fa fa-close mr-2",
+                    class: "fa fa-trash text-danger mr-2 cursor-grid",
                     onclick: remove,
                     name: "remove",
                     condination: false

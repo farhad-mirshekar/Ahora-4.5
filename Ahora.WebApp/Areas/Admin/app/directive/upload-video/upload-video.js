@@ -2,8 +2,8 @@
     angular
         .module('portal')
         .directive('portalUploadVideo', portalUploadVideo);
-    portalUploadVideo.$inject = ['attachmentService', '$q'];
-    function portalUploadVideo(attachmentService, $q) {
+    portalUploadVideo.$inject = ['attachmentService', '$q','$routeParams'];
+    function portalUploadVideo(attachmentService, $q, $routeParams) {
         var directive = {
             restrict: 'E',
             templateUrl: './Areas/Admin/app/directive/upload-video/upload-video.html',
@@ -75,8 +75,9 @@
             scope.confirmRemoveVideo = confirmRemoveVideo;
 
             function init() {
+                element.find("#file-pond").value = "";
                 return $q.resolve().then(() => {
-                    return attachmentService.list({ ParentID: scope.main.ID });
+                    return attachmentService.list({ ParentID: $routeParams.id });
                 }).then((result) => {
                     if (result && result.length > 0) {
                         for (var i = 0; i < result.length; i++) {
@@ -100,6 +101,7 @@
                     if (result) {
                         scope.deleteBuffer = {};
                         element.find(".upload-delete-video").modal("hide");
+                        scope.main.listVideoUploaded = [];
                         return init();
                     }
                 })

@@ -1,16 +1,16 @@
 ﻿<div class="card">
-    <div class="card-header">
+    <!--<div class="card-header">
         <h3 class="main-title" ng-show="pic.allowMultiple">آپلود تصاویر</h3>
         <h3 class="main-title"  ng-show="!pic.allowMultiple">آپلود تصویر</h3>
-    </div>
+    </div>-->
     <div class="card-body">
         <div class="container">
             <div class="row">
-                <div class="col-md-12" ng-show="(pic.allowMultiple === false && main.listPicUploaded.length === 0) || pic.allowMultiple">
+                <div class="col-md-12" ng-if="(pic.allowMultiple === false && main.listPicUploaded.length === 0) || pic.allowMultiple">
                     <div class="card">
-                        <div class="card-header">
+                        <!--<div class="card-header">
                             <span class="main-title">آپلود</span>
-                        </div>
+                        </div>-->
                         <div class="card-body">
                             <file-pond config="filePondConfig"></file-pond>
                         </div>
@@ -19,7 +19,7 @@
                 <div class="col-md-12" ng-if="main.listPicUploaded.length">
                     <div class="card">
                         <div class="card-header">
-                            <span class="main-title">تصاویر آپلود شده</span>
+                            <span class="main-title">تصاویر بارگذاری شده</span>
                         </div>
                         <div class="card-body">
                             <div class="card ml-2 mt-2 d-sm-inline-block" ng-repeat="row in main.listPicUploaded track by $index" style="width: 10rem;">
