@@ -3,20 +3,19 @@ using System;
 using ptl = FM.Portal.Core.Service.Ptl;
 using System.Web.Mvc;
 using PagedList;
+using FM.Portal.FrameWork.MVC.Controller;
 
 namespace Ahora.WebApp.Controllers
 {
-    public class ArticleController : Controller
+    public class ArticleController : BaseController<IArticleService>
     {
-        private readonly IArticleService _service;
         private readonly ptl.ICategoryService _categoryService;
-
         public ArticleController(IArticleService service
-                                 , ptl.ICategoryService categoryService)
+                                ,ptl.ICategoryService categoryService) : base(service)
         {
-            _service = service;
             _categoryService = categoryService;
         }
+
         // GET: Article
         public ActionResult Index(int? page)
         {

@@ -58,13 +58,15 @@ namespace Ahora.WebApp.Areas.Admin
                 "~/Scripts/froala-editor/css/plugins/image.css",
                 "~/Scripts/froala-editor/css/plugins/video.css",
                 "~/Scripts/froala-editor/css/plugins/fullscreen.css",
-                "~/Scripts/froala-editor/css/plugins/color.css"));
+                "~/Scripts/froala-editor/css/plugins/color.css",
+                "~/Scripts/froala-editor/css/froala_style.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/utility").Include(
                                         "~/Scripts/angular-ui/ui-bootstrap-tpls.min.js",
                                         "~/Scripts/ckeditor/angular-ckeditor.js",
                                         "~/Scripts/ckeditor/ckeditor.js",
                                         "~/Areas/Admin/app/directive/upload/upload.js",
+                                        "~/Areas/Admin/app/directive/upload/upload-video.js",
                                         "~/Scripts/toaster/toaster.min.js",
                                         "~/Scripts/custom/UnderScore.js",
                                         "~/Scripts/smart-table.min.js",
@@ -72,6 +74,7 @@ namespace Ahora.WebApp.Areas.Admin
                                         "~/Areas/Admin/app/directive/treegrid/tree-grid-directive.js",
                                         "~/Areas/Admin/Content/fileponed/js/filepond-plugin-image-preview.js",
                                         "~/Areas/Admin/Content/fileponed/js/filepond-plugin-image-edit.js",
+                                        "~/Areas/Admin/Content/fileponed/js/filepond-plugin-file-validate-type.js",
                                         "~/Areas/Admin/Content/fileponed/js/filepond.min.js",
                                         "~/Areas/Admin/app/directive/grid/grid.js"));
         }

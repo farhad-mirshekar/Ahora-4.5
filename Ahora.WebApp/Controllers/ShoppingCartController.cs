@@ -3,6 +3,7 @@
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
+using FM.Portal.FrameWork.MVC.Controller;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,8 @@ using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
 {
-    public class ShoppingCartController : Controller
+    public class ShoppingCartController : BaseController<IShoppingCartItemService>
     {
-        private readonly IShoppingCartItemService _service;
         private readonly IProductService _productService;
         private readonly IAttachmentService _attachmentService;
         private readonly IProductVariantAttributeService _attributeService;
@@ -31,9 +31,8 @@ namespace Ahora.WebApp.Controllers
                                      , IPaymentService paymentService
                                      , IUserService userService
                                      , IOrderService orderService
-                                     , IUserAddressService addressService)
+                                     , IUserAddressService addressService):base(service)
         {
-            _service = service;
             _productService = productService;
             _attachmentService = attachmentService;
             _attributeService = attributeService;

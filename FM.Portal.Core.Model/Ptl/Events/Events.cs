@@ -6,6 +6,10 @@ namespace FM.Portal.Core.Model
 {
    public class Events : Entity
     {
+        public Events()
+        {
+            Tags = new List<string>();
+        }
         public string Title { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string Body { get; set; }

@@ -6,11 +6,8 @@ namespace Ahora.WebApp.Controllers
 {
     public class RedirectController : BaseController<IPaymentService>
     {
-        private readonly IPaymentService _service;
-
         public RedirectController(IPaymentService service) : base(service)
         {
-            _service = service;
         }
 
         // GET: Redirect

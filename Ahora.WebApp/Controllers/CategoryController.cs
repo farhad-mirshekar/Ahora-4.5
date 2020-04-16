@@ -1,20 +1,20 @@
 ﻿using FM.Portal.Core.Service;
+using FM.Portal.FrameWork.MVC.Controller;
 using System;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
 {
-    public class CategoryController : Controller
+    public class CategoryController : BaseController<IProductService>
     {
-        private readonly IProductService _productService;
-        public CategoryController(IProductService productService)
+        public CategoryController(IProductService service) : base(service)
         {
-            _productService = productService;
         }
+
         // GET: Category
         public ActionResult Index(Guid ID)
         {
-            var result = _productService.List(ID);
+            var result = _service.List(ID);
             if(result.Success)
                 return View(result.Data);
             return View("error");

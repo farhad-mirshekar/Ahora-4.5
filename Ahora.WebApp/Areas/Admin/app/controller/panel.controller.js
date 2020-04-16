@@ -2449,7 +2449,7 @@ var froalaOptionComment = {
         }
         function cartable() {
             $('.js-example-tags').empty();
-            events.Tags = [];
+            clearModel();
             events.state = 'cartable';
             $location.path('/events/cartable');
         }
@@ -2489,9 +2489,11 @@ var froalaOptionComment = {
                         events.Tags.push({ id: i, text: events.Model.Tags[i], selected: true });
                     }
                 }
-                $('.js-example-tags').select2({
-                    data: events.Tags
-                });
+                if (events.Tags.length > 0) {
+                    $(".js-example-tags").select2({
+                        data: events.Tags,
+                    })
+                }
                 return fillDropIsShow();
             }).then(() => {
                 return fillDropComment();
@@ -2522,7 +2524,6 @@ var froalaOptionComment = {
             loadingService.show();
             return $q.resolve().then(() => {
                 eventsService.add(events.Model).then((result) => {
-                    debugger
                     events.Model = angular.copy(result);
                     if (events.pic.list.length) {
                         events.pics = [];
@@ -2654,6 +2655,12 @@ var froalaOptionComment = {
                     }
                 }
             })
+        }
+        function clearModel() {
+            events.Tags = [];
+            events.Model = {};
+            events.attachment.listPicUploaded = [];
+            events.attachment.listVideoUploaded = [];
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------

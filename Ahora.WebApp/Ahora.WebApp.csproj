@@ -239,9 +239,11 @@
     <Content Include="Areas\Admin\Content\css\bootstrap-rtl\bootstrap-rtl.css" />
     <Content Include="Areas\Admin\Content\css\fonts\yekannumbers-regular.svg" />
     <Content Include="Areas\Admin\Content\css\loader\loader.css" />
+    <Content Include="Areas\Admin\Content\css\select2\select2.min.css" />
     <Content Include="Areas\Admin\Content\fileponed\css\filepond-plugin-image-edit.css" />
     <Content Include="Areas\Admin\Content\fileponed\css\filepond-plugin-image-preview.css" />
     <Content Include="Areas\Admin\Content\fileponed\css\filepond.css" />
+    <Content Include="Areas\Admin\Content\fileponed\js\filepond-plugin-file-validate-type.js" />
     <Content Include="Areas\Admin\Content\fileponed\js\filepond-plugin-image-edit.js" />
     <Content Include="Areas\Admin\Content\fileponed\js\filepond-plugin-image-preview.js" />
     <Content Include="Areas\Admin\Content\fileponed\js\filepond.min.js" />
@@ -251,6 +253,7 @@
     <Content Include="Areas\Admin\Content\img\logo.png" />
     <Content Include="Areas\Admin\Content\js\bootstrap.min.js" />
     <Content Include="Areas\Admin\Content\js\popper.min.js" />
+    <Content Include="Areas\Admin\Content\js\select2.min.js" />
     <Content Include="Areas\User\Content\admin\admin.css" />
     <Content Include="Areas\User\Content\bootstrap-rtl\bootstrap-rtl.css" />
     <Content Include="Areas\User\Content\css\admin\admin.css" />
@@ -278,6 +281,7 @@
     <Content Include="Content\fonts\webfonts\fa-solid-900.svg" />
     <Content Include="Content\img\bg-main.jpg" />
     <Content Include="Content\img\error-img.png" />
+    <Content Include="Content\img\faq.png" />
     <Content Include="Content\img\Header.png" />
     <Content Include="Content\img\logo.png" />
     <Content Include="Content\img\product_overlay.png" />
