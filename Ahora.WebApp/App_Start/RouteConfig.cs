@@ -13,6 +13,12 @@ namespace Ahora.WebApp
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
+            "Faq",
+            "Faq/{ID}",
+              new { controller = "Faq", action = "Index" , ID=UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
+            routes.MapRoute(
               "Events",
               "Events/{Page}",
               new { controller = "Events", action = "Index", Page = UrlParameter.Optional },

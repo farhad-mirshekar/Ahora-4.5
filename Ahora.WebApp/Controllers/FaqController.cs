@@ -10,10 +10,9 @@ namespace Ahora.WebApp.Controllers
         public FaqController(IFaqService service) : base(service)
         {
         }
-
-        public ActionResult Index(Guid id)
+        public ActionResult Index(Guid ID)
         {
-            var result = _service.List(id);
+            var result = _service.List(ID);
             return View(result.Data);
         }
     }
