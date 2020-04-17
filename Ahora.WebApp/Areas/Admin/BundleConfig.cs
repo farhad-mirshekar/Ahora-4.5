@@ -18,7 +18,8 @@ namespace Ahora.WebApp.Areas.Admin
                                         "~/Content/toaster/toaster.css",
                                         "~/Areas/Admin/Content/fileponed/css/filepond.css",
                                         "~/Areas/Admin/Content/fileponed/css/filepond-plugin-image-preview.css",
-                                        "~/Areas/Admin/Content/fileponed/css/filepond-plugin-image-edit.css"));
+                                        "~/Areas/Admin/Content/fileponed/css/filepond-plugin-image-edit.css",
+                                        "~/Areas/Admin/Content/css/select2/select2.min.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-rtl-js").Include(
                                         "~/Areas/Admin/Content/js/popper.min.js",
@@ -26,7 +27,8 @@ namespace Ahora.WebApp.Areas.Admin
 
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                                         "~/Scripts/angular/angular.js",
-                                        "~/Scripts/angular/angular-route.js"
+                                        "~/Scripts/angular/angular-route.js",
+                                        "~/Scripts/angular/angular-sanitize.js"
                 ));
 
             bundles.Add(new ScriptBundle("~/bundles/config").Include(
@@ -76,7 +78,8 @@ namespace Ahora.WebApp.Areas.Admin
                                         "~/Areas/Admin/Content/fileponed/js/filepond-plugin-image-edit.js",
                                         "~/Areas/Admin/Content/fileponed/js/filepond-plugin-file-validate-type.js",
                                         "~/Areas/Admin/Content/fileponed/js/filepond.min.js",
-                                        "~/Areas/Admin/app/directive/grid/grid.js"));
+                                        "~/Areas/Admin/app/directive/grid/grid.js",
+                                        "~/Areas/Admin/Content/js/select2.min.js"));
         }
 
 

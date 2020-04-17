@@ -10,6 +10,7 @@
         'smart-table',
         'treeGrid',
         'filepond',
-        'froala'
+        'froala',
+        'ngSanitize'
     ]);
 })();

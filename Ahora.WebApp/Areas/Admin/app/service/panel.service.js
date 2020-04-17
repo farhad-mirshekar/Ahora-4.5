@@ -2168,6 +2168,31 @@
         }
     }
 
+    app.factory('notificationService', notificationService);
+    notificationService.$inject = ['$http', 'callbackService', '$q'];
+    function notificationService($http, callbackService, $q) {
+        var url = '/api/v1/notification/'
+        var service = {
+            list: list,
+
+        }
+        return service;
+        function list(model) {
+            return $http({
+                method: 'post',
+                url: url + `list/`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + `List` });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+    }
+
     app.factory('callbackService', callbackService);
     callbackService.$inject = ['$q', '$http', 'authenticationService'];
     function callbackService($q, $http, authenticationService) {

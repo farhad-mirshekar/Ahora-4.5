@@ -105,6 +105,9 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IUserAddressDataSource, UserAddressDataSource>();
             _container.RegisterType<IUserAddressService, UserAddressService>();
 
+            _container.RegisterType<INotificationDataSource, NotificationDataSource>();
+            _container.RegisterType<INotificationService, NotificationService>();
+
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

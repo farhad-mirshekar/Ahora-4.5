@@ -79,6 +79,7 @@
     <Compile Include="DataSources\Pbl\AttachmentDataSource.cs" />
     <Compile Include="DataSources\Pbl\GeneralSettingDataSource.cs" />
     <Compile Include="DataSources\Pbl\MenuDataSource.cs" />
+    <Compile Include="DataSources\Pbl\NotificationDataSource.cs" />
     <Compile Include="DataSources\Pbl\PagesDataSource.cs" />
     <Compile Include="DataSources\Pbl\TagsDataSource.cs" />
     <Compile Include="DataSources\Ptl\ArticleDataSource.cs" />
@@ -177,6 +178,7 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetsMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.spModifyMenu.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.GetsNotification.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetsPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.spModifyPage.sql" />

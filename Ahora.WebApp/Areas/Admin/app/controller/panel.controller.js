@@ -50,9 +50,22 @@ var froalaOptionComment = {
     var app = angular.module('portal');
 
     app.controller('homeController', homeController);
-    homeController.$inject = ['$scope', '$location'];
-    function homeController($scope, $location, toolsService) {
+    homeController.$inject = ['$scope', '$q','loadingService','notificationService'];
+    function homeController($scope, $q, loadingService, notificationService) {
         let home = $scope;
+        home.notification = [];
+        init();
+
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return notificationService.list();
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    home.notification = [].concat(result);
+                }
+            }).finally(loadingService.hide);
+        }
     }
     //-------------------------------------------------------------------------------------------------------
     app.controller('faqGroupController', faqGroupController);

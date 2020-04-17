@@ -755,6 +755,21 @@ ALTER TABLE [pbl].[Tags_Mapping]  WITH CHECK ADD  CONSTRAINT [Tags_Mapping_Tag] 
 REFERENCES [pbl].[Tags] ([ID])
 ON DELETE CASCADE
 GO
+CREATE TABLE [pbl].[Notification](
+	[ID] [uniqueidentifier]  NOT NULL,
+	[UserID] [uniqueidentifier]  NOT NULL,
+	[Title] [Nvarchar](3000) NOT NULL,
+	[Description][Nvarchar](MAX) NOT NULL,
+	[ReadDate] [SmallDateTime] NULL,
+	[CreationDate] [smalldatetime] NULL,
+CONSTRAINT [PK_Notification] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
 GO

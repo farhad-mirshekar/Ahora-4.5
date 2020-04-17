@@ -21,7 +21,7 @@ namespace FM.Portal.FrameWork.Caching
         {
             var siteSettings = _httpContext.CacheRead<SettingVM>(SiteSettingsKey);
 
-            const int durationMinutes = 60;
+            const int durationMinutes = 240;
 
 
             if (siteSettings != null) return siteSettings;

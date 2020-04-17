@@ -2086,6 +2086,7 @@
     <Compile Include="Areas\ApiClient\Controllers\pbl\AttachmentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\GeneralSettingController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\MenuController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\pbl\NotificationController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\PagesController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\ArticleController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\CategoryPortalController.cs" />
@@ -2135,6 +2136,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\ApiClient\Views\Notification\" />
     <Folder Include="Areas\User\Models\" />
     <Folder Include="Content\TemporaryFiles\video\" />
     <Folder Include="Models\" />

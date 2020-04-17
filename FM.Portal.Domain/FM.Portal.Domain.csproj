@@ -87,6 +87,7 @@
     <Compile Include="Pbl\AttachmentService.cs" />
     <Compile Include="Pbl\GeneralSettingService.cs" />
     <Compile Include="Pbl\MenuService.cs" />
+    <Compile Include="Pbl\NotificationService.cs" />
     <Compile Include="Pbl\PagesService.cs" />
     <Compile Include="Pbl\TagsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -339,3 +339,6 @@ textarea{
 .cursor-grid{
     cursor:pointer;
 }
+.notification-list{
+    list-style:circle !important;
+}
