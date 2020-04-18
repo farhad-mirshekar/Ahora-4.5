@@ -2174,19 +2174,33 @@
         var url = '/api/v1/notification/'
         var service = {
             list: list,
-
+            readNotification: readNotification
         }
         return service;
         function list(model) {
             return $http({
                 method: 'post',
-                url: url + `list/`,
+                url: url + `list`,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + localStorage.access_token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `List` });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function readNotification(model) {
+            return $http({
+                method: 'post',
+                url: url + `readNotification/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + `readNotification/${model}` });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })

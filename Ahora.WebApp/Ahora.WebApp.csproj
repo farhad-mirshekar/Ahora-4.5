@@ -900,6 +900,7 @@
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.woff" />
     <Content Include="Areas\Admin\Views\Comment\ListForPortal.cshtml" />
     <Content Include="Areas\Admin\Views\Payment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Notification\Index.cshtml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
     <Content Include="Scripts\froala-editor\css\froala_editor.min.css" />
@@ -2059,9 +2060,10 @@
     <Compile Include="Areas\Admin\Controllers\Org\PositionController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\ProfileController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\RoleController.cs" />
-    <Compile Include="Areas\Admin\Controllers\pbl\GeneralSettingController.cs" />
-    <Compile Include="Areas\Admin\Controllers\pbl\MenuController.cs" />
-    <Compile Include="Areas\Admin\Controllers\pbl\PagesController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Pbl\GeneralSettingController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Pbl\MenuController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Pbl\NotificationController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Pbl\PagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\ArticleController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\CategoryPortalController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\EventsController.cs" />

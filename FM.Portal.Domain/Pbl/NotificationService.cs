@@ -3,6 +3,7 @@ using FM.Portal.Core.Model;
 using FM.Portal.Core.Result;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
+using System;
 using System.Collections.Generic;
 
 namespace FM.Portal.Domain
@@ -22,5 +23,8 @@ namespace FM.Portal.Domain
                 return Result<List<Notification>>.Successful(data: table);
             return Result<List<Notification>>.Failure();
         }
+
+        public Result ReadNotification(Guid ID)
+        => _dataSource.ReadNotification(ID);
     }
 }

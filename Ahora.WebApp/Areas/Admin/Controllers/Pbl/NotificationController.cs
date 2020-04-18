@@ -3,9 +3,9 @@
 namespace Ahora.WebApp.Areas.Admin.Controllers
 {
     [FM.Portal.FrameWork.Attributes.Authorize.Authorize]
-    public class MenuController : Controller
+    public class NotificationController : Controller
     {
-        // GET: Admin/Menu
+        // GET: Admin/Notification
         public ActionResult Index()
         {
             return View();

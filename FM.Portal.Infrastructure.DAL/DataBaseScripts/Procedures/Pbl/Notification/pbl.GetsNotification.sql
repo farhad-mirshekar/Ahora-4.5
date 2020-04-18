@@ -16,7 +16,8 @@ BEGIN
 	FROM 
 		pbl.[Notification]
 	WHERE
-		[UserID] = @UserID
+		[UserID] = @UserID AND
+		[ReadDate] IS NULL
 
 
 	RETURN @@ROWCOUNT

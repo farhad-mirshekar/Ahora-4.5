@@ -54,6 +54,7 @@ var froalaOptionComment = {
     function homeController($scope, $q, loadingService, notificationService) {
         let home = $scope;
         home.notification = [];
+        home.readNotification = readNotification; 
         init();
 
         function init() {
@@ -64,6 +65,13 @@ var froalaOptionComment = {
                 if (result && result.length > 0) {
                     home.notification = [].concat(result);
                 }
+            }).finally(loadingService.hide);
+        }
+
+        function readNotification(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return notificationService.readNotification(model);
             }).finally(loadingService.hide);
         }
     }

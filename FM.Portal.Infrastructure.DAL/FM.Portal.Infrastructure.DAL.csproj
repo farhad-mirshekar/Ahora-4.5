@@ -179,6 +179,7 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetsMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.spModifyMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.GetsNotification.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.ReadNotification.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetsPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.spModifyPage.sql" />

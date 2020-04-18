@@ -22,5 +22,15 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             }
             catch(Exception e) { return NotFound() ; }
         }
+        [HttpPost , Route("ReadNotification/{ID:guid}")]
+        public IHttpActionResult ReadNotification(Guid ID)
+        {
+            try
+            {
+                var result = _service.ReadNotification(ID);
+                return Ok(result);
+            }
+            catch(Exception e) { return NotFound(); }
+        }
     }
 }
