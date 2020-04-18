@@ -50,11 +50,11 @@ var froalaOptionComment = {
     var app = angular.module('portal');
 
     app.controller('homeController', homeController);
-    homeController.$inject = ['$scope', '$q','loadingService','notificationService'];
+    homeController.$inject = ['$scope', '$q', 'loadingService', 'notificationService'];
     function homeController($scope, $q, loadingService, notificationService) {
         let home = $scope;
         home.notification = [];
-        home.readNotification = readNotification; 
+        home.readNotification = readNotification;
         init();
 
         function init() {
@@ -2430,12 +2430,6 @@ var froalaOptionComment = {
         events.addEvents = addEvents;
         events.editEvents = editEvents;
         init();
-        events.main = {};
-        events.main.changeState = {
-            add: add,
-            edit: edit,
-            cartable: cartable
-        }
         events.grid = {
             bindingObject: events
             , columns: [{ name: 'Title', displayName: 'عنوان رویداد' },
@@ -2876,6 +2870,49 @@ var froalaOptionComment = {
             popupWin.document.write(toPrint.innerHTML);
             popupWin.document.write("</html>");
             popupWin.document.close();
+        }
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('notificationController', notificationController);
+    notificationController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'notificationService', '$location'];
+    function notificationController($scope, $q, loadingService, $routeParams, notificationService, $location) {
+        let notification = $scope;
+        notification.Model = {};
+        notification.main = {};
+        notification.state = '';
+        notification.main.changeState = {
+            cartable: cartable,
+            show:show
+        }
+        init();
+        notification.grid = {
+            bindingObject: notification
+            , columns: [{ name: 'Title', displayName: 'عنوان پیام' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
+            { name: 'ReadDatePersian', displayName: 'تاریخ مشاهده' }]
+            , listService: notificationService.list
+            , onEdit: notification.main.changeState.show
+            , globalSearch: true
+            , searchBy: 'Title'
+            , displayNameFormat: ['Title']
+            , showRemove: false
+        };
+        function init() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                }
+            }).finally(loadingService.hide);
+        }
+        function cartable() {
+            notification.state = 'cartable';
+            $location.path('/notification/cartable');
+        }
+        function show() {
+            $('#notification-modal').modal(show);
         }
     }
 })();
