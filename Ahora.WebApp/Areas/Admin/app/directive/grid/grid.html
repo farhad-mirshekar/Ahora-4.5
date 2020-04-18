@@ -28,7 +28,7 @@
                             <i ng-repeat="action in obj.actions"
                                ng-click="action.onclick(item)"
                                class="{{ action.class }}"
-                               ng-show="item.ParentID !== '00000000-0000-0000-0000-000000000000' || action.name ==='edit' || obj.showRemove"
+                               ng-if="obj.checkActionVisibility === undefined || obj.checkActionVisibility(action.name, item)"
                                title="{{ action.title }}"
                                aria-hidden="true"></i>
                         </td>

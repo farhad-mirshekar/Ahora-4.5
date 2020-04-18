@@ -20,6 +20,7 @@
     charCounterCount: false,
     toolbarSticky: false,
     angularIgnoreAttrs: ['class', 'ng-model', 'id'],
+    imageUploadURL: '/attachment/upload?type=9',
     // Set the video upload URL.
     videoUploadURL: '/attachment/upload?type=7',
     // Set request type.
@@ -2895,7 +2896,12 @@ var froalaOptionComment = {
             , globalSearch: true
             , searchBy: 'Title'
             , displayNameFormat: ['Title']
-            , showRemove: false
+            , checkActionVisibility: (action, item) => {
+                if (action === 'remove')
+                    return false;
+                if (action === 'edit')
+                    return true;
+            }
         };
         function init() {
             loadingService.show();
