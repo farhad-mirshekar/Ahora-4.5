@@ -49,7 +49,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
                     HttpPostedFileBase file = Request.Files[0];
                     file.SaveAs(filePath);
                 }
-                if(type != PathType.video)
+                if(type != PathType.video && type != PathType.editor)
                     return Json(new { Success = true, Data = new { FileName = fileName } });
                 else
                 return Json(new { Success = true, Data = new { FileName = fileName }, link =$"/content/TemporaryFiles/{Enum.GetName(typeof(PathType), type)}/{fileName}" });
