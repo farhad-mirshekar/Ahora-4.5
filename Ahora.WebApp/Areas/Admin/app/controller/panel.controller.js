@@ -1546,12 +1546,13 @@ var froalaOptionComment = {
             }).then((model) => {
                 article.Model = model;
                 if (article.Model.Tags !== null && article.Model.Tags.length > 0) {
+                    var newOption = [];
                     for (var i = 0; i < article.Model.Tags.length; i++) {
-                        var newOption = new Option(article.Model.Tags[i], article.Model.Tags[i], false, true);
-                        $timeout(() => {
-                            $('.js-example-tags').append(newOption).trigger('change');
-                        }, 0);
+                        newOption.push(new Option(article.Model.Tags[i], article.Model.Tags[i], false, true));
                     }
+                    $timeout(() => {
+                        $('.js-example-tags').append(newOption).trigger('change');
+                    }, 0);
                 }
                 if (article.Model.IsShow) {
                     article.Model.IsShow = 1;
@@ -1774,12 +1775,13 @@ var froalaOptionComment = {
                     news.Model.CommentStatus = 0;
                 }
                 if (news.Model.Tags !== null && news.Model.Tags.length > 0) {
+                    var newOption = [];
                     for (var i = 0; i < news.Model.Tags.length; i++) {
-                        var newOption = new Option(news.Model.Tags[i], news.Model.Tags[i], false, true);
-                        $timeout(() => {
-                            $('.js-example-tags').append(newOption).trigger('change');
-                        }, 0);
+                        newOption.push(new Option(news.Model.Tags[i], news.Model.Tags[i], false, true));
                     }
+                    $timeout(() => {
+                        $('.js-example-tags').append(newOption).trigger('change');
+                    }, 0);
                 }
 
                 return fillDropIsShow();
@@ -2499,12 +2501,13 @@ var froalaOptionComment = {
                     events.Model.CommentStatus = 0;
                 }
                 if (events.Model.Tags !== null && events.Model.Tags.length > 0) {
+                    var newOption = [];
                     for (var i = 0; i < events.Model.Tags.length; i++) {
-                        var newOption = new Option(events.Model.Tags[i], events.Model.Tags[i], false, true);
-                        $timeout(() => {
-                            $('.js-example-tags').append(newOption).trigger('change');
-                        }, 0);
+                        newOption.push(new Option(events.Model.Tags[i], events.Model.Tags[i], false, true));
                     }
+                    $timeout(() => {
+                        $('.js-example-tags').append(newOption).trigger('change');
+                    }, 0);
                 }
                 return fillDropIsShow();
             }).then(() => {
