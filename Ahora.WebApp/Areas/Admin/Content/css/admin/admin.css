@@ -279,7 +279,7 @@ thead > tr {
     background-color: rgba(178, 180, 182, 0.29) !important;
 }
 
-.loader {
+/*.loader {
     position: relative;
     margin: 0 auto;
     width: 100px;
@@ -289,7 +289,7 @@ thead > tr {
         content: '';
         display: block;
         padding-top: 0 !important;
-    }
+    }*/
 
 .fade.in {
     opacity: 1;

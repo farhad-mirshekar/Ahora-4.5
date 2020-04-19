@@ -12,10 +12,13 @@
 
         // create loading view
         let loadingContainer = document.createElement('div')
-            , loadingView = `<div id="custom-loading-service" style="display: none">
+            , loadingView = `
+        <div id="custom-loading-service" style="display: none">
             <div class="showbox">
                 <div class="loader">
-                    <img src="/areas/admin/content/img/loading.gif" >
+                    <svg class="circular" viewBox="25 25 50 50">
+                        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                    </svg>
                 </div>
             </div>
         </div>`;

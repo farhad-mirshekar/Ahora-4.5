@@ -1,5 +1,4 @@
-﻿/* source:https://codepen.io/jczimm/pen/vEBpoL */
-.showbox {
+﻿#custom-loading-service .showbox {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -10,19 +9,19 @@
     z-index: 9999;
 }
 
-.loader {
+#custom-loading-service .loader {
     position: relative;
     margin: 0 auto;
     width: 100px;
 }
 
-.loader:before {
-    content: '';
-    display: block;
-    padding-top: 0 !important;
-}
+    #custom-loading-service .loader:before {
+        content: '';
+        display: block;
+        padding-top: 100%;
+    }
 
-.circular {
+#custom-loading-service .circular {
     -webkit-animation: rotate 2s linear infinite;
     animation: rotate 2s linear infinite;
     height: 100%;
@@ -37,7 +36,7 @@
     margin: auto;
 }
 
-.path {
+#custom-loading-service .path {
     stroke-dasharray: 1, 200;
     stroke-dashoffset: 0;
     -webkit-animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;

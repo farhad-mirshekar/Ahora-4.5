@@ -19,7 +19,8 @@ namespace Ahora.WebApp.Areas.Admin
                                         "~/Areas/Admin/Content/fileponed/css/filepond.css",
                                         "~/Areas/Admin/Content/fileponed/css/filepond-plugin-image-preview.css",
                                         "~/Areas/Admin/Content/fileponed/css/filepond-plugin-image-edit.css",
-                                        "~/Areas/Admin/Content/css/select2/select2.min.css"));
+                                        "~/Areas/Admin/Content/css/select2/select2.min.css",
+                                        "~/Areas/Admin/Content/css/loader/loader.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-rtl-js").Include(
                                         "~/Areas/Admin/Content/js/popper.min.js",
