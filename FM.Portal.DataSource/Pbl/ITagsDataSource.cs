@@ -11,5 +11,6 @@ namespace FM.Portal.DataSource
         Result Add(List<Tags> model,Guid DocumentID);
         DataTable List(Guid DocumnetID);
         Result<int> Delete(Guid DocumnetID);
+        DataTable SearchByName(string Name);
     }
 }

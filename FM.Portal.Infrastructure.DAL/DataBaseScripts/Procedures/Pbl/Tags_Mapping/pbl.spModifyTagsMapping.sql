@@ -13,7 +13,6 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DELETE FROM pbl.Tags_Mapping WHERE TagID = @TagID
 	INSERT INTO pbl.Tags_Mapping
 		(TagID,DocumentID)
 	VALUES

@@ -29,5 +29,13 @@ namespace FM.Portal.Domain
 
         public Result<int> Delete(Guid DocumentID)
         => _dataSource.Delete(DocumentID);
+
+        public Result<List<TagsSearchListVM>> SearchByName(string Name)
+        {
+            var table = ConvertDataTableToList.BindList<TagsSearchListVM>(_dataSource.SearchByName(Name.Trim()));
+            if (table.Count > 0 || table.Count == 0)
+                return Result<List<TagsSearchListVM>>.Successful(data: table);
+            return Result<List<TagsSearchListVM>>.Failure();
+        }
     }
 }
