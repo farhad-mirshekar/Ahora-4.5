@@ -42,11 +42,11 @@
                     {
                         if (item != lastitem)
                         {
-                            <label class="badge badge-info p-2">@item</label> @:|
+                            <a href="@Url.RouteUrl("Tag",new { Name= item.Replace(" ", "_")})">@item</a> @:|
                         }
                         else
                         {
-                            <label class="badge badge-info p-2">@item</label>
+                            <a href="@Url.RouteUrl("Tag",new { Name= item.Replace(" ", "_")})">@item</a>
                         }
 
                     }
