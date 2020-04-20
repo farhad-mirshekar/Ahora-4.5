@@ -183,6 +183,7 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetsPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.spModifyPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Tags\pbl.spGetsTagsByName.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Tags\pbl.spGetTagsByDocumentID.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Tags\pbl.spDeleteTagsByDocumnetID.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Tags\pbl.spModifyTags.sql" />

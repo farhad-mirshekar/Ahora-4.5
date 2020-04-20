@@ -62,5 +62,17 @@ namespace FM.Portal.Infrastructure.DAL
             }
             catch (Exception e) { throw; }
         }
+
+        public DataTable SearchByName(string Name)
+        {
+            try
+            {
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@Name", Name);
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsTagsByName", param);
+            }
+            catch (Exception e) { throw; }
+        }
     }
 }

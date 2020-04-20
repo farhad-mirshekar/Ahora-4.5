@@ -10,5 +10,6 @@ namespace FM.Portal.Core.Service
         Result.Result Insert(List<Tags> model, Guid DocumentID);
         Result<List<Tags>> List (Guid DocumentID);
         Result<int> Delete(Guid DocumentID);
+        Result<List<TagsSearchListVM>> SearchByName(string Name);
     }
 }
