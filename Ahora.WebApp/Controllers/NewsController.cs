@@ -1,4 +1,5 @@
-﻿using FM.Portal.Core.Service;
+﻿using FM.Portal.Core.Common;
+using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
 using PagedList;
 using System.Web.Mvc;
@@ -17,7 +18,7 @@ namespace Ahora.WebApp.Controllers
             ViewBag.Title = "لیست اخبار";
             int pageSize = 2;
             int pageNumber = (page ?? 1);
-            var result = _service.List(4);
+            var result = _service.List(Helper.CountShowNews);
             return View(result.Data.ToPagedList(pageNumber, pageSize));
         }
         public ActionResult Detail(string TrackingCode , string Seo)

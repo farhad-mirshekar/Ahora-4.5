@@ -4,6 +4,7 @@ using ptl = FM.Portal.Core.Service.Ptl;
 using System.Web.Mvc;
 using PagedList;
 using FM.Portal.FrameWork.MVC.Controller;
+using FM.Portal.Core.Common;
 
 namespace Ahora.WebApp.Controllers
 {
@@ -22,7 +23,7 @@ namespace Ahora.WebApp.Controllers
             ViewBag.Title = "لیست مقالات";
             int pageSize = 2;
             int pageNumber = (page ?? 1);
-            var result = _service.List(4);
+            var result = _service.List(Helper.CountShowArticle);
             return View(result.Data.ToPagedList(pageNumber, pageSize));
         }
 
