@@ -688,7 +688,11 @@ var froalaOptionComment = {
         product.Model.Errors = [];
         product.pic = { type: '1', allowMultiple: true };
         product.pic.list = [];
-        product.Model.listPicUploaded = [];
+        product.attachment = {};
+        product.attachment.listPicUploaded = [];
+        product.attachment.listFileUploaded = [];
+        product.file = { type: '10', allowMultiple: false };
+        product.file.list = [];
         product.froalaOption = angular.copy(froalaOption);
         product.froalaOptions = angular.copy(froalaOption);
         product.Attribute.Sub = false;
@@ -736,8 +740,17 @@ var froalaOptionComment = {
             }).then(() => {
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
-                if (result && result.length > 0)
-                    product.Model.listPicUploaded = [].concat(result);
+                product.attachment.listPicUploaded = [];
+                product.attachment.listFileUploaded = [];
+
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 10)
+                            product.attachment.listFileUploaded.push(result[i]);
+                        else
+                            product.attachment.listPicUploaded.push(result[i]);
+                    }
+                }
                 product.state = 'edit';
                 $location.path(`/product/edit/${product.Model.ID}`);
             }).catch((error) => {
@@ -776,24 +789,44 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 return productService.edit(product.Model);
             }).then((result) => {
+                product.Model = result;
+
                 if (product.pic.list.length) {
                     product.pics = [];
-                    if (!product.Model.listPicUploaded) {
+                    if (!product.attachment.listPicUploaded) {
                         product.pics.push({ ParentID: product.Model.ID, Type: 1, FileName: product.pic.list[0], PathType: product.pic.type });
                     }
                     for (var i = 0; i < product.pic.list.length; i++) {
                         product.pics.push({ ParentID: product.Model.ID, Type: 2, FileName: product.pic.list[i], PathType: product.pic.type });
                     }
-                    product.Model = result;
                     return attachmentService.add(product.pics);
                 }
+                return true;
+            }).then(() => {
+                if (product.file.list.length) {
+                    product.files = [];
+                    product.files.push({ ParentID: product.Model.ID, Type: 2, FileName: product.file.list[0], PathType: product.file.type });
+                    return attachmentService.add(product.files);
+                }
+                return true;
             }).then((result) => {
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
-                if (result && result.length > 0)
-                    product.Model.listPicUploaded = [].concat(result);
+                product.attachment.listPicUploaded = [];
+                product.attachment.listFileUploaded = [];
+
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 10)
+                            product.attachment.listFileUploaded.push(result[i]);
+                        else
+                            product.attachment.listPicUploaded.push(result[i]);
+                    }
+                }
                 product.pics = [];
                 product.pic.list = [];
+                product.files = [];
+                product.file.list = [];
                 toaster.pop('success', '', 'محصول جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
             })
@@ -2886,7 +2919,7 @@ var froalaOptionComment = {
         notification.state = '';
         notification.main.changeState = {
             cartable: cartable,
-            show:show
+            show: show
         }
         init();
         notification.grid = {

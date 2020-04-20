@@ -12,7 +12,8 @@
         محصولات = 6,
         ویدیو = 7,
         رویداد=8,
-        ویرایشگر = 9
+        ویرایشگر = 9,
+        فایل=10
     }
     public enum PathType : byte
     {
@@ -23,7 +24,8 @@
         slider = 5,
         video=7,
         events=8,
-        editor=9
+        editor=9,
+        file=10
     }
     public enum UserType : byte
     {

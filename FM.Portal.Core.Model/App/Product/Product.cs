@@ -34,6 +34,7 @@ namespace FM.Portal.Core.Model
         public string TrackingCode { get; set; }
         public int StockQuantity { get; set; }
         public bool HasDiscount { get; set; }
+        public bool IsDownload { get; set; }
 
         //only show
         public string DiscountName { get; set; }

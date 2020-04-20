@@ -1,0 +1,59 @@
+﻿<div class="card">
+    <!--<div class="card-header">
+        <h3 class="main-title" ng-show="video.allowMultiple">آپلود ویدیو</h3>
+        <h3 class="main-title"  ng-show="!video.allowMultiple">آپلود ویدیو</h3>
+    </div>-->
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12" ng-show="(file.allowMultiple === false && main.listFileUploaded.length === 0) || file.allowMultiple">
+                    <div class="card">
+                        <!--<div class="card-header">
+                            <span class="main-title">آپلود</span>
+                        </div>-->
+                        <div class="card-body">
+                            <file-pond config="filePondConfig"></file-pond>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" ng-if="main.listFileUploaded.length">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="main-title">فایل های بارگذاری شده</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card ml-2 mt-2 d-sm-inline-block" ng-repeat="row in main.listFileUploaded track by $index" style="width: 10rem;">
+                                <label class="control-label">{{row.FileName}}</label>                          
+                                <div class="card-footer pull-left">
+                                    <i class="fa fa-close" ng-click="removeFile(row)" ng-show="(row.Type !== 1)"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade upload-delete-file" dir="rtl"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="uploadDeleteFileLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h3 class="modal-title">تایید حذف</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                    آیا از حذف اطمینان دارید ؟
+                </p>
+            </div>
+            <div class="modal-footer pull-left">
+                <button class="btn btn-danger" ng-click="confirmRemoveFile()">تایید</button>
+                <button class="btn btn-default" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>

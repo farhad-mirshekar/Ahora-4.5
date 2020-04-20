@@ -225,6 +225,8 @@
     <Content Include="Areas\Admin\app\directive\grid\grid.html" />
     <Content Include="Areas\Admin\app\directive\grid\grid.js" />
     <Content Include="Areas\Admin\app\directive\treegrid\tree-grid-directive.js" />
+    <Content Include="Areas\Admin\app\directive\upload-file\upload-file.html" />
+    <Content Include="Areas\Admin\app\directive\upload-file\upload-file.js" />
     <Content Include="Areas\Admin\app\directive\upload-video\upload-video.html" />
     <Content Include="Areas\Admin\app\directive\upload-video\upload-video.js" />
     <Content Include="Areas\Admin\app\directive\upload\upload.html" />

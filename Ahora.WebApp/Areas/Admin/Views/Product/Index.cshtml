@@ -53,7 +53,7 @@
                     <div class="form-group">
                         <label for="Description" class="control-label">توضیحات کوتاه</label>
                         <div class="col-md-10">
-                            <textarea froala="froalaOption" class="form-control" ng-model="Model.ShortDescription" name="ShortDescription"  ng-required="false"></textarea>
+                            <textarea froala="froalaOption" class="form-control" ng-model="Model.ShortDescription" name="ShortDescription" ng-required="false"></textarea>
                         </div>
                     </div>
                     <div class="container record">
@@ -308,8 +308,27 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-md-12">
-                                <portal-upload main="Model"
+                                <portal-upload main="attachment"
                                                pic="pic"></portal-upload>
+                            </div>
+                        </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="افزودن فایل محصول" ng-if="Model.ID && state === 'edit'">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">آیا این فایل برای دانلود پس از پرداخت می باشد ؟</label>
+                                    <div class="d-inline">
+                                        <input type="radio" ng-model="Model.IsDownload" ng-value="true"><span class="pad-radio">بله</span>
+                                        <input type="radio" ng-model="Model.IsDownload" ng-value="false"><span class="pad-radio">خیر</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <portal-upload-file main="attachment"
+                                                    file="file"></portal-upload-file>
                             </div>
                         </div>
                     </div>

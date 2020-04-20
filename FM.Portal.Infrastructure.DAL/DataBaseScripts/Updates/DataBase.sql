@@ -628,6 +628,9 @@ ALTER TABLE app.product
 ADD HasDiscount BIT NULL
 
 GO
+ALTER TABLE app.Product
+ADD IsDownload BIT DEFAULT 0
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO

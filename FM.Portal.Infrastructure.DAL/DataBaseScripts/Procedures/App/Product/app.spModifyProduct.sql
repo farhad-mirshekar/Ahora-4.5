@@ -28,7 +28,8 @@ CREATE PROCEDURE app.spModifyProduct
 @isNewRecord bit,
 @StockQuantity int,
 @DiscountType tinyint,
-@HasDiscount bit
+@HasDiscount bit,
+@IsDownload bit
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -68,7 +69,8 @@ BEGIN
 				[TrackingCode],
 				[StockQuantity],
 				[DiscountType],
-				[HasDiscount])
+				[HasDiscount],
+				[IsDownload])
 			VALUES
 				(@ID,
 				@Name,
@@ -99,7 +101,8 @@ BEGIN
 				@TrackingCode,
 				@StockQuantity,
 				@DiscountType,
-				@HasDiscount)
+				@HasDiscount,
+				@IsDownload)
 		END
 	ELSE -- update
 		BEGIN
@@ -127,7 +130,8 @@ BEGIN
 				[UpdatedDate] = GETDATE(),
 				[StockQuantity] = @StockQuantity,
 				[DiscountType] = @DiscountType,
-				[HasDiscount] = @HasDiscount
+				[HasDiscount] = @HasDiscount,
+				[IsDownload] = @IsDownload
 			WHERE
 				[ID] = @ID
 		END
