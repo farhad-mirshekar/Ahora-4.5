@@ -54,6 +54,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>libs\FM.Bank.Core.Model.dll</HintPath>
     </Reference>
+    <Reference Include="FM.Melli">
+      <HintPath>libs\FM.Melli.dll</HintPath>
+    </Reference>
     <Reference Include="FM.Portal.Core">
       <HintPath>libs\FM.Portal.Core.dll</HintPath>
     </Reference>
