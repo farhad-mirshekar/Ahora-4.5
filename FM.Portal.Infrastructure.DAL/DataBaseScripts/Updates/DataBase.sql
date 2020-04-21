@@ -631,6 +631,27 @@ GO
 ALTER TABLE app.Product
 ADD IsDownload BIT DEFAULT 0
 GO
+CREATE TABLE [app].[Bank](
+	[ID] [uniqueidentifier] NOT NULL,
+	[BankName] [Tinyint] NOT NULL,
+	[UserName] [Nvarchar](3000) NOT NULL,
+	[Password] [Nvarchar](3000) NOT NULL,
+	[MerchantID] [Nvarchar](3000) NOT NULL,
+	[MerchantKey] [Nvarchar](3000) NOT NULL,
+	[TerminalID] [Nvarchar](3000) NOT NULL,
+	[Url] [Nvarchar](Max) NOT NULL,
+	[RedirectUrl] [Nvarchar](Max) NOT NULL,
+	[Default] [Bit] NOT NULL Default 0,
+	[CreationDate] [smalldatetime] NOT NULL,
+ CONSTRAINT [PK_Bank] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+Insert into app.bank
+values(NEWID() , 1 , '0' ,'0' , '1694' ,'YjdjYmZhNGY4NDQ5NTI3NThhNzY1MTI5' , 'tC4Nkmug' ,'http://banktest.ir/gateway/melli' , 'http://localhost:61837/redirect/melli',1,GETDATE())
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO

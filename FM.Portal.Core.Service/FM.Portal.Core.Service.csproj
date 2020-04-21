@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\IBankService.cs" />
     <Compile Include="App\ICategoryMapDiscountService.cs" />
     <Compile Include="App\ICategoryService.cs" />
     <Compile Include="App\ICommentMapUserService.cs" />

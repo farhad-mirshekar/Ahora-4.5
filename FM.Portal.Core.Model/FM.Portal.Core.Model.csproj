@@ -31,7 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FM.Bank.Core.Model">
+    <Reference Include="FM.Bank.Core.Model, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Ahora.WebApp\libs\FM.Bank.Core.Model.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -66,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\Bank\Bank.cs" />
     <Compile Include="App\Category\Category.cs" />
     <Compile Include="App\Category_Map_Discount\CategoryMapDiscount.cs" />
     <Compile Include="App\Comment\Comment.cs" />

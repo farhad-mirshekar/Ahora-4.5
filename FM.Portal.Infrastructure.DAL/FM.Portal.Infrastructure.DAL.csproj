@@ -54,6 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSources\App\BankDataSource.cs" />
     <Compile Include="DataSources\App\CategoryDataSource.cs" />
     <Compile Include="DataSources\App\CategoryMapDiscountDataSource.cs" />
     <Compile Include="DataSources\App\CommentDataSource.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DataBaseScripts\Procedures\App\Bank\app.spGetActiveBank.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CategoryMapDiscount\app.spModifyCategoryMapDiscount.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetByParentCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetCategory.sql" />
