@@ -25,7 +25,7 @@ namespace FM.Portal.Infrastructure.DAL
                 var commands = new List<SqlCommand>();
 
                 #region Order
-                SqlParameter[] paramOrder = new SqlParameter[7];
+                SqlParameter[] paramOrder = new SqlParameter[9];
                 paramOrder[0] = new SqlParameter("@ID", order.ID);
 
                 paramOrder[1] = new SqlParameter("@AddressID", order.AddressID);
@@ -34,6 +34,8 @@ namespace FM.Portal.Infrastructure.DAL
                 paramOrder[4] = new SqlParameter("@SendType", (byte)order.SendType);
                 paramOrder[5] = new SqlParameter("@ShoppingID", order.ShoppingID);
                 paramOrder[6] = new SqlParameter("@UserID", order.UserID);
+                paramOrder[7] = new SqlParameter("@IsNewRecord", true);
+                paramOrder[8] = new SqlParameter("@TrackingCode", "");
                 commands.Add(SQLHelper.CreateCommand("app.spModifyOrder", CommandType.StoredProcedure, paramOrder));
                 #endregion
                 #region OrderDetail
@@ -83,14 +85,45 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
                             obj.SystemTraceNo = SQLHelper.CheckStringNull(dr["SystemTraceNo"]);
                             //obj.TransactionStatus = (ResCodeForMelliInPaymentRequest)SQLHelper.CheckByteNull(dr["UserID"]);
-                            obj.TransactionStatusMessage =SQLHelper.CheckStringNull(dr["TransactionStatusMessage"]);
+                            obj.TransactionStatusMessage = SQLHelper.CheckStringNull(dr["TransactionStatusMessage"]);
                         }
                     }
 
                 }
                 return Result<Payment>.Successful(data: obj);
             }
-            catch(Exception e) { return Result<Payment>.Failure(); }
+            catch (Exception e) { return Result<Payment>.Failure(); }
+        }
+
+        public Result<Payment> GetByShoppingID(Guid ShoppingID)
+        {
+            try
+            {
+                var obj = new Payment();
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ShoppingID", ShoppingID);
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetPaymentByShoppingID", param))
+                    {
+                        while (dr.Read())
+                        {
+                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.Price = SQLHelper.CheckDecimalNull(dr["Price"]);
+                            obj.OrderID = SQLHelper.CheckGuidNull(dr["OrderID"]);
+                            obj.RetrivalRefNo = SQLHelper.CheckStringNull(dr["RetrivalRefNo"]);
+                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                            obj.SystemTraceNo = SQLHelper.CheckStringNull(dr["SystemTraceNo"]);
+                            obj.TransactionStatus = SQLHelper.CheckIntNull(dr["TransactionStatus"]);
+                            obj.TransactionStatusMessage = SQLHelper.CheckStringNull(dr["TransactionStatusMessage"]);
+                        }
+                    }
+
+                }
+                return Result<Payment>.Successful(data: obj);
+            }
+            catch (Exception e) { return Result<Payment>.Failure(); }
         }
 
         public DataTable List(ResCode resCode)
@@ -98,7 +131,7 @@ namespace FM.Portal.Infrastructure.DAL
             try
             {
                 SqlParameter[] param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ResCode",(byte) resCode);
+                param[0] = new SqlParameter("@ResCode", (byte)resCode);
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsPayment", param);
             }
             catch
@@ -108,10 +141,8 @@ namespace FM.Portal.Infrastructure.DAL
         }
 
         public Result<Payment> Update(Payment model)
-        {
-            throw new NotImplementedException();
-        }
-        private Result<Payment> Modify(bool IsNewRecord , Payment model)
+        => Modify(false, model);
+        private Result<Payment> Modify(bool IsNewRecord, Payment model)
         {
             try
             {
@@ -123,7 +154,7 @@ namespace FM.Portal.Infrastructure.DAL
                     param[1] = new SqlParameter("@RetrivalRefNo", model.RetrivalRefNo);
                     param[2] = new SqlParameter("@SystemTraceNo", model.SystemTraceNo);
                     param[3] = new SqlParameter("@TransactionStatusMessage", model.TransactionStatusMessage);
-                    param[4] = new SqlParameter("@TransactionStatus", (byte)model.TransactionStatus);
+                    param[4] = new SqlParameter("@TransactionStatus", model.TransactionStatus);
                     param[5] = new SqlParameter("@IsNewRecord", IsNewRecord);
 
                     SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyPayment", param);

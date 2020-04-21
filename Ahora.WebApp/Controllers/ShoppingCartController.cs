@@ -1,16 +1,14 @@
-﻿//using FM.Melli.Service;
-//using FM.Payment.Melli.Model;
-using FM.Portal.Core.Common;
+﻿using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
 using Newtonsoft.Json;
+using Payment.Bank.Melli;
+using Payment.Bank.Melli.Model;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
@@ -24,6 +22,7 @@ namespace Ahora.WebApp.Controllers
         private readonly IUserService _userService;
         private readonly IOrderService _orderService;
         private readonly IUserAddressService _addressService;
+        private readonly IBankService _bankService;
         public ShoppingCartController(IShoppingCartItemService service
                                      , IProductService productService
                                      , IAttachmentService attachmentService
@@ -31,7 +30,8 @@ namespace Ahora.WebApp.Controllers
                                      , IPaymentService paymentService
                                      , IUserService userService
                                      , IOrderService orderService
-                                     , IUserAddressService addressService):base(service)
+                                     , IUserAddressService addressService
+                                     , IBankService bankService) :base(service)
         {
             _productService = productService;
             _attachmentService = attachmentService;
@@ -40,6 +40,7 @@ namespace Ahora.WebApp.Controllers
             _userService = userService;
             _orderService = orderService;
             _addressService = addressService;
+            _bankService = bankService;
 
         }
         // GET: ShoppingCart
@@ -108,81 +109,85 @@ namespace Ahora.WebApp.Controllers
         {
             try
             {
+                var bankActiveResult = _bankService.GetActiveBank();
+                if(!bankActiveResult.Success)
+                    return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
+                var bankActive = bankActiveResult.Data;
+                
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
-                var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
-                if (!result.Success)
-                    return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
+                var shoppingCartItemResult = _service.List(SQLHelper.CheckGuidNull(shoppingID));
+                
+                if(!shoppingCartItemResult.Success)
+                    return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
 
-                var orderResult = _orderService.Get(new GetOrderVM { ShoppingID = SQLHelper.CheckGuidNull(shoppingID) });
-                if (!orderResult.Success)
-                    return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
+                var shoppingCartItem = shoppingCartItemResult.Data;
 
-                if (orderResult.Data.ShoppingID != Guid.Empty)
+                var order = new Order();
+                var orderDetail = new OrderDetail();
+                var payment = new FM.Portal.Core.Model.Payment();
+
+                decimal amount = 0;
+                if (shoppingCartItem == null)
+                    return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") });
+
+                string attributeJson = null;
+                string productJson = null;
+                var listAttribute = new List<AttributeJsonVM>();
+                var productList = new List<Product>();
+                foreach (var item in shoppingCartItem)
                 {
-                    return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
-                }
-                else
-                {
-                    Order order = new Order();
-                    OrderDetail orderDetail = new OrderDetail();
-                    Payment payment = new Payment();
-
-                    decimal amount = 0;
-                    if (result.Data == null)
-                        return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") });
-                    if (!result.Success)
-                        return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") });
-
-                    string attributeJson = null;
-                    string productJson = null;
-                    var listAttribute = new List<AttributeJsonVM>();
-                    var productList = new List<Product>();
-                    foreach (var item in result.Data)
+                    var product = _productService.Get(item.ProductID);
+                    if (product.Success)
                     {
-                        var product = _productService.Get(item.ProductID);
-                        if (product.Success)
+                        amount += product.Data.Price * item.Quantity;
+                        if (item.AttributeJson != "")
+                            listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
+                        productList.Add(product.Data);
+                    }
+                }
+                attributeJson = JsonConvert.SerializeObject(listAttribute);
+                productJson = JsonConvert.SerializeObject(productList);
+                if (model.ID == Guid.Empty)
+                {
+                    _addressService.Add(model);
+                }
+
+                order.AddressID = model.ID;
+
+                order.SendType = SendType.آنلاین;
+                order.ShoppingID = SQLHelper.CheckGuidNull(shoppingID);
+                order.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
+                order.Price = amount;
+                orderDetail.ProductJson = productJson;
+                orderDetail.AttributeJson = attributeJson;
+                orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name)).Data);
+
+                payment.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
+                payment.Price = amount;
+
+
+                var bank = await Melli((long)amount);
+
+                switch (bank.ResCode)
+                {
+                    case "0":
                         {
-                            amount += product.Data.Price * item.Quantity;
-                            if (item.AttributeJson != "")
-                                listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
-                            productList.Add(product.Data);
+                            payment.Token = bank.Token;
+                            order.BankID = bankActive.ID;
+                            var firstStep = _paymentService.FirstStepPayment(order, orderDetail, payment);
+                            if (!firstStep.Success)
+                            {
+                                return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
+                            }
+                            else
+                            {
+                                TempData["melli"] = bank.Request;
+                                return Json(new { status = true, url = MelliPurchase(bank.Token) });
+                            }
                         }
-                    }
-                    attributeJson = JsonConvert.SerializeObject(listAttribute);
-                    productJson = JsonConvert.SerializeObject(productList);
-                    if (model.ID == Guid.Empty)
-                    {
-                        _addressService.Add(model);
-                    }
-
-                    order.AddressID = model.ID;
-
-                    order.SendType = SendType.آنلاین;
-                    order.ShoppingID = SQLHelper.CheckGuidNull(shoppingID);
-                    order.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
-                    order.Price = amount;
-                    orderDetail.ProductJson = productJson;
-                    orderDetail.AttributeJson = attributeJson;
-                    orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name)).Data);
-
-                    payment.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
-                    payment.Price = amount;
-
-                    var firstStep = _paymentService.FirstStepPayment(order, orderDetail, payment);
-                    if (!firstStep.Success)
-                        return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
-
-                    ////var orders = _orderService.Get(order.ID);
-                    ////var bank = await Melli((long)amount, orders.Data.TrackingCode.ToString());
-
-                    ////switch (bank.ResCode)
-                    ////{
-                    ////    case "1":
-                    ////        return Json(new { status = true,url="http://www.google.com" });
-                    ////}
-                    return Json(new { status = false, type = 2, message = "دوباره امتحان کنید" });
+                    default:
+                        return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
                 }
-
             }
             catch (Exception e) { return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") }); }
 
@@ -301,17 +306,18 @@ namespace Ahora.WebApp.Controllers
             return View();
         }
 
-        //private async Task<PayResultData> Melli(long amount, string OrderID)
-        //{
-        //    BankMelli _bankMelli = new BankMelli(ConfigurationManager.AppSettings["MerchantIdMelli"].ToString()
-        //                            , ConfigurationManager.AppSettings["MerchantKeyMelli"].ToString()
-        //                            , ConfigurationManager.AppSettings["TerminalIdMelli"].ToString()
-        //                            , ConfigurationManager.AppSettings["RedirectPath"].ToString()
-        //                            , ConfigurationManager.AppSettings["PurchasePageMelli"].ToString());
+        private async Task<PayResultData> Melli(long amount)
+        {
+            var _bankMelli = new BankMelli();
 
-        //    var bankResult = await _bankMelli.PaymentResult((long)amount, OrderID);
-        //    return bankResult;
-        //}
+            var bankResult = await _bankMelli.PaymentRequest((long)amount);
+            return bankResult;
+        }
+        private string MelliPurchase(string Token)
+        {
+            var _bankMelli = new BankMelli();
+            return _bankMelli.PaymentPurchase(Token);
+        }
 
     }
 }

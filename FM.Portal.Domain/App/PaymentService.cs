@@ -31,6 +31,10 @@ namespace FM.Portal.Domain
 
         public Result<Payment> Get(Guid ID)
         => _dataSource.Get(ID);
+
+        public Result<Payment> GetByShoppingID(Guid ShoppingID)
+        => _dataSource.GetByShoppingID(ShoppingID);
+
         public Result<PaymentDetailVM> GetDetail(Guid ID)
         {
             var paymentResult = Get(ID);
@@ -69,9 +73,7 @@ namespace FM.Portal.Domain
             return Result<List<PaymentListVM>>.Failure();
         }
 
-        public Result<Payment> Update(Payment model)
-        {
-            throw new NotImplementedException();
-        }
+        public Result<Payment> Edit(Payment model)
+        => _dataSource.Update(model);
     }
 }

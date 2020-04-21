@@ -11,6 +11,7 @@ namespace FM.Portal.DataSource
         Result FirstStepPayment(Core.Model.Order order, Core.Model.OrderDetail detail, Core.Model.Payment payment);
         Result<Core.Model.Payment> Update(Core.Model.Payment model);
         Result<Core.Model.Payment> Get(Guid ID);
+        Result<Payment> GetByShoppingID(Guid ShoppingID);
         DataTable List(ResCode resCode);
 
     }

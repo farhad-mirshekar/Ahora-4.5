@@ -5,18 +5,11 @@ using FM.Portal.DataSource;
 using System.Data.SqlClient;
 using FM.Portal.Core.Common;
 using System.Data;
-using FM.Portal.Core.Owin;
 
 namespace FM.Portal.Infrastructure.DAL
 {
     public class OrderDataSource : IOrderDataSource
     {
-        private readonly IRequestInfo _requestInfo;
-        public OrderDataSource(IRequestInfo requestInfo)
-        {
-            _requestInfo = requestInfo;
-        }
-
         public Result<Order> Get(GetOrderVM model)
         {
             try
@@ -41,7 +34,7 @@ namespace FM.Portal.Infrastructure.DAL
                     {
                         while (dr.Read())
                         {
-                            obj.TrackingCode = SQLHelper.CheckIntNull(dr["TrackingCode"]);
+                            obj.TrackingCode = SQLHelper.CheckStringNull(dr["TrackingCode"]);
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.Price = SQLHelper.CheckDecimalNull(dr["Price"]);
                             obj.SendType =(SendType) SQLHelper.CheckByteNull(dr["SendType"]);
@@ -64,20 +57,45 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[7];
+                    SqlParameter[] param = new SqlParameter[9];
                     param[0] = new SqlParameter("@ID", model.ID);
 
                     param[1] = new SqlParameter("@AddressID", model.AddressID);
                     param[2] = new SqlParameter("@BankID", model.BankID);
                     param[3] = new SqlParameter("@Price", model.Price);
                     param[4] = new SqlParameter("@SendType", (byte)model.SendType);
-                    //param[5] = new SqlParameter("@isNewRecord", isNewrecord);
-                    param[5] = new SqlParameter("@ShoppingID", model.ShoppingID);
-                    param[6] = new SqlParameter("@UserID", model.UserID);
-
+                    param[5] = new SqlParameter("@IsNewRecord", true);
+                    param[6] = new SqlParameter("@ShoppingID", model.ShoppingID);
+                    param[7] = new SqlParameter("@UserID", model.UserID);
+                    param[8] = new SqlParameter("@TrackingCode", "");
                     SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyOrder", param);
 
                     return Result.Successful();
+                }
+            }
+            catch (Exception e) { throw; }
+        }
+
+        public Result<Order> Update(Order model)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    SqlParameter[] param = new SqlParameter[9];
+                    param[0] = new SqlParameter("@ID", model.ID);
+
+                    param[1] = new SqlParameter("@AddressID", model.AddressID);
+                    param[2] = new SqlParameter("@BankID", model.BankID);
+                    param[3] = new SqlParameter("@Price", model.Price);
+                    param[4] = new SqlParameter("@SendType", (byte)model.SendType);
+                    param[5] = new SqlParameter("@IsNewRecord", false);
+                    param[6] = new SqlParameter("@ShoppingID", model.ShoppingID);
+                    param[7] = new SqlParameter("@UserID", model.UserID);
+                    param[8] = new SqlParameter("@TrackingCode", model.TrackingCode);
+
+                    SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyOrder", param);
+                    return Get(new GetOrderVM { ID = model.ID, ShoppingID = null });
                 }
             }
             catch (Exception e) { throw; }

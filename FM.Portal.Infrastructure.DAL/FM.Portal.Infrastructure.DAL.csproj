@@ -121,8 +121,10 @@
     <Content Include="DataBaseScripts\Procedures\App\OrderDetail\app.spModifyOrderDetail.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Order\app.spGetOrder.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Order\app.spModifyOrder.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Payment\app.spGetPaymentByShoppingID.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Payment\app.spGetPayment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Payment\app.spGetsPayment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Payment\app.spModifyPayment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Payment\app.spInsertPayment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spGetProductAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spGetsProductAttribute.sql" />

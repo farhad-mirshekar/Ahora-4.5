@@ -8,7 +8,7 @@ namespace FM.Portal.Core.Model
     {
         public Guid UserID { get; set; }
         public Guid OrderID { get; set; }
-        public byte TransactionStatus { get; set; }
+        public int TransactionStatus { get; set; }
         public string TransactionStatusMessage { get; set; }
         public decimal Price { get; set; }
         public string Token { get; set; }

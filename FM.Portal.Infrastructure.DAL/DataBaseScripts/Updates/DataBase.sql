@@ -652,6 +652,15 @@ GO
 Insert into app.bank
 values(NEWID() , 1 , '0' ,'0' , '1694' ,'YjdjYmZhNGY4NDQ5NTI3NThhNzY1MTI5' , 'tC4Nkmug' ,'http://banktest.ir/gateway/melli' , 'http://localhost:61837/redirect/melli',1,GETDATE())
 GO
+ALTER TABLE app.Payment
+DROP COLUMN TransactionStatus
+
+ALTER TABLE app.Payment
+ADD TransactionStatus int
+GO
+ALTER TABLE app.[Order] 
+ALTER COLUMN TrackingCode NVARCHAR(Max)
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO

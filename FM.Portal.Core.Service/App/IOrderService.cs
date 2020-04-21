@@ -8,5 +8,6 @@ namespace FM.Portal.Core.Service
     {
         Result.Result Add(Order model,OrderDetail detail);
         Result<Order> Get(GetOrderVM model);
+        Result<Order> Edit(Order model);
     }
 }

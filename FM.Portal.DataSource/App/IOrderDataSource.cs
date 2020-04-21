@@ -8,5 +8,6 @@ namespace FM.Portal.DataSource
     {
         Result Insert(Order model);
         Result<Order> Get(GetOrderVM model);
+        Result<Order> Update(Order model);
     }
 }

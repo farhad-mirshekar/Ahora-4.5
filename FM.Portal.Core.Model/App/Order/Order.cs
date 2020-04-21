@@ -11,6 +11,6 @@ namespace FM.Portal.Core.Model
         public Guid AddressID { get; set; }
         public decimal Price { get; set; }
         public Guid BankID { get; set; }
-        public int TrackingCode { get; set; }
+        public string TrackingCode { get; set; }
     }
 }
