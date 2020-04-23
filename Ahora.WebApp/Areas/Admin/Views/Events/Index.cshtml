@@ -1,16 +1,11 @@
-﻿<div class="card" ng-show="state ==='cartable'">
-    <div class="card-header">
-        <span class="main-title">کارتابل مدیریت رویداد</span>
-        <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
-    </div>
-    <div class="card-body">
-        <portal-grid obj="grid"></portal-grid>
-    </div>
+﻿<div ng-show="state ==='cartable'">
+    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    <portal-grid obj="grid"></portal-grid>
 </div>
 <section ng-show="['add','edit'].indexOf(state) !== -1">
-    <h2 class="main-title" ng-show="state==='add'">افزودن رویداد جدید</h2>
+    <h2 class="main-title" ng-show="state==='add'">افزودن رویداد </h2>
     <h2 class="main-title" ng-show="state==='edit'">ویرایش رویداد</h2>
-    <div class="card" id="newsSection">
+    <div id="newsSection">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -22,100 +17,97 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
-            <div class="form-horizontal">
-                <uib-tabset active="active" style="padding:10px">
-                    <uib-tab heading="اطلاعات رویداد" active="true">
+        <div class="form-horizontal">
+            <uib-tabset class="form-tab" active="active" style="padding:10px">
+                <uib-tab heading="اطلاعات رویداد" active="true">
 
-                        <div class="form-group">
+                    <div class="form-group">
+                        <div class="col-md-10">
                             <label for="Title" class="control-label">عنوان رویداد</label>
-                            <div class="col-md-10">
-                                <input type="text" class="form-control" ng-model="Model.Title" placeholder="عنوان رویداد شما در قسمت منو در سمت چپ در سایت قرار می گیرد">
-                            </div>
+                            <input type="text" class="form-control" ng-model="Model.Title" placeholder="عنوان رویداد">
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
                             <label for="categoryID" class="control-label">موضوع رویداد</label>
-                            <div class="col-md-10">
-                                <select class="form-control" ng-model="Model.CategoryID">
-                                    <option ng-repeat="row in typecategory" ng-value="row.Model">{{row.Name}}</option>
-                                </select>
-                            </div>
+                            <select class="form-control" ng-model="Model.CategoryID">
+                                <option ng-repeat="row in typecategory" ng-value="row.Model">{{row.Name}}</option>
+                            </select>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
                             <label for="Description" class="ccontrol-label">توضیحات کوتاه</label>
-                            <div class="col-md-10">
-                                <textarea ng-model="Model.Description" rows="4" cols="4" class="form-control"></textarea>
-                            </div>
+                            <textarea ng-model="Model.Description" rows="3" cols="3" class="form-control"></textarea>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
                             <label for="Body" class="control-label">متن رویداد</label>
-                            <div class="col-md-10">
-                                <textarea ng-model="Model.Body" froala="froalaOption" class="form-control"></textarea>
+                            <textarea ng-model="Model.Body" froala="froalaOption" class="form-control"></textarea>
 
-                            </div>
                         </div>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-sm-5">
-                                    <div class="form-group">
-                                        <label for="IsShow" class="control-label">نمایش رویداد</label>
-                                        <select class="form-control" ng-model="Model.IsShow">
-                                            <option ng-repeat="row in typeshow" ng-value="row.Model">{{row.Name}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-sm-5">
-                                    <div class="form-group">
-                                        <label for="CommentStatus" class="control-label">وضعیت نظرات</label>
-                                        <select class="form-control" ng-model="Model.CommentStatus">
-                                            <option ng-repeat="row in typecomment" ng-value="row.Model">{{row.Name}}</option>
-                                        </select>
-                                    </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="form-group">
+                                    <label for="IsShow" class="control-label">نمایش رویداد</label>
+                                    <select class="form-control" ng-model="Model.IsShow">
+                                        <option ng-repeat="row in typeshow" ng-value="row.Model">{{row.Name}}</option>
+                                    </select>
                                 </div>
                             </div>
-                        </div>
-                        <div class="input-group col-md-10 mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">متاتگ</span>
-                            </div>
-                            <input ng-model="Model.MetaKeywords" id="txMetaDSC" maxlength="70" name="txMetaDSC" type="text" autofocus="" class="form-control meta" placeholder="">
-                            <div class="input-group-append">
-                                <span class="input-group-text"> {{Model.MetaKeywords.length > 0 ? Model.MetaKeywords.length : 0}}/70</span>
-                            </div>
-                        </div>
-                        <div class="input-group col-md-10 mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">سئو</span>
-                            </div>
-                            <input type="text" ng-model="Model.UrlDesc" maxlength="70" class="form-control meta" />
-                            <div class="input-group-append">
-                                <span class="input-group-text"> {{Model.UrlDesc.length > 0 ? Model.UrlDesc.length : 0}}/70</span>
+                            <div class="col-sm-5">
+                                <div class="form-group">
+                                    <label for="CommentStatus" class="control-label">وضعیت نظرات</label>
+                                    <select class="form-control" ng-model="Model.CommentStatus">
+                                        <option ng-repeat="row in typecomment" ng-value="row.Model">{{row.Name}}</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group">
+                    </div>
+                    <div class="input-group col-md-10 mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">متاتگ</span>
+                        </div>
+                        <input ng-model="Model.MetaKeywords" id="txMetaDSC" maxlength="70" name="txMetaDSC" type="text" autofocus="" class="form-control meta" placeholder="">
+                        <div class="input-group-append">
+                            <span class="input-group-text"> {{Model.MetaKeywords.length > 0 ? Model.MetaKeywords.length : 0}}/70</span>
+                        </div>
+                    </div>
+                    <div class="input-group col-md-10 mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">سئو</span>
+                        </div>
+                        <input type="text" ng-model="Model.UrlDesc" maxlength="70" class="form-control meta" />
+                        <div class="input-group-append">
+                            <span class="input-group-text"> {{Model.UrlDesc.length > 0 ? Model.UrlDesc.length : 0}}/70</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
                             <label for="Body" class="control-label">کلمات کلیدی</label>
-                            <div class="col-md-10">
-                                <select class="js-example-tags form-control" ng-model="Model.Tags" multiple="multiple"></select>
-                            </div>
+                            <select class="js-example-tags form-control" ng-model="Model.Tags" multiple="multiple"></select>
                         </div>
-                    </uib-tab>
-                    <uib-tab heading="بارگذاری عکس">
-                        <portal-upload main="attachment"
-                                       pic="pic"></portal-upload>
-                    </uib-tab>
-                    <uib-tab heading="بارگذاری ویدیو">
-                        <portal-upload-video main="attachment"
-                                       video="video"></portal-upload-video>
-                    </uib-tab>
-                </uib-tabset>
-            </div>
+                    </div>
+                </uib-tab>
+                <uib-tab heading="بارگذاری عکس">
+                    <portal-upload main="attachment"
+                                   pic="pic"></portal-upload>
+                </uib-tab>
+                <uib-tab heading="بارگذاری ویدیو">
+                    <portal-upload-video main="attachment"
+                                         video="video"></portal-upload-video>
+                </uib-tab>
+            </uib-tabset>
         </div>
-        <div class="card-footer">
-            <div class="btn-group-justified pull-left">
-                <button type="submit" ng-click="addEvents()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
-                <button type="submit" ng-click="editEvents()" ng-show="state==='edit'" class="btn btn-success">ویرایش</button>
-                <button ng-click="main.changeState.cartable()" class="btn btn-cancel">بازگشت</button>
-            </div>
+
+        <div class="btn-group-justified pull-left mb-5">
+            <button type="submit" ng-click="addEvents()" ng-show="state==='add'" class="btn btn-primary">ثبت</button>
+            <button type="submit" ng-click="editEvents()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+            <button ng-click="main.changeState.cartable()" class="btn btn-cancel">انصراف</button>
         </div>
     </div>
 </section>
@@ -124,11 +116,11 @@
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
 
 <script>
-        $(document).ready(function () {
-            $('.js-example-tags').select2({
-                tags:true,
-                placeholder: 'کلمات کلیدی خود را وارد و جهت جداسازی از Enter استفاده نمایید',
-            });
-            $('.js-example-tags').empty();
+    $(document).ready(function () {
+        $('.js-example-tags').select2({
+            tags: true,
+            placeholder: 'کلمات کلیدی خود را وارد و جهت جداسازی از Enter استفاده نمایید',
         });
+        $('.js-example-tags').empty();
+    });
 </script>
