@@ -11,8 +11,11 @@ namespace FM.Portal.Core.Service
         Result<Payment> Edit(Payment model);
         Result<Payment> Get(Guid ID);
         Result<Payment> GetByShoppingID(Guid ShoppingID);
+        Result<Payment> GetByToken(string Token , BankName BankName);
         Result<PaymentDetailVM> GetDetail(Guid ID);
         Result.Result FirstStepPayment(Core.Model.Order order, Core.Model.OrderDetail detail, Core.Model.Payment payment);
         Result<List<PaymentListVM>> List(ResCode resCode);
+        // user dashboard
+        Result<List<PaymentListForUserVM>> ListPaymentForUser(Guid UserID);
     }
 }

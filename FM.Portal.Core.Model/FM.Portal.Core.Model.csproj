@@ -83,6 +83,7 @@
     <Compile Include="App\Order\VM\GetOrderVM.cs" />
     <Compile Include="App\Payment\Payment.cs" />
     <Compile Include="App\Payment\VM\GetPaymentVM.cs" />
+    <Compile Include="App\Payment\VM\PaymentListForUserVM.cs" />
     <Compile Include="App\Payment\VM\PaymentListVM.cs" />
     <Compile Include="App\ProductAttribute\ProductAttribute.cs" />
     <Compile Include="App\ProductVariantAttribute\ProductVariantAttribute.cs" />

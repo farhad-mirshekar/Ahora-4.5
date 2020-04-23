@@ -20,7 +20,6 @@ namespace FM.Portal.Core.Common
                 return null;
             }
         }
-
         public static void BatchExcute(SqlCommand[] commands)
         {
             if (commands?.Length < 1)
@@ -76,7 +75,6 @@ namespace FM.Portal.Core.Common
             }
                 
         }
-
         public SqlParameter BasaSqlParameter(string parameterName, object value)
         {
             SqlParameter sp;
@@ -86,7 +84,6 @@ namespace FM.Portal.Core.Common
                 sp = new SqlParameter(parameterName, DBNull.Value);
             return sp;
         }
-
         public static string ExecuteNonQuery(SqlConnection sqlconnection, CommandType commandtype, SqlParameter[] parameters, string queryName)
         {
             SqlCommand com = new SqlCommand(queryName, sqlconnection);
@@ -118,7 +115,6 @@ namespace FM.Portal.Core.Common
                 return ex.Message;
             }
         }
-
         public static int ExecuteNonQuery(SqlConnection sqlconnection, CommandType commandtype, string queryName, SqlParameter[] parameters)
         {
             SqlCommand com = new SqlCommand(queryName, sqlconnection);
@@ -130,27 +126,6 @@ namespace FM.Portal.Core.Common
                     object parm2 = parm.Value;
                     if (parm2 == null)
                         parm.Value = DBNull.Value;
-
-                    if (SQLHelper.CheckDateTimeNull(parm2) == DateTime.MinValue && (parm.DbType == DbType.DateTime))
-                    {
-                        parm.Value = DBNull.Value;
-                        parm.DbType = DbType.DateTime;
-                        parm.SqlDbType = SqlDbType.SmallDateTime;
-                    }
-
-
-
-                    if ((SQLHelper.CheckLongNull(parm2) == 0) && ((parm.DbType == DbType.Int16) ||
-                        (parm.DbType == DbType.Int32) || (parm.DbType == DbType.Int64) ||
-                        (parm.DbType == DbType.Byte) || (parm.DbType == DbType.UInt16) ||
-                        (parm.DbType == DbType.UInt32) || (parm.DbType == DbType.UInt64) || (parm.DbType == DbType.Single)
-                        ))
-                        parm.Value = DBNull.Value;
-
-                    if (parm.DbType == DbType.String)
-                    {
-                        parm.Value = SQLHelper.CheckStringNull(parm2).Replace("\"", "'").Replace("\r\n", "");
-                    }
                 }
 
             if (parameters != null)
@@ -164,9 +139,7 @@ namespace FM.Portal.Core.Common
                 return -1;
             }
         }
-
         public static SqlDataReader ExecuteReader(SqlConnection sqlconnection, CommandType commandtype, string queryName) { return ExecuteReader(sqlconnection, commandtype, queryName, null); }
-
         public static SqlDataReader ExecuteReader(SqlConnection sqlconnection, CommandType commandtype, string queryName, SqlParameter[] parameters)
         {
             SqlCommand com = new SqlCommand(queryName, sqlconnection);
@@ -183,7 +156,6 @@ namespace FM.Portal.Core.Common
                 return null;
             }
         }
-
         public static object ExecuteScalar(SqlConnection sqlconnection, CommandType commandtype, string queryName, SqlParameter[] parameters)
         {
             SqlCommand com = new SqlCommand(queryName, sqlconnection);
@@ -223,30 +195,6 @@ namespace FM.Portal.Core.Common
             }
 
         }
-
-        public static int DeleteRecord(string tableName, int id)
-        {
-            string query = "UPDATE " + tableName + " SET [Deleted] = 1 WHERE [ID] = @ID ";
-            using (SqlConnection con = new SqlConnection(GetConnectionString()))
-            {
-                SqlParameter[] parm = new SqlParameter[1];
-                parm[0] = new SqlParameter("@ID", id);
-                return ExecuteNonQuery(con, CommandType.Text, query, parm);
-            }
-        }
-
-        public static int DeleteRecordCrossTable(string tableName, int id, string maintable)
-        {
-            tableName = "AC_tbl" + tableName;
-            string query = "DELETE FROM " + tableName + " WHERE [" + maintable + "ID] = @ID ";
-            using (SqlConnection con = new SqlConnection(GetConnectionString()))
-            {
-                SqlParameter[] parm = new SqlParameter[1];
-                parm[0] = new SqlParameter("@ID", id);
-                return ExecuteNonQuery(con, CommandType.Text, query, parm);
-            }
-        }
-
         public static DataTable GetDataTable(CommandType commandtype, string queryName, SqlParameter[] parameters)
         {
             using (SqlConnection sqlconnection = new SqlConnection(GetConnectionString()))
@@ -287,8 +235,6 @@ namespace FM.Portal.Core.Common
 
             }
         }
-
-
         public static DataTable GetDataTableByDataAdapter(CommandType commandtype, string queryName, SqlParameter[] parameters)
         {
             using (SqlConnection sqlconnection = new SqlConnection(GetConnectionString()))
@@ -311,34 +257,10 @@ namespace FM.Portal.Core.Common
 
             }
         }
-
-        public static DataTable GetAllByID(string TableName, string IDName, string IDValue)
-        {
-            string select = string.Format("SELECT * FROM {0} WHERE Deleted = 0 AND {1} = '{2}'  ", TableName, IDName, IDValue);
-            using (SqlConnection sqlconnection = new SqlConnection(GetConnectionString()))
-            {
-                SqlCommand com = new SqlCommand(select, sqlconnection);
-                if (sqlconnection.State == ConnectionState.Closed)
-                    sqlconnection.Open();
-
-                DataTable dt = new DataTable();
-                try
-                {
-                    dt.Load(com.ExecuteReader());
-                    return dt;
-                }
-                catch
-                {
-                    return null;
-                }
-            }
-        }
-
         public static string GetConnectionString()
         {
             return ConfigurationManager.ConnectionStrings["MyConnectionString"].ToString();
         }
-
         public static string CheckStringNull(object obj)
         {
             try
@@ -350,7 +272,6 @@ namespace FM.Portal.Core.Common
                 return "";
             }
         }
-
         public static DateTime CheckDateTimeNull(object obj)
         {
             try
@@ -362,7 +283,6 @@ namespace FM.Portal.Core.Common
                 return DateTime.MinValue;
             }
         }
-
         public static int CheckIntNull(object obj)
         {
             try
@@ -374,7 +294,6 @@ namespace FM.Portal.Core.Common
                 return 0;
             }
         }
-
         public static byte CheckByteNull(object obj)
         {
             try
@@ -452,29 +371,6 @@ namespace FM.Portal.Core.Common
             catch
             {
                 return 0;
-            }
-        }
-
-        public static DataTable GetAll(string TableName)
-        {
-            string select = string.Format("select * from {0} WHERE Deleted = 0 ", TableName);
-            using (SqlConnection sqlconnection = new SqlConnection(GetConnectionString()))
-            {
-                SqlCommand com = new SqlCommand(select, sqlconnection);
-                if (sqlconnection.State == ConnectionState.Closed)
-                    sqlconnection.Open();
-
-                DataTable dt = new DataTable();
-                try
-                {
-                    dt.Load(com.ExecuteReader());
-                    return dt;
-                }
-                catch
-                {
-                    return null;
-                }
-
             }
         }
 

@@ -84,8 +84,9 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.RetrivalRefNo = SQLHelper.CheckStringNull(dr["RetrivalRefNo"]);
                             obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
                             obj.SystemTraceNo = SQLHelper.CheckStringNull(dr["SystemTraceNo"]);
-                            //obj.TransactionStatus = (ResCodeForMelliInPaymentRequest)SQLHelper.CheckByteNull(dr["UserID"]);
+                            obj.TransactionStatus = SQLHelper.CheckIntNull(dr["UserID"]);
                             obj.TransactionStatusMessage = SQLHelper.CheckStringNull(dr["TransactionStatusMessage"]);
+                            obj.Token = SQLHelper.CheckStringNull(dr["Token"]);
                         }
                     }
 
@@ -117,6 +118,41 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.SystemTraceNo = SQLHelper.CheckStringNull(dr["SystemTraceNo"]);
                             obj.TransactionStatus = SQLHelper.CheckIntNull(dr["TransactionStatus"]);
                             obj.TransactionStatusMessage = SQLHelper.CheckStringNull(dr["TransactionStatusMessage"]);
+                            obj.Token = SQLHelper.CheckStringNull(dr["Token"]);
+                        }
+                    }
+
+                }
+                return Result<Payment>.Successful(data: obj);
+            }
+            catch (Exception e) { return Result<Payment>.Failure(); }
+        }
+
+        public Result<Payment> GetByToken(string Token , BankName BankName)
+        {
+            try
+            {
+                var obj = new Payment();
+                SqlParameter[] param = new SqlParameter[2];
+                param[0] = new SqlParameter("@Token", Token);
+                param[1] = new SqlParameter("@BankName", (byte)BankName);
+
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetPaymentByToken", param))
+                    {
+                        while (dr.Read())
+                        {
+                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.Price = SQLHelper.CheckDecimalNull(dr["Price"]);
+                            obj.OrderID = SQLHelper.CheckGuidNull(dr["OrderID"]);
+                            obj.RetrivalRefNo = SQLHelper.CheckStringNull(dr["RetrivalRefNo"]);
+                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                            obj.SystemTraceNo = SQLHelper.CheckStringNull(dr["SystemTraceNo"]);
+                            obj.TransactionStatus = SQLHelper.CheckIntNull(dr["UserID"]);
+                            obj.TransactionStatusMessage = SQLHelper.CheckStringNull(dr["TransactionStatusMessage"]);
+                            obj.Token = SQLHelper.CheckStringNull(dr["Token"]);
                         }
                     }
 
@@ -133,6 +169,20 @@ namespace FM.Portal.Infrastructure.DAL
                 SqlParameter[] param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ResCode", (byte)resCode);
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsPayment", param);
+            }
+            catch
+            {
+                throw;
+            }
+        }
+
+        public DataTable ListPaymentForUser(Guid UserID)
+        {
+            try
+            {
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@UserID", UserID);
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsPaymentForUser", param);
             }
             catch
             {

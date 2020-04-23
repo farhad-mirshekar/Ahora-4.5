@@ -1,14 +1,14 @@
-﻿using FM.Portal.Core.Common;
+﻿using FM.Payment.Bank.Melli;
+using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
 using Newtonsoft.Json;
-using Payment.Bank.Melli;
-using Payment.Bank.Melli.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
@@ -31,7 +31,7 @@ namespace Ahora.WebApp.Controllers
                                      , IUserService userService
                                      , IOrderService orderService
                                      , IUserAddressService addressService
-                                     , IBankService bankService) :base(service)
+                                     , IBankService bankService) : base(service)
         {
             _productService = productService;
             _attachmentService = attachmentService;
@@ -43,6 +43,7 @@ namespace Ahora.WebApp.Controllers
             _bankService = bankService;
 
         }
+        #region Action
         // GET: ShoppingCart
         [OutputCache(Location = System.Web.UI.OutputCacheLocation.None)]
         public ActionResult Index()
@@ -50,7 +51,6 @@ namespace Ahora.WebApp.Controllers
             return View();
 
         }
-
         public ActionResult Shopping()
         {
             try
@@ -110,14 +110,14 @@ namespace Ahora.WebApp.Controllers
             try
             {
                 var bankActiveResult = _bankService.GetActiveBank();
-                if(!bankActiveResult.Success)
+                if (!bankActiveResult.Success)
                     return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
                 var bankActive = bankActiveResult.Data;
-                
+
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
                 var shoppingCartItemResult = _service.List(SQLHelper.CheckGuidNull(shoppingID));
-                
-                if(!shoppingCartItemResult.Success)
+
+                if (!shoppingCartItemResult.Success)
                     return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
 
                 var shoppingCartItem = shoppingCartItemResult.Data;
@@ -166,28 +166,7 @@ namespace Ahora.WebApp.Controllers
                 payment.Price = amount;
 
 
-                var bank = await Melli((long)amount);
-
-                switch (bank.ResCode)
-                {
-                    case "0":
-                        {
-                            payment.Token = bank.Token;
-                            order.BankID = bankActive.ID;
-                            var firstStep = _paymentService.FirstStepPayment(order, orderDetail, payment);
-                            if (!firstStep.Success)
-                            {
-                                return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
-                            }
-                            else
-                            {
-                                TempData["melli"] = bank.Request;
-                                return Json(new { status = true, url = MelliPurchase(bank.Token) });
-                            }
-                        }
-                    default:
-                        return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
-                }
+                return await Melli((long)amount, payment, order, bankActive, orderDetail);
             }
             catch (Exception e) { return Json(new { status = false, type = 1, url = Url.RouteUrl("CartEmpty") }); }
 
@@ -251,7 +230,7 @@ namespace Ahora.WebApp.Controllers
                         var attachment = attachmentResult.Data;
                         var picUrl = $"{attachment.Select(x => x.Path).First()}/{attachment.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
                         List<AttributeJsonVM> attribute = new List<AttributeJsonVM>();
-                        if (item.AttributeJson != "")
+                        if (item.AttributeJson != "" && item.AttributeJson != null)
                         {
                             var json = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
                             attribute.Add(json);
@@ -305,19 +284,42 @@ namespace Ahora.WebApp.Controllers
         {
             return View();
         }
+        #endregion
 
-        private async Task<PayResultData> Melli(long amount)
+        #region Bank Melli
+        private async Task<JsonResult> Melli(long amount, FM.Portal.Core.Model.Payment payment, Order order, Bank bankActive, OrderDetail orderDetail)
         {
             var _bankMelli = new BankMelli();
 
             var bankResult = await _bankMelli.PaymentRequest((long)amount);
-            return bankResult;
+            switch (bankResult.ResCode)
+            {
+                case "0":
+                    {
+                        payment.Token = bankResult.Token;
+                        order.BankID = bankActive.ID;
+                        var firstStep = _paymentService.FirstStepPayment(order, orderDetail, payment);
+                        if (!firstStep.Success)
+                        {
+                            return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
+                        }
+                        else
+                        {
+                            HttpCookie merchantTerminalKeyCookie = new HttpCookie("Data", bankResult.Request);
+                            Response.Cookies.Add(merchantTerminalKeyCookie);
+
+                            return Json(new { status = true, url = MelliPurchase(bankResult.Token) });
+                        }
+                    }
+                default:
+                    return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
+            }
         }
         private string MelliPurchase(string Token)
         {
             var _bankMelli = new BankMelli();
             return _bankMelli.PaymentPurchase(Token);
         }
-
+        #endregion
     }
 }
