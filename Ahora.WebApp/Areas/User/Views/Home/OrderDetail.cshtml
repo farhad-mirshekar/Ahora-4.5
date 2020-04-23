@@ -1,0 +1,124 @@
+﻿@model FM.Portal.Core.Model.PaymentDetailVM
+@{
+    ViewBag.Title = "سفارش های من";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+    <section>
+        <h2 class="main-title">مشاهده جزئیات خرید</h2>
+        <div class="card">
+            <div class="card-body" id="factor">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">اطلاعات مشتری</span>
+                    </div>
+                    <div class="card-body form-horizontal">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">نام و نام خانوادگی</label>
+                                        <span class="text-success">@Model.User.FirstName @Model.User.LastName</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">تلفن همراه</label>
+                                        <span class="text-success">@Model.User.CellPhone</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">پست الکترونیکی</label>
+                                        @if (Model.User.Email == null)
+                                        {
+                                            <span class="text-success">-</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-success">@Model.User.Email</span>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">آدرس</label>
+                                        <span class="text-success">@Model.UserAddress.Address</span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">کد پستی</label>
+                                        <span class="text-success">@Model.UserAddress.PostalCode</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">اطلاعات محصول</span>
+                    </div>
+                    <div class="card-body form-horizontal">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <td>ردیف</td>
+                                    <td>نام محصول</td>
+                                    <td>قیمت</td>
+                                    <td>نوع تخفیف</td>
+                                    <td>مبلغ تخفیف</td>
+                                    <td>قیمت نهایی</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @{
+                                    var row = 1;
+                                    foreach (var item in Model.Products)
+                                    {
+                                        var sub = (item.Price - item.DiscountAmount);
+                                        <tr>
+                                            <td>@row</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.Price.ToString().Split('.')[0]</td>
+                                            <td>@item.DiscountName</td>
+                                            <td>@item.DiscountAmount.ToString().Split('.')[0]</td>
+                                            <td>@sub.ToString().Split('.')[0]</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-header">اطلاعات فروشنده</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="form-group">
+                                        <label class="control-label">آدرس</label>
+                                        <span class="text-success">@Model.UserAddress.Address</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="control-label">محل مهر فروشگاه</label><br />
+                                    <label class="control-label">@Model.Payment.CreationDatePersian</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="btn-group-justified pull-left">
+                    <button type="button" class="btn btn-primary">چاپ فاکتور</button>
+                    @Html.ActionLink("بازگشت" , "Order","Home" , new { Area="User"} , new { @class="btn btn-cancel"})
+                </div>
+            </div>
+        </div>
+    </section>

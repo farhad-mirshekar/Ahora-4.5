@@ -1,8 +1,81 @@
-﻿
+﻿@model FM.Payment.Bank.Melli.VerifyResultData
 @{
-    ViewBag.Title = "Melli";
+    ViewBag.Title = "نتیجه استعلام بانک ملی";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section bodySection{
+    <div class="row mt-4">
+        <div class="col-md-12">
+            @if (Model.ResCode == "0")
+            {
+                <div class="text-center display-1">
+                    <i class="text-center text-success fa fa-check-circle"></i>
+                </div>
+                <div class="text-center display-4">
+                    <label class="control-label text-success">خرید شما با موفقیت انجام گردید</label>
+                </div>
+            }
+            else
+            {
+                <div class="text-center display-1">
+                    <i class="text-center text-danger fa fa-times"></i>
+                </div>
+                <div class="text-center display-4">
+                    <label class="control-label text-danger">خرید شما با شکست مواجه گردید</label>
+                </div>
+            }
 
-<h2>Melli</h2>
+        </div>
+        <div class="col-md-12">
+            <section class="mt-4 w-50 text-center mx-auto">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                <div class="control-label">
+                                    <i class="fa fa-info-circle text-info"></i>
+                                    <label class="text-primary">
+                                        جهت اطمینان می توانید نتیجه استعلام را نزد خود نگه دارید
+                                    </label>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.ResCode == "0")
+                        {
+                            <tr>
+                                <td>وضعیت تراکنش</td>
+                                <td class="text-success">موفق</td>
+                            </tr>
+                            <tr>
+                                <td>مبلغ خرید</td>
+                                <td>@Model.Amount</td>
+                            </tr>
+                            <tr>
+                                <td>شماره پیگیری تراکنش خريد</td>
+                                <td>@Model.RetrivalRefNo</td>
+                            </tr>
+                            <tr>
+                                <td>شماره مرجع تراکنش</td>
+                                <td>@Model.SystemTraceNo</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr>
+                                <td>وضعیت تراکنش</td>
+                                <td class="text-danger">ناموفق</td>
+                            </tr>
+                            <tr>
+                                <td>توضیحات</td>
+                                <td>@Model.Description</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
 
+}

@@ -1,4 +1,4 @@
-﻿
+﻿@model List<FM.Portal.Core.Model.PaymentListForUserVM>
 @{
     ViewBag.Title = "سفارش های من";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
@@ -12,56 +12,25 @@
                     <th>#</th>
                     <th>شماره سفارش</th>
                     <th>تاریخ ثبت سفارش</th>
-                    <th>مبلغ کل</th>
+                    <th>مبلغ کل (تومان)</th>
                     <th>جزئیات</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>1</td>
-                    <td>dkp-213</td>
-                    <td>1398/10/11</td>
-                    <td>123423235</td>
-                    <td>
-                        @Html.ActionLink("مشاهده جزئیات","OrderDetail","Home")
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>dkp-213</td>
-                    <td>1398/10/11</td>
-                    <td>123423235</td>
-                    <td>
-                        @Html.ActionLink("مشاهده جزئیات", "OrderDetail", "Home")
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>dkp-213</td>
-                    <td>1398/10/11</td>
-                    <td>123423235</td>
-                    <td>
-                       @Html.ActionLink("مشاهده جزئیات", "OrderDetail", "Home")
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>dkp-213</td>
-                    <td>1398/10/11</td>
-                    <td>123423235</td>
-                    <td>
-                        @Html.ActionLink("مشاهده جزئیات", "OrderDetail", "Home")
-                    </td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>dkp-213</td>
-                    <td>1398/10/11</td>
-                    <td>123423235</td>
-                    <td>
-                        @Html.ActionLink("مشاهده جزئیات", "OrderDetail", "Home")
-                    </td>
-                </tr>
+                @{
+                    int row = 1;
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@row</td>
+                            <td>@item.TrackingCode</td>
+                            <td>@item.CreationDatePersian</td>
+                            <td>@item.Price</td>
+                            <td>@Html.ActionLink("مشاهده جزئیات", "OrderDetail", "Home",new { PaymentID = item.ID , Area="User"},new { @class="btn btn-primary"})</td>
+                        </tr>
+                        { row = row + 1;}
+                    }
+                }
             </tbody>
         </table>
     </div>

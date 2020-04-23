@@ -54,6 +54,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>libs\FM.Bank.Core.Model.dll</HintPath>
     </Reference>
+    <Reference Include="FM.Payment.Bank.Melli">
+      <HintPath>libs\FM.Payment.Bank.Melli.dll</HintPath>
+    </Reference>
     <Reference Include="FM.Portal.Core">
       <HintPath>libs\FM.Portal.Core.dll</HintPath>
     </Reference>
@@ -907,6 +910,7 @@
     <Content Include="Areas\Admin\Views\Comment\ListForPortal.cshtml" />
     <Content Include="Areas\Admin\Views\Payment\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Notification\Index.cshtml" />
+    <Content Include="Areas\User\Views\Home\OrderDetail.cshtml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
     <Content Include="Scripts\froala-editor\css\froala_editor.min.css" />
