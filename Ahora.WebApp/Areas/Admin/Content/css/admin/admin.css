@@ -449,3 +449,11 @@ i.fa-refresh{
           border-color: #d6d6d6;
     background-color: #eee;
 }
+thead td:first-child{
+    border-top:0;
+        padding-bottom: 0;
+}
+thead tr:nth-child(2) th{
+    border-top:0;
+        padding-top: 0;
+}
