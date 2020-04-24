@@ -1,16 +1,11 @@
-﻿<div class="card" ng-show="state ==='cartable'">
-    <div class="card-header">
-        <span class="main-title">کارتابل مدیریت اخبار</span>
-        <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
-    </div>
-    <div class="card-body">
-        <portal-grid obj="grid"></portal-grid>
-    </div>
+﻿<div ng-show="state ==='cartable'">
+    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    <portal-grid obj="grid"></portal-grid>
 </div>
 <section ng-show="['add','edit'].indexOf(state) !== -1">
     <h2 class="main-title" ng-show="state==='add'">افزودن خبر جدید</h2>
     <h2 class="main-title" ng-show="state==='edit'">ویرایش خبر</h2>
-    <div class="card" id="newsSection">
+    <div id="newsSection">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -24,34 +19,32 @@
         </div>
         <div class="card-body">
             <div class="form-horizontal">
-                <uib-tabset active="active" style="padding:10px">
+                <uib-tabset class="form-tab" active="active" style="padding:10px">
                     <uib-tab heading="اطلاعات خبر" active="true">
-
                         <div class="form-group">
-                            <label for="Title" class="control-label">عنوان خبر</label>
                             <div class="col-md-10">
+                                <label for="Title" class="control-label">عنوان خبر</label>
                                 <input type="text" class="form-control" ng-model="Model.Title" placeholder="عنوان خبر شما در قسمت منو در سمت چپ در سایت قرار می گیرد">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="categoryID" class="control-label">موضوع خبر</label>
                             <div class="col-md-10">
+                                <label for="categoryID" class="control-label">موضوع خبر</label>
                                 <select class="form-control" ng-model="Model.CategoryID">
                                     <option ng-repeat="row in typecategory" ng-value="row.Model">{{row.Name}}</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="Description" class="ccontrol-label">توضیحات کوتاه</label>
                             <div class="col-md-10">
+                                <label for="Description" class="ccontrol-label">توضیحات کوتاه</label>
                                 <textarea ng-model="Model.Description" rows="4" cols="4" class="form-control"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="Body" class="control-label">متن خبر</label>
                             <div class="col-md-10">
+                                <label for="Body" class="control-label">متن خبر</label>
                                 <textarea ng-model="Model.Body" froala="froalaOption" class="form-control"></textarea>
-
                             </div>
                         </div>
                         <div class="container">
@@ -106,16 +99,22 @@
                 </uib-tabset>
             </div>
         </div>
-        <div class="card-footer">
-            <div class="btn-group-justified pull-left">
-                <button type="submit" ng-click="addNews()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
-                <button type="submit" ng-click="editNews()" ng-show="state==='edit'" class="btn btn-success">ویرایش</button>
-                <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
-            </div>
+        <div class="btn-group-justified pull-left mb-5">
+            <button type="submit" ng-click="addNews()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
+            <button type="submit" ng-click="editNews()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+            <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
         </div>
     </div>
 </section>
-
-
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+<script>
+    $(document).ready(function () {
+        $('.js-example-tags').select2({
+            tags: true,
+            placeholder: 'کلمات کلیدی خود را وارد و جهت جداسازی از Enter استفاده نمایید',
+        });
+        $('.js-example-tags').empty();
+    });
+</script>
+
 

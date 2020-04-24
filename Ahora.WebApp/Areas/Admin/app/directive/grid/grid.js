@@ -120,7 +120,8 @@
                 }).finally(loadingService.hide);
             }
             function getlist() {
-                return getItems();
+                loadingService.show();
+                return getItems().then(loadingService.hide);
             }
         }
     }

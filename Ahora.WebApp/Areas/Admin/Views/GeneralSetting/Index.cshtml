@@ -1,8 +1,7 @@
 ﻿<h2 class="main-title">تنظیمات کلی سایت</h2>
-<div class="card">
     <div class="card-body">
         <div class="form-horizontal">
-            <uib-tabset active="active" style="padding:10px">
+            <uib-tabset class="form-tab" active="active" style="padding:10px">
                 <uib-tab heading="اطلاعات سایت">
                     <div class="form-group">
                         <label class="control-label">نام سایت</label>
@@ -92,7 +91,7 @@
                                         تعداد نمایش تصاویر کشویی
                                         <i class="fa fa-info" data-container="body" title="نحوه استفاده" data-toggle="popover" data-placement="left" data-content="تعداد تصاویر کشویی در ابتدای سایت"></i>
                                     </label>
-                                    <input type="number" class="form-control" ng-model="Model.CountShowSlider" />
+                                    <input type="text" class="form-control" ng-model="Model.CountShowSlider" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -101,7 +100,7 @@
                                         تعداد نمایش محصولات
                                         <i class="fa fa-info" data-container="body" title="نحوه استفاده" data-toggle="popover" data-placement="left" data-content="تعداد محصولات در ابتدای سایت"></i>
                                     </label>
-                                    <input type="number" class="form-control" ng-model="Model.CountShowProduct" />
+                                    <input type="text" class="form-control" ng-model="Model.CountShowProduct" />
                                 </div>
                             </div>
                         </div>
@@ -112,7 +111,7 @@
                                         تعداد نمایش اخبار
                                         <i class="fa fa-info" data-container="body" title="نحوه استفاده" data-toggle="popover" data-placement="left" data-content="تعداد اخبار در ابتدای سایت"></i>
                                     </label>
-                                    <input type="number" class="form-control" ng-model="Model.CountShowNews" />
+                                    <input type="text" class="form-control" ng-model="Model.CountShowNews" />
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -121,7 +120,7 @@
                                         تعداد نمایش مقالات
                                         <i class="fa fa-info" data-container="body" title="نحوه استفاده" data-toggle="popover" data-placement="left" data-content="تعداد مقالات در ابتدای سایت"></i>
                                     </label>
-                                    <input type="number" class="form-control" ng-model="Model.CountShowArticle" />
+                                    <input type="text" class="form-control" ng-model="Model.CountShowArticle" />
                                 </div>
                             </div>
                         </div>
@@ -132,7 +131,7 @@
                                         تعداد نمایش رویدادها
                                         <i class="fa fa-info" data-container="body" title="نحوه استفاده" data-toggle="popover" data-placement="left" data-content="تعداد رویداد در ابتدای سایت"></i>
                                     </label>
-                                    <input type="number" class="form-control" ng-model="Model.CountShowEvents" />
+                                    <input type="text" class="form-control" ng-model="Model.CountShowEvents" />
                                 </div>
                             </div>
                         </div>
@@ -141,14 +140,11 @@
             </uib-tabset>
         </div>
     </div>
-    <div class="card-footer">
-        <div class="btn-group-justified pull-left">
+        <div class="btn-group-justified pull-left mb-5">
             <div class="btn-group" dropdown is-open="false">
                 <a class="btn btn-primary text-white" ng-click="editSetting();">ویرایش</a>
             </div>
         </div>
-    </div>
-</div>
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
 
 <script>

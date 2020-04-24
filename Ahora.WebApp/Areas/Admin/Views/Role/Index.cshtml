@@ -1,54 +1,43 @@
-﻿<div ng-show="state ==='cartable'">
-    <h2 class="main-title">نقش ها</h2>
-    <div class="card">
-        <div class="card-header" style="height:50px;">
-            <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
-        </div>
-        <div class="card-body">
-            <portal-grid obj="grid"></portal-grid>
-        </div>
-    </div>
-</div>
-<div ng-show="['add','edit'].indexOf(state) !== -1">
-    <h2 class="main-title" ng-show="state === 'add'">افزودن نقش جدید</h2>
+﻿<section ng-show="state ==='cartable'">
+    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    <portal-grid obj="grid"></portal-grid>
+</section>
+<section ng-show="['add','edit'].indexOf(state) !== -1">
+    <h2 class="main-title" ng-show="state === 'add'">افزودن نقش</h2>
     <h2 class="main-title" ng-show="state === 'edit'">ویرایش کردن نقش {{Model.Name}}</h2>
-    <div class="card">
-        <div class="card-body">
-            <form class="form-horizontal" novalidate name="roleSave">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <label for="CategorySub" class="control-label">نام نقش</label>
-                            <input type="text" class="form-control" required ng-model="Model.Name" />
-                        </div>
+    <div class="card-body">
+        <form class="form-horizontal" novalidate name="roleSave">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="CategorySub" class="control-label">نام نقش</label>
+                        <input type="text" class="form-control" required ng-model="Model.Name" />
                     </div>
                 </div>
-
-                <div class="col-xs-12" ng-if="state === 'edit'">
-                    <section class="card">
-                        <div class="card-header">
-                            <span class="card-title">
-                                لیست مجوزها
-                            </span>
-                        </div>
-                        <div class="card-body">
-                            <fm-checkboxes list="ListCommand"
-                                           selected="Model.Permissions"
-                                           display-name="Title"
-                                           display="tree"></fm-checkboxes>
-                        </div>
-                    </section>
-                </div>
-            </form>
-        </div>
-        <div class="card-footer">
-            <div class="btn-group-justified pull-left">
-                <button class="btn btn-primary" type="submit" ng-disabled="roleSave.$invalid" ng-click="editRole()" ng-if="state === 'edit'">ویرایش</button>
-                <button class="btn btn-success" type="submit" ng-disabled="roleSave.$invalid" ng-click="addRole()" ng-if="state === 'add'">ثبت</button>
-                <button class="btn btn-cancel" type="submit" ng-click="main.changeState.cartable();">انصراف</button>
             </div>
-        </div>
+
+            <div class="col-xs-12" ng-if="state === 'edit'">
+                <section class="card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            لیست مجوزها
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <fm-checkboxes list="ListCommand"
+                                       selected="Model.Permissions"
+                                       display-name="Title"
+                                       display="tree"></fm-checkboxes>
+                    </div>
+                </section>
+            </div>
+        </form>
     </div>
-</div>
+    <div class="btn-group-justified pull-left mb-5">
+        <button class="btn btn-primary" type="submit" ng-disabled="roleSave.$invalid" ng-click="editRole()" ng-if="state === 'edit'">ویرایش</button>
+        <button class="btn btn-success" type="submit" ng-disabled="roleSave.$invalid" ng-click="addRole()" ng-if="state === 'add'">ثبت</button>
+        <button class="btn btn-cancel" type="submit" ng-click="main.changeState.cartable();">انصراف</button>
+    </div>
+</section>
 
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>

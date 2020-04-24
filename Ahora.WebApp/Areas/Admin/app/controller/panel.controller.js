@@ -2424,7 +2424,7 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 return generalSettingService.getSetting();
             }).then((result) => {
-                setting.Model = result;
+                setting.Model = angular.copy(result);
             }).catch((error) => {
                 toaster.pop('error', '', 'خطا در بازیابی اطلاعات');
             }).finally(loadingService.hide);

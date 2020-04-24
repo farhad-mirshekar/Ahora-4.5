@@ -426,3 +426,6 @@ textarea {
 .upload-text label{
     color:#99a0ac
 }
+i.fa-refresh{
+    cursor:pointer;
+}

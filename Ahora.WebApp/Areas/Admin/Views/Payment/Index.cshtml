@@ -1,12 +1,6 @@
-﻿<div class="card" ng-show="state ==='cartable'">
-    <div class="card-header">
-        <h2 class="main-title">کارتابل پیگیری خرید</h2>
-        <button class="btn btn-success btn-circle pull-left" ng-click=""><i class="fa fa-plus"></i></button>
-    </div>
-    <div class="card-body">
-        <portal-grid obj="grid"></portal-grid>
-    </div>
-</div>
+﻿<section ng-show="state ==='cartable'">
+    <portal-grid obj="grid"></portal-grid>
+</section>
 <section ng-show="state ==='view'">
     <h2 class="main-title">مشاهده جزئیات خرید مشتری</h2>
     <div class="card">

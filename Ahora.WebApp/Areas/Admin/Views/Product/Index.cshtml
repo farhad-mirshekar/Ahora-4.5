@@ -21,9 +21,9 @@
         margin-right: 0px !important;
     }
 </style>
-<span class="main-title" ng-show="state === 'add'">افزودن محصول</span>
-<span class="main-title" ng-show="state === 'edit'">ویرایش محصول</span>
-<div class="card" ng-show="['add','edit'].indexOf(state) !== -1">
+<h2 class="main-title" ng-show="state === 'add'">افزودن محصول</h2>
+<h2 class="main-title" ng-show="state === 'edit'">ویرایش محصول</h2>
+<section ng-show="['add','edit'].indexOf(state) !== -1">
     <div class="card-body">
         <div id="ProductError" ng-show="Model.Errors.length" class="alert alert-danger">
             <ul ng-repeat="row in Model.Errors">
@@ -34,25 +34,25 @@
             <span>این محصول دارای تخفیف بصورت گروهی می باشد</span>
         </div>
         <div class="form-horizontal">
-            <uib-tabset active="active" style="padding:10px">
+            <uib-tabset class="form-tab" active="active" style="padding:10px">
                 <uib-tab heading="اطلاعات کلی محصول">
                     <div class="form-group">
-                        <label for="Name" class="control-label">نام محصول</label>
                         <div class="col-md-10">
+                            <label for="Name" class="control-label">نام محصول</label>
                             <input type="text" class="form-control" required ng-model="Model.Name" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="Category" class="control-label"> دسته بندی</label>
                         <div class="col-md-10">
+                            <label for="Category" class="control-label"> دسته بندی</label>
                             <select class="form-control" ng-model="Model.CategoryID">
                                 <option ng-repeat="row in categoryType" ng-value="row.Model">{{row.Name}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="Description" class="control-label">توضیحات کوتاه</label>
                         <div class="col-md-10">
+                            <label for="Description" class="control-label">توضیحات کوتاه</label>
                             <textarea froala="froalaOption" class="form-control" ng-model="Model.ShortDescription" name="ShortDescription" ng-required="false"></textarea>
                         </div>
                     </div>
@@ -174,21 +174,21 @@
                 <uib-tab heading="سئو">
                     <div class="form-horizontal">
                         <div class="form-group">
-                            <label for="CategorySub" class="control-label">عنوان متاتگ</label>
                             <div class="col-md-10">
+                                <label for="CategorySub" class="control-label">عنوان متاتگ</label>
                                 <input type="text" class="form-control" required ng-model="Model.MetaTitle" />
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label for="CategorySub" class="control-label">کلید واژه</label>
                             <div class="col-md-10">
+                                <label for="CategorySub" class="control-label">کلید واژه</label>
                                 <input type="text" class="form-control" required ng-model="Model.MetaKeywords" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="CategorySub" class="control-label">توضیحات متاتگ</label>
                             <div class="col-md-10">
+                                <label for="CategorySub" class="control-label">توضیحات متاتگ</label>
                                 <input type="text" class="form-control" required ng-model="Model.MetaDescription" />
                             </div>
                         </div>
@@ -336,14 +336,10 @@
             </uib-tabset>
         </div>
     </div>
-    <div class="card-footer">
-        <div class="btn-group-justified pull-left">
-            <button type="button" class="btn btn-primary" ng-click="editProduct();" ng-if="state === 'edit'">ویرایش</button>
-            <button type="button" class="btn btn-success" ng-click="addProduct();" ng-if="state === 'add'">ثبت</button>
-            <a type="button" class="btn btn-cancel" role="button" href="#product-cartable">بازگشت</a>
-        </div>
-
-
+    <div class="btn-group-justified pull-left mb-5">
+        <button type="button" class="btn btn-primary" ng-click="editProduct();" ng-if="state === 'edit'">ویرایش</button>
+        <button type="button" class="btn btn-success" ng-click="addProduct();" ng-if="state === 'add'">ثبت</button>
+        <a type="button" class="btn btn-cancel" role="button" href="#product-cartable">بازگشت</a>
     </div>
-</div>
+</section>
 

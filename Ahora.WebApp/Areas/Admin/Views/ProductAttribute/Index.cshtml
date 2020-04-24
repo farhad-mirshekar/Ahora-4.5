@@ -1,46 +1,35 @@
-﻿<div class="card" ng-show="state ==='cartable'">
-    <div class="card-header">
-        <h2 class="main-title">کارتابل مدیریت ویژگی های محصولات</h2>
-        <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
-
-    </div>
-    <div class="card-body">
-        <portal-grid obj="grid"></portal-grid>
-    </div>
-</div>
+﻿<section ng-show="state ==='cartable'">
+    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    <portal-grid obj="grid"></portal-grid>
+</section>
 <section ng-show="['add','edit'].indexOf(state) !== -1">
     <h2 class="main-title" ng-show="state ==='add'">ثبت</h2>
     <h2 class="main-title" ng-show="state ==='edit'">ویرایش</h2>
-    <div class="card">
-        <div class="card-body form-horizontal">
-            <div class="form-group alert alert-danger" ng-show="Model.Errors.length">
-                <ul ng-repeat="row in Model.Errors">
-                    <li>{{row}}</li>
-                </ul>
-            </div>
-            <div class="form-group">
+    <div class="card-body form-horizontal">
+        <div class="form-group alert alert-danger" ng-show="Model.Errors.length">
+            <ul ng-repeat="row in Model.Errors">
+                <li>{{row}}</li>
+            </ul>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
                 <label for="Name" class="control-label">نام</label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control" ng-model="Model.Name" />
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="Name" class="control-label">توضیحات</label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control" ng-model="Model.Description" />
-                </div>
+                <input type="text" class="form-control" ng-model="Model.Name" />
             </div>
         </div>
-        <div class="card-footer">
-            <div class="btn-group-justified pull-left">
-                <button type="submit" ng-click="addAttribute()" ng-show="state ==='add'" class="btn btn-success">ثبت</button>
-                <button type="submit" ng-click="editAttribute()" ng-show="state ==='edit'" class="btn btn-primary">ویرایش</button>
-                <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="Name" class="control-label">توضیحات</label>
+                <input type="text" class="form-control" ng-model="Model.Description" />
             </div>
         </div>
     </div>
+    <div class="btn-group-justified pull-left mb-5">
+        <button type="submit" ng-click="addAttribute()" ng-show="state ==='add'" class="btn btn-success">ثبت</button>
+        <button type="submit" ng-click="editAttribute()" ng-show="state ==='edit'" class="btn btn-primary">ویرایش</button>
+        <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
+    </div>
 </section>
-
 
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
 

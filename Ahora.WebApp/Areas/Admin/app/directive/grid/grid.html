@@ -1,6 +1,11 @@
 ﻿<div class="container">
     <div class="row">
         <div class="col-md-12">
+            <div class="pull-left mr-3">
+                <i class="fa fa-refresh" ng-click="obj.getlist();" title="بارگذاری مجدد کارتابل"></i>
+            </div>
+        </div>
+        <div class="col-md-12">
             <table st-safe-src="obj.items" st-table="displayedItems" class="table table-condensed table-hover th-center td-center">
                 <thead>
                     <tr ng-if="obj.globalSearch">
