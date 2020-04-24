@@ -1,3 +1,45 @@
 ﻿<section ng-show="state === 'cartable'">
     <portal-grid obj="grid"></portal-grid>
 </section>
+<section ng-show="state === 'view'">
+    <h2 class="main-title">جزئیات پیام</h2>
+    <div class="card-body">
+        <div class="container">
+            <div class="row w-75">
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="Title" class="control-label">از :</label>
+                            <span>گروه برنامه نویسی</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="Title" class="control-label">به :</label>
+                            <span>آقا / خانم فرهاد میرشکار</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="Title" class="control-label">موضوع :</label>
+                            <span>{{Model.Title}}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="Title" class="control-label">تاریخ :</label>
+                            <span>{{Model.CreationDatePersian}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div ng-bind-html="Model.Description" style="margin-right:66px;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

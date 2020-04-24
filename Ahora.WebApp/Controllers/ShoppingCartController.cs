@@ -80,7 +80,7 @@ namespace Ahora.WebApp.Controllers
                         var attachment = attachmentResult.Data;
                         var picUrl = $"{attachment.Select(x => x.Path).First()}/{attachment.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
                         List<AttributeJsonVM> attribute = new List<AttributeJsonVM>();
-                        if (item.AttributeJson != "")
+                        if (item.AttributeJson != "" && item.AttributeJson != null)
                         {
                             var json = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
                             attribute.Add(json);
@@ -140,7 +140,7 @@ namespace Ahora.WebApp.Controllers
                     if (product.Success)
                     {
                         amount += product.Data.Price * item.Quantity;
-                        if (item.AttributeJson != "")
+                        if (item.AttributeJson != "" && item.AttributeJson != null)
                             listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
                         productList.Add(product.Data);
                     }

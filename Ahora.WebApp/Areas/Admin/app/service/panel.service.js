@@ -2173,7 +2173,8 @@
         var url = '/api/v1/notification/'
         var service = {
             list: list,
-            readNotification: readNotification
+            readNotification: readNotification,
+            get:get
         }
         return service;
         function list(model) {
@@ -2200,6 +2201,20 @@
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `readNotification/${model}` });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function get(model) {
+            return $http({
+                method: 'post',
+                url: url + `get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })

@@ -10,7 +10,6 @@
                 </div>
             </div>
             <div class="col-md-12" ng-if="main.listPicUploaded.length">
-                <span class="main-title">تصاویر بارگذاری شده</span>
                 <div class="ml-2 mt-2 d-sm-inline-block" ng-repeat="row in main.listPicUploaded track by $index" style="width: 10rem;">
                     <img ng-src="../../../../../Content/TemporaryFiles/{{row.Path}}/{{row.FileName}}" class="card-img-top" />
                     <div class="pull-left">

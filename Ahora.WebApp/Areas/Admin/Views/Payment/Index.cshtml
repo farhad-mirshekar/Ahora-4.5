@@ -51,7 +51,7 @@
                     <span class="card-title">اطلاعات محصول</span>
                 </div>
                 <div class="card-body form-horizontal">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered text-center">
                         <thead>
                             <tr>
                                 <td>ردیف</td>
@@ -67,9 +67,9 @@
                                 <td>{{$index + 1}}</td>
                                 <td>{{row.Name}}</td>
                                 <td>{{row.Price}}</td>
-                                <td>{{row.DiscountName}}</td>
+                                <td>{{ row.DiscountName === "" ? '-' : row.DiscountName }}</td>
                                 <td>{{row.DiscountAmount}}</td>
-                                <td>2000</td>
+                                <td>{{row.Price - row.DiscountAmount}}</td>
                             </tr>
                         </tbody>
                     </table>

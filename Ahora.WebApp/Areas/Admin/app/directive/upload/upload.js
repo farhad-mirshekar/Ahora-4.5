@@ -70,6 +70,7 @@
             }
             scope.remove = remove;
             scope.confirmRemove = confirmRemove;
+            scope.main.reset = reset;
 
             function init() {
                 element.find("#file-pond").value = "";
@@ -102,6 +103,9 @@
                         return init();
                     }
                 })
+            }
+            function reset() {
+                element.find("#file-pond").value = "";
             }
         }
     }

@@ -11,12 +11,12 @@
                     <tr>
                         <td colspan="5">
                             <div class="container">
-                                <div class="row">
+                                <div class="row" ng-class="{'mb-2':obj.items.length > 5}">
                                     <div class="col-md-9">
                                         <i class="fa fa-refresh float-left mr-3 mt-2" ng-click="obj.getlist();" title="بارگذاری مجدد کارتابل"></i>
                                         <div class="d-inline-block" st-pagination="" st-items-by-page="obj.pageSize" st-displayed-pages="5">
                                         </div>
-                                        <label for="pagination-num" class="float-left d-inline-block mr-2 mt-2">صفحه:</label>
+                                        <label ng-show="obj.items.length > 5 && obj.items.length > obj.pageSize " for="pagination-num" class="float-left d-inline-block mr-2 mt-2">صفحه:</label>
                                     </div>
                                     <div class="col-md-3">
                                         <select class="pull-left custom-select w-27" ng-options="option for option in obj.pageSizeRange"

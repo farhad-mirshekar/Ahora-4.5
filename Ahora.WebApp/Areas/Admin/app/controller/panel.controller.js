@@ -1508,16 +1508,17 @@ var froalaOptionComment = {
     function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
         let article = $scope;
         article.Model = {};
+        article.main = {};
+        article.attachment = {};
         article.Model.Errors = [];
-        article.state = '';
-        article.Model.listPicUploaded = [];
+        article.attachment.listPicUploaded = [];
         article.pic = { type: '4', allowMultiple: false };
         article.pic.list = [];
+        article.state = '';
         article.goToPageAdd = goToPageAdd;
         article.addArticle = addArticle;
         article.editArticle = editArticle;
         init();
-        article.main = {};
         article.main.changeState = {
             add: add,
             edit: edit,
@@ -1555,7 +1556,7 @@ var froalaOptionComment = {
         }
         function cartable() {
             $('.js-example-tags').empty();
-            article.Model = {};
+            clearModel();
             article.state = 'cartable';
             $location.path('/article/cartable');
         }
@@ -1574,6 +1575,7 @@ var froalaOptionComment = {
 
         }
         function edit(model) {
+            loadingService.show();
             return $q.resolve().then(() => {
                 return articleService.get(model.ID);
             }).then((model) => {
@@ -1609,10 +1611,10 @@ var froalaOptionComment = {
             }).then((result) => {
                 article.Model.listPicUploaded = [];
                 if (result && result.length > 0)
-                    article.Model.listPicUploaded = [].concat(result);
+                    article.attachment.listPicUploaded = [].concat(result);
                 article.state = 'edit';
                 $location.path(`/article/edit/${model.ID}`);
-            })
+            }).finally(loadingService.hide);
         }
         function goToPageAdd() {
             add();
@@ -1622,19 +1624,21 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 return articleService.add(article.Model);
             }).then((result) => {
+                article.Model = result;
                 if (article.pic.list.length) {
                     article.pics = [];
-                    if (article.Model.listPicUploaded === 0) {
+                    if (article.attachment.listPicUploaded === 0) {
                         article.pics.push({ ParentID: article.Model.ID, Type: 2, FileName: article.pic.list[0], PathType: article.pic.type });
                     }
                     return attachmentService.add(article.pics);
                 }
-                article.Model = result;
+                return true;
             }).then(() => {
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
+                article.attachment.listPicUploaded = [];
                 if (result && result.length > 0)
-                    article.Model.listPicUploaded = [].concat(result);
+                    article.attachment.listPicUploaded = [].concat(result);
                 article.pics = [];
                 article.pic.list = [];
                 article.grid.getlist(false);
@@ -1664,19 +1668,21 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 return articleService.edit(article.Model);
             }).then((result) => {
+                article.Model = result;
                 if (article.pic.list.length) {
                     article.pics = [];
-                    if (article.Model.listPicUploaded.length === 0) {
+                    if (article.attachment.listPicUploaded.length === 0) {
                         article.pics.push({ ParentID: article.Model.ID, Type: 2, FileName: article.pic.list[0], PathType: article.pic.type });
                     }
                     return attachmentService.add(article.pics);
                 }
-                article.Model = result;
+                return true;
             }).then(() => {
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
+                article.attachment.listPicUploaded = [];
                 if (result && result.length > 0)
-                    article.Model.listPicUploaded = [].concat(result);
+                    article.attachment.listPicUploaded = [].concat(result);
                 article.pics = [];
                 article.pic.list = [];
                 article.grid.getlist(false);
@@ -1721,6 +1727,10 @@ var froalaOptionComment = {
                 }
             })
         }
+        function clearModel() {
+            article.Model = {};
+            article.attachment.listPicUploaded = [];
+        }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('newsController', newsController);
@@ -1729,15 +1739,16 @@ var froalaOptionComment = {
         let news = $scope;
         news.Model = {};
         news.main = {};
+        news.attachment = {};
+        news.attachment.listPicUploaded = [];
+        news.pic = { type: '3', allowMultiple: false };
+        news.pic.list = [];
         news.main.changeState = {
             cartable: cartable,
             edit: edit
         }
-        news.Model.listPicUploaded = [];
         news.Model.Errors = [];
         news.state = '';
-        news.pic = { type: '3', allowMultiple: false };
-        news.pic.list = [];
         news.froalaOption = angular.copy(froalaOption);
         news.goToPageAdd = goToPageAdd;
         news.addNews = addNews;
@@ -1773,6 +1784,7 @@ var froalaOptionComment = {
         function cartable() {
             $('.js-example-tags').empty();
             news.state = 'cartable';
+            clearModel();
             $location.path('/news/cartable');
         }
         function add() {
@@ -1784,6 +1796,8 @@ var froalaOptionComment = {
             }).then((result) => {
                 return fillDropCategory();
             }).then(() => {
+                news.attachment.reset();
+            }).then(() => {
                 news.Model = {};
                 news.state = 'add';
                 $location.path('/news/add');
@@ -1791,6 +1805,7 @@ var froalaOptionComment = {
 
         }
         function edit(model) {
+            loadingService.show();
             return $q.resolve().then(() => {
                 return newsService.get(model.ID);
             }).then((result) => {
@@ -1826,11 +1841,11 @@ var froalaOptionComment = {
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
                 if (result && result.length > 0)
-                    news.Model.listPicUploaded = [].concat(result);
+                    news.attachment.listPicUploaded = [].concat(result);
             }).then(() => {
                 news.state = 'edit';
                 $location.path(`/news/edit/${model.ID}`);
-            })
+            }).finally(loadingService.hide);
         }
         function goToPageAdd() {
             add();
@@ -1838,63 +1853,67 @@ var froalaOptionComment = {
         function addNews() {
             loadingService.show();
             return $q.resolve().then(() => {
-                newsService.add(news.Model).then((result) => {
-                    if (news.pic.list.length) {
-                        news.pics = [];
-                        if (!news.Model.listPicUploaded) {
-                            news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
-                        }
-                        return attachmentService.add(news.pics);
-                    }
-                    news.Model = result;
-                }).then((result) => {
-                    return attachmentService.list({ ParentID: news.Model.ID });
-                }).then((result) => {
-                    if (result && result.length > 0)
-                        news.Model.listPicUploaded = [].concat(result);
+                return newsService.add(news.Model)
+            }).then((result) => {
+                news.Model = result;
+                if (news.pic.list.length) {
                     news.pics = [];
-                    news.pic.list = [];
-                    news.grid.getlist(false);
-                    toaster.pop('success', '', 'خبر جدید با موفقیت اضافه گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 1000);//return cartable
-                }).catch((error) => {
-                    if (!error) {
-                        var listError = error.split('&&');
-                        news.Model.Errors = [].concat(listError);
-                        $('#content > div').animate({
-                            scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
-                        }, 'slow');
-                    } else {
-                        $('#content > div').animate({
-                            scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
-                        }, 'slow');
+                    if (!news.attachment.listPicUploaded) {
+                        news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
                     }
+                    return attachmentService.add(news.pics);
+                }
+                return true;
+            }).then((result) => {
+                return attachmentService.list({ ParentID: news.Model.ID });
+            }).then((result) => {
+                news.attachment.listPicUploaded = [];
+                if (result && result.length > 0)
+                    news.attachment.listPicUploaded = [].concat(result);
+                news.pics = [];
+                news.pic.list = [];
+                news.grid.getlist(false);
+                toaster.pop('success', '', 'خبر جدید با موفقیت اضافه گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    cartable();
+                }, 1000);//return cartable
+            }).catch((error) => {
+                if (!error) {
+                    var listError = error.split('&&');
+                    news.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    $('#content > div').animate({
+                        scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
+                    }, 'slow');
+                }
 
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                }).finally(loadingService.hide);
-            })
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
         }
         function editNews() {
             loadingService.show();
             return $q.resolve().then(() => {
                 return newsService.edit(news.Model);
             }).then((result) => {
+                news.Model = result;
                 if (news.pic.list.length) {
                     news.pics = [];
-                    if (!news.Model.listPicUploaded) {
+                    if (!news.attachment.listPicUploaded) {
                         news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
                     }
                     return attachmentService.add(news.pics);
                 }
-                news.Model = result;
+                return true;
             }).then((result) => {
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
+                news.attachment.listPicUploaded = [];
                 if (result && result.length > 0)
-                    news.Model.listPicUploaded = [].concat(result);
+                    news.attachment.listPicUploaded = [].concat(result);
                 news.pics = [];
                 news.pic.list = [];
                 news.grid.getlist(false);
@@ -1938,6 +1957,10 @@ var froalaOptionComment = {
                     }
                 }
             })
+        }
+        function clearModel() {
+            news.Model = {};
+            news.attachment.listPicUploaded = [];
         }
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -2832,7 +2855,9 @@ var froalaOptionComment = {
         payment.grid = {
             bindingObject: payment
             , columns: [{ name: 'BuyerInfo', displayName: 'نام و نام خانوادگی خریدار' },
-            { name: 'BuyerPhone', displayName: 'اطلاعات تماس' }]
+            { name: 'BuyerPhone', displayName: 'اطلاعات تماس' },
+            { name: 'BankNameString', displayName: 'نام بانک' },
+            { name: 'CountBuy', displayName: 'تعداد خرید' }]
             , listService: paymentService.list
             , globalSearch: true
             , onEdit: payment.main.changeState.view
@@ -2902,7 +2927,7 @@ var froalaOptionComment = {
         notification.state = '';
         notification.main.changeState = {
             cartable: cartable,
-            show: show
+            view: view
         }
         init();
         notification.grid = {
@@ -2911,7 +2936,7 @@ var froalaOptionComment = {
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
             { name: 'ReadDatePersian', displayName: 'تاریخ مشاهده' }]
             , listService: notificationService.list
-            , onEdit: notification.main.changeState.show
+            , onEdit: notification.main.changeState.view
             , globalSearch: true
             , searchBy: 'Title'
             , displayNameFormat: ['Title']
@@ -2929,6 +2954,9 @@ var froalaOptionComment = {
                     case 'cartable':
                         cartable();
                         break;
+                    case 'view':
+                        notification.main.changeState.view($routeParams.id);
+                        break;
                 }
             }).finally(loadingService.hide);
         }
@@ -2936,8 +2964,19 @@ var froalaOptionComment = {
             notification.state = 'cartable';
             $location.path('/notification/cartable');
         }
-        function show() {
-            $('#notification-modal').modal(show);
+        function view(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (model && model.ID)
+                    return notificationService.get(model.ID);
+                else
+                    return notificationService.get($routeParams.id);
+            }).then((result) => {
+                notification.Model = angular.copy(result);
+                notification.state = 'view';
+                $location.path(`notification/view/${notification.Model.ID}`);
+            })
+                .finally(loadingService.hide);
         }
     }
 })();

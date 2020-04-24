@@ -6,7 +6,6 @@ using FM.Portal.Core.Common;
 using System.Data.SqlClient;
 using FM.Portal.Core.Result;
 using System.Collections.Generic;
-using FM.Bank.Core.Model;
 
 namespace FM.Portal.Infrastructure.DAL
 {

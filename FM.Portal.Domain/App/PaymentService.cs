@@ -5,7 +5,6 @@ using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Result;
-using FM.Bank.Core.Model;
 using Newtonsoft.Json;
 
 namespace FM.Portal.Domain

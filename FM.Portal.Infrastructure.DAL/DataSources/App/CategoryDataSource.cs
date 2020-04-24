@@ -81,10 +81,12 @@ namespace FM.Portal.Infrastructure.DAL
                         {
                             obj.IncludeInTopMenu = SQLHelper.CheckBoolNull(dr["IncludeInTopMenu"]);
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
-                            obj.ID = ID;
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]); ;
                             obj.IncludeInLeftMenu = SQLHelper.CheckBoolNull(dr["IncludeInLeftMenu"]);
                             obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
+                            obj.HasDiscountsApplied = SQLHelper.CheckBoolNull(dr["HasDiscountsApplied"]);
+                            obj.DiscountID = SQLHelper.CheckGuidNull(dr["DiscountID"]);
                         }
                     }
 
@@ -116,6 +118,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.HasDiscountsApplied = SQLHelper.CheckBoolNull(dr["HasDiscountsApplied"]);
                             obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
+                            obj.DiscountID = SQLHelper.CheckGuidNull(dr["DiscountID"]);
                         }
                     }
 

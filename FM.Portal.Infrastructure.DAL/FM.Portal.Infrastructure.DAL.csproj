@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FM.Bank.Core.Model">
-      <HintPath>..\Ahora.WebApp\libs\FM.Bank.Core.Model.dll</HintPath>
-    </Reference>
     <Reference Include="FM.Portal.Core">
       <HintPath>..\Ahora.WebApp\libs\FM.Portal.Core.dll</HintPath>
     </Reference>
@@ -92,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="DataBaseScripts\Procedures\App\Bank\app.spGetActiveBank.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\CategoryMapDiscount\app.spDeleteCategoryMapDiscountByCategoryID.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CategoryMapDiscount\app.spModifyCategoryMapDiscount.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetByParentCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetCategory.sql" />
@@ -184,6 +182,7 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetsMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.spModifyMenu.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.GetNotification.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.GetsNotification.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.ReadNotification.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetPage.sql" />

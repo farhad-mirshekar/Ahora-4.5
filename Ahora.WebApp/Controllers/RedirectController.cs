@@ -5,6 +5,7 @@ using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
 using System;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 namespace Ahora.WebApp.Controllers
 {
@@ -177,8 +178,9 @@ namespace Ahora.WebApp.Controllers
         {
             if (HttpContext.Request.Cookies[param] != null)
             {
-                HttpContext.Response.Cookies.Remove(param);
-                HttpContext.Request.Cookies.Remove(param);
+                var myCookie = new HttpCookie("ShoppingID", null);
+                myCookie.Expires = DateTime.Now.AddYears(-1);
+                HttpContext.Response.Cookies.Add(myCookie);
             }
         }
     }

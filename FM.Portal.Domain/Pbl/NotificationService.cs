@@ -16,6 +16,9 @@ namespace FM.Portal.Domain
             _dataSource = dataSource;
         }
 
+        public Result<Notification> Get(Guid ID)
+        => _dataSource.Get(ID);
+
         public Result<List<Notification>> List()
         {
             var table = ConvertDataTableToList.BindList<Notification>(_dataSource.List());

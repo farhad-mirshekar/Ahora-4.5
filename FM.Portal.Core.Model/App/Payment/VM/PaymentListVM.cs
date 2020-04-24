@@ -9,5 +9,8 @@ namespace FM.Portal.Core.Model
         public string BuyerPhone { get; set; }
         //public ResCode ResCode { get; set; }
         public decimal Price { get; set; }
+        public int CountBuy { get; set; }
+        public BankName BankName { get; set; }
+        public string BankNameString => BankName.ToString().Replace('_',' ');
     }
 }

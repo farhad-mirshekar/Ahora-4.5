@@ -133,7 +133,7 @@ element {
     text-decoration: none;
     color: #5F6367;
     display: block;
-    font-size: 14px;
+    font-size: 13px;
     padding-right: 33px;
 }
 
@@ -236,7 +236,7 @@ element {
     font-size: 17px;
     font-weight: 500;
     margin-bottom: 13px;
-        border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
     padding-bottom: 10px;
 }
 
@@ -393,46 +393,58 @@ textarea {
     font-size: .87rem;
     border: 1px solid #e6e6e6;
 }
-.input-group-text{
-    font-size:.9rem
+
+.input-group-text {
+    font-size: .9rem
 }
-.select2-container--default.select2-container--focus .select2-selection--multiple{
-    border:1px solid #e6e6e6
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #e6e6e6
 }
-.second-toolbar{
-    display:none
+
+.second-toolbar {
+    display: none
 }
+
 .select2-container--default .select2-selection--multiple .select2-selection__choice {
     color: #fff;
     background-color: #0069d9;
     border-color: #0062cc;
 }
-.select2-container--default .select2-selection--multiple .select2-selection__choice__remove{
-    color:#ffffff
-}
-.form-tab .nav-tabs{
-    border-bottom:none
-}
-.form-tab .nav-tabs .nav-link{
-    border:none
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #ffffff
 }
 
-.form-tab li.uib-tab.nav-item.ng-scope.ng-isolate-scope.active{
-    border-bottom:2px solid #007bff
+.form-tab .nav-tabs {
+    border-bottom: none
 }
-.upload-text{
-    cursor:pointer
+
+    .form-tab .nav-tabs .nav-link {
+        border: none
+    }
+
+.form-tab li.uib-tab.nav-item.ng-scope.ng-isolate-scope.active {
+    border-bottom: 2px solid #007bff
 }
-.upload-text label{
-    color:#99a0ac
+
+.upload-text {
+    cursor: pointer
 }
-i.fa-refresh{
-    cursor:pointer;
+
+    .upload-text label {
+        color: #99a0ac
+    }
+
+i.fa-refresh {
+    cursor: pointer;
 }
+
 .pagination li a {
     color: #3BAFDA;
     border: 1px solid #ADB5BD;
 }
+
 .pagination li a {
     display: block;
     padding: .5rem .75rem;
@@ -440,20 +452,24 @@ i.fa-refresh{
     line-height: 1.25;
     color: #495057;
     background-color: #FFF;
-    border:1px solid #ced4da;
+    border: 1px solid #ced4da;
 }
-.pagination li a:hover{
-    text-decoration:none
-}
-.pagination li.active a{
-          border-color: #d6d6d6;
+
+    .pagination li a:hover {
+        text-decoration: none
+    }
+
+.pagination li.active a {
+    border-color: #d6d6d6;
     background-color: #eee;
 }
-thead td:first-child{
-    border-top:0;
-        padding-bottom: 0;
+
+thead td:first-child {
+    border-top: 0;
+    padding-bottom: 0;
 }
-thead tr:nth-child(2) th{
-    border-top:0;
-        padding-top: 0;
+
+thead tr:nth-child(2) th {
+    border-top: 0;
+    padding-top: 0;
 }

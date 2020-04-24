@@ -33,6 +33,10 @@ BEGIN
 				[Title] = @Title
 			WHERE
 				[ID] = @ID
+			IF @HasDiscountsApplied = 0
+				BEGIN
+					EXEC app.spDeleteCategoryMapDiscountByCategoryID @ID
+				END
 		END
 
 	RETURN @@ROWCOUNT

@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FM.Bank.Core.Model">
-      <HintPath>..\Ahora.WebApp\libs\FM.Bank.Core.Model.dll</HintPath>
-    </Reference>
     <Reference Include="FM.Portal.Core">
       <HintPath>..\Ahora.WebApp\libs\FM.Portal.Core.dll</HintPath>
     </Reference>

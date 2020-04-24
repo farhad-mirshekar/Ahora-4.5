@@ -10,9 +10,12 @@ CREATE PROCEDURE app.spGetCategory
 AS
 BEGIN
 	SELECT 
-		cat.*
+		cat.*,
+		map.DiscountID
 	FROM	
 		[app].[Category] cat
+	LEFT JOIN
+		[app].[Category_Discount_Mapping] map ON cat.ID = map.CategoryID
 	WHERE 
 		cat.ID = @ID
 END
