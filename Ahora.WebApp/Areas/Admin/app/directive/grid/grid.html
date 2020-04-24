@@ -2,12 +2,32 @@
     <div class="row">
         <div class="col-md-12">
             <div class="pull-left mr-3">
-                <i class="fa fa-refresh" ng-click="obj.getlist();" title="بارگذاری مجدد کارتابل"></i>
             </div>
         </div>
         <div class="col-md-12">
             <table st-safe-src="obj.items" st-table="displayedItems" class="table table-condensed table-hover th-center td-center">
                 <thead>
+
+                    <tr>
+                        <td colspan="5">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-9">
+                                        <i class="fa fa-refresh float-left mr-3 mt-2" ng-click="obj.getlist();" title="بارگذاری مجدد کارتابل"></i>
+                                        <div class="d-inline-block" st-pagination="" st-items-by-page="obj.pageSize" st-displayed-pages="5">
+                                        </div>
+                                        <label for="pagination-num" class="float-left d-inline-block mr-2 mt-2">صفحه:</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <select class="pull-left custom-select w-27" ng-options="option for option in obj.pageSizeRange"
+                                                ng-model="obj.pageSize"></select>
+                                        <label for="option-num" class="float-right mr-2 mt-2">نمایش:</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
                     <tr ng-if="obj.globalSearch">
                         <th colspan="{{ obj.columns.length + 2 }}">
                             <input st-search="{{obj.searchBy}}"
@@ -22,7 +42,7 @@
                         <th ng-repeat="row in obj.columns" st-sort="{{row.name}}">{{row.displayName}}</th>
                         <th>عملیات</th>
                     </tr>
-                   
+
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in displayedItems">
@@ -40,25 +60,7 @@
                         </td>
                     </tr>
                 </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="5">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <div st-pagination="" st-items-by-page="obj.pageSize" st-displayed-pages="5"></div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        
-                                        <select class="pull-left custom-select w-27" ng-options="option for option in obj.pageSizeRange"
-                                                ng-model="obj.pageSize"></select>
-                                        <label for="option-num" class="float-right mr-2 mt-2">نمایش:</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </tfoot>
+
             </table>
 
         </div>

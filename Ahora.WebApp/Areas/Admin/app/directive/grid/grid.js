@@ -123,6 +123,7 @@
                 loadingService.show();
                 return getItems().then(loadingService.hide);
             }
+          
         }
     }
 })();
