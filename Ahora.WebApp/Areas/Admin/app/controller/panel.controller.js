@@ -2828,7 +2828,6 @@ var froalaOptionComment = {
             cartable: cartable,
             view: view
         }
-        payment.changeDrop = changeDrop;
         payment.print = print;
         payment.grid = {
             bindingObject: payment
@@ -2844,9 +2843,6 @@ var froalaOptionComment = {
         function init() {
             loadingService.show();
             return $q.resolve().then(() => {
-                if (!payment.Search.ResCodeType)
-                    resCodeTypeDropDown();
-                payment.Search.ResCodeType = 0;
                 switch ($routeParams.state) {
                     case 'cartable':
                         cartable();
@@ -2879,19 +2875,6 @@ var froalaOptionComment = {
                 $location.path(`/payment/view/${result.ID}`);
             }))
                 .finally(loadingService.hide);
-        }
-
-        function resCodeTypeDropDown() {
-            paymentService.resCodeType().then((result) => {
-                payment.selectResCodeType = result;
-            })
-        }
-        function changeDrop() {
-            loadingService.show();
-            return $q.resolve().then(() => {
-                payment.grid.getlist(false);
-            }).finally(loadingService.hide);
-
         }
         function print(elementId) {
             let toPrint = document.getElementById(elementId);

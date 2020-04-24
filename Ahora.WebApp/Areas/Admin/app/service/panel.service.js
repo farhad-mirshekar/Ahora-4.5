@@ -2104,7 +2104,6 @@
         var service = {
             get: get,
             list: list,
-            resCodeType: resCodeType,
             getDetail: getDetail
 
         }
@@ -2124,16 +2123,16 @@
                     return callbackService.onError({ result: result });
                 })
         }
-        function list(model) {
+        function list() {
             return $http({
                 method: 'post',
-                url: url + `list/${model}`,
+                url: url + `list`,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + localStorage.access_token
                 }
             }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + `List/${model}` });
+                return callbackService.onSuccess({ result: result, request: url + `List` });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })

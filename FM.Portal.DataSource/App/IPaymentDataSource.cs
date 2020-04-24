@@ -13,7 +13,7 @@ namespace FM.Portal.DataSource
         Result<Core.Model.Payment> Get(Guid ID);
         Result<Payment> GetByShoppingID(Guid ShoppingID);
         Result<Payment> GetByToken(string Token , BankName bankName);
-        DataTable List(ResCode resCode);
+        DataTable List();
         //for user
         DataTable ListPaymentForUser(Guid UserID);
 

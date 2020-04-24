@@ -65,9 +65,9 @@ namespace FM.Portal.Domain
             return Result<PaymentDetailVM>.Successful(data:obj);
         }
 
-        public Result<List<PaymentListVM>> List(ResCode resCode)
+        public Result<List<PaymentListVM>> List()
         { 
-           var table = ConvertDataTableToList.BindList<PaymentListVM>(_dataSource.List(resCode));
+           var table = ConvertDataTableToList.BindList<PaymentListVM>(_dataSource.List());
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<PaymentListVM>>.Successful(data: table);
             return Result<List<PaymentListVM>>.Failure();

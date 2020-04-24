@@ -16,12 +16,12 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         public PaymentController(IPaymentService service) : base(service)
         {
         }
-        [HttpPost,Route("List/{ResCodeType}")]
-        public IHttpActionResult List(ResCode ResCodeType)
+        [HttpPost,Route("List")]
+        public IHttpActionResult List()
         {
             try
             {
-                var result = _service.List(ResCodeType);
+                var result = _service.List();
                 return Ok(result);
             }
             catch(Exception e) { return NotFound(); }

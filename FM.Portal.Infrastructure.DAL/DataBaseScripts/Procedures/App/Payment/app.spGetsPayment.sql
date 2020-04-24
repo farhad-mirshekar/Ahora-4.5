@@ -5,7 +5,6 @@ IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('app.spGets
 GO
 
 CREATE PROCEDURE app.spGetsPayment
-@ResCode INT
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -22,6 +21,6 @@ BEGIN
 	INNER JOIN
 		[org].[User] buyer ON orders.UserID = buyer.ID
 	WHERE 
-		payment.TransactionStatus = @ResCode
+		payment.TransactionStatus = 0
 END
 

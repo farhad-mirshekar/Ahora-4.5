@@ -162,13 +162,11 @@ namespace FM.Portal.Infrastructure.DAL
             catch (Exception e) { return Result<Payment>.Failure(); }
         }
 
-        public DataTable List(ResCode resCode)
+        public DataTable List()
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ResCode", (byte)resCode);
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsPayment", param);
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsPayment", null);
             }
             catch
             {
