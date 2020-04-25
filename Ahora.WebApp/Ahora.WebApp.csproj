@@ -290,6 +290,7 @@
     <Content Include="Content\fonts\webfonts\fa-solid-900.svg" />
     <Content Include="Content\img\error-img.png" />
     <Content Include="Content\img\faq.png" />
+    <Content Include="Content\img\login.jpg" />
     <Content Include="Content\main\main.css" />
     <Content Include="Content\main\PagedList.css" />
     <Content Include="Content\main\Site.css" />
