@@ -303,7 +303,7 @@
                 url: '/account/SignOut',
                 data: { type:'admin'}
             }).then(function (result) {
-                return callbackService.onSuccess({ result: result, request: '/account/logoutAdmin' });
+                return callbackService.onSuccess({ result: result, request: '/account/SignOut' });
             }).catch(function (result) {
                 return callbackService.onError({ result: result });
             })

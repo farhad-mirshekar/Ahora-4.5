@@ -39,7 +39,7 @@ namespace Ahora.WebApp.Controllers
         {
             var returnUrl = "";
             if (TempData["returnUrl"] != null)
-                 returnUrl = TempData["returnUrl"].ToString() ?? "";
+                returnUrl = TempData["returnUrl"].ToString() ?? "";
             var result = await GetToken(new Token { username = model.UserName, password = model.Password }, returnUrl);
             return result;
         }
@@ -62,7 +62,7 @@ namespace Ahora.WebApp.Controllers
             user.Type = UserType.کاربر_برون_سازمانی;
             user.Enabled = true;
 
-           var result =  _service.Add(user);
+            var result = _service.Add(user);
             if (!result.Success)
                 return View(registerVM);
             else
@@ -90,7 +90,7 @@ namespace Ahora.WebApp.Controllers
             return result;
         }
 
-        private async Task<JsonResult> GetToken(Token model,string returnUrl)
+        private async Task<JsonResult> GetToken(Token model, string returnUrl)
         {
             var user = _service.Get(model.username, model.password, null);
             if (user.Success)
@@ -190,20 +190,21 @@ namespace Ahora.WebApp.Controllers
             }
 
         }
-        [Route("SignOut")]
+        [Route("SignOut"), HttpPost]
         public ActionResult SignOut(string type)
         {
             Session.Clear();
             Session.Abandon();
+            Session.RemoveAll();
 
             if (type == "admin")
             {
-                return Json(new { success = true });
+                return Json(new { Success = true, Data = true });
             }
             else
             {
                 FormsAuthentication.SignOut();
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
             }
 
         }

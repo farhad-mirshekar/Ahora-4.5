@@ -99,9 +99,14 @@
         function signOut() {
             loadingService.show();
             return $q.resolve().then(() => {
-                 profileService.signOut();
-                authenticationService.clearCredentials();
-                $window.location.href = '/account/login';
+                debugger
+                return profileService.signOut();
+            }).then((result) => {
+                debugger
+                if (result) {
+                    authenticationService.clearCredentials();
+                    $window.location.href = '/login';
+                }
             }).finally(loadingService.hide);
         }
 
