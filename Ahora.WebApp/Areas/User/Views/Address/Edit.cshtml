@@ -4,33 +4,28 @@
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
 }
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <span class="panel-title">ویرایش آدرس</span>
-    </div>
-    <div class="panel-body form-horizontal">
-        @using (Html.BeginForm("Edit", "Address", FormMethod.Post))
-        {
-            
-            <div class="form-group">
-                <label for="postalCode" class="col-md-1 control-label">کد پستی</label>
-                <div class="col-md-9">
-                    @Html.TextBoxFor(a=>a.PostalCode , new { @class="form-control"})
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="Address" class="col-md-1 control-label">آدرس</label>
-                <div class="col-md-9">
-                    @Html.TextAreaFor(a => a.Address, htmlAttributes: new { rows = "2", @class = "form-control",@style="resize:none;" })
-                </div>
-            </div>
+<h2 class="main-title">ویرایش آدرس</h2>
+<div class="card-body form-horizontal">
+    @using (Html.BeginForm("Edit", "Address", FormMethod.Post))
+    {
 
-            <div class="modal-footer">
-                <button class="btn btn-default">بازگشت</button>
-                <button type="submit" class="btn btn-success">ویرایش</button>
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="postalCode" class="control-label">کد پستی</label>
+                @Html.TextBoxFor(a => a.PostalCode, new { @class = "form-control" })
             </div>
-        }
-    </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="Address" class="control-label">آدرس</label>
+                @Html.TextAreaFor(a => a.Address, htmlAttributes: new { rows = "2", @class = "form-control", @style = "resize:none;" })
+            </div>
+        </div>
+        <div class="btn-group-justified pull-left mb-5">
+            <button type="submit" class="btn btn-success">ویرایش</button>
+            <button class="btn btn-cancel">بازگشت</button>
+        </div>
+    }
 </div>
 
 

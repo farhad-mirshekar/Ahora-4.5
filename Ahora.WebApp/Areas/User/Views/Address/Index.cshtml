@@ -5,45 +5,39 @@
 }
 <h2 class="main-title">لیست آدرس های من</h2>
 <a href="create" class="btn btn-success btn-circle"><i class="fa fa-plus"></i></a>
-<div class="card">
-    <div class="card-body">
-        <div class="container">
-            <div class="row">
-                @if (Model != null && Model.Count > 0)
-                {
-                    foreach (var item in Model)
-                    {
-                        <div class="col-md-12">
-                            <label>فرهاد میرشکار</label>
-                            <label>@item.Address</label>
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <label class="pull-right">کد پستی : @item.PostalCode</label>
-                                    <label class="pull-left">شماره همراه : @item.CellPhone</label>
-                                </div>
-                                <div class="col-md-4 pull-left">
-                                    @Html.ActionLink("ویرایش", "Edit", "Address", new { ID = @item.ID }, new { @class = "btn btn-primary" })
-                                    <button class="btn btn-danger" onclick="Address.showModal('#deleteAddress','@item.Address','@item.ID')">حذف</button>
-                                </div>
-                            </div>
-                        </div>
-                    }
-
-                    <div class="text-center">
-                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+<div class="card-body">
+    @if (Model != null && Model.Count > 0)
+    {
+        foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-body form-horizontal">
+                    <div class="form-group">
+                        <i class="fa fa-address-book"></i>
+                        <label class="control-label">@item.Address</label>
                     </div>
-                }
-                else
-                {
-                    <div class="col-md-12">
-                        <div class="alert alert-danger">آدرسی ثبت نشده است</div>
+                    <div class="form-group">
+                        <i class="fa fa-phone"></i>
+                        <label class="control-label">@item.CellPhone</label>
                     </div>
-                }
-
+                    <div class="form-group">
+                        <i class="fa fa-code"></i>
+                        <label class="control-label">@item.PostalCode</label>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="btn-group-justified pull-left">
+                        @Html.ActionLink("ویرایش", "Edit", "Address", new { ID = @item.ID }, new { @class = "btn btn-primary" })
+                        <button class="btn btn-danger" onclick="Address.showModal('#deleteAddress','@item.Address','@item.ID')">حذف</button>
+                    </div>
+                </div>
             </div>
+        }
+
+        <div class="mt-2">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
         </div>
-        
-    </div>
+    }
 </div>
 <div class="modal" id="deleteAddress" style="display:none;" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">

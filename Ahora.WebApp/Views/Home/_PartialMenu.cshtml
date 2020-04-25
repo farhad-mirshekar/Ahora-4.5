@@ -25,9 +25,12 @@
                                 <i class="fa fa-arrow-right"></i> ورود به پنل
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="/account/signout">
-                                <i class="fa fa-sign-out"></i> خروج
-                            </a>
+                            using (Html.BeginForm("SignOut", "Account", FormMethod.Post))
+                            {
+                                <button type="submit" class="dropdown-item" style="cursor:pointer">
+                                    <i class="fa fa-sign-out"></i> خروج
+                                </button>
+                            }
                         }
                         else
                         {

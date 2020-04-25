@@ -59,8 +59,8 @@ html {
 }
 
 body {
-    font-family: yekannumbers , IRANSans !important;
-    font-size: 15px;
+    font-family: yekannumbers, IRANSans !important;
+    font-size: 14px;
 }
 
 .sidebar {
@@ -74,7 +74,7 @@ body {
 }
 
 .sidebar-sticky {
-    margin-left: 1px
+    margin-left: 1px;
 }
 
 .d-md-block {
@@ -125,20 +125,17 @@ element {
     }
 }
 
-.nav .nav-item .nav-link:hover {
-    background-color: #f5f5f5
-}
 
 .nav .sub-menu .nav-item a {
     text-decoration: none;
     color: #5F6367;
     display: block;
-    font-size: 14px;
+    font-size: 13px;
     padding-right: 33px;
 }
 
 .nav .sub-menu .nav-item:hover {
-    background-color: #F0F0F0
+    background-color: #F0F0F0;
 }
 
 .nav .nav-item .nav-link {
@@ -187,8 +184,8 @@ element {
     border-radius: 50%;
 }
 
-.header-icon a{
-    text-decoration:none;
+.header-icon a {
+    text-decoration: none;
 }
 
 #sidebar-switch i {
@@ -209,7 +206,7 @@ element {
 }
 
 .sidebar-title {
-    padding-bottom: 20px
+    padding-bottom: 20px;
 }
 
 .nav-text {
@@ -236,22 +233,36 @@ element {
     font-size: 17px;
     font-weight: 500;
     margin-bottom: 13px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
 }
 
 .card-body label {
     color: #99a0ac;
 }
 
-.card-body input {
+.search-inut {
     color: #636465;
-    font-size: 15px;
-    border-color: rgba(135, 150, 165, .40);
+    font-size: 13px;
+    border-color: transparent;
     border-width: 1px;
     border-radius: .25rem;
+    background: #f5f5f6;
 }
+
+    .search-inut:focus {
+        color: #495057;
+        background-color: #f5f5f5;
+        border-color: #dcdcdc;
+        outline: 0;
+    }
 
 .card-footer .btn {
     font-size: 15px;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0,0,0,.075) !important;
 }
 
 .btn-cancel {
@@ -275,11 +286,7 @@ element {
     z-index: 9;
 }
 
-thead > tr {
-    background-color: rgba(178, 180, 182, 0.29) !important;
-}
-
-.loader {
+/*.loader {
     position: relative;
     margin: 0 auto;
     width: 100px;
@@ -289,7 +296,7 @@ thead > tr {
         content: '';
         display: block;
         padding-top: 0 !important;
-    }
+    }*/
 
 .fade.in {
     opacity: 1;
@@ -306,30 +313,160 @@ thead > tr {
     opacity: .5;
 }
 
-.card-header{
-    border:0px !important;
+.card-header {
+    border: 0px !important;
 }
 
-.card-footer{
-    border:0px !important;
+.card-footer {
+    border: 0px !important;
 }
+
 .filepond--root {
     font-family: IRANSans !important;
 }
+
 .tab-content {
     margin-top: 35px;
 }
-.nav-link .fa-angle-down{
-    float:left
+
+.nav-link .fa-angle-down {
+    float: left;
 }
+
 .nav-link .fa-angle-up {
     float: left;
 }
-textarea{
-    resize:none;
+
+textarea {
+    resize: none;
 }
+
 .popover {
     font-family: IranSans;
     text-align: right justify;
     direction: rtl;
+}
+
+.select2-container {
+    width: 100% !important;
+}
+
+.cursor-grid {
+    cursor: pointer;
+}
+
+.notification-list {
+    list-style: circle !important;
+}
+
+.table-bordered {
+    border: 0;
+    box-shadow: 0 0 1px 0px #eae9e9;
+}
+
+.table thead th {
+    color: #99a0ac;
+    font-size: 13px;
+    border-bottom: none;
+}
+
+.table-bordered th {
+    border: 0;
+}
+
+.operation-icon {
+    font-size: 19px;
+}
+
+.ng-isolate-scope {
+    font-size: 14px;
+}
+
+.w-27 {
+    width: 27%;
+}
+
+.form-control {
+    font-size: .87rem;
+    border: 1px solid #e6e6e6;
+}
+
+.input-group-text {
+    font-size: .9rem
+}
+
+.select2-container--default.select2-container--focus .select2-selection--multiple {
+    border: 1px solid #e6e6e6
+}
+
+.second-toolbar {
+    display: none
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    color: #fff;
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: #ffffff
+}
+
+.form-tab .nav-tabs {
+    border-bottom: none
+}
+
+    .form-tab .nav-tabs .nav-link {
+        border: none
+    }
+
+.form-tab li.uib-tab.nav-item.ng-scope.ng-isolate-scope.active {
+    border-bottom: 2px solid #007bff
+}
+
+.upload-text {
+    cursor: pointer
+}
+
+    .upload-text label {
+        color: #99a0ac
+    }
+
+i.fa-refresh {
+    cursor: pointer;
+}
+
+.pagination li a {
+    color: #3BAFDA;
+    border: 1px solid #ADB5BD;
+}
+
+.pagination li a {
+    display: block;
+    padding: .5rem .75rem;
+    margin-right: -1px;
+    line-height: 1.25;
+    color: #495057;
+    background-color: #FFF;
+    border: 1px solid #ced4da;
+}
+
+    .pagination li a:hover {
+        text-decoration: none
+    }
+
+.pagination li.active a {
+    border-color: #d6d6d6;
+    background-color: #eee;
+}
+
+thead td:first-child {
+    border-top: 0;
+    padding-bottom: 0;
+}
+
+thead tr:nth-child(2) th {
+    border-top: 0;
+    padding-top: 0;
 }
