@@ -16,9 +16,9 @@ BEGIN
 	FROM 
 		pbl.[Notification]
 	WHERE
-		[UserID] = @UserID AND
-		[ReadDate] IS NULL
-
+		[UserID] = @UserID 
+	ORDER BY 
+		[CreationDate]
 
 	RETURN @@ROWCOUNT
 END

@@ -49,6 +49,20 @@ namespace FM.Portal.Infrastructure.DAL
             }
         }
 
+        public DataTable GetActiveNotification()
+        {
+            {
+                try
+                {
+                    SqlParameter[] param = new SqlParameter[1];
+                    param[0] = new SqlParameter("@UserID", _requestInfo.UserId);
+
+                    return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsActiveNotification", param);
+                }
+                catch (Exception e) { throw; }
+            }
+        }
+
         public DataTable List()
         {
             try

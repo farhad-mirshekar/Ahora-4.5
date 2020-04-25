@@ -42,5 +42,15 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             }
             catch (Exception e) { return NotFound(); }
         }
+        [HttpPost, Route("GetActiveNotification")]
+        public IHttpActionResult GetActiveNotification()
+        {
+            try
+            {
+                var result = _service.GetActiveNotification();
+                return Ok(result);
+            }
+            catch (Exception e) { return NotFound(); }
+        }
     }
 }

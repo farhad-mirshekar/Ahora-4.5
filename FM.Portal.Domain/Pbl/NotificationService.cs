@@ -19,6 +19,14 @@ namespace FM.Portal.Domain
         public Result<Notification> Get(Guid ID)
         => _dataSource.Get(ID);
 
+        public Result<List<Notification>> GetActiveNotification()
+        {
+            var table = ConvertDataTableToList.BindList<Notification>(_dataSource.GetActiveNotification());
+            if (table.Count > 0 || table.Count == 0)
+                return Result<List<Notification>>.Successful(data: table);
+            return Result<List<Notification>>.Failure();
+        }
+
         public Result<List<Notification>> List()
         {
             var table = ConvertDataTableToList.BindList<Notification>(_dataSource.List());

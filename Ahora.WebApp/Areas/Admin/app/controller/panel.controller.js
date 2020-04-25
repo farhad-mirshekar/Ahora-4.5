@@ -54,16 +54,16 @@ var froalaOptionComment = {
     homeController.$inject = ['$scope', '$q', 'loadingService', 'notificationService'];
     function homeController($scope, $q, loadingService, notificationService) {
         let home = $scope;
-        home.notification = [];
+        home.notification = {};
         home.readNotification = readNotification;
         init();
 
         function init() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return notificationService.list();
+                return notificationService.getActiveNotification();
             }).then((result) => {
-                if (result && result.length > 0) {
+                if (result) {
                     home.notification = [].concat(result);
                 }
             }).finally(loadingService.hide);

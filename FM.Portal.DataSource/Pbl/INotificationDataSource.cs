@@ -10,5 +10,6 @@ namespace FM.Portal.DataSource
         DataTable List();
         Result ReadNotification(Guid ID);
         Result<Notification> Get(Guid ID);
+        DataTable GetActiveNotification();
     }
 }

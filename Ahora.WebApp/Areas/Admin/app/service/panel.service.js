@@ -2174,7 +2174,8 @@
         var service = {
             list: list,
             readNotification: readNotification,
-            get:get
+            get: get,
+            getActiveNotification: getActiveNotification
         }
         return service;
         function list(model) {
@@ -2215,6 +2216,20 @@
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function getActiveNotification(model) {
+            return $http({
+                method: 'post',
+                url: url + `getActiveNotification`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + `getActiveNotification}` });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
