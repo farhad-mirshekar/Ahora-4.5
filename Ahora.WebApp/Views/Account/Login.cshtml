@@ -1,38 +1,43 @@
 ﻿@model FM.Portal.Core.Model.LoginVM
 <!--================login_part Area =================-->
 @section BodySection{
-    <section class="col-md-12">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-                    <div class="card card-signin my-5">
-                        <div class="card-body">
-                            <h5 class="card-title text-center">صفحه ورود</h5>
-                            <form class="form-horizontal" id="loginform">
-                                <div class="form-group">
-                                    <label for="Title" class="control-label">نام کاربری</label>
-                                    <div class="col-md-12">
-                                        <input type="text" class="form-control" id="Username" required value="" placeholder="نام کاربری را وارد نمایید">
+    <section class="row">
+        <div class="col-md-7">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-lg-7 mx-auto">
+                        <div class="card card-signin my-5">
+                            <div class="card-body">
+                                <h5 class="card-title text-center">صفحه ورود</h5>
+                                <form class="form-horizontal" id="loginform">
+                                    <div class="form-group">
+                                        <label for="Title" class="control-label">نام کاربری</label>
+                                        <div class="col-md-12">
+                                            <input type="text" class="form-control" id="Username" required value="" placeholder="نام کاربری را وارد نمایید">
+                                        </div>
                                     </div>
-                                </div>
 
-                                <div class="form-group">
-                                    <label for="Title" class="control-label">رمز عبور</label>
-                                    <div class="col-md-12">
-                                        <input type="password" class="form-control" id="Password" required value="" placeholder="رمز عبور را وارد نمایید">
+                                    <div class="form-group">
+                                        <label for="Title" class="control-label">رمز عبور</label>
+                                        <div class="col-md-12">
+                                            <input type="password" class="form-control" id="Password" required value="" placeholder="رمز عبور را وارد نمایید">
+                                        </div>
                                     </div>
-                                </div>
-                                <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">ورود</button>
-                                <a href="@Url.RouteUrl("SignUp")" class="btn btn-lg btn-default btn-block">
-                                    <i class="fa fa-user"></i>
-                                    ایجاد حساب جدید
-                                </a>
+                                    <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">ورود</button>
+                                    <a href="@Url.RouteUrl("SignUp")" class="btn btn-lg btn-default btn-block">
+                                        <i class="fa fa-user"></i>
+                                        ایجاد حساب جدید
+                                    </a>
 
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="col-md-5">
+            <img src="~/Content/img/login.jpg" class="img-responsive w-100" />
         </div>
     </section>
 }

@@ -288,12 +288,8 @@
     <Content Include="Content\fonts\webfonts\fa-brands-400.svg" />
     <Content Include="Content\fonts\webfonts\fa-regular-400.svg" />
     <Content Include="Content\fonts\webfonts\fa-solid-900.svg" />
-    <Content Include="Content\img\bg-main.jpg" />
     <Content Include="Content\img\error-img.png" />
     <Content Include="Content\img\faq.png" />
-    <Content Include="Content\img\Header.png" />
-    <Content Include="Content\img\logo.png" />
-    <Content Include="Content\img\product_overlay.png" />
     <Content Include="Content\main\main.css" />
     <Content Include="Content\main\PagedList.css" />
     <Content Include="Content\main\Site.css" />
