@@ -2861,7 +2861,13 @@ var froalaOptionComment = {
             , listService: paymentService.list
             , globalSearch: true
             , onEdit: payment.main.changeState.view
-            , options: () => { return payment.Search.ResCodeType }
+            , checkActionVisibility: (action) => {
+                if (action === 'remove') {
+                    return false;
+                }
+                else
+                    return true;
+            }
         };
         init();
 
