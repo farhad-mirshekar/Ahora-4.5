@@ -697,7 +697,7 @@ var froalaOptionComment = {
         product.Attribute = {};
         product.ProductVariant = {};
         product.Model.Errors = [];
-        product.pic = { type: '1', allowMultiple: true };
+        product.pic = { type: '6', allowMultiple: true };
         product.pic.list = [];
         product.attachment = {};
         product.attachment.listPicUploaded = [];
@@ -804,11 +804,12 @@ var froalaOptionComment = {
 
                 if (product.pic.list.length) {
                     product.pics = [];
-                    if (!product.attachment.listPicUploaded) {
+                    if (product.attachment.listPicUploaded && product.attachment.listPicUploaded.length === 0) {
                         product.pics.push({ ParentID: product.Model.ID, Type: 1, FileName: product.pic.list[0], PathType: product.pic.type });
-                    }
-                    for (var i = 0; i < product.pic.list.length; i++) {
-                        product.pics.push({ ParentID: product.Model.ID, Type: 2, FileName: product.pic.list[i], PathType: product.pic.type });
+                    } else {
+                        for (var i = 0; i < product.pic.list.length; i++) {
+                            product.pics.push({ ParentID: product.Model.ID, Type: 2, FileName: product.pic.list[i], PathType: product.pic.type });
+                        }
                     }
                     return attachmentService.add(product.pics);
                 }
@@ -878,12 +879,14 @@ var froalaOptionComment = {
         }
         function addProductMapAttribute() {
             product.Attribute.ProductID = product.Model.ID;
+            product.Attribute.attributeControlType = 1;
+            product.Attribute.IsRequired = 1;
             loadingService.show();
             return productMapattributeService.add(product.Attribute).then((result) => {
-                loadingService.hide();
+                return listAttributeProduct(product.Model.ID);
             }).catch((error) => {
                 loadingService.hide();
-            })
+            }).finally(loadingService.hide)
         }
         function listAttributeProduct(model) {
             productMapattributeService.list(model).then((result) => {
