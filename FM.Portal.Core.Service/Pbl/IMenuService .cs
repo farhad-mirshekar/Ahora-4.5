@@ -13,5 +13,6 @@ namespace FM.Portal.Core.Service
         Result<Menu> Get(string ParentNode);
         Result<List<Menu>> List();
         Result<List<MenuVM>> GetMenuForWeb(string Node);
+        Result.Result Delete(Guid ID);
     }
 }

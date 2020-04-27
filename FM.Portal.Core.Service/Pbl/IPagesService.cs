@@ -11,6 +11,6 @@ namespace FM.Portal.Core.Service
         Result<Pages> Edit(Pages model);
         Result<Pages> Get(Guid ID);
         Result<List<Pages>> List();
-        Result<int> Delete(Guid ID);
+        Result.Result Delete(Guid ID);
     }
 }

@@ -12,11 +12,6 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 
-	DECLARE 
-		@ParentNode HIERARCHYID 
-
-	--SET @ParentNode = (SELECT [Node] FROM org.Command WHERE ID = @ParentID)
-
 	SELECT 
 		menu.ID,
 		menu.[Node].ToString() AS [Node],

@@ -320,14 +320,15 @@ var froalaOptionComment = {
                         field: ''
                         , displayName: ''
                         , cellTemplate: (
-                            `<div style='float: left'>
-                            <i class='fa fa-plus tgrid-action' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
-                            <i class='fa fa-pencil tgrid-action' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
-                            <i class='fa fa-trash tgrid-action' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
+                            `<div class='pull-left'>
+                            <i class='fa fa-plus tgrid-action pl-1 text-success' style='cursor:pointer;' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
+                            <i class='fa fa-pencil tgrid-action pl-1 text-primary' style='cursor:pointer;' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
+                            <i class='fa fa-trash tgrid-action pl-1 text-danger' style='cursor:pointer;' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
                         </div>`)
                         , cellTemplateScope: {
                             edit: edit,
-                            add: addSubCommand
+                            add: addSubCommand,
+                            remove:remove
                         }
                     }
                 ]
@@ -405,6 +406,16 @@ var froalaOptionComment = {
                     item.expanded = true;
             });
             command.tree.data = toolsService.getTreeObject(commands, 'Node', 'ParentNode', '/');
+        }
+        function remove(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return commandService.remove(model.ID);
+            }).then(() => {
+                return commandService.list();
+            }).then((result) => {
+                setTreeObject(result);
+            }).finally(loadingService.hide);
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------
@@ -1990,10 +2001,10 @@ var froalaOptionComment = {
                     , displayName: ''
                     , cellTemplate: (
                         `<div style='float: left'>
-                            <i class='fa fa-pencil tgrid-action' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
+                            <i class='fa fa-pencil tgrid-action pl-1 text-primary' style='cursor:pointer;' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
                         </div>`)
                     , cellTemplateScope: {
-                        edit: view
+                        edit: view,
                         //add: addFirst,
                         //remove:remove,
 
@@ -2149,13 +2160,14 @@ var froalaOptionComment = {
                     , displayName: ''
                     , cellTemplate: (
                         `<div style='float: left'>
-                            <i class='fa fa-plus tgrid-action' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
-                            <i class='fa fa-pencil tgrid-action' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
-                            <i class='fa fa-trash tgrid-action' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
+                            <i class='fa fa-plus tgrid-action pl-1 text-success' style='cursor:pointer;' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
+                            <i class='fa fa-pencil tgrid-action pl-1 text-primary' style='cursor:pointer;' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
+                            <i class='fa fa-trash tgrid-action pl-1 text-danger' style='cursor:pointer;' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
                         </div>`)
                     , cellTemplateScope: {
                         edit: edit,
-                        add: addFirst
+                        add: addFirst,
+                        remove:remove
                     }
                 }
             ]
@@ -2256,6 +2268,16 @@ var froalaOptionComment = {
                     item.expanded = true;
             });
             menu.tree.data = toolsService.getTreeObject(items, 'Node', 'ParentNode', '/');
+        }
+        function remove(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return menuService.remove(model.ID);
+            }).then(() => {
+                return menuService.list();
+            }).then((result) => {
+                setTreeObject(result);
+            }).finally(loadingService.hide);
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------

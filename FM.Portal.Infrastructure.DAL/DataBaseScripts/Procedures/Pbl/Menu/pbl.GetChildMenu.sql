@@ -27,6 +27,7 @@ BEGIN
 	FROM 
 		pbl.Menu menu
 	WHERE 
+		menu.[Enabled] = 1 AND
 		(@ParentNode IS NULL OR menu.[Node].GetAncestor(1) = @ParentNode)
 	ORDER BY
 		menu.[Priority]

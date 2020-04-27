@@ -136,5 +136,24 @@ namespace FM.Portal.Infrastructure.DAL
             }
             catch (Exception e) { throw; }
         }
+
+        public Result Delete(Guid ID)
+        {
+            try
+            {
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ID", ID);
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    int i = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "pbl.spDeleteMenu", param);
+                    if (i > 0)
+                        return Result.Successful();
+                    else
+                        return Result.Failure();
+                }
+
+            }
+            catch (Exception e) { throw; }
+        }
     }
 }

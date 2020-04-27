@@ -89,5 +89,8 @@ namespace FM.Portal.Domain
             else
                 return Result<List<Menu>>.Failure();
         }
+
+        public Result Delete(Guid ID)
+        => _dataSource.Delete(ID);
     }
 }

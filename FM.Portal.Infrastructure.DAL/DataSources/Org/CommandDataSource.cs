@@ -7,6 +7,7 @@ using System.Data.SqlClient;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Owin;
 using FM.Portal.Core.Result;
+using System.Configuration;
 
 namespace FM.Portal.Infrastructure.DAL
 {
@@ -43,7 +44,21 @@ namespace FM.Portal.Infrastructure.DAL
         }
         public Result Delete(Guid ID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                SqlParameter[] param = new SqlParameter[2];
+                param[0] = new SqlParameter("@ID", ID);
+                param[1] = new SqlParameter("@ApplicationID", SQLHelper.CheckGuidNull(ConfigurationManager.AppSettings["ApplicationID"].ToString()));
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "org.spDeleteCommand", param);
+                    if(result > 0)
+                        return Result.Successful();
+                    else
+                        return Result.Failure();
+                }
+            }
+            catch(Exception e) { throw; }
         }
 
         public Result<Command> Get(Guid ID)

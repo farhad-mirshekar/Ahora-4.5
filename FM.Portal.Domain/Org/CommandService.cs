@@ -17,9 +17,7 @@ namespace FM.Portal.Domain
             _dataSource = dataSource;
         }
         public Result Delete(Guid ID)
-        {
-            throw new NotImplementedException();
-        }
+        => _dataSource.Delete(ID);
 
         public Result<Command> Get(Guid id)
         {

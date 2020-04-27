@@ -2145,7 +2145,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="Areas\ApiClient\Views\Notification\" />
     <Folder Include="Areas\User\Models\" />
     <Folder Include="Content\TemporaryFiles\video\" />
     <Folder Include="Models\" />

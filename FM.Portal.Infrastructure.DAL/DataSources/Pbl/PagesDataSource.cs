@@ -90,7 +90,7 @@ namespace FM.Portal.Infrastructure.DAL
             return Modify(false, model);
         }
 
-        public Result<int> Delete(Guid ID)
+        public Result Delete(Guid ID)
         {
             try
             {
@@ -99,7 +99,10 @@ namespace FM.Portal.Infrastructure.DAL
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     int i = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "pbl.spDeletePages", param);
-                    return Result<int>.Successful(data: i);
+                    if(i > 0)
+                        return Result.Successful();
+                    else
+                        return Result.Failure();
                 }
                     
             }

@@ -13,6 +13,7 @@ namespace FM.Portal.DataSource
         Result<Menu> Get(string ParentNode);
         DataTable List();
         DataTable GetChildren(string ParentNode);
+        Result Delete(Guid ID);
 
     }
 }

@@ -41,6 +41,7 @@
       <HintPath>..\Ahora.WebApp\libs\FM.Portal.DataSource.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -186,6 +187,7 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.GetsActiveNotification.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.GetsNotification.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.ReadNotification.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.DeletePages.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetsPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.spModifyPage.sql" />

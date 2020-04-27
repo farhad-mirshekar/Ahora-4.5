@@ -48,7 +48,8 @@ BEGIN
 					[Name] = @Name,
 					[Url] = @Url,
 					[IconText] = @IconText,
-					[Priority] = @Priority
+					[Priority] = @Priority,
+					[Enabled] = @Enabled
 				WHERE ID = @ID
 
 				IF(@Node <> @NewNode)
