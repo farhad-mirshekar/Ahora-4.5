@@ -1,4 +1,14 @@
 ﻿<section ng-show="state ==='cartable'">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-right">
+                <button class="btn btn-outline-primary" ng-click="getExcel();" title="خروجی اکسل">
+                    <i class="fa fa-file-excel-o text-info"></i>
+                    خروجی اکسل
+                </button>
+            </div>
+        </div>
+    </div>
     <portal-grid obj="grid"></portal-grid>
 </section>
 <section ng-show="state ==='view'">
@@ -105,4 +115,4 @@
         </div>
     </div>
 </section>
-
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>

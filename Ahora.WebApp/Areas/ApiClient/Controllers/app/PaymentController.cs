@@ -36,14 +36,17 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             }
             catch (Exception e) { return NotFound(); }
         }
-        [HttpPost, Route("ResCodeType")]
-        public IHttpActionResult ResCodeType()
+        [HttpPost, Route("GetExcel")]
+        public IHttpActionResult GetExcel()
         {
             try
             {
-                var ResCodeType = EnumExtensions.GetValues<ResCode>();
-                var result = Result<List<EnumCast>>.Successful(data: ResCodeType);
-                return Ok(result);
+                var result = _service.GetExcel();
+                string fileName = Guid.NewGuid().ToString();
+                string filePath = System.Web.HttpContext.Current.Server.MapPath($"~/Files/Report-Excel/" + fileName + ".xlsx");
+                System.IO.File.WriteAllBytes(filePath, result.Data);
+
+                return Ok(new { Success = true, Data = new { FilePath = "/Files/Report-Excel/" + fileName + ".xlsx" } });
             }
             catch (Exception e) { return NotFound(); }
         }

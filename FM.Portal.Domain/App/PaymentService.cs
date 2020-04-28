@@ -6,6 +6,9 @@ using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Result;
 using Newtonsoft.Json;
+using System.Linq;
+using OfficeOpenXml;
+using OfficeOpenXml.Style;
 
 namespace FM.Portal.Domain
 {
@@ -85,5 +88,62 @@ namespace FM.Portal.Domain
 
         public Result<Payment> GetByToken(string Token, BankName BankName)
         => _dataSource.GetByToken(Token.Trim(), BankName);
+
+        public Result<byte[]> GetExcel()
+        {
+            try
+            {
+                var result = List();
+                if (!result.Success)
+                    return Result<byte[]>.Failure(message: "دریافت اکسل لیست فروش با خطا مواجه شده است.");
+
+                result.Data = result.Data.OrderBy(x => x.CreationDate).ToList();
+
+                byte[] bytes = null;
+                using (ExcelPackage excelPackage = new ExcelPackage())
+                {
+                    ExcelWorksheet sheet = excelPackage.Workbook.Worksheets.Add("sheet1");
+                    sheet.View.RightToLeft = true;
+                    var rowIndex = 1;
+                    var colIndex = 1;
+
+                    sheet.Cells[rowIndex, colIndex++].Value = "اطلاعات کاربر";
+                    sheet.Cells[rowIndex, colIndex++].Value = "شماره همراه";
+                    sheet.Cells[rowIndex, colIndex++].Value = "تعداد خرید";
+                    sheet.Cells[rowIndex, colIndex++].Value = "مبلغ خرید (تومان)";
+                    sheet.Cells[rowIndex, colIndex++].Value = "نام درگاه پرداخت";
+                    sheet.Cells[rowIndex, colIndex++].Value = "تاریخ خرید";
+
+                    foreach (var item in result.Data)
+                    {
+                        colIndex = 1;
+                        rowIndex++;
+                        sheet.Cells[rowIndex, colIndex++].Value = item.BuyerInfo;
+                        sheet.Cells[rowIndex, colIndex++].Value = item.BuyerPhone;
+                        sheet.Cells[rowIndex, colIndex++].Value = item.CountBuy;
+                        sheet.Cells[rowIndex, colIndex++].Value = item.Price;
+                        sheet.Cells[rowIndex, colIndex++].Value = item.BankNameString;
+                        sheet.Cells[rowIndex, colIndex++].Value = item.CreationDatePersian;
+
+                    }
+                    using (ExcelRange range = sheet.Cells)
+                    {
+                        range.Style.Font.SetFromFont(new System.Drawing.Font("Tahoma", 9));
+                        range.Style.Font.Bold = true;
+                        range.Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        range.Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                        range.Style.ReadingOrder = ExcelReadingOrder.RightToLeft;
+                    }
+
+                    const double minWidth = 0.00;
+                    const double maxWidth = 50.00;
+                    sheet.Cells.AutoFitColumns(minWidth, maxWidth);
+
+                    bytes = excelPackage.GetAsByteArray();
+                }
+                return Result<byte[]>.Successful(data: bytes);
+            }
+            catch(Exception e) { throw; }
+        }
     }
 }

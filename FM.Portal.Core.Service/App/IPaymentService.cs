@@ -14,6 +14,7 @@ namespace FM.Portal.Core.Service
         Result<PaymentDetailVM> GetDetail(Guid ID);
         Result.Result FirstStepPayment(Core.Model.Order order, Core.Model.OrderDetail detail, Core.Model.Payment payment);
         Result<List<PaymentListVM>> List();
+        Result<byte[]> GetExcel();
         // user dashboard
         Result<List<PaymentListForUserVM>> ListPaymentForUser(Guid UserID);
     }

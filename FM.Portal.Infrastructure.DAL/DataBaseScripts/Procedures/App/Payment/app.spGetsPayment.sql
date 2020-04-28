@@ -22,7 +22,8 @@ BEGIN
 	SELECT 
 		payment.ID,
 		payment.CreationDate,
-		Payment.TransactionStatus AS ResCode,
+		payment.TransactionStatus AS ResCode,
+		payment.Price,
 		CONCAT(buyer.FirstName , ' ' , buyer.LastName) AS BuyerInfo,
 		COALESCE(buyer.CellPhone , N'شماره تلفن ثبت نشده است') AS BuyerPhone,
 		bank.BankName,

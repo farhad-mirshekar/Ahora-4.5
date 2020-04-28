@@ -2135,7 +2135,8 @@
         var service = {
             get: get,
             list: list,
-            getDetail: getDetail
+            getDetail: getDetail,
+            getExcel: getExcel
 
         }
         return service;
@@ -2182,16 +2183,16 @@
                 return callbackService.onError({ result: result });
             })
         }
-        function resCodeType() {
+        function getExcel(model) {
             return $http({
                 method: 'post',
-                url: url + 'ResCodeType',
+                url: url + `GetExcel`,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + localStorage.access_token
                 }
             }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'ResCodeType' });
+                return callbackService.onSuccess({ result: result, request: url + `GetExcel` });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })

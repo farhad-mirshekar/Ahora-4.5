@@ -2877,6 +2877,7 @@ var froalaOptionComment = {
             view: view
         }
         payment.print = print;
+        payment.getExcel = getExcel;
         payment.grid = {
             bindingObject: payment
             , columns: [{ name: 'BuyerInfo', displayName: 'نام و نام خانوادگی خریدار' },
@@ -2946,6 +2947,18 @@ var froalaOptionComment = {
             popupWin.document.write(toPrint.innerHTML);
             popupWin.document.write("</html>");
             popupWin.document.close();
+        }
+        function getExcel() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return paymentService.getExcel();
+            }).then((result) => {
+                window.location = `${window.location.origin}${result.FilePath}`;
+                loadingService.hide();
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطا در دریافت اطلاعات');
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------------------
