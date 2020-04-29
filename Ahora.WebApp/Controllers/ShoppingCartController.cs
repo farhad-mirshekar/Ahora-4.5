@@ -140,8 +140,10 @@ namespace Ahora.WebApp.Controllers
                     if (product.Success)
                     {
                         amount += product.Data.Price * item.Quantity;
+
                         if (item.AttributeJson != "" && item.AttributeJson != null)
                             listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
+                        product.Data.CountSelect = item.Quantity;
                         productList.Add(product.Data);
                     }
                 }
@@ -160,6 +162,8 @@ namespace Ahora.WebApp.Controllers
                 order.Price = amount;
                 orderDetail.ProductJson = productJson;
                 orderDetail.AttributeJson = attributeJson;
+                orderDetail.ShoppingCartJson = JsonConvert.SerializeObject(shoppingCartItem);
+                orderDetail.Quantity =shoppingCartItem.Count;
                 orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name)).Data);
 
                 payment.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);

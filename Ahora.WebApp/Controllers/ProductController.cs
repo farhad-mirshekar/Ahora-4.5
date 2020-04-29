@@ -38,7 +38,7 @@ namespace Ahora.WebApp.Controllers
             var attribute = _service.SelectAttributeForCustomer(result.Data.ID);
             if (attribute.Success && attribute.Data.Count > 0)
                 ViewBag.attribute = attribute.Data;
-            ViewBag.pic = resultPic.Data;
+            ViewBag.pic = resultPic.Data.Where(p=>p.PathType == model.PathType.product).ToList();
             SetCookie("ShoppingID");
             return View(result.Data);
         }

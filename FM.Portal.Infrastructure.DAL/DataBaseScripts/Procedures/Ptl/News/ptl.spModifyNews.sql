@@ -25,10 +25,7 @@ BEGIN
 	IF @isNewRecord = 1 --insert
 		BEGIN
 
-			DECLARE @total INT ;
-			SET @total = (SELECT COUNT(*) FROM [ptl].[News])
-			SET @total = @total + 1
-			SET @TrackingCode = CONCAT(@TrackingCode ,'',@total)
+			SET @TrackingCode = (select STR(FLOOR(RAND(CHECKSUM(NEWID()))*(9999999999-1000000000+1)+1000000000)))
 
 			INSERT INTO [ptl].[News]
 				([ID],Body,CommentStatus,CreationDate,[Description],DisLikeCount,IsShow,LikeCount,MetaKeywords,ModifiedDate,RemoverID,Title,UrlDesc,UserID,VisitedCount , TrackingCode,CategoryID)

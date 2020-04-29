@@ -8,16 +8,12 @@ CREATE PROCEDURE app.spGetsPayment
 --WITH ENCRYPTION
 AS
 BEGIN
-;WITH Cart AS(
+;WITH OrderDetail AS(
 	SELECT
-		COUNT(*) AS CountBuy,
-		cart.ShoppingID,
-		cart.UserID
+		detail.Quantity,
+		detail.OrderID
 	FROM 
-		app.ShoppingCartItem cart
-	GROUP BY
-		cart.ShoppingID,
-		cart.UserID
+		app.OrderDetail detail
 )
 	SELECT 
 		payment.ID,
@@ -27,7 +23,7 @@ BEGIN
 		CONCAT(buyer.FirstName , ' ' , buyer.LastName) AS BuyerInfo,
 		COALESCE(buyer.CellPhone , N'شماره تلفن ثبت نشده است') AS BuyerPhone,
 		bank.BankName,
-		cart.CountBuy
+		OrderDetail.Quantity CountBuy
 	FROM 
 		[app].[Payment] payment
 	INNER JOIN
@@ -35,7 +31,7 @@ BEGIN
 	INNER JOIN
 		[org].[User] buyer ON orders.UserID = buyer.ID
 	INNER JOIN
-		Cart cart ON orders.ShoppingID = cart.ShoppingID AND buyer.ID = cart.UserID
+		OrderDetail OrderDetail ON orders.ID = OrderDetail.OrderID
 	LEFT JOIN
 		[app].[Bank] bank ON orders.BankID = bank.ID
 	WHERE 

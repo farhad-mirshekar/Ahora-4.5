@@ -28,7 +28,7 @@ namespace FM.Portal.Domain
 
         public Result<Order> Edit(Order model)
         {
-            model.TrackingCode += "-" + Helper.GetPersianYear(DateTime.Now).ToString() + Helper.GetPersianMonth(DateTime.Now).ToString() + Helper.GetPersianDay(DateTime.Now).ToString();
+            //model.TrackingCode += "-" + Helper.GetPersianYear(DateTime.Now).ToString() + Helper.GetPersianMonth(DateTime.Now).ToString() + Helper.GetPersianDay(DateTime.Now).ToString();
             return _dataSource.Update(model);
         }
 

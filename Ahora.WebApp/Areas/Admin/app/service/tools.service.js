@@ -99,10 +99,8 @@
         function signOut() {
             loadingService.show();
             return $q.resolve().then(() => {
-                debugger
                 return profileService.signOut();
             }).then((result) => {
-                debugger
                 if (result) {
                     authenticationService.clearCredentials();
                     $window.location.href = '/login';

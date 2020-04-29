@@ -143,6 +143,7 @@
     <Content Include="DataBaseScripts\Procedures\App\Product\app.spListProductShowOnHomePage.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Product\app.spListVarientForProduct.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Product\app.spModifyProduct.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ShoppingCartItem\app.spDeleteAllShoppingCartItem.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShoppingCartItem\app.spDeleteShoppingCartItem.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShoppingCartItem\app.spGetShoppingCartItemByProductID.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShoppingCartItem\app.spGetsShoppingCartItem.sql" />

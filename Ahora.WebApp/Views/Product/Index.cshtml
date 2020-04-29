@@ -1,10 +1,9 @@
 ﻿@model FM.Portal.Core.Model.Product
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = Model.Name;
     List<FM.Portal.Core.Model.Attachment> pic = ViewBag.pic;
 }
 @section Head{
-    <title>@Model.Name</title>
     <meta itemprop="name" name="twitter:title" property="dc.title" content="@Model.Name">
     <meta name="description" property="dc.description" content="@Model.MetaDescription">
     <meta property="og:type" content="product">

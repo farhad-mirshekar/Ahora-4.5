@@ -12,5 +12,6 @@ namespace FM.Portal.Core.Service
         Result<List<ShoppingCartItem>> List(Guid ShoppingID);
         Result<List<ShoppingCartItem>> Delete(DeleteCartItemVM model);
         Result<ShoppingCartItem> Get(Guid ShoppingID , Guid ProductID);
+        Result.Result Delete(Guid ShoppingID);
     }
 }

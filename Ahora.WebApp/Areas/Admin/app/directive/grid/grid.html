@@ -1,17 +1,13 @@
 ﻿<div class="container">
     <div class="row">
-        <div class="col-md-12">
-            <div class="pull-left mr-3">
-            </div>
-        </div>
-        <div class="col-md-12">
+        <div class="col-md-12 text-center">
             <table st-safe-src="obj.items" st-table="displayedItems" class="table table-condensed table-hover th-center td-center">
                 <thead>
 
                     <tr>
-                        <td colspan="5">
+                        <td colspan="{{obj.columns.length + 2}}">
                             <div class="container">
-                                <div class="row" ng-class="{'mb-2':obj.items.length < 5}">
+                                <div class="row" ng-class="{'mb-2':obj.items.length < obj.columns.length + 2}">
                                     <div class="col-md-9">
                                         <i class="fa fa-refresh float-left mr-3 mt-2" ng-click="obj.getlist();" title="بارگذاری مجدد کارتابل"></i>
                                         <div class="d-inline-block" st-pagination="" st-items-by-page="obj.pageSize" st-displayed-pages="5">

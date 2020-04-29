@@ -9,13 +9,15 @@ CREATE PROCEDURE app.spModifyOrderDetail
 @OrderID UNIQUEIDENTIFIER,
 @ProductJson NVARCHAR(MAX),
 @UserJson NVARCHAR(MAX),
-@AttributeJson NVARCHAR(MAX)
+@AttributeJson NVARCHAR(MAX),
+@ShoppingCartJson NVARCHAR(MAX),
+@Quantity INT
 --WITH ENCRYPTION
 AS
 BEGIN
-			INSERT INTO [app].[OrderDetail]
-				(ID,[OrderID],[ProductJson],[AttributeJson] ,[UserJson])
-			VALUES
-				(@ID,@OrderID , @ProductJson , @AttributeJson , @UserJson)
+	INSERT INTO [app].[OrderDetail]
+		(ID,[OrderID],[ProductJson],[AttributeJson] ,[UserJson],[ShoppingCartJson] , [Quantity])
+	VALUES
+		(@ID,@OrderID , @ProductJson , @AttributeJson , @UserJson , @ShoppingCartJson , @Quantity)
 	RETURN @@ROWCOUNT
 END

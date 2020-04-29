@@ -92,5 +92,24 @@ namespace FM.Portal.Infrastructure.DAL
 
             catch (Exception e) { return Result<ShoppingCartItem>.Failure(); }
         }
+
+        public Result Delete(Guid ShoppingID)
+        {
+            try
+            {
+                using (var connection = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    SqlParameter[] param = new SqlParameter[1];
+                    param[0] = new SqlParameter("@ShoppingID", ShoppingID);
+                    int result =  SQLHelper.ExecuteNonQuery(connection,CommandType.StoredProcedure, "app.spDeleteAllShoppingCartItem", param);
+                    if (result > 0)
+                        return Result.Successful();
+                    else
+                        return Result.Failure();
+                }
+
+            }
+            catch { throw; }
+        }
     }
 }

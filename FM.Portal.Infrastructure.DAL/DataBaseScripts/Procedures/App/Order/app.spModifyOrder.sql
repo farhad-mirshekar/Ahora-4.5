@@ -17,6 +17,10 @@ CREATE PROCEDURE app.spModifyOrder
 --WITH ENCRYPTION
 AS
 BEGIN
+	DECLARE @TrackingCodeNew NVARCHAR(MAX)
+	SET @TrackingCodeNew = (select STR(FLOOR(RAND(CHECKSUM(NEWID()))*(9999999999-1000000000+1)+1000000000)))
+
+	SET @TrackingCode = @TrackingCode +'-'+@TrackingCodeNew
 	IF @IsNewRecord = 1
 		BEGIN
 			INSERT INTO [app].[Order]

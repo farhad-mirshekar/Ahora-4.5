@@ -31,6 +31,9 @@ namespace FM.Portal.Domain
             return Result<List<ShoppingCartItem>>.Failure();
         }
 
+        public Result Delete(Guid ShoppingID)
+        => _dataSource.Delete(ShoppingID);
+
         public Result<List<ShoppingCartItem>> Edit(ShoppingCartItem model)
         {
             var table = ConvertDataTableToList.BindList<ShoppingCartItem>(_dataSource.Update(model));

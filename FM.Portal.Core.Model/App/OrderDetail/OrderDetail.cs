@@ -8,5 +8,7 @@ namespace FM.Portal.Core.Model
         public string ProductJson { get; set; }
         public string UserJson { get; set; }
         public string AttributeJson { get; set; }
+        public string ShoppingCartJson { get; set; }
+        public int Quantity { get; set; }
     }
 }

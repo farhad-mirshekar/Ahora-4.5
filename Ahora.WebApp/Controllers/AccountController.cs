@@ -93,7 +93,7 @@ namespace Ahora.WebApp.Controllers
         private async Task<JsonResult> GetToken(Token model, string returnUrl)
         {
             var user = _service.Get(model.username, model.password, null);
-            if (user.Success)
+            if (user.Success && user.Data.ID != Guid.Empty)
             {
                 if (user.Data.Type == UserType.کاربر_درون_سازمانی)
                 {

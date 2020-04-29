@@ -11,6 +11,7 @@ namespace FM.Portal.DataSource
         DataTable Update(ShoppingCartItem model);
         DataTable List(Guid ShoppingID);
         DataTable Delete(DeleteCartItemVM model);
+        Result Delete(Guid ShoppingID);
         Result<ShoppingCartItem> Get(Guid ShoppingID, Guid ProductID);
     }
 }

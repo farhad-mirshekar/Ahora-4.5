@@ -661,6 +661,12 @@ GO
 ALTER TABLE app.[Order] 
 ALTER COLUMN TrackingCode NVARCHAR(Max)
 GO
+ALTER TABLE app.[OrderDetail]
+ADD ShoppingCartJson Nvarchar(MAX)
+GO
+ALTER TABLE app.OrderDetail
+ADD Quantity INT
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO

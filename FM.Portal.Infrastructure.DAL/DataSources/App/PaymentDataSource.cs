@@ -38,13 +38,16 @@ namespace FM.Portal.Infrastructure.DAL
                 commands.Add(SQLHelper.CreateCommand("app.spModifyOrder", CommandType.StoredProcedure, paramOrder));
                 #endregion
                 #region OrderDetail
-                SqlParameter[] paramDetail = new SqlParameter[5];
+                SqlParameter[] paramDetail = new SqlParameter[7];
                 paramDetail[0] = new SqlParameter("@ID", detail.ID);
 
                 paramDetail[1] = new SqlParameter("@AttributeJson", detail.AttributeJson);
                 paramDetail[2] = new SqlParameter("@OrderID", detail.OrderID);
                 paramDetail[3] = new SqlParameter("@ProductJson", detail.ProductJson);
                 paramDetail[4] = new SqlParameter("@UserJson", detail.UserJson);
+                paramDetail[5] = new SqlParameter("@ShoppingCartJson", detail.ShoppingCartJson);
+                paramDetail[6] = new SqlParameter("@Quantity", detail.Quantity);
+
                 commands.Add(SQLHelper.CreateCommand("app.spModifyOrderDetail", CommandType.StoredProcedure, paramDetail));
                 #endregion
                 #region Payment
