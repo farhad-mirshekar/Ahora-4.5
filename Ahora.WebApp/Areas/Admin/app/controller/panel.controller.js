@@ -328,7 +328,7 @@ var froalaOptionComment = {
                         , cellTemplateScope: {
                             edit: edit,
                             add: addSubCommand,
-                            remove:remove
+                            remove: remove
                         }
                     }
                 ]
@@ -923,7 +923,8 @@ var froalaOptionComment = {
         let product = $scope;
         product.grid = {
             bindingObject: product
-            , columns: [{ name: 'Name', displayName: 'عنوان آگهی' }]
+            , columns: [{ name: 'Name', displayName: 'عنوان آگهی' },
+            { name: 'TrackingCode', displayName: 'کدپیگیری' }]
             , listService: productService.list
             , onEdit: null
             , route: 'product'
@@ -1540,7 +1541,9 @@ var froalaOptionComment = {
         }
         article.grid = {
             bindingObject: article
-            , columns: [{ name: 'Title', displayName: 'عنوان مقاله' }]
+            , columns: [{ name: 'Title', displayName: 'عنوان مقاله' },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
+                { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
             , listService: articleService.list
             , deleteService: articleService.remove
             , onAdd: article.main.changeState.add
@@ -1770,7 +1773,9 @@ var froalaOptionComment = {
         init();
         news.grid = {
             bindingObject: news
-            , columns: [{ name: 'Title', displayName: 'عنوان خبر' }]
+            , columns: [{ name: 'Title', displayName: 'عنوان خبر' },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
+                { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
             , listService: newsService.list
             , deleteService: newsService.remove
             , onEdit: news.main.changeState.edit
@@ -2170,7 +2175,7 @@ var froalaOptionComment = {
                     , cellTemplateScope: {
                         edit: edit,
                         add: addFirst,
-                        remove:remove
+                        remove: remove
                     }
                 }
             ]
