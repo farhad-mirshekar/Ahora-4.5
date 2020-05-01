@@ -176,5 +176,41 @@ namespace FM.Portal.Infrastructure.DAL
             }
             catch (Exception e) { throw; }
         }
+
+        public Result<Comment> CanUserComment(Guid DocumentID, Guid UserID)
+        {
+            try
+            {
+                var obj = new Comment();
+                SqlParameter[] param = new SqlParameter[2];
+                param[0] = new SqlParameter("@DocumentID", DocumentID);
+                param[1] = new SqlParameter("@UserID", UserID);
+
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spCanUserComment", param))
+                    {
+                        while (dr.Read())
+                        {
+                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                            obj.Body = SQLHelper.CheckStringNull(dr["Body"]);
+                            obj.DisLikeCount = SQLHelper.CheckIntNull(dr["DisLikeCount"]);
+                            obj.LikeCount = SQLHelper.CheckIntNull(dr["LikeCount"]);
+                            obj.CommentType = (CommentType)SQLHelper.CheckByteNull(dr["CommentType"]);
+                            obj.DocumentID = SQLHelper.CheckGuidNull(dr["DocumentID"]);
+                            obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
+                            obj.CommentForType = (CommentForType)SQLHelper.CheckByteNull(dr["CommentForType"]);
+                        }
+                    }
+                    if (obj.ID != Guid.Empty)
+                        return Result<Comment>.Successful(data: obj);
+                    else
+                        return Result<Comment>.Failure();
+                }
+            }
+            catch (Exception e) { throw; }
+        }
     }
 }

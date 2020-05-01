@@ -113,10 +113,25 @@ namespace Ahora.WebApp.Controllers
         [HttpGet]
         public ActionResult Modify(Guid DocumentID, Guid? ParentID,CommentForType CommentForType)
         {
-            if(ParentID.HasValue)
-                ViewBag.ParentID = ParentID.Value;
-            ViewBag.CommentForType = CommentForType;
-            return PartialView("~/Views/Comment/_PartialModify.cshtml");
+            if (string.IsNullOrEmpty(User.Identity.Name))
+            {
+                ViewBag.TypeError = 1;
+                return PartialView("~/Views/Comment/_PartialError.cshtml");
+            }
+            var result = _service.CanUserComment(DocumentID, SQLHelper.CheckGuidNull(User.Identity.Name));
+            if (!result.Success)
+            {
+
+                if (ParentID.HasValue)
+                    ViewBag.ParentID = ParentID.Value;
+                ViewBag.CommentForType = CommentForType;
+                return PartialView("~/Views/Comment/_PartialModify.cshtml");
+            }
+            else
+            {
+                ViewBag.TypeError = 2;
+                return PartialView("~/Views/Comment/_PartialError.cshtml");
+            }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

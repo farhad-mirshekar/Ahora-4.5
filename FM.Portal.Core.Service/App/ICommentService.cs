@@ -10,6 +10,7 @@ namespace FM.Portal.Core.Service
         Result<Comment> Add(Comment model);
         Result<Comment> Edit(Comment model);
         Result<Comment> Get(Guid ID);
+        Result<Comment> CanUserComment(Guid DocumentID , Guid UserID);
         Result<List<CommentForProductAdminListVM>> List(CommentForType commentForType);
         Result<List<Comment>> List(CommentListVM listVM);
         Result<List<Comment>> List(Guid ParentID , Guid DocumentID);

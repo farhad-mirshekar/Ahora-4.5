@@ -100,6 +100,7 @@
     <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spIsUserLikeOrUnlike.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spModifyCommentMapUser.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spDisLikeComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spCanUserComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComments ForAdmin.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComments.sql" />

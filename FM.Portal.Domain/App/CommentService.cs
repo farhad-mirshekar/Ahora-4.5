@@ -94,5 +94,8 @@ namespace FM.Portal.Domain
             else
                 return Result<List<CommentForProductAdminListVM>>.Failure();
         }
+
+        public Result<Comment> CanUserComment(Guid DocumentID, Guid UserID)
+        => _dataSource.CanUserComment(DocumentID, UserID);
     }
 }

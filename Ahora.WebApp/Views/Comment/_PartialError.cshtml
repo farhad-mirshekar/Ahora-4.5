@@ -1,0 +1,14 @@
+﻿@if (ViewBag.TypeError == 1)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button> برای رای دادن باید عضو سایت باشید
+    </div>
+}
+@if (ViewBag.TypeError == 2)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button> 
+        شما قبلا نظر داده اید اما هنوز در حال بررسی می باشد
+    </div>
+}
+
