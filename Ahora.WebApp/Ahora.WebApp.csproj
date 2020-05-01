@@ -2142,6 +2142,7 @@
     <Content Include="Views\Tag\Index.cshtml" />
     <Content Include="Views\Redirect\Melli.cshtml" />
     <Content Include="Views\Comment\_PartialError.cshtml" />
+    <Content Include="Views\Redirect\_PartialDownload.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

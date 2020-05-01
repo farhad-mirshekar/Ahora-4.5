@@ -76,6 +76,7 @@
     <Compile Include="DataSources\Org\UserAddressDataSource.cs" />
     <Compile Include="DataSources\Org\UserDataSource.cs" />
     <Compile Include="DataSources\Pbl\AttachmentDataSource.cs" />
+    <Compile Include="DataSources\Pbl\DownloadDataSource.cs" />
     <Compile Include="DataSources\Pbl\GeneralSettingDataSource.cs" />
     <Compile Include="DataSources\Pbl\MenuDataSource.cs" />
     <Compile Include="DataSources\Pbl\NotificationDataSource.cs" />
@@ -178,6 +179,9 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachmentByParentIDs.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachments.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spModifyAttachment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Download\spGetDownload.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Download\spGetDownloads.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Download\spModifyDownload.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.GetsGeneralSetting.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.spModifyGeneralSetting.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetChildMenu.sql" />

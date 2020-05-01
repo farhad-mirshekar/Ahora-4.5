@@ -1,0 +1,23 @@
+﻿USE [Ahora]
+GO
+
+IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('pbl.spGetDownload'))
+	DROP PROCEDURE pbl.spGetDownload
+GO
+
+CREATE PROCEDURE pbl.spGetDownload
+	@ID UNIQUEIDENTIFIER
+--WITH ENCRYPTION
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SET XACT_ABORT ON;
+
+		
+	SELECT 
+		*
+	FROM pbl.download	
+	WHERE ID = @ID
+
+	RETURN @@ROWCOUNT
+END

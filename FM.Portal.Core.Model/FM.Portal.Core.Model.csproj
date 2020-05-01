@@ -114,6 +114,7 @@
     <Compile Include="Org\User\VM\SetPasswordVM.cs" />
     <Compile Include="Pbl\Attachment\Attachment.cs" />
     <Compile Include="Pbl\Attachment\VM\DeleteAttachmentVM.cs" />
+    <Compile Include="Pbl\Download\Download.cs" />
     <Compile Include="Pbl\GeneralSetting\GeneralSetting.cs" />
     <Compile Include="Pbl\GeneralSetting\VM\SettingVM.cs" />
     <Compile Include="Pbl\Menu\Menu.cs" />

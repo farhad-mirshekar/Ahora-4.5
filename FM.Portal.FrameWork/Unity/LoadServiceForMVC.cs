@@ -98,6 +98,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IBankDataSource, BankDataSource>();
             container.RegisterType<IBankService, BankService>();
 
+            container.RegisterType<IDownloadDataSource, DownloadDataSource>();
+            container.RegisterType<IDownloadService, DownloadService>();
+
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

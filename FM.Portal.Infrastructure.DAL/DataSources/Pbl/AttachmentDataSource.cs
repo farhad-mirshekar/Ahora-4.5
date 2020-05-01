@@ -47,6 +47,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
                             obj.Type = (AttachmentType)SQLHelper.CheckByteNull(dr["Type"]);
                             obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
+                            obj.Data = (byte[])dr["Data"];
                         }
                     }
 

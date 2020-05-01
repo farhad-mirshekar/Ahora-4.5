@@ -10,6 +10,7 @@ CREATE TABLE [org].[Position](
 	[RemoverID] [uniqueidentifier] NULL,
 	[RemoveDate] [smalldatetime] NULL,
 	[Enabled] [bit] NOT NULL,
+	[Enabled] [bit] NOT NULL,
  CONSTRAINT [PK_Positions] PRIMARY KEY CLUSTERED 
 (
 	[ID] DESC
@@ -808,7 +809,27 @@ CONSTRAINT [PK_Notification] PRIMARY KEY CLUSTERED
 ) ON [PRIMARY]
 
 GO
+CREATE TABLE [pbl].[Download](
+	[ID] [uniqueidentifier]  NOT NULL,
+	[UserID] [uniqueidentifier] NOT NULL,
+	[Comment] [nvarchar](256) NULL,
+	[Data] [varbinary](max) NOT NULL,
+	[PaymentID] UNIQUEIDENTIFIER NOT NULL,
+	[CreationDate] [smalldatetime] NOT NULL,
+	[ExpireDate] [smalldatetime] NOT NULL,
+CONSTRAINT [PK_Download] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 
+GO
+ALTER TABLE [pbl].[Download] WITH CHECK ADD FOREIGN KEY ([UserID])
+REFERENCES [org].[User] ([ID])
+
+ALTER TABLE [pbl].[Download] WITH CHECK ADD FOREIGN KEY ([PaymentID])
+REFERENCES [app].[Payment] ([ID])
+GO
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
 GO
