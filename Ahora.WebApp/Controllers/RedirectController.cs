@@ -185,6 +185,10 @@ namespace Ahora.WebApp.Controllers
                     _service.Edit(payment);
                     ClearCookie("ShoppingID");
                     ClearCookie("Data");
+                    var detailResults = _service.GetDetail(SQLHelper.CheckGuidNull(payment.ID));
+                    var DownloadResults = await CreateDownload(detailResults.Data.Products, payment.ID);
+                    if (DownloadResults.Count > 0)
+                        ViewBag.Download = DownloadResults;
                     return View(paymentVerifyResult);
                 }
                 else
@@ -273,15 +277,15 @@ namespace Ahora.WebApp.Controllers
         #region Test
         public ActionResult RedirectMelliTest()
         {
-            var purchase = new PurchaseResult()
-            {
-                ResCode = "0",
-                Token= "SADAD-5ea9ad07c8e2d"
-            };
+            //var purchase = new PurchaseResult()
+            //{
+            //    ResCode = "0",
+            //    Token= "SADAD-5eabccebd8a3c"
+            //};
             return RedirectToAction("Melli", "Redirect",new
             {
                 ResCode = "0",
-                Token = "SADAD-5ea9ad07c8e2d"
+                Token = "SADAD-5eabccebd8a3c"
             });
         }
         #endregion

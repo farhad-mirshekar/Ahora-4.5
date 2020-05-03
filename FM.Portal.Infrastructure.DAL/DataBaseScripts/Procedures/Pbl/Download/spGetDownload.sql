@@ -13,7 +13,11 @@ BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 
-		
+	--DECLARE @Expire SMALLDATETIME;
+	--SET @Expire = (SELECT TOP 1 [ExpireDate] FROM pbl.Download WHERE ID = @ID)
+
+	--IF @Expire < GETDATE()
+	--	THROW 50000 , N'زمان توکن شما به پایان رسیده است',1
 	SELECT 
 		*
 	FROM pbl.download	

@@ -30,6 +30,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
                             obj.PaymentID = SQLHelper.CheckGuidNull(dr["PaymentID"]);
                             obj.ExpireDate = SQLHelper.CheckDateTimeNull(dr["ExpireDate"]);
+                            obj.Data = (byte[])dr["Data"];
                         }
                     }
 

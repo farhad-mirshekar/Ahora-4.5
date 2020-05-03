@@ -1,7 +1,14 @@
-﻿@section BodySection{
+﻿@model Ahora.WebApp.Models.Error
+@section BodySection{
     <div class="card">
         <div class="card-body mx-auto">
-                <img src="~/Content/img/error-img.png" class="p-3 mx-auto" />
+            <img src="~/Content/img/error-img.png" class="p-3 mx-auto" />
         </div>
     </div>
+    @if (Model != null)
+    {
+        <div class="@Model.ClassCss" alert="role">
+            <span>@Model.ErorrDescription</span>
+        </div>
+    }
 }
