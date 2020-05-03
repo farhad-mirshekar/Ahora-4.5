@@ -40,6 +40,12 @@
                                 <i class="fa fa-address-card"></i>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/user/profile/index">
+                                ویرایش پروفایل
+                                <i class="fa fa-bell-o home-icon"></i>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </nav>
@@ -56,21 +62,21 @@
                     </div>
                     <div class="col-md-3">
                         <div class="d-inline-block header-icon">
-                            <a href="#">
+                            <a href="@Url.RouteUrl("Home")">
                                 <i class="fa fa-home home-icon"></i>
                             </a>
-                            <a href="" ng-click="">
+                            @*<a href="" ng-click="">
                                 <i class="fa fa-bell-o home-icon"></i>
-                            </a>
+                            </a>*@
                             <a href="" ng-click="">
                                 <i class="fa fa-envelope-o message-icon"></i>
                             </a>
-
-                            <a href="" ng-click="signOut()">
-                                <i class="fa fa-power-off exit-icon"></i>
-                            </a>
-
-                            <a href="#profile" class="user_action_image"><img class="user-image" src="Areas/Admin/Content/img/avatar_11_tn.png" alt=""></a>
+                            <form method="post" action="/account/signout" class="form-inline">
+                                <button type="submit" class="btn" style="cursor:pointer">
+                                    <i class="fa fa-power-off exit-icon"></i>
+                                </button>
+                            </form>
+                            <a href="/user/profile/index" class="user_action_image"><img class="user-image" src="Areas/Admin/Content/img/avatar_11_tn.png" alt=""></a>
 
                         </div>
                     </div>
