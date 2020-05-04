@@ -1,4 +1,7 @@
 ﻿@model FM.Payment.Bank.Melli.VerifyResultData
+    @{ 
+        var download = (List<Download>)ViewBag.Download;
+    }
 @{
     ViewBag.Title = "نتیجه استعلام بانک ملی";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -77,5 +80,9 @@
             </section>
         </div>
     </div>
-    @Html.Partial("_PartialDownload" , (List<Download>)ViewBag.Download)
+    @if(download != null && download.Count > 0)
+    {
+        @Html.Partial("_PartialDownload", download)
+    }
+
 }

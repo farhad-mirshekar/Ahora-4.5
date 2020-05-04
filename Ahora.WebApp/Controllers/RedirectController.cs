@@ -53,11 +53,11 @@ namespace Ahora.WebApp.Controllers
                                 payment.TransactionStatusMessage = ResCodeVerify.نتیجه_تراکنش_موفق_است.ToString();
                                 var order = _orderService.Get(new GetOrderVM { ID = SQLHelper.CheckGuidNull(payment.OrderID) });
                                 order.Data.TrackingCode = paymentVerifyResult.OrderId;
+                                _orderService.Edit(order.Data);
                                 var detailResult = _service.GetDetail(SQLHelper.CheckGuidNull(payment.ID));
                                 var DownloadResult = await CreateDownload(detailResult.Data.Products, payment.ID);
-                                if (DownloadResult.Count > 0)
+                                if (DownloadResult != null && DownloadResult.Count > 0)
                                     ViewBag.Download = DownloadResult;
-                                _orderService.Edit(order.Data);
                                 break;
                             }
                         case ResCodeVerify.مهلت_ارسال_تراکنش_به_پایان_رسیده_است:
@@ -187,7 +187,7 @@ namespace Ahora.WebApp.Controllers
                     ClearCookie("Data");
                     var detailResults = _service.GetDetail(SQLHelper.CheckGuidNull(payment.ID));
                     var DownloadResults = await CreateDownload(detailResults.Data.Products, payment.ID);
-                    if (DownloadResults.Count > 0)
+                    if (DownloadResults != null && DownloadResults.Count > 0)
                         ViewBag.Download = DownloadResults;
                     return View(paymentVerifyResult);
                 }

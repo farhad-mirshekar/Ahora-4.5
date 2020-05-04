@@ -117,6 +117,7 @@ namespace Ahora.WebApp.Controllers
                             case System.Net.HttpStatusCode.OK:
                                 {
                                     Session.RemoveAll();
+                                    SetAuthCookie(user.Data.ID.ToString(), "Admin", false);
                                     Session.Add("login", true);
                                     Session.Timeout = 30;
                                     return Json(new { status = 1, token = tokenvm, userid = user.Data.ID, type = user.Data.Type, authorizationData = tokenvm });
@@ -147,7 +148,7 @@ namespace Ahora.WebApp.Controllers
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:5139/");
+                client.BaseAddress = new Uri("http://localhost:61837/");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //setup login data
@@ -196,6 +197,7 @@ namespace Ahora.WebApp.Controllers
             Session.Clear();
             Session.Abandon();
             Session.RemoveAll();
+            FormsAuthentication.SignOut();
 
             if (type == "admin")
             {
@@ -203,7 +205,6 @@ namespace Ahora.WebApp.Controllers
             }
             else
             {
-                FormsAuthentication.SignOut();
                 return RedirectToAction("Index", "Home");
             }
 
