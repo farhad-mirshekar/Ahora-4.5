@@ -19,6 +19,11 @@
                     <div class="col-md-12">
                         <label class="control-label">کد رویداد : </label> <label class="control-label">@Model.TrackingCode</label> -
                         <label class="control-label">تاریخ انتشار :</label> <label class="control-label">@FM.Portal.Core.Common.Helper.GetPersianDay(Model.CreationDate) - @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(Model.CreationDate)) - @FM.Portal.Core.Common.Helper.GetPersianYear(Model.CreationDate)</label>
+                        <label class="control-label pull-left">
+                            <i class="fa fa-clock-o"></i>
+                            <span>تخمین مدت زمان مطالعه رویداد: </span>
+                            <span>@Model.ReadingTime</span>
+                        </label>
                     </div>
                     <div class="col-md-12"><h4 class="card-title">@Model.Title</h4></div>
                 </div>

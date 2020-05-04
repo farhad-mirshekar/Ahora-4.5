@@ -61,6 +61,8 @@
     <Compile Include="Encryption\HashHelper.cs" />
     <Compile Include="Extention\Category\CategoryExtention.cs" />
     <Compile Include="Extention\Category\CategoryPortalExtention.cs" />
+    <Compile Include="Extention\ReadingTime\CalculateReadingTime.cs" />
+    <Compile Include="Extention\ReadingTime\CalculateWordsCount.cs" />
     <Compile Include="Owin\Claims.cs" />
     <Compile Include="Owin\Extentions.cs" />
     <Compile Include="Owin\IRequestInfo.cs" />

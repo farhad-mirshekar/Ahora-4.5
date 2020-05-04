@@ -6,6 +6,7 @@ using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
 using System.Globalization;
+using FM.Portal.Core.Extention.ReadingTime;
 
 namespace FM.Portal.Domain
 {
@@ -37,6 +38,7 @@ namespace FM.Portal.Domain
                 }
                 _tagsService.Insert(tags,model.ID);
             }
+            model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
             return _dataSource.Insert(model);
         }
 
@@ -57,7 +59,8 @@ namespace FM.Portal.Domain
             {
                 _tagsService.Delete(model.ID);
             }
-           return _dataSource.Update(model); 
+            model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
+            return _dataSource.Update(model); 
         }
 
         public Result<News> Get(Guid ID)

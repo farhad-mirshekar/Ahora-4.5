@@ -981,3 +981,9 @@ GO
 ALTER TABLE ptl.Events  
 DROP CONSTRAINT FK__Events__Category__473C8FC7;  
 GO
+ALTER TABLE [ptl].[Events]  
+ADD ReadingTime NVARCHAR(200)
+ALTER TABLE [ptl].[Article]  
+ADD ReadingTime NVARCHAR(200)
+ALTER TABLE [ptl].[News]  
+ADD ReadingTime NVARCHAR(200)

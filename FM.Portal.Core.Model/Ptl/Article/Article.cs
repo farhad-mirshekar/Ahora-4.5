@@ -23,6 +23,7 @@ namespace FM.Portal.Core.Model
         public Guid RemoverID { get; set; }
         public string TrackingCode { get; set; }
         public List<String> Tags { get; set; }
+        public string ReadingTime { get; set; }
 
         //for only show 
         public string CreatorName { get; set; }

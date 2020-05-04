@@ -67,6 +67,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
                             obj.VisitedCount = SQLHelper.CheckIntNull(dr["VisitedCount"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
+                            obj.ReadingTime = SQLHelper.CheckStringNull(dr["ReadingTime"]);
                         }
                     }
 
@@ -112,6 +113,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.CreatorName = SQLHelper.CheckStringNull(dr["CreatorName"]);
                             obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
                             obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
+                            obj.ReadingTime = SQLHelper.CheckStringNull(dr["ReadingTime"]);
                         }
                     }
 
@@ -156,7 +158,7 @@ namespace FM.Portal.Infrastructure.DAL
                 {
                     lock (con)
                     {
-                        SqlParameter[] param = new SqlParameter[12];
+                        SqlParameter[] param = new SqlParameter[13];
                         param[0] = new SqlParameter("@ID", model.ID);
 
                         param[1] = new SqlParameter("@Body", model.Body);
@@ -170,6 +172,7 @@ namespace FM.Portal.Infrastructure.DAL
                         param[9] = new SqlParameter("@UrlDesc", model.UrlDesc);
                         param[10] = new SqlParameter("@UserID", _requestInfo.UserId);
                         param[11] = new SqlParameter("@TrackingCode", model.TrackingCode);
+                        param[12] = new SqlParameter("@ReadingTime", model.ReadingTime);
 
                         SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyEvents", param);
 
