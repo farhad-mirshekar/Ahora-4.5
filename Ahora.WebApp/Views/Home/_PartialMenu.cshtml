@@ -10,7 +10,7 @@
             @RenderMenu(Model)
         </ul>
     </div>
-    @if ((Session["login"] != null && SQLHelper.CheckBoolNull(Session["login"])) || SQLHelper.CheckGuidNull(User.Identity.Name) != Guid.Empty)
+    @if (SQLHelper.CheckGuidNull(User.Identity.Name) != Guid.Empty)
     {
         <div class="pull-right mr-5">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -19,7 +19,7 @@
                         خوش آمدید
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @if (!string.IsNullOrEmpty(User.Identity.Name))
+                        @if (User.IsInRole("User"))
                         {
                             <a class="dropdown-item" href="/user/home">
                                 <i class="fa fa-arrow-right"></i> ورود به پنل
