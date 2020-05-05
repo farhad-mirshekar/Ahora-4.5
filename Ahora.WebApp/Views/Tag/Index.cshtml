@@ -1,8 +1,78 @@
-﻿
+﻿@model PagedList.IPagedList<FM.Portal.Core.Model.TagsSearchListVM>
+@using PagedList.Mvc;
+@using FM.Portal.Core.Extention.ReadingTime;
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Tag</h2>
-
+@section BodySection{
+    <div class="row">
+        <div class="col-md-9 mt-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">نتیجه جست و جو</h3>
+                </div>
+                <div class="card-body">
+                    @foreach (var item in Model)
+                    {
+                        <section class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">@item.DocumentTitle</h3>
+                                <p class="card-text">@item.DocumentUrlDesc</p>
+                            </div>
+                            <div class="card-footer">
+                                <div class="btn-group-justified pull-left">
+                                    @switch (item.DocumentType)
+                                    {
+                                        case DocumentTypeForTags.اخبار:
+                                            {
+                                                <a href="@Url.RouteUrl("NewsDetail" , new {TrackingCode = item.TrackingCode , Seo=@CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc) })" class="btn btn-outline-success btn-lg btn-block">
+                                                    ادامه
+                                                    <i class="fa fa-arrow-left"></i>
+                                                </a>
+                                                break;
+                                            }
+                                        case DocumentTypeForTags.رویداد:
+                                            {
+                                                <a href="@Url.RouteUrl("EventDetail" , new {TrackingCode = item.TrackingCode , Seo=@CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc) })" class="btn btn-outline-success btn-lg btn-block">
+                                                    ادامه
+                                                    <i class="fa fa-arrow-left"></i>
+                                                </a>
+                                                break;
+                                            }
+                                        case DocumentTypeForTags.محصولات:
+                                            {
+                                                <a href="@Url.RouteUrl("Product" , new {TrackingCode = item.TrackingCode , Title=@CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc)  })" class="btn btn-outline-success btn-lg btn-block">
+                                                    ادامه
+                                                    <i class="fa fa-arrow-left"></i>
+                                                </a>
+                                                break;
+                                            }
+                                        case DocumentTypeForTags.مقاله:
+                                            {
+                                                <a href="@Url.RouteUrl("ArticleDetail" , new {TrackingCode = item.TrackingCode , Seo=@CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc) })" class="btn btn-outline-success btn-lg btn-block">
+                                                    ادامه
+                                                    <i class="fa fa-arrow-left"></i>
+                                                </a>
+                                                break;
+                                            }
+                                    }
+                                </div>
+                            </div>
+                        </section>
+                    }
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-center" dir="ltr">
+                        @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-2">
+            @{ Html.RenderAction("GetLastArticle", "Home");}
+            @{ Html.RenderAction("GetLastNews", "Home");}
+            @{ Html.RenderAction("GetLastEvents", "Home");}
+        </div>
+    </div>
+}

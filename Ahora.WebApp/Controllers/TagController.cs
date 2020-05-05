@@ -1,9 +1,7 @@
-﻿using FM.Portal.Core.Service;
+﻿using Ahora.WebApp.Models;
+using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using PagedList;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
@@ -15,10 +13,19 @@ namespace Ahora.WebApp.Controllers
 
         }
         // GET: Tag
-        public ActionResult Index(string Name)
+        public ActionResult Index(string Name, int? page)
         {
-           var result =_service.SearchByName(Name);
-            return View();
+            ViewBag.Title = $"جست و جو برچسب - {Name}";
+            int pageSize = 2;
+            int pageNumber = (page ?? 1);
+            var result =_service.SearchByName(Name);
+            if(!result.Success)
+            {
+                var error = new Error() {ClassCss="alert alert-info" , ErorrDescription="خطا در بازیابی داده" };
+                return View("Error", error);
+            }
+
+            return View(result.Data.ToPagedList(pageNumber, pageSize));
         }
     }
 }
