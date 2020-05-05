@@ -1,8 +1,9 @@
-﻿using System.Web.Mvc;
+﻿using FM.Portal.FrameWork.Attributes;
+using System.Web.Mvc;
 
 namespace Ahora.WebApp.Areas.Admin.Controllers
 {
-    [FM.Portal.FrameWork.Attributes.Authorize.Authorize]
+    [UserAuthorizeAttribute(Roles = "Admin")]
     public class ProfileController : Controller
     {
         // GET: Admin/Profile
