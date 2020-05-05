@@ -40,6 +40,12 @@ namespace Ahora.WebApp
             ICacheService _service = container.Resolve<ICacheService>();
             _service.GetSiteSettings();
         }
+        protected void Application_PreSendRequestHeaders(object sender, EventArgs e)
+        {
+            var app = sender as HttpApplication;
+
+            app?.Context?.Response.Headers.Remove("Server");
+        }
         #region Application_AuthenticateRequest
         protected void Application_AuthenticateRequest(Object sender, EventArgs e)
         {
