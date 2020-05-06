@@ -65,6 +65,7 @@
     <Compile Include="App\IShoppingCartItemDataSource.cs" />
     <Compile Include="IDataSource.cs" />
     <Compile Include="Org\ICommandDataSource.cs" />
+    <Compile Include="Org\IDepartmentDataSource.cs" />
     <Compile Include="Org\IPositionDataSource.cs" />
     <Compile Include="Org\IRefreshTokenDataSource.cs" />
     <Compile Include="Org\IRoleDataSource.cs" />

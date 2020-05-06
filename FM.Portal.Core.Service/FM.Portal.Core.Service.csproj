@@ -64,6 +64,7 @@
     <Compile Include="App\IShoppingCartItemService.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Org\ICommandService.cs" />
+    <Compile Include="Org\IDepartmentService.cs" />
     <Compile Include="Org\IPositionService.cs" />
     <Compile Include="Org\IRefreshTokenService.cs" />
     <Compile Include="Org\IRoleService.cs" />

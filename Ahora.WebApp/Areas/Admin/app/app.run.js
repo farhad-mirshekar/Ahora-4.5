@@ -24,7 +24,9 @@
                     { route: '#/profile/change-password', title: 'تغییر رمز عبور', hasShow: () => { return toolsService.checkPermission('pgchange-password') }, icon: 'fa-low-vision'},
                     { route: '#/role/cartable', title: 'نقش ها', hasShow: () => { return toolsService.checkPermission('pgrole') }, icon: 'fa-group' },
                     { route: '#/command/cartable', title: 'مجوزها', hasShow: () => { return toolsService.checkPermission('pgcommand') }, icon: ' fa-asl-interpreting' },
-                    { route: '#/position/cartable', title: 'جایگاه های سازمانی', hasShow: () => { return toolsService.checkPermission('pgposition') }, icon: 'fa-anchor'},
+                    { route: '#/position/cartable', title: 'جایگاه های سازمانی', hasShow: () => { return toolsService.checkPermission('pgposition') }, icon: 'fa-anchor' },
+                    { route: '#/department/cartable', title: 'دستگاه ها', hasShow: () => { return toolsService.checkPermission('pgdepartment') }, icon: 'fa-anchor' },
+
                 ]
             },
             {

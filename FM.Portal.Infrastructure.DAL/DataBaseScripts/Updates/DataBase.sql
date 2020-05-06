@@ -65,18 +65,14 @@ ADD CommentForType Tinyint
 GO
 CREATE TABLE [org].[Department](
 	[ID] [uniqueidentifier] NOT NULL,
-	[Type] [tinyint] NOT NULL,
-	[Code] [varchar](20) NULL,
+	[Node] [hierarchyid] NOT NULL,
 	[Name] [nvarchar](256) NOT NULL,
 	[Enabled] [bit] NOT NULL,
 	[RemoverID] [uniqueidentifier] NULL,
 	[RemoverDate] [smalldatetime] NULL,
-	[SubType] [tinyint] NULL,
 	[Address] [nvarchar](1000) NULL,
-	[PostalCode] [char](10) NULL,
-	[UnitType] [tinyint] NOT NULL,
-	[BudgetCode] [nvarchar](50) NULL,
-	[NationalCode] [nvarchar](50) NULL,
+	[Phone] [nvarchar](11) NULL,
+	[CodePhone] [nvarchar](3) NULL,
  CONSTRAINT [PK_orgDepartments] PRIMARY KEY CLUSTERED 
 (
 	[ID] DESC

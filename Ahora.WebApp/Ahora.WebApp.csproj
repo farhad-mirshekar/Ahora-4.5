@@ -916,6 +916,7 @@
     <Content Include="Areas\User\Views\Home\OrderDetail.cshtml" />
     <Content Include="Areas\User\Views\Profile\Index.cshtml" />
     <Content Include="Areas\User\Views\Shared\_Alert.cshtml" />
+    <Content Include="Areas\Admin\Views\Department\Index.cshtml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
     <Content Include="Scripts\froala-editor\css\froala_editor.min.css" />
@@ -2069,6 +2070,7 @@
     <Compile Include="Areas\Admin\Controllers\App\ProductAttributeController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\CommandController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Org\DepartmentController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\PositionController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\ProfileController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\RoleController.cs" />
@@ -2094,6 +2096,7 @@
     <Compile Include="Areas\ApiClient\Controllers\app\ProductMapAttributeController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductVariantAttributeController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\CommandController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\org\DepartmentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\PositionController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\RoleController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\UserController.cs" />

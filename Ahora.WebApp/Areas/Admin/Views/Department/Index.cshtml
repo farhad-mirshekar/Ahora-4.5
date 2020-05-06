@@ -1,0 +1,61 @@
+﻿<section ng-show="state === 'cartable'">
+    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    <tree-grid tree-data="tree.data"
+               col-defs="tree.colDefs"
+               expand-on="tree.expandingProperty"
+               expand-to="tree.expandTo"
+               icon-leaf="fa fa-circle-o"
+               icon-expand="fa fa-plus"
+               icon-collapse="fa fa-minus"></tree-grid>
+</section>
+<section ng-show="['add','edit'].indexOf(state) !== -1">
+    <h2 class="main-title" ng-show="state==='edit'">ویرایش</h2>
+    <h2 class="main-title" ng-show="state==='add'">افزودن</h2>
+    <div class="card-body">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label for="Name" class="control-label">نام دستگاه</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-required="true" ng-model="Model.Name" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="Address" class="control-label">آدرس دستگاه</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-required="true" ng-model="Model.Address" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="Phone" class="control-label">تلفن</label>
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" ng-required="true" ng-model="Model.Phone" maxlength="11" />
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="CodePhone" class="control-label">پیش شماره</label>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control" ng-required="true" ng-model="Model.CodePhone" maxlength="3" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="Phone" class="control-label">کد پستی</label>
+                <div class="col-md-10">
+                    <input type="text" class="form-control" ng-required="true" ng-model="Model.PostalCode" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-group-justified pull-left mb-5">
+        <button type="submit" ng-click="addDepartment()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
+        <button type="submit" ng-click="editDepartment()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+        <a href="" ng-click="changeState.cartable()" class="btn btn-cancel">بازگشت</a>
+    </div>
+</section>
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+

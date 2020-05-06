@@ -32,6 +32,7 @@
                 .when("/pages/:state/:id?", { templateUrl: "/Admin/pages/index", controller: 'pagesController', reloadOnUrl: false })
                 .when("/payment/:state/:id?", { templateUrl: "/Admin/payment/index", controller: 'paymentController', reloadOnUrl: false })
                 .when("/notification/:state/:id?", { templateUrl: "/Admin/notification/index", controller: 'notificationController', reloadOnUrl: false })// add;
+                .when("/department/:state/:id?", { templateUrl: "/Admin/department/index", controller: 'departmentController', reloadOnUrl: false })// add;
 
                 .otherwise({
                     templateUrl: './areas/admin/app/NotFound/not-found.html'

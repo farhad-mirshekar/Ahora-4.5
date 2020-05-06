@@ -1542,8 +1542,8 @@ var froalaOptionComment = {
         article.grid = {
             bindingObject: article
             , columns: [{ name: 'Title', displayName: 'عنوان مقاله' },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
-                { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
+            { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
             , listService: articleService.list
             , deleteService: articleService.remove
             , onAdd: article.main.changeState.add
@@ -1774,8 +1774,8 @@ var froalaOptionComment = {
         news.grid = {
             bindingObject: news
             , columns: [{ name: 'Title', displayName: 'عنوان خبر' },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
-                { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
+            { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
             , listService: newsService.list
             , deleteService: newsService.remove
             , onEdit: news.main.changeState.edit
@@ -3026,6 +3026,152 @@ var froalaOptionComment = {
                 $location.path(`notification/view/${notification.Model.ID}`);
             })
                 .finally(loadingService.hide);
+        }
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('departmentController', departmentController);
+    departmentController.$inject = ['$scope', '$q', 'departmentService', 'loadingService', '$routeParams', '$location', 'toaster', '$timeout', 'toolsService'];
+    function departmentController($scope, $q, departmentService, loadingService, $routeParams, $location, toaster, $timeout, toolsService) {
+        let department = $scope;
+        department.Model = {};
+        department.list = [];
+        department.lists = [];
+        department.state = 'cartable';
+        department.goToPageAdd = goToPageAdd;
+        department.addDepartment = addDepartment;
+        department.addSubDepartment = addSubDepartment;
+        department.editDepartment = editDepartment;
+        department.changeState = {
+            cartable: cartable
+        }
+        init();
+
+        function init() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        loadingService.hide();
+                        break;
+                    case 'add':
+                        goToPageAdd();
+                        loadingService.hide();
+                        break;
+                    case 'edit':
+                        departmentService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+
+
+        } // end init
+
+        function cartable() {
+            department.tree = {
+                data: []
+                , colDefs: [
+                    { field: 'Name', displayName: 'نام دستگاه' }
+                    , {
+                        field: ''
+                        , displayName: ''
+                        , cellTemplate: (
+                            `<div class='pull-left'>
+                            <i class='fa fa-plus tgrid-action pl-1 text-success' style='cursor:pointer;' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
+                            <i class='fa fa-pencil tgrid-action pl-1 text-primary' style='cursor:pointer;' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
+                        </div>`)
+                        , cellTemplateScope: {
+                            edit: edit,
+                            add: addSubDepartment,
+                            //remove: remove
+                        }
+                    }
+                ]
+                , expandingProperty: {
+                    field: "Title"
+                    , displayName: "عنوان"
+                }
+            };
+            departmentService.list().then((result) => {
+                setTreeObject(result);
+            });
+            department.state = 'cartable';
+            $location.path('department/cartable');
+        }
+        function edit(parent) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return departmentService.get(parent.ID)
+            }).then((result) => {
+                department.Model = result;
+                return departmentService.listByNode({ Node: result.ParentNode });
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    department.Model.ParentID = result[0].ID;
+                } else {
+                    department.Model.ParentID = '00000000-0000-0000-0000-000000000000';
+                }
+                $location.path(`/department/edit/${result.ID}`);
+                department.state = 'edit';
+
+            }).finally(loadingService.hide)
+        }
+        function goToPageAdd(parent) {
+            parent = parent || {};
+            department.state = 'add';
+            department.Model = { ParentID: parent.ID };
+            $location.path('/department/add');
+        }
+        function addDepartment() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                departmentService.add(department.Model).then((result) => {
+                    toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
+                    loadingService.hide();
+                    $timeout(function () {
+                        cartable();
+                    }, 1000);
+                })
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطای ناشناخته');
+            }).finally(loadingService.hide);
+        }
+        function editDepartment() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                departmentService.edit(department.Model).then((result) => {
+                    toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
+                    loadingService.hide();
+                    $timeout(function () {
+                        cartable();
+                    }, 1000);
+                })
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطای ناشناخته');
+            }).finally(loadingService.hide);
+        }
+        function addSubDepartment(parent) {
+            department.state = 'add';
+            goToPageAdd(parent);
+        }
+        function setTreeObject(departments) {
+            departments.map((item) => {
+                if (item.ParentNode === '/')
+                    item.expanded = true;
+            });
+            department.tree.data = toolsService.getTreeObject(departments, 'Node', 'ParentNode', '/');
+        }
+        function remove(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return departmentService.remove(model.ID);
+            }).then(() => {
+                return departmentService.list();
+            }).then((result) => {
+                setTreeObject(result);
+            }).finally(loadingService.hide);
         }
     }
 })();

@@ -111,6 +111,9 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IDownloadDataSource, DownloadDataSource>();
             _container.RegisterType<IDownloadService, DownloadService>();
 
+            _container.RegisterType<IDepartmentDataSource, DepartmentDataSource>();
+            _container.RegisterType<IDepartmentService, DepartmentService>();
+
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

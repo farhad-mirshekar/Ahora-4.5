@@ -101,6 +101,7 @@
     <Compile Include="Org\Command\VM\CommandListVM.cs" />
     <Compile Include="Org\Command\VM\GetPermission.cs" />
     <Compile Include="Org\Command\VM\NodeVM.cs" />
+    <Compile Include="Org\Department\Department.cs" />
     <Compile Include="Org\Position\Position.cs" />
     <Compile Include="Org\Position\VM\PositionDefaultVM.cs" />
     <Compile Include="Org\RefreshToken\RefreshToken.cs" />

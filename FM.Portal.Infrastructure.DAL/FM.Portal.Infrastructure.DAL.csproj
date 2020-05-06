@@ -70,6 +70,7 @@
     <Compile Include="DataSources\App\ShoppingCartItemDataSource.cs" />
     <Compile Include="DataSources\DataSource.cs" />
     <Compile Include="DataSources\Org\CommandDataSource.cs" />
+    <Compile Include="DataSources\Org\DepartmentDataSource.cs" />
     <Compile Include="DataSources\Org\PositionDataSource.cs" />
     <Compile Include="DataSources\Org\RefreshTokenDataSource.cs" />
     <Compile Include="DataSources\Org\RoleDataSource.cs" />
@@ -157,6 +158,11 @@
     <Content Include="DataBaseScripts\Procedures\Org\Command\spGetCommandsForRole.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\Command\spGetCommandsForUser.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\Command\spModifyCommand.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Department\spDeleteDepartment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Department\spGetsDepartmentByNode.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Department\spGetDepartment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Department\spGetsDepartment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Department\spModifyDepartment.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\Position\org.spModifyPosition.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\Position\org.spPositionDefault.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\RefreshToken\org.spCreateRefreshToken.sql" />
