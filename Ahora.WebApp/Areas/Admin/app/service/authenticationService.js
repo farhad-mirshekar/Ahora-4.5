@@ -11,9 +11,9 @@
         return service;
         function setCredentials(model) {
             if (model.status) {
-                localStorage.setItem('access_token', model.Access_Token);
+                localStorage.setItem('access_token', model.token.Access_Token);
                 localStorage.setItem('userid', model.userid);
-                localStorage.setItem('refresh_token', model.Refresh_Token);
+                localStorage.setItem('refresh_token', model.token.Refresh_Token);
                 localStorage.setItem('type',"1");
             } else {
                 $window.localStorage.removeItem('access_token');

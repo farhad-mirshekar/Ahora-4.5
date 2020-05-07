@@ -2391,9 +2391,10 @@
         }
         function onError(error) {
             if (error.result && error.result.result.data === -397)
-                return refreshToken().then(error.request).then((result) => {
+                return refreshToken().then(error.result).then((result) => {
                     {
-                        return onSuccess({ result: result, request: error.request });
+                        debugger
+                        return onSuccess({ result: error.result, request: error.result.request });
                     }
                 });
             else
@@ -2412,11 +2413,11 @@
                         authenticationService.setCredentials(result.data);
                     }).catch((error) => {
                         window.location.href = '/account/login';
-                        //counter++;
-                        //if (counter < 10)
-                        //    authenticationService.setCredentials({status:0});
-                        //else
-                        //    window.location.reload();
+                        counter++;
+                        if (counter < 10)
+                            authenticationService.setCredentials({status:0});
+                        else
+                            window.location.reload();
                     });
                 }
             });

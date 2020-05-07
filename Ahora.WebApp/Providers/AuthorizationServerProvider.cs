@@ -113,7 +113,7 @@ namespace FM.Portal.WebApp.Providers
 
             //ReplaceClaim(newIdentity, Claims.ApplicationId, applicationId.ToString());
             //ReplaceClaim(newIdentity, Claims.DepartmentId, defaultPosition.DepartmentID.ToString());
-            ReplaceClaim(newIdentity, Claims.PositionId, "35CFD065-748D-435F-A9AA-A40A545DC289");
+            ReplaceClaim(newIdentity, Claims.PositionId, positionDefault.PositionID.ToString());
             ReplaceClaim(newIdentity, Claims.UserId, positionDefault.UserID.ToString());
             ReplaceClaim(newIdentity, Claims.UserName, positionDefault.UserName.ToString());
 
