@@ -1,52 +1,4 @@
-﻿var froalaOption = {
-    toolbarButtons: {
-        'moreText': {
-            'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
-        },
-        'moreParagraph': {
-            'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
-        },
-        'moreRich': {
-            'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertFile', 'insertHR']
-        },
-        'moreMisc': {
-            'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'spellChecker', 'selectAll', 'html', 'help'],
-            'align': 'right',
-            'buttonsVisible': 2
-        }
-    },
-    language: 'fa',
-    quickInsertEnabled: false,
-    charCounterCount: false,
-    toolbarSticky: false,
-    angularIgnoreAttrs: ['class', 'ng-model', 'id'],
-    imageUploadURL: '/attachment/upload?type=9',
-    // Set the video upload URL.
-    videoUploadURL: '/attachment/upload?type=7',
-    // Set request type.
-    videoUploadMethod: 'POST',
-    events: {
-        'video.beforeUpload': function (videos) {
-            // Return false if you want to stop the video upload.
-        },
-        'video.uploaded': function (response) {
-
-            // Video was uploaded to the server.
-        },
-    }
-};
-var froalaOptionComment = {
-    toolbarButtons: {
-        'moreText': {
-            'buttons': ['bold', 'italic', 'underline', 'fontFamily', 'fontSize', 'textColor']
-        },
-        'moreParagraph': {
-            'buttons': ['alignLeft', 'alignCenter', 'alignRight', 'alignJustify']
-        }
-    },
-    language: 'fa'
-
-};
+﻿
 (() => {
     var app = angular.module('portal');
 
@@ -693,8 +645,8 @@ var froalaOptionComment = {
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('productController', productController);
-    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'discountService', 'toolsService', 'enumService'];
-    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, discountService, toolsService, enumService) {
+    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'discountService', 'toolsService', 'enumService','froalaOption'];
+    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, discountService, toolsService, enumService, froalaOption) {
         var product = $scope;
         product.Model = {};
         product.Attribute = {};
@@ -707,8 +659,8 @@ var froalaOptionComment = {
         product.attachment.listFileUploaded = [];
         product.file = { type: '10', allowMultiple: false };
         product.file.list = [];
-        product.froalaOption = angular.copy(froalaOption);
-        product.froalaOptions = angular.copy(froalaOption);
+        product.froalaOption = angular.copy(froalaOption.main);
+        product.froalaOptions = angular.copy(froalaOption.main);
         product.Attribute.Sub = false;
         product.ProductVariant.showGrid = false;
         product.ProductVariant.Parent = true;
@@ -1298,13 +1250,13 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('commentController', commentController);
-    commentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService','enumService'];
-    function commentController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService) {
+    commentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService','froalaOption'];
+    function commentController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
         let comment = $scope;
         comment.Model = {};
         comment.state = '';
         comment.main = {};
-        comment.froalaOptionComment = froalaOption;
+        comment.froalaOptionComment = froalaOption.comment;
         comment.main.changeState = {
             cartable: cartable,
             edit: edit
@@ -1506,8 +1458,8 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('articleController', articleController);
-    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService'];
-    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService) {
+    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService','froalaOption'];
+    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption) {
         let article = $scope;
         article.Model = {};
         article.main = {};
@@ -1541,7 +1493,7 @@ var froalaOptionComment = {
             , globalSearch: true
             , displayNameFormat: ['Title']
         };
-        article.froalaOption = angular.copy(froalaOption);
+        article.froalaOption = angular.copy(froalaOption.main);
         function init() {
             loadingService.show();
             $q.resolve().then(() => {
@@ -1725,8 +1677,8 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('newsController', newsController);
-    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService'];
-    function newsController($scope, $q, loadingService, $routeParams, newsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService) {
+    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService','froalaOption'];
+    function newsController($scope, $q, loadingService, $routeParams, newsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption) {
         let news = $scope;
         news.Model = {};
         news.main = {};
@@ -1740,7 +1692,7 @@ var froalaOptionComment = {
         }
         news.Model.Errors = [];
         news.state = '';
-        news.froalaOption = angular.copy(froalaOption);
+        news.froalaOption = angular.copy(froalaOption.main);
         news.goToPageAdd = goToPageAdd;
         news.addNews = addNews;
         news.editNews = editNews;
@@ -2449,11 +2401,11 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('eventsController', eventsController);
-    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService'];
-    function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService) {
+    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService','froalaOption'];
+    function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption) {
         let events = $scope;
         events.state = '';
-        events.froalaOption = angular.copy(froalaOption);
+        events.froalaOption = angular.copy(froalaOption.main);
 
         events.Model = {};
         events.Model.Errors = [];
@@ -2701,8 +2653,8 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('commentPortalController', commentPortalController);
-    commentPortalController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService'];
-    function commentPortalController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService) {
+    commentPortalController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService','froalaOption'];
+    function commentPortalController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
         let comment = $scope;
         comment.Model = {};
         comment.Model.Errors = [];
@@ -2710,7 +2662,7 @@ var froalaOptionComment = {
         comment.Search = {};
         comment.state = '';
         comment.main = {};
-        comment.froalaOptionComment = angular.copy(froalaOptionComment);
+        comment.froalaOptionComment = angular.copy(froalaOption.comment);
         comment.main.changeState = {
             cartable: cartable,
             edit: edit

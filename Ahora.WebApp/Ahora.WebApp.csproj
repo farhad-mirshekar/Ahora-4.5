@@ -254,6 +254,7 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>enum.service.js</LastGenOutput>
     </Content>
+    <Content Include="Areas\Admin\app\service\froala.options.js" />
     <Content Include="Areas\Admin\app\service\loading.service.js" />
     <Content Include="Areas\Admin\app\service\panel.service.js" />
     <Content Include="Areas\Admin\app\service\tools.service.js" />

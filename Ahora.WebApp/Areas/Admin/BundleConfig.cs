@@ -42,7 +42,8 @@ namespace Ahora.WebApp.Areas.Admin
                                          "~/Areas/Admin/app/service/loading.service.js",
                                          "~/Areas/Admin/app/service/tools.service.js",
                                          "~/Areas/Admin/app/service/authenticationService.js",
-                                         "~/Areas/Admin/app/service/enum.service.js"
+                                         "~/Areas/Admin/app/service/enum.service.js",
+                                         "~/Areas/Admin/app/service/froala.options.js"
                                          ));
 
             bundles.Add(new ScriptBundle("~/bundles/froalajs").Include(
