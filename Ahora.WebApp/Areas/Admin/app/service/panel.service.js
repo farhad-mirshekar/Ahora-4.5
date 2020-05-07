@@ -283,6 +283,14 @@
                })
         }
         function searchByNationalCode(model) {
+            model.Errors = [];
+
+            if (!model.NationalCode)
+                model.Errors.push('کد ملی را وارد نمایید');
+            if (model.NationalCode.length < 9)
+                model.Errors.push('کد ملی را صحیح وارد نمایید');
+            if (model.Errors && model.Errors.length > 0)
+                return $q.reject();
             return $http({
                 method: 'post',
                 url: url + 'searchByNationalCode',
@@ -624,7 +632,7 @@
         var url = '/api/v1/position/'
         var service = {
             add: add,
-
+            list:list
         }
         return service;
 
@@ -643,6 +651,22 @@
                .catch(function (result) {
                    return callbackService.onError({result:result});
                })
+        }
+        function list(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'list',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'list' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
         }
     }
 
@@ -2372,6 +2396,64 @@
             })
         }
     }
+    app.factory('userService', userService);
+    userService.$inject = ['$http', '$q', 'callbackService'];
+    function userService($http, $q, callbackService) {
+        var url = '/api/v1/user/'
+        var service = {
+            add: add,
+            get: get,
+            list:list
+        };
+        return service;
+
+        function add(model) {
+            return $http({
+                method: 'POST',
+                url: url + `add`,
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `add` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+            })
+        }
+
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `get/${model}`,
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function list(model) {
+            return $http({
+                method: 'POST',
+                url: url + `list`,
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `list` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+            })
+        }
+    }
 
     app.factory('callbackService', callbackService);
     callbackService.$inject = ['$q', '$http', 'authenticationService'];
@@ -2393,7 +2475,6 @@
             if (error.result && error.result.result.data === -397)
                 return refreshToken().then(error.result).then((result) => {
                     {
-                        debugger
                         return onSuccess({ result: error.result, request: error.result.request });
                     }
                 });

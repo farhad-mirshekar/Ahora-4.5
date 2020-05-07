@@ -9,7 +9,7 @@
             $locationProvider.html5Mode(false);
             $routeProvider.when("/command/:state/:id?", { templateUrl: "/admin/command/index", controller: 'commandController', reloadOnUrl: false })
                 .when("/role/:state/:id?", { templateUrl: "/admin/role/index", controller: 'roleController', reloadOnUrl: false })
-                .when("/position/:state/:id?", { templateUrl: "/admin/position/index", controller: 'positionController' })
+                .when("/position/:state/:id?", { templateUrl: "/admin/position/index", controller: 'positionController', reloadOnUrl: false })
                 .when("/product/:state/:id?", {templateUrl: "/admin/product/index", controller: 'productController'})
                 .when("/product-cartable", { templateUrl: "/admin/product/cartable", controller: 'ProductCartableController' })
                 .when("/discount/:state/:id?", { templateUrl: "/admin/discount/index", controller: 'discountController', reloadOnUrl: false })
@@ -33,6 +33,7 @@
                 .when("/payment/:state/:id?", { templateUrl: "/Admin/payment/index", controller: 'paymentController', reloadOnUrl: false })
                 .when("/notification/:state/:id?", { templateUrl: "/Admin/notification/index", controller: 'notificationController', reloadOnUrl: false })// add;
                 .when("/department/:state/:id?", { templateUrl: "/Admin/department/index", controller: 'departmentController', reloadOnUrl: false })// add;
+                .when("/user/:state/:id?", { templateUrl: "/Admin/user/index", controller: 'userController', reloadOnUrl: false })// add;
 
                 .otherwise({
                     templateUrl: './areas/admin/app/NotFound/not-found.html'

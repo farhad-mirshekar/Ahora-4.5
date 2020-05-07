@@ -26,6 +26,7 @@
                     { route: '#/command/cartable', title: 'مجوزها', hasShow: () => { return toolsService.checkPermission('pgcommand') }, icon: ' fa-asl-interpreting' },
                     { route: '#/position/cartable', title: 'جایگاه های سازمانی', hasShow: () => { return toolsService.checkPermission('pgposition') }, icon: 'fa-anchor' },
                     { route: '#/department/cartable', title: 'دستگاه ها', hasShow: () => { return toolsService.checkPermission('pgdepartment') }, icon: 'fa-anchor' },
+                    { route: '#/user/cartable', title: 'کاربران', hasShow: () => { return toolsService.checkPermission('pgusers') }, icon: 'fa-anchor' },
 
                 ]
             },

@@ -471,6 +471,7 @@ var froalaOptionComment = {
             $location.path('role/cartable');
         }
         function edit(model) {
+            debugger
             loadingService.show;
             return $q.resolve().then(() => {
                 role.Model = model;
@@ -547,10 +548,19 @@ var froalaOptionComment = {
 
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('positionController', positionController);
-    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService'];
-    function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService) {
+    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService'];
+    function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService, departmentService) {
         let position = $scope;
+        position.department = $scope;
+        position.department.Model = {};
+        position.department.departmentDropDown = [];
+        position.changeState = {
+            cartable: cartable,
+            add:add
+        }
         position.Model = {};
+        position.Model.Errors = [];
+        position.listPositions = [];
         position.state = '';
         position.ResultSearch = { Enabled: false };
         position.selectCommand = {
@@ -559,6 +569,7 @@ var froalaOptionComment = {
         position.goToPageAdd = goToPageAdd;
         position.searchNationalCode = searchNationalCode;
         position.addPosition = addPosition;
+        position.departmentChange = departmentChange;
         init();
 
         function init() {
@@ -571,57 +582,48 @@ var froalaOptionComment = {
                     case 'add':
                         add();
                         break;
-                    case 'edit':
-                        positionService.get($routeParams.id).then((result) => {
-                            edit(result);
-                        })
-                        break;
                 }
             }).finally(loadingService.hide);
         }
         function cartable() {
-            position.state = 'cartable';
-            positionService.list().then((result) => {
-                label.model = result;
-                label.grid = [].concat(result);
-            })
-            $location.path('/position/cartable');
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return departmentService.list();
+            }).then((result) => {
+                position.department.departmentDropDown = result;
+                position.state = 'cartable';
+                $location.path('/position/cartable');
+            }).finally(loadingService.hide)
+
         }
         function add() {
-            position.state = 'add';
-            listRole();
-            $location.path('/position/add');
-        }
-        function edit(model) {
-            position.state = 'edit';
-            position.Model = model;
-            $location.path(`/position/edit/${model.ID}`);
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return listRole();
+            }).then(() => {
+                position.state = 'add';
+                $location.path('/position/add');
+            }).catch(() => {
+                position.changeState.cartable();
+                loadingService.hide();
+            }).finally(loadingService.hide)
         }
         function goToPageAdd() {
             add();
         }
         function searchNationalCode() {
-            $q.resolve().then(() => {
-                loadingService.show();
-                if (!position.Model.NationalCode) {
-                    toaster.pop('error', '', 'کد ملی را وارد نمایید');
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return profileService.searchByNationalCode(position.Model);
+            }).then((result) => {
+                if (result.Enabled) {
+                    position.ResultSearch = result;
+                    position.search = true;
+                } else {
+                    toaster.pop('error','' ,'کاربری با کدملی وارد شده پیدا نشد');
                 }
-                else if (position.Model.NationalCode.length < 10) {
-                    toaster.pop('error', '', 'کد ملی را صحیح وارد نمایید');
-                }
-                else {
-                    profileService.searchByNationalCode({ NationalCode: position.Model.NationalCode }).then((result) => {
-                        if (result.Enabled) {
-                            position.ResultSearch = result;
-                            position.search = true;
-                        }
-
-                    }).catch((error) => {
-                        toaster.pop('error', '', 'خطای ناشناخته');
-                    })
-                }
-
-
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطای ناشناخته');
             }).finally(loadingService.hide);
 
         }
@@ -661,6 +663,17 @@ var froalaOptionComment = {
                     })
                 }
             }).finally(loadingService.hide);
+        }
+
+        function departmentChange() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return positionService.list({ DepartmentID: position.department.Model.DepartmentID });
+            }).then((result) => {
+                position.listPositions = [].concat(result);
+            })
+
+                .finally(loadingService.hide);
         }
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -3169,6 +3182,86 @@ var froalaOptionComment = {
                 return departmentService.remove(model.ID);
             }).then(() => {
                 return departmentService.list();
+            }).then((result) => {
+                setTreeObject(result);
+            }).finally(loadingService.hide);
+        }
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('userController', userController);
+    userController.$inject = ['$scope', '$q', 'userService', 'loadingService', '$routeParams', '$location', 'toaster', '$timeout'];
+    function userController($scope, $q, userService, loadingService, $routeParams, $location, toaster, $timeout) {
+        let user = $scope;
+        user.Model = {};
+        user.goToPageAdd = goToPageAdd;
+        user.addUser = addUser;
+        user.changeState = {
+            cartable: cartable
+        }
+        user.grid = {
+            bindingObject: payment
+            , columns: [{ name: 'FirstName', displayName: 'نام' },
+                { name: 'LastName', displayName: 'نام خانوادگی' }]
+            , listService: userService.list
+            , globalSearch: true
+            , checkActionVisibility: (action) => {
+                if (action === 'edit') {
+                    return false;
+                }
+                else
+                    return true;
+            }
+        };
+        init();
+
+        function init() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        loadingService.hide();
+                        break;
+                    case 'add':
+                        goToPageAdd();
+                        loadingService.hide();
+                        break;
+                        break;
+                }
+            }).finally(loadingService.hide);
+
+
+        } // end init
+
+        function cartable() {
+            user.state = 'cartable';
+            $location.path('user/cartable');
+        }
+        function goToPageAdd() {
+            user.state = 'add';
+            $location.path('/user/add');
+        }
+        function addUser() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                userService.add(user.Model).then((result) => {
+                    toaster.pop('success', '', 'کاربر جدید با موفقیت اضافه گردید');
+                    user.grid.getlist();
+                    loadingService.hide();
+                    $timeout(function () {
+                        cartable();
+                    }, 1000);
+                })
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطای ناشناخته');
+            }).finally(loadingService.hide);
+        }
+        function remove(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return userService.remove(model.ID);
+            }).then(() => {
+                return user.grid.getlist();
             }).then((result) => {
                 setTreeObject(result);
             }).finally(loadingService.hide);

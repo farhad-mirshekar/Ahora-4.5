@@ -11,6 +11,7 @@
         'treeGrid',
         'filepond',
         'froala',
-        'ngSanitize'
+        'ngSanitize',
+        'checklist-model'
     ]);
 })();

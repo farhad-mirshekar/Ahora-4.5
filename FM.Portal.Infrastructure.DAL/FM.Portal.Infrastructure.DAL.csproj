@@ -165,6 +165,7 @@
     <Content Include="DataBaseScripts\Procedures\Org\Department\spModifyDepartment.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\Position\org.spModifyPosition.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\Position\org.spPositionDefault.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Position\spGetsPosition.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\RefreshToken\org.spCreateRefreshToken.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\RefreshToken\org.spDeleteRefreshToken.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\RefreshToken\org.spGetRefreshToken.sql" />
@@ -177,6 +178,7 @@
     <Content Include="DataBaseScripts\Procedures\Org\UserAddress\org.spGetUserAddress.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\UserAddress\org.spModifyUserAddress.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\User\app.spModifyUser.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\User\org.spGetsUser.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\User\org.spGetUser.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\User\org.spSetUserPassword.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spDeleteAttachment.sql" />

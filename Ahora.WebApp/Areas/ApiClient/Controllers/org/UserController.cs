@@ -1,16 +1,9 @@
 ﻿using FM.Portal.Core.Model;
-using FM.Portal.Core.Security;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.Api.Controller;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Web;
 using System.Web.Http;
-using System.Web.SessionState;
 
 namespace Ahora.WebApp.Areas.ApiClient.Controllers
 {
@@ -37,7 +30,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         {
             try
             {
-                var result = _service.Get(null, null, model.NationalCode);
+                var result = _service.Get(null, null, model.NationalCode , UserType.کاربر_درون_سازمانی);
                 return Ok(result);
             }
             catch (Exception e) { return NotFound(); }
@@ -49,6 +42,31 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             try
             {
                 var result = _service.SetPassword(model);
+                return Ok(result);
+            }
+            catch (Exception e) { return NotFound(); }
+        }
+
+        [HttpPost, Route("List")]
+        public IHttpActionResult List()
+        {
+            try
+            {
+                var result = _service.List();
+                return Ok(result);
+            }
+            catch (Exception e) { return NotFound(); }
+        }
+        [HttpPost, Route("Add")]
+        public IHttpActionResult Add(FM.Portal.Core.Model.User model)
+        {
+            try
+            {
+                model.Username = model.NationalCode;
+                model.Password = model.NationalCode;
+                model.Enabled = true;
+                model.Type = UserType.کاربر_درون_سازمانی;
+                var result = _service.Add(model);
                 return Ok(result);
             }
             catch (Exception e) { return NotFound(); }

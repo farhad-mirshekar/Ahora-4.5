@@ -1,0 +1,48 @@
+﻿<section ng-show="state ==='cartable'">
+    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    <portal-grid obj="grid"></portal-grid>
+</section>
+
+<section ng-show="state==='add'">
+    <h2 class="main-title" ng-show="state==='add'">افزودن کاربر</h2>
+    <div id="articleSection">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div ng-show="Model.Errors.length" class="alert alert-danger">
+                        <ul ng-repeat="row in Model.Errors">
+                            <li>{{row}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body form-horizontal">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label for="FirstName" class="control-label">نام</label>
+                    <input type="text" class="form-control" ng-model="Model.FirstName" placeholder="نام کاربر را وارد نمایید">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label for="LastName" class="control-label">نام خانوادگی</label>
+                    <input type="text" class="form-control" ng-model="Model.LastName" placeholder="نام خانوادگی را وارد نمایید">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <label for="NationalCode" class="control-label">کدملی</label>
+                    <input type="text" class="form-control" ng-model="Model.NationalCode" placeholder="کد ملی را وارد نمایید">
+                </div>
+            </div>
+        </div>
+        <div class="btn-group-justified pull-left mb-5">
+            <button type="submit" ng-click="addUser()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
+            <button ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
+        </div>
+    </div>
+</section>
+
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+

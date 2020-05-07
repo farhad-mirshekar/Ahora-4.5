@@ -104,6 +104,7 @@
     <Compile Include="Org\Department\Department.cs" />
     <Compile Include="Org\Position\Position.cs" />
     <Compile Include="Org\Position\VM\PositionDefaultVM.cs" />
+    <Compile Include="Org\Position\VM\PositionListVM.cs" />
     <Compile Include="Org\RefreshToken\RefreshToken.cs" />
     <Compile Include="Org\Role\Role.cs" />
     <Compile Include="Org\Token\Token.cs" />

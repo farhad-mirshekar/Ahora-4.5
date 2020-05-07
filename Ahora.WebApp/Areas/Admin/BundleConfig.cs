@@ -81,7 +81,8 @@ namespace Ahora.WebApp.Areas.Admin
                                         "~/Areas/Admin/Content/fileponed/js/filepond-plugin-file-validate-type.js",
                                         "~/Areas/Admin/Content/fileponed/js/filepond.min.js",
                                         "~/Areas/Admin/app/directive/grid/grid.js",
-                                        "~/Areas/Admin/Content/js/select2.min.js"));
+                                        "~/Areas/Admin/Content/js/select2.min.js",
+                                        "~/Areas/Admin/Content/js/checkbox.js"));
         }
 
 

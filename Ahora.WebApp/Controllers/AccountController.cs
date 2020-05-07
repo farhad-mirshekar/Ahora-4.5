@@ -77,7 +77,7 @@ namespace Ahora.WebApp.Controllers
         [HttpPost]
         public JsonResult IsAlreadyUserName(string UserName)
         {
-            var getUserResult = _service.Get(UserName.Trim(), null, null);
+            var getUserResult = _service.Get(UserName.Trim(), null, null , UserType.کاربر_درون_سازمانی);
             var user = getUserResult.Data;
             if (user.ID != Guid.Empty)
                 return Json(false);
@@ -92,7 +92,7 @@ namespace Ahora.WebApp.Controllers
 
         private async Task<JsonResult> GetToken(Token model, string returnUrl)
         {
-            var user = _service.Get(model.username, model.password, null);
+            var user = _service.Get(model.username, model.password, null , UserType.Unknown);
             if (user.Success && user.Data.ID != Guid.Empty)
             {
                 if (user.Data.Type == UserType.کاربر_درون_سازمانی)

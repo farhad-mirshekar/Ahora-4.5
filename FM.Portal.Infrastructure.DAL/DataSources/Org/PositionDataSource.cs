@@ -28,6 +28,19 @@ namespace FM.Portal.Infrastructure.DAL
             return Modify(true, model);
         }
 
+        public DataTable List(PositionListVM listVM)
+        {
+            try
+            {
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@DepartmentID",SqlDbType.UniqueIdentifier);
+                param[0].Value = (object)listVM.DepartmentID ?? DBNull.Value;
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "org.spGetsPosition", param);
+            }
+            catch(Exception e) { throw; }
+        }
+
         public Result<PositionDefaultVM> PositionDefault(Guid userID)
         {
             try

@@ -41,7 +41,7 @@ namespace FM.Portal.WebApp.Providers
 
             IUserService _service = container.Resolve<IUserService>();
             IPositionService _position = container.Resolve<IPositionService>();
-            var data = _service.Get(context.UserName, context.Password, null);
+            var data = _service.Get(context.UserName, context.Password, null , UserType.Unknown);
             if (data.Data.ID != Guid.Empty)
             {
                 var positionDefault = _position.PositionDefault(data.Data.ID);

@@ -8,7 +8,8 @@ CREATE PROCEDURE org.spGetUser
 @ID uniqueidentifier,
 @Username varchar(50),
 @Password varchar(100),
-@NationalCode varchar(10)
+@NationalCode varchar(10),
+@UserType TINYINT
 
 --WITH ENCRYPTION
 AS
@@ -23,5 +24,6 @@ BEGIN
 		(@Password IS NULL OR [Password] = @Password) AND
 		(@NationalCode IS NULL OR [NationalCode] = @NationalCode) AND
 		(@ID IS NULL OR [ID] = @ID) AND
+		(@UserType IS NULL OR [UserType] = @UserType) AND
 		[Enabled] = 1
 END

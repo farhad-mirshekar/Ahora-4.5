@@ -7,6 +7,7 @@ using FM.Portal.Core.Security;
 using System.Data;
 using FM.Portal.Core.Result;
 using FM.Portal.Core.Owin;
+using System.Collections.Generic;
 
 namespace FM.Portal.Infrastructure.DAL
 {
@@ -41,7 +42,7 @@ namespace FM.Portal.Infrastructure.DAL
 
                     SQLHelper.ExecuteNonQuery(con, System.Data.CommandType.StoredProcedure, param, "org.spModifyUser");
 
-                    return this.Get(model.ID, null, null, null);
+                    return this.Get(model.ID, null, null, null,UserType.Unknown);
                 }
             }
             catch
@@ -49,35 +50,26 @@ namespace FM.Portal.Infrastructure.DAL
                 return Result<User>.Failure();
             }
         }
-        public Result<User> Get(Guid? ID, string Username, string Password , string NationalCode)
+        public Result<User> Get(Guid? ID, string Username, string Password , string NationalCode , UserType userType)
         {
             try
             {
                 User obj = new User();
-                SqlParameter[] param = new SqlParameter[4];
+                SqlParameter[] param = new SqlParameter[5];
                 param[0] = new SqlParameter("@ID", SqlDbType.UniqueIdentifier);
-                if (ID.HasValue)
-                    param[0].Value = ID;
-                else
-                    param[0].Value = DBNull.Value;
+                param[0].Value = (object)ID ?? DBNull.Value;
 
                 param[1] = new SqlParameter("@Username", SqlDbType.VarChar);
-                if (Username == null)
-                    param[1].Value = DBNull.Value;
-                else
-                    param[1].Value = Username;
+                param[1].Value = Username != null ? (object)Username : DBNull.Value;
 
                 param[2] = new SqlParameter("@Password", SqlDbType.VarChar);
-                if (Password == null)
-                    param[2].Value = DBNull.Value;
-                else
-                    param[2].Value = Password;
+                param[2].Value = Password != null ? (object)Password : DBNull.Value;
 
                 param[3] = new SqlParameter("@NationalCode", SqlDbType.VarChar);
-                if (NationalCode == null)
-                    param[3].Value = DBNull.Value;
-                else
-                    param[3].Value = NationalCode;
+                param[3].Value = NationalCode != null ? (object)NationalCode : DBNull.Value;
+
+                param[4] = new SqlParameter("@UserType", SqlDbType.TinyInt);
+                param[4].Value = userType != UserType.Unknown ? (object)userType : DBNull.Value;
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
@@ -136,5 +128,14 @@ namespace FM.Portal.Infrastructure.DAL
             catch(Exception e) { throw; }
         }
 
+        public DataTable List()
+        {
+            try
+            {
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "org.spGetsUser", null);
+            }
+            catch (Exception e) { throw; }
+        }
     }
 }

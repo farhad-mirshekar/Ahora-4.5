@@ -267,6 +267,7 @@
     <Content Include="Areas\Admin\Content\img\loading.gif" />
     <Content Include="Areas\Admin\Content\img\logo.png" />
     <Content Include="Areas\Admin\Content\js\bootstrap.min.js" />
+    <Content Include="Areas\Admin\Content\js\checkbox.js" />
     <Content Include="Areas\Admin\Content\js\popper.min.js" />
     <Content Include="Areas\Admin\Content\js\select2.min.js" />
     <Content Include="Areas\User\Content\admin\admin.css" />
@@ -917,6 +918,7 @@
     <Content Include="Areas\User\Views\Profile\Index.cshtml" />
     <Content Include="Areas\User\Views\Shared\_Alert.cshtml" />
     <Content Include="Areas\Admin\Views\Department\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\User\Index.cshtml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
     <Content Include="Scripts\froala-editor\css\froala_editor.min.css" />
@@ -2074,6 +2076,7 @@
     <Compile Include="Areas\Admin\Controllers\Org\PositionController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\ProfileController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\RoleController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Org\UserController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\GeneralSettingController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\MenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\NotificationController.cs" />

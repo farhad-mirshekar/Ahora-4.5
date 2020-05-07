@@ -7,6 +7,8 @@ using FM.Portal.Core.Security;
 using FM.Portal.DataSource;
 using FM.Portal.Core.Owin;
 using FM.Portal.Core.Result;
+using System.Collections.Generic;
+using FM.Portal.Core.Common;
 
 namespace FM.Portal.Domain
 {
@@ -34,15 +36,23 @@ namespace FM.Portal.Domain
 
         public Result<User> Get(Guid ID)
         {
-            return _dataSource.Get(ID, null, null, null);
+            return _dataSource.Get(ID, null, null, null , UserType.Unknown);
         }
 
-        public Result<User> Get(string Username, string Password, string NationalCode)
+        public Result<User> Get(string Username, string Password, string NationalCode , UserType userType)
         {
             if (Password == null || Password == "")
-                return _dataSource.Get(null, Username, null, NationalCode);
+                return _dataSource.Get(null, Username, null, NationalCode , userType);
 
-            return _dataSource.Get(null, Username, Password.HashText(), NationalCode);
+            return _dataSource.Get(null, Username, Password.HashText(), NationalCode, userType);
+        }
+
+        public Result<List<User>> List()
+        {
+            var table = ConvertDataTableToList.BindList<User>(_dataSource.List());
+            if (table.Count > 0)
+                return Result<List<User>>.Successful(data: table);
+            return Result<List<User>>.Failure();
         }
 
         public Result SetPassword(SetPasswordVM model)
@@ -59,7 +69,7 @@ namespace FM.Portal.Domain
                 userID = (Guid)_requestInfo.UserId;
             else
                 userID = model.UserID;
-            var userResult = _dataSource.Get(userID, null, model.OldPassword.HashText(), null);
+            var userResult = _dataSource.Get(userID, null, model.OldPassword.HashText(), null, UserType.Unknown);
             if (!userResult.Success)
                 return Result<User>.Failure();
             if (userResult.Data.ID == Guid.Empty)
