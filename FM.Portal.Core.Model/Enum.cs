@@ -35,13 +35,15 @@
     }
     public enum ShowArticleType : byte
     {
-        عدم_نمایش = 0,
-        نمایش = 1
+        نامشخص = 0,
+        عدم_نمایش = 1,
+        نمایش = 2
     }
     public enum CommentArticleType : byte
     {
-        بسته = 0,
-        باز = 1
+        نامشخص = 0,
+        بسته = 1,
+        باز = 2
     }
     public enum PositionType : byte
     {
@@ -57,20 +59,24 @@
     }
     public enum DiscountType : byte
     {
+        نامشخص = 0,
         مبلغی = 1,
         درصدی = 2
     }
     public enum AttributeControlType : byte
     {
+        نامشخص = 0,
         کشویی = 1
     }
     public enum SendType : byte
     {
+        نامشخص = 0,
         آنلاین = 1,
         درب_منزل = 2
     }
     public enum EnableMenuType : byte
     {
+        نامشخص = 0,
         فعال = 1,
         غیرفعال = 2
     }
@@ -84,6 +90,7 @@
     }
     public enum DocumentTypeForTags : byte
     {
+        نامشخص = 0,
         اخبار = 3,
         مقاله = 4,
         محصولات = 6,
@@ -91,6 +98,7 @@
     }
     public enum BankName : byte
     {
+        نامشخص = 0,
         بانک_ملی = 1
     }
 }

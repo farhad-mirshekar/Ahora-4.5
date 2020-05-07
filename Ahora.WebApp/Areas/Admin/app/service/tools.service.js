@@ -10,7 +10,8 @@
             getPermission: getPermission,
             checkPermission: checkPermission,
             getTreeObject: getTreeObject,
-            signOut: signOut
+            signOut: signOut,
+            arrayEnum: arrayEnum
         };
         return service;
         function hasuser() {
@@ -106,6 +107,15 @@
                     $window.location.href = '/login';
                 }
             }).finally(loadingService.hide);
+        }
+        function arrayEnum(enumObject) {
+            let result = [];
+
+            for (let key in enumObject) {
+                result.push({ Model: parseInt(key), Name: enumObject[key] });
+            }
+
+            return result;
         }
 
     }
