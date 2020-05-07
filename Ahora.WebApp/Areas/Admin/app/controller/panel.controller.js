@@ -271,8 +271,8 @@ var froalaOptionComment = {
     }
     //------------------------------------------------------------------------------------------------------------
     app.controller('commandController', commandController);
-    commandController.$inject = ['$scope', '$q', 'commandService', 'loadingService', '$routeParams', '$location', 'toaster', '$timeout', 'toolsService'];
-    function commandController($scope, $q, commandService, loadingService, $routeParams, $location, toaster, $timeout, toolsService) {
+    commandController.$inject = ['$scope', '$q', 'commandService', 'loadingService', '$routeParams', '$location', 'toaster', '$timeout', 'toolsService', 'enumService'];
+    function commandController($scope, $q, commandService, loadingService, $routeParams, $location, toaster, $timeout, toolsService, enumService) {
         let command = $scope;
         command.Model = {};
         command.list = [];
@@ -282,6 +282,7 @@ var froalaOptionComment = {
         command.addCommand = addCommand;
         command.addSubCommand = addSubCommand;
         command.editCommand = editCommand;
+        command.commandType = toolsService.arrayEnum(enumService.CommandsType);
         command.changeState = {
             cartable: cartable
         }
@@ -344,32 +345,30 @@ var froalaOptionComment = {
             $location.path('command/cartable');
         }
         function edit(parent) {
-            commandService.commandType().then((result) => {
-                command.commandType = [].concat(result);
-            });
-            commandService.get(parent.ID).then((result) => {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return commandService.get(parent.ID);
+            }).then((result) => {
                 command.Model = result;
-
                 return commandService.listByNode({ Node: result.ParentNode });
             }).then((result) => {
                 command.Model.ParentID = result[0].ID;
                 $location.path(`/command/edit/${command.Model.ID}`);
                 command.state = 'edit';
-            })
+            }).finally(loadingService.hide)
         }
         function goToPageAdd(parent) {
+            loadingService.show();
             parent = parent || {};
             command.state = 'add';
-            commandService.commandType().then((result) => {
-                command.commandType = [].concat(result);
-            })
             command.Model = { ParentID: parent.ID };
             $location.path('/command/add');
+            loadingService.hide();
         }
         function addCommand() {
             command.Model.Name = command.Model.FullName;
             loadingService.show();
-            $q.resolve().then(() => {
+            return $q.resolve().then(() => {
                 commandService.add(command.Model).then((result) => {
                     toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
                     loadingService.hide();
@@ -384,7 +383,7 @@ var froalaOptionComment = {
         function editCommand() {
             command.Model.Name = command.Model.FullName;
             loadingService.show();
-            $q.resolve().then(() => {
+            return $q.resolve().then(() => {
                 commandService.edit(command.Model).then((result) => {
                     toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
                     loadingService.hide();
@@ -427,13 +426,13 @@ var froalaOptionComment = {
         role.main = {};
         role.main.changeState = {
             cartable: cartable,
-            edit: edit
+            edit: edit,
+            add: add
         };
         role.Model.Permissions = [];
         role.ListCommand = [];
         role.addRole = addRole;
         role.editRole = editRole;
-        role.goToPageAdd = goToPageAdd;
         role.back = back;
         role.grid = {
             bindingObject: role
@@ -471,7 +470,6 @@ var froalaOptionComment = {
             $location.path('role/cartable');
         }
         function edit(model) {
-            debugger
             loadingService.show;
             return $q.resolve().then(() => {
                 role.Model = model;
@@ -497,6 +495,7 @@ var froalaOptionComment = {
         }
         function add() {
             role.state = 'add';
+            $location.path('/role/add');
         }
 
         function editRole() {
@@ -538,9 +537,6 @@ var froalaOptionComment = {
                 loadingService.hide();
             }).finally(loadingService.hide);
         }
-        function goToPageAdd() {
-            $location.path('/role/add');
-        }
         function back() {
             $location.path('role/cartable');
         }
@@ -556,7 +552,7 @@ var froalaOptionComment = {
         position.department.departmentDropDown = [];
         position.changeState = {
             cartable: cartable,
-            add:add
+            add: add
         }
         position.Model = {};
         position.Model.Errors = [];
@@ -566,7 +562,6 @@ var froalaOptionComment = {
         position.selectCommand = {
             selected: []
         };
-        position.goToPageAdd = goToPageAdd;
         position.searchNationalCode = searchNationalCode;
         position.addPosition = addPosition;
         position.departmentChange = departmentChange;
@@ -608,9 +603,6 @@ var froalaOptionComment = {
                 loadingService.hide();
             }).finally(loadingService.hide)
         }
-        function goToPageAdd() {
-            add();
-        }
         function searchNationalCode() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -620,7 +612,7 @@ var froalaOptionComment = {
                     position.ResultSearch = result;
                     position.search = true;
                 } else {
-                    toaster.pop('error','' ,'کاربری با کدملی وارد شده پیدا نشد');
+                    toaster.pop('error', '', 'کاربری با کدملی وارد شده پیدا نشد');
                 }
             }).catch((error) => {
                 toaster.pop('error', '', 'خطای ناشناخته');
@@ -671,9 +663,7 @@ var froalaOptionComment = {
                 return positionService.list({ DepartmentID: position.department.Model.DepartmentID });
             }).then((result) => {
                 position.listPositions = [].concat(result);
-            })
-
-                .finally(loadingService.hide);
+            }).finally(loadingService.hide);
         }
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------
@@ -703,8 +693,8 @@ var froalaOptionComment = {
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('productController', productController);
-    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'discountService'];
-    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, discountService) {
+    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'discountService', 'toolsService', 'enumService'];
+    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, discountService, toolsService, enumService) {
         var product = $scope;
         product.Model = {};
         product.Attribute = {};
@@ -727,6 +717,8 @@ var froalaOptionComment = {
         product.addProductVarient = addProductVarient;
         product.listProductVarient = listProductVarient;
         product.editProduct = editProduct;
+
+        product.selectDiscountType = toolsService.arrayEnum(enumService.DiscountType);
         init();
 
         function init() {
@@ -746,9 +738,11 @@ var froalaOptionComment = {
 
         }
         function add() {
+            loadingService.show();
             product.state = 'add';
             categoryType();
             $location.path('/product/add');
+            loadingService.hide();
         }
         function edit(model) {
             product.Model = model;
@@ -757,8 +751,6 @@ var froalaOptionComment = {
                 return categoryType();
             }).then(() => {
                 return listAttribute();
-            }).then(() => {
-                return discountType();
             }).then(() => {
                 return listAttributeProduct(product.Model.ID);
             }).then(() => {
@@ -918,13 +910,6 @@ var froalaOptionComment = {
             return productVariantattributeService.list(model).then((result) => {
                 product.ProductVariant.showGrid = true;
                 product.ProductVariant.Grid = [].concat(result);
-            })
-        }
-        function discountType() {
-            return $q.resolve().then(() => {
-                return discountService.discountType();
-            }).then((result) => {
-                product.selectDiscountType = result;
             })
         }
 
@@ -1205,8 +1190,8 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('discountController', discountController);
-    discountController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'discountService', '$location', 'toaster', '$timeout'];
-    function discountController($scope, $q, loadingService, $routeParams, discountService, $location, toaster, $timeout) {
+    discountController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'discountService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService'];
+    function discountController($scope, $q, loadingService, $routeParams, discountService, $location, toaster, $timeout, toolsService, enumService) {
         let discount = $scope;
         discount.Model = {};
         discount.main = {};
@@ -1226,6 +1211,7 @@ var froalaOptionComment = {
             , onEdit: discount.main.changeState.edit
             , globalSearch: true
         };
+        discount.selectDiscountType = toolsService.arrayEnum(enumService.DiscountType);
         init();
 
 
@@ -1267,8 +1253,6 @@ var froalaOptionComment = {
         function edit(model) {
             loadingService.show();
             return $q.resolve().then(() => {
-                return select();
-            }).then(() => {
                 discount.state = 'edit';
                 discount.Model = model;
                 $location.path(`/discount/edit/${discount.Model.ID}`);
@@ -1311,16 +1295,11 @@ var froalaOptionComment = {
                 loadingService.hide();
             }).finally(loadingService.hide);
         }
-        function select() {
-            return discountService.discountType().then((result) => {
-                discount.selectDiscountType = result;
-            })
-        }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('commentController', commentController);
-    commentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout'];
-    function commentController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout) {
+    commentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService','enumService'];
+    function commentController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService) {
         let comment = $scope;
         comment.Model = {};
         comment.state = '';
@@ -1344,6 +1323,7 @@ var froalaOptionComment = {
                 return 6;
             }
         };
+        comment.selectCommentType = toolsService.arrayEnum(enumService.CommentType);
         init();
 
         function init() {
@@ -1375,14 +1355,8 @@ var froalaOptionComment = {
             return $q.resolve().then(() => {
                 comment.state = 'edit';
                 comment.Model = model;
-                commentTypeDropDown();
                 $location.path(`/comment/edit/${model.ID}`);
             }).finally(loadingService.hide);
-        }
-        function commentTypeDropDown() {
-            commentService.commentStatusType().then((result) => {
-                comment.selectCommentType = result;
-            })
         }
         function editComment() {
             loadingService.show();
@@ -1532,8 +1506,8 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('articleController', articleController);
-    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService'];
-    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
+    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService'];
+    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService) {
         let article = $scope;
         article.Model = {};
         article.main = {};
@@ -1546,6 +1520,8 @@ var froalaOptionComment = {
         article.goToPageAdd = goToPageAdd;
         article.addArticle = addArticle;
         article.editArticle = editArticle;
+        article.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
+        article.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
         init();
         article.main.changeState = {
             add: add,
@@ -1593,10 +1569,6 @@ var froalaOptionComment = {
         function add() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return fillDropIsShow();
-            }).then((result) => {
-                return fillDropComment();
-            }).then((result) => {
                 return fillDropCategory();
             }).then(() => {
                 article.state = 'add';
@@ -1631,9 +1603,7 @@ var froalaOptionComment = {
                 else {
                     article.Model.CommentStatus = 0;
                 }
-                return fillDropIsShow();
-            }).then(() => {
-                return fillDropComment();
+                return true;
             }).then(() => {
                 return fillDropCategory();
             }).then(() => {
@@ -1737,16 +1707,7 @@ var froalaOptionComment = {
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
         }
-        function fillDropIsShow() {
-            return articleService.typeShow().then((result) => {
-                article.typeshow = result;
-            })
-        }
-        function fillDropComment() {
-            articleService.typeComment().then((result) => {
-                article.typecomment = result;
-            })
-        }
+
         function fillDropCategory() {
             categoryPortalService.list().then((result) => {
                 article.typecategory = [];
@@ -1764,8 +1725,8 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('newsController', newsController);
-    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService'];
-    function newsController($scope, $q, loadingService, $routeParams, newsService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
+    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService'];
+    function newsController($scope, $q, loadingService, $routeParams, newsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService) {
         let news = $scope;
         news.Model = {};
         news.main = {};
@@ -1783,7 +1744,8 @@ var froalaOptionComment = {
         news.goToPageAdd = goToPageAdd;
         news.addNews = addNews;
         news.editNews = editNews;
-        init();
+        news.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
+        news.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
         news.grid = {
             bindingObject: news
             , columns: [{ name: 'Title', displayName: 'عنوان خبر' },
@@ -1795,6 +1757,9 @@ var froalaOptionComment = {
             , globalSearch: true
             , displayNameFormat: ['Title']
         };
+
+        init();
+
         function init() {
             loadingService.show();
             $q.resolve().then(() => {
@@ -1822,10 +1787,6 @@ var froalaOptionComment = {
         function add() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return fillDropIsShow();
-            }).then((result) => {
-                return fillDropComment();
-            }).then((result) => {
                 return fillDropCategory();
             }).then(() => {
                 news.attachment.reset();
@@ -1864,9 +1825,7 @@ var froalaOptionComment = {
                     }, 0);
                 }
 
-                return fillDropIsShow();
-            }).then(() => {
-                return fillDropComment();
+                return true;
             }).then(() => {
                 return fillDropCategory();
             }).then(() => {
@@ -1969,16 +1928,6 @@ var froalaOptionComment = {
 
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
-        }
-        function fillDropIsShow() {
-            return newsService.typeShow().then((result) => {
-                news.typeshow = result;
-            })
-        }
-        function fillDropComment() {
-            newsService.typeComment().then((result) => {
-                news.typecomment = result;
-            })
         }
         function fillDropCategory() {
             categoryPortalService.list().then((result) => {
@@ -2303,8 +2252,8 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('sliderController', sliderController);
-    sliderController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'sliderService', '$location', 'toaster', '$timeout', 'attachmentService'];
-    function sliderController($scope, $q, loadingService, $routeParams, sliderService, $location, toaster, $timeout, attachmentService) {
+    sliderController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'sliderService', '$location', 'toaster', '$timeout', 'attachmentService', 'toolsService', 'enumService'];
+    function sliderController($scope, $q, loadingService, $routeParams, sliderService, $location, toaster, $timeout, attachmentService, toolsService, enumService) {
         let slider = $scope;
         slider.Model = {};
         slider.Model.listPicUploaded = [];
@@ -2330,6 +2279,7 @@ var froalaOptionComment = {
         slider.goToPageAdd = goToPageAdd;
         slider.addSlider = addSlider;
         slider.editSlider = editSlider;
+        slider.typeEnable = toolsService.arrayEnum(enumService.ShowArticleType);
         init();
         function init() {
             loadingService.show();
@@ -2359,8 +2309,6 @@ var froalaOptionComment = {
         function add() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return fillDropTypeEnable();
-            }).then(() => {
                 slider.state = 'add';
                 $location.path('/slider/add');
             }).finally(loadingService.hide);
@@ -2369,8 +2317,6 @@ var froalaOptionComment = {
         function edit(model) {
             return $q.resolve().then(() => {
                 slider.Model = model;
-                return fillDropTypeEnable();
-            }).then(() => {
                 return attachmentService.list({ ParentID: slider.Model.ID });
             }).then((result) => {
                 slider.Model.listPicUploaded = [];
@@ -2384,11 +2330,6 @@ var froalaOptionComment = {
 
         function goToPageAdd() {
             add();
-        }
-        function fillDropTypeEnable() {
-            return sliderService.typeEnable().then((result) => {
-                slider.typeEnable = result;
-            })
         }
         function addSlider() {
             loadingService.show();
@@ -2508,30 +2449,36 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('eventsController', eventsController);
-    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService'];
-    function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService) {
+    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService'];
+    function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService) {
         let events = $scope;
+        events.state = '';
+        events.froalaOption = angular.copy(froalaOption);
+
         events.Model = {};
+        events.Model.Errors = [];
+
         events.attachment = {};
-        events.main = {};
         events.attachment.listPicUploaded = [];
         events.attachment.listVideoUploaded = [];
-        events.Model.Errors = [];
-        events.state = '';
+
         events.pic = { type: '8', allowMultiple: false };
         events.pic.list = [];
         events.video = { type: '7', allowMultiple: false };
         events.video.list = [];
+
+        events.main = {};
         events.main.changeState = {
             cartable: cartable,
             edit: edit,
             add: add
         }
-        events.froalaOption = angular.copy(froalaOption);
-        events.goToPageAdd = goToPageAdd;
+
         events.addEvents = addEvents;
         events.editEvents = editEvents;
-        init();
+
+        events.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
+        events.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
         events.grid = {
             bindingObject: events
             , columns: [{ name: 'Title', displayName: 'عنوان رویداد' },
@@ -2544,6 +2491,7 @@ var froalaOptionComment = {
             , searchBy: 'Title'
             , displayNameFormat: ['Title']
         };
+        init();
         function init() {
             loadingService.show();
             $q.resolve().then(() => {
@@ -2563,18 +2511,15 @@ var froalaOptionComment = {
             }).finally(loadingService.hide);
         }
         function cartable() {
-            $('.js-example-tags').empty();
+            loadingService.show();
             clearModel();
             events.state = 'cartable';
             $location.path('/events/cartable');
+            loadingService.hide();
         }
         function add() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return fillDropIsShow();
-            }).then((result) => {
-                return fillDropComment();
-            }).then((result) => {
                 return fillDropCategory();
             }).then(() => {
                 events.state = 'add';
@@ -2587,18 +2532,6 @@ var froalaOptionComment = {
                 return eventsService.get(model.ID);
             }).then((result) => {
                 events.Model = angular.copy(result);
-                if (events.Model.IsShow) {
-                    events.Model.IsShow = 1;
-                }
-                else {
-                    events.Model.IsShow = 0;
-                }
-                if (events.Model.CommentStatus) {
-                    events.Model.CommentStatus = 1;
-                }
-                else {
-                    events.Model.CommentStatus = 0;
-                }
                 if (events.Model.Tags !== null && events.Model.Tags.length > 0) {
                     var newOption = [];
                     for (var i = 0; i < events.Model.Tags.length; i++) {
@@ -2608,10 +2541,6 @@ var froalaOptionComment = {
                         $('.js-example-tags').append(newOption).trigger('change');
                     }, 0);
                 }
-                return fillDropIsShow();
-            }).then(() => {
-                return fillDropComment();
-            }).then(() => {
                 return fillDropCategory();
             }).then(() => {
                 return attachmentService.list({ ParentID: events.Model.ID });
@@ -2631,9 +2560,7 @@ var froalaOptionComment = {
                 $location.path(`/events/edit/${model.ID}`);
             })
         }
-        function goToPageAdd() {
-            add();
-        }
+
         function addEvents() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -2669,6 +2596,8 @@ var froalaOptionComment = {
                     }
                     events.pics = [];
                     events.pic.list = [];
+                    events.videos = [];
+                    event.video.list = [];
                     events.grid.getlist(false);
                     toaster.pop('success', '', 'رویداد جدید با موفقیت اضافه گردید');
                     loadingService.hide();
@@ -2727,6 +2656,8 @@ var froalaOptionComment = {
                     }
                     events.pics = [];
                     events.pic.list = [];
+                    events.videos = [];
+                    events.video.list = [];
                     events.grid.getlist(false);
                     toaster.pop('success', '', 'رویداد جدید با موفقیت ویرایش گردید');
                     loadingService.hide();
@@ -2750,18 +2681,9 @@ var froalaOptionComment = {
                 }).finally(loadingService.hide);
             })
         }
-        function fillDropIsShow() {
-            return eventsService.typeShow().then((result) => {
-                events.typeshow = result;
-            })
-        }
-        function fillDropComment() {
-            eventsService.typeComment().then((result) => {
-                events.typecomment = result;
-            })
-        }
+
         function fillDropCategory() {
-            categoryPortalService.list().then((result) => {
+            return categoryPortalService.list().then((result) => {
                 events.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].ParentID !== '00000000-0000-0000-0000-000000000000') {
@@ -2771,6 +2693,7 @@ var froalaOptionComment = {
             })
         }
         function clearModel() {
+            $('.js-example-tags').empty();
             events.Model = {};
             events.attachment.listPicUploaded = [];
             events.attachment.listVideoUploaded = [];
@@ -2778,14 +2701,16 @@ var froalaOptionComment = {
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('commentPortalController', commentPortalController);
-    commentPortalController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout'];
-    function commentPortalController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout) {
+    commentPortalController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService'];
+    function commentPortalController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService) {
         let comment = $scope;
         comment.Model = {};
+        comment.Model.Errors = [];
+
         comment.Search = {};
         comment.state = '';
         comment.main = {};
-        comment.froalaOptionComment = froalaOptionComment;
+        comment.froalaOptionComment = angular.copy(froalaOptionComment);
         comment.main.changeState = {
             cartable: cartable,
             edit: edit
@@ -2803,14 +2728,14 @@ var froalaOptionComment = {
             , showRemove: true
             , options: () => { return comment.Search.CommentForType }
         };
+
+        comment.selectCommentType = toolsService.arrayEnum(enumService.CommentType);
+        comment.selectCommentForType = toolsService.arrayEnum(enumService.CommentForType);
         init();
 
         function init() {
             loadingService.show();
             $q.resolve().then(() => {
-                if (!comment.Search.CommentForType)
-                    commentForTypeDropDown();
-                comment.Search.CommentForType = 3;
                 switch ($routeParams.state) {
                     case 'cartable':
                         cartable();
@@ -2835,43 +2760,27 @@ var froalaOptionComment = {
         function edit(model) {
             loadingService.show();
             return $q.resolve().then(() => {
-                return commentTypeDropDown();
-            }).then(() => {
                 comment.state = 'edit';
                 comment.Model = model;
                 $location.path(`/comment-portal/edit/${model.ID}`);
             }).finally(loadingService.hide);
         }
-        function commentTypeDropDown() {
-            commentService.commentStatusType().then((result) => {
-                comment.selectCommentType = result;
-            })
-        }
-        function commentForTypeDropDown() {
-            commentService.commentForType().then((result) => {
-                comment.selectCommentForType = result;
-            })
-        }
+
         function editComment() {
             loadingService.show();
             return $q.resolve().then(() => {
-                if (comment.Model.CommentType === 0) {
-                    loadingService.hide();
-                    toaster.pop('error', '', 'وضعیت نظر را تعیین نمایید');
-                } else {
-                    commentService.edit(comment.Model).then((result) => {
-                        comment.grid.getlist(false);
-                        loadingService.hide();
-                        $timeout(function () {
-                            toaster.pop('success', '', 'نظر ویرایش گردید');
-                            cartable();
+                return commentService.edit(comment.Model)
+            }).then((result) => {
+                comment.grid.getlist(false);
+                loadingService.hide();
+                $timeout(function () {
+                    toaster.pop('success', '', 'نظر ویرایش گردید');
+                    cartable();
 
-                        }, 1000);
-                    }).finally(loadingService.hide);
-                }
+                }, 1000);
             }).catch((error) => {
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-            })
+            }).finally(loadingService.hide);
         }
         function changeDrop() {
             loadingService.show();
@@ -3201,7 +3110,7 @@ var froalaOptionComment = {
         user.grid = {
             bindingObject: payment
             , columns: [{ name: 'FirstName', displayName: 'نام' },
-                { name: 'LastName', displayName: 'نام خانوادگی' }]
+            { name: 'LastName', displayName: 'نام خانوادگی' }]
             , listService: userService.list
             , globalSearch: true
             , checkActionVisibility: (action) => {

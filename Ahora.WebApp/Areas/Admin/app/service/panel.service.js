@@ -143,7 +143,7 @@
 
         function upload(model) {
             var defer = $q.defer();
-            return $http.post("/attachment/upload", model,
+            return $http.post(`/${url}/upload`, model,
                 {
                     withCredentials: true,
                     headers: { 'Content-Type': undefined },
@@ -761,8 +761,7 @@
             add: add,
             edit: edit,
             get: get,
-            list: list,
-            discountType: discountType
+            list: list
 
         }
         return service;
@@ -828,20 +827,7 @@
                 return callbackService.onError({ result: result });
             })
         }
-        function discountType() {
-            return $http({
-                method: 'post',
-                url: url + 'DiscountType',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'DiscountType' });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
+
     }
 
     app.factory('productService', productService);
@@ -1113,16 +1099,14 @@
     }
 
     app.factory('commentService', commentService);
-    commentService.$inject = ['$http', 'callbackService'];
-    function commentService($http, callbackService) {
+    commentService.$inject = ['$http', 'callbackService','$q'];
+    function commentService($http, callbackService,$q) {
         var url = '/api/v1/comment/'
         var service = {
             add: add,
             edit: edit,
             get: get,
-            list: list,
-            commentStatusType: commentStatusType,
-            commentForType: commentForType
+            list: list
 
         }
         return service;
@@ -1144,6 +1128,11 @@
                })
         }
         function edit(model) {
+            model.Errors = [];
+            if (model.CommentType === 0)
+                model.Errors.push('لطفا وضعیت نظر را مشخص نمایید');
+            if (model.Errors.length)
+                return $q.reject();
             return $http({
                 method: 'POST',
                 url: url + 'edit',
@@ -1184,34 +1173,6 @@
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `list/${model}` });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
-        function commentStatusType() {
-            return $http({
-                method: 'post',
-                url: url + 'CommentStatusType',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'commentStatusType' });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
-        function commentForType() {
-            return $http({
-                method: 'post',
-                url: url + 'commentForType',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'commentForType' });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
@@ -1303,8 +1264,6 @@
             edit: edit,
             get: get,
             list: list,
-            typeShow: typeShow,
-            typeComment: typeComment,
             remove:remove
 
         }
@@ -1419,34 +1378,6 @@
                 return callbackService.onError({ result: result });
             })
         }
-        function typeShow() {
-            return $http({
-                method: 'post',
-                url: url + 'TypeShowArticle',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'TypeShowArticle' });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
-        function typeComment() {
-            return $http({
-                method: 'post',
-                url: url + 'TypeCommentArticle',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'TypeCommentArticle' });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
     }
 
     app.factory('categoryMapDiscountService', categoryMapDiscountService);
@@ -1486,8 +1417,6 @@
             edit: edit,
             get: get,
             list: list,
-            typeShow: typeShow,
-            typeComment: typeComment,
             remove: remove
 
         }
@@ -1598,34 +1527,6 @@
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
-        function typeShow() {
-            return $http({
-                method: 'post',
-                url: url + 'TypeShowArticle',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'TypeShowArticle' });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
-        function typeComment() {
-            return $http({
-                method: 'post',
-                url: url + 'TypeCommentArticle',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'TypeCommentArticle' });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
@@ -1842,7 +1743,6 @@
             edit: edit,
             get: get,
             list: list,
-            typeEnable: typeEnable,
             remove: remove
 
         }
@@ -1933,20 +1833,6 @@
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
-        function typeEnable() {
-            return $http({
-                method: 'post',
-                url: url + 'TypeEnable',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'TypeEnable' });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
@@ -2006,8 +1892,6 @@
             edit: edit,
             get: get,
             list: list,
-            typeShow: typeShow,
-            typeComment: typeComment,
             remove: remove
 
         }
@@ -2118,34 +2002,6 @@
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
-        function typeShow() {
-            return $http({
-                method: 'post',
-                url: url + 'TypeShowArticle',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'TypeShowArticle' });
-            }).catch((result) => {
-                return callbackService.onError({ result: result });
-            })
-        }
-        function typeComment() {
-            return $http({
-                method: 'post',
-                url: url + 'TypeCommentArticle',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
-                }
-            }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'TypeCommentArticle' });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
@@ -2396,6 +2252,7 @@
             })
         }
     }
+
     app.factory('userService', userService);
     userService.$inject = ['$http', '$q', 'callbackService'];
     function userService($http, $q, callbackService) {

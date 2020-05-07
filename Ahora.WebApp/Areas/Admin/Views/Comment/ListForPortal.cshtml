@@ -13,6 +13,17 @@
     <h2 class="main-title" ng-show="state ==='add'">افزودن</h2>
     <h2 class="main-title" ng-show="state ==='edit'">ویرایش</h2>
     <div class="card-body form-horizontal">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div ng-show="Model.Errors.length" class="alert alert-danger">
+                        <ul ng-repeat="row in Model.Errors">
+                            <li>{{row}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-10">
                 <label for="CategorySub" class="control-label">نظر</label>
