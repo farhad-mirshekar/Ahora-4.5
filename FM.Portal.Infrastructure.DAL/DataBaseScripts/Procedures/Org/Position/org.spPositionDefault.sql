@@ -15,11 +15,15 @@ BEGIN
 	SELECT 
 		users.Username,
 		users.ID,
-		positions.ID AS PositionID
+		positions.ID AS PositionID,
+		positions.DepartmentID,
+		positions.ApplicationID
 	FROM 
 		[org].[User] users
 	INNER JOIN
 		[org].[Position] positions ON users.ID = positions.UserID
+		INNER JOIN
+		[org].[Department] department ON positions.DepartmentID = department.ID
 	WHERE
 		(@UserID IS NULL OR users.[ID] = @UserID) AND
 		users.[Enabled] = 1

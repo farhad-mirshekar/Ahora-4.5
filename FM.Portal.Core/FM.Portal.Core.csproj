@@ -52,9 +52,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\AppSetting\AppSetting.cs" />
     <Compile Include="Common\ConvertDataTableToList.cs" />
     <Compile Include="Common\EnumExtensions.cs" />
     <Compile Include="Common\Helper.cs" />
+    <Compile Include="Common\AppSetting\IAppSetting.cs" />
     <Compile Include="Common\SqlHelper.cs" />
     <Compile Include="Encryption\Authentication.cs" />
     <Compile Include="Encryption\cTripleDES.cs" />

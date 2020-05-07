@@ -9,6 +9,7 @@ using FM.Portal.Core.Owin;
 using FM.Portal.FrameWork.Caching;
 using System.Web;
 using Unity.Injection;
+using FM.Portal.Core.Common;
 
 namespace FM.Portal.FrameWork.Unity
 {
@@ -105,6 +106,7 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));
             container.RegisterType<IRequestInfo, RequestInfo>();
+            container.RegisterType<IAppSetting, AppSetting>();
 
             DependencyResolver.SetResolver(new Unity. UnityDependencyResolver(container));
         }

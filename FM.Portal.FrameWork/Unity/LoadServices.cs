@@ -1,4 +1,5 @@
-﻿using FM.Portal.Core.Owin;
+﻿using FM.Portal.Core.Common;
+using FM.Portal.Core.Owin;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Domain;
@@ -118,6 +119,7 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));
             _container.RegisterType<IRequestInfo, RequestInfo>();
+            _container.RegisterType<IAppSetting, AppSetting>();
             return _container;
         }
     }

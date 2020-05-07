@@ -12,6 +12,7 @@ using FM.Portal.Infrastructure.DAL;
 using System.Collections.Generic;
 using FM.Portal.Core.Owin;
 using System.Linq;
+using FM.Portal.Core.Common;
 
 namespace FM.Portal.WebApp.Providers
 {
@@ -20,16 +21,18 @@ namespace FM.Portal.WebApp.Providers
 
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
+            var container = new UnityContainer();
+            container.RegisterType<IAppSetting, AppSetting>();
+            var _appSetting = container.Resolve<IAppSetting>();
+
             context.Validated();
             context.OwinContext.Set("clientRefreshTokenLifeTime", "1140");
-            context.OwinContext.Set("applicationId", "2C321EC4-EEDC-4292-807E-80497E280266");
-            context.OwinContext.Set("departmentId", "DBE78DFF-A580-4793-833D-6B5540353D53");
+            context.OwinContext.Set("applicationId", _appSetting.ApplicationID.ToString());
             return Task.FromResult(0);
         }
         public override Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             var applicationId = Guid.Parse(context.OwinContext.Get<string>("applicationId"));
-            var departmentId = Guid.Parse(context.OwinContext.Get<string>("departmentId"));
 
             var container = new UnityContainer();
             container.RegisterType<IRequestInfo, RequestInfo>();
@@ -45,15 +48,16 @@ namespace FM.Portal.WebApp.Providers
             if (data.Data.ID != Guid.Empty)
             {
                 var positionDefault = _position.PositionDefault(data.Data.ID);
+                var position = positionDefault.Data;
                 var claims = new List<Claim>
             {
                 new Claim(type: ClaimTypes.Name, value: data.Data.Username??""),
                 new Claim(type: ClaimTypes.NameIdentifier, value: data.Data.ID.ToString()),
                 new Claim(type: Claims.ApplicationId, value:applicationId.ToString()),
-                new Claim(type: Claims.DepartmentId, value:departmentId.ToString() ),
-                new Claim(type: Claims.PositionId, value:positionDefault.Data.PositionID.ToString()),
-                new Claim(type: Claims.UserId, value: positionDefault.Data.UserID.ToString()),
-                new Claim(type: Claims.UserName, value: positionDefault.Data.UserName.ToString()),
+                new Claim(type: Claims.DepartmentId, value:position.DepartmentID.ToString() ),
+                new Claim(type: Claims.PositionId, value:position.PositionID.ToString()),
+                new Claim(type: Claims.UserId, value: position.UserID.ToString()),
+                new Claim(type: Claims.UserName, value: position.UserName.ToString()),
             };
 
                 var identity = new ClaimsIdentity(claims, context.Options.AuthenticationType);
@@ -111,8 +115,8 @@ namespace FM.Portal.WebApp.Providers
             }
             var positionDefault = getDefaultPositionResult.Data;
 
-            //ReplaceClaim(newIdentity, Claims.ApplicationId, applicationId.ToString());
-            //ReplaceClaim(newIdentity, Claims.DepartmentId, defaultPosition.DepartmentID.ToString());
+            ReplaceClaim(newIdentity, Claims.ApplicationId, positionDefault.ApplicationID.ToString());
+            ReplaceClaim(newIdentity, Claims.DepartmentId, positionDefault.DepartmentID.ToString());
             ReplaceClaim(newIdentity, Claims.PositionId, positionDefault.PositionID.ToString());
             ReplaceClaim(newIdentity, Claims.UserId, positionDefault.UserID.ToString());
             ReplaceClaim(newIdentity, Claims.UserName, positionDefault.UserName.ToString());
@@ -122,21 +126,6 @@ namespace FM.Portal.WebApp.Providers
             return Task.FromResult(0);
 
             //return Task.FromResult<object>(null);
-        }
-        private ClaimsIdentity setClaimsIdentity(OAuthGrantResourceOwnerCredentialsContext context, User user)
-        {
-            var identity = new ClaimsIdentity(authenticationType: "JWT");
-            identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
-            // custom data
-            identity.AddClaim(new Claim(ClaimTypes.UserData, user.ID.ToString()));
-
-            var roles = new[] { "user" };
-            foreach (var role in roles)
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Role, role));
-            }
-
-            return identity;
         }
         void ReplaceClaim(ClaimsIdentity identity, string type, string value)
         {

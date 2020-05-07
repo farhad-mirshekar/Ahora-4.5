@@ -14,9 +14,12 @@ namespace FM.Portal.Infrastructure.DAL
     public class CommandDataSource : ICommandDataSource
     {
         private readonly IRequestInfo _requestInfo;
-        public CommandDataSource(IRequestInfo requestInfo)
+        private readonly IAppSetting _appSetting;
+        public CommandDataSource(IRequestInfo requestInfo
+                                ,IAppSetting appSetting)
         {
             _requestInfo = requestInfo;
+            _appSetting = appSetting;
         }
         private Result<Command> Modify(bool isNewRecord, Command model)
         {
@@ -48,7 +51,7 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 SqlParameter[] param = new SqlParameter[2];
                 param[0] = new SqlParameter("@ID", ID);
-                param[1] = new SqlParameter("@ApplicationID", SQLHelper.CheckGuidNull(ConfigurationManager.AppSettings["ApplicationID"].ToString()));
+                param[1] = new SqlParameter("@ApplicationID", _appSetting.ApplicationID);
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "org.spDeleteCommand", param);
