@@ -24,7 +24,8 @@ BEGIN
 		menu.[Enabled],
 		menu.IconText,
 		menu.[Url],
-		menu.[Priority]
+		menu.[Priority],
+		menu.[Parameters]
 	FROM 
 		pbl.Menu menu
 	WHERE 

@@ -16,7 +16,7 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[9];
+                    SqlParameter[] param = new SqlParameter[10];
                     param[0] = new SqlParameter("@ID", model.ID);
                     param[1] = new SqlParameter("@Enabled", (byte)model.Enabled);
                     param[2] = new SqlParameter("@IsNewRecord", IsNewRecord);
@@ -26,8 +26,12 @@ namespace FM.Portal.Infrastructure.DAL
                     param[6] = new SqlParameter("@Url", model.Url);
                     param[7] = new SqlParameter("@IconText", model.IconText);
                     param[8] = new SqlParameter("@Priority", model.Priority);
-                    SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, param, "pbl.spModifyMenu");
-                    return Get(model.ID);
+                    param[9] = new SqlParameter("@Parameters", model.Parameters);
+
+                   var result =  SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "pbl.spModifyMenu", param);
+                    if(result > 0)
+                        return Get(model.ID);
+                    return Result<Menu>.Failure();
                 }
             }
             catch (Exception e) { throw; }
@@ -63,6 +67,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.Url = SQLHelper.CheckStringNull(dr["Url"]);
                             obj.IconText = SQLHelper.CheckStringNull(dr["IconText"]);
                             obj.Priority = SQLHelper.CheckIntNull(dr["Priority"]);
+                            obj.Parameters = SQLHelper.CheckStringNull(dr["Parameters"]);
                         }
                     }
 
@@ -114,6 +119,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.Url = SQLHelper.CheckStringNull(dr["Url"]);
                             obj.IconText = SQLHelper.CheckStringNull(dr["IconText"]);
                             obj.Priority = SQLHelper.CheckIntNull(dr["Priority"]);
+                            obj.Parameters = SQLHelper.CheckStringNull(dr["Parameters"]);
                         }
                     }
 

@@ -14,5 +14,6 @@ namespace FM.Portal.Core.Model
         public string Url { get; set; }
         public string IconText { get; set; }
         public int Priority { get; set; }
+        public string Parameters { get; set; }
     }
 }

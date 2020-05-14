@@ -22,7 +22,8 @@ BEGIN
 		menu.[Enabled],
 		menu.[Url],
 		menu.IconText,
-		menu.[Priority]
+		menu.[Priority],
+		menu.[Parameters]
 	FROM pbl.Menu menu
 	ORDER BY menu.[Priority] 
 

@@ -14,11 +14,12 @@ CREATE PROCEDURE pbl.spModifyMenu
 	@Enabled bit,
 	@Url Nvarchar(max),
 	@IconText Nvarchar(256),
-	@Priority Int
+	@Priority Int,
+	@Parameters Nvarchar(Max)
 --WITH ENCRYPTION
 AS
 BEGIN
-	SET NOCOUNT ON;
+	--SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 	BEGIN TRY
 		BEGIN TRAN
@@ -37,9 +38,9 @@ BEGIN
 			IF @IsNewRecord = 1 -- insert
 			BEGIN
 				INSERT INTO pbl.Menu
-				(ID, [Node],[Name],[Enabled],[CreationDate],[Url],[IconText],[Priority])
+				(ID, [Node],[Name],[Enabled],[CreationDate],[Url],[IconText],[Priority],[Parameters])
 				VALUES
-				(@ID, @NewNode , @Name ,  @Enabled, GETDATE(),@Url , @IconText , @Priority)
+				(@ID, @NewNode , @Name ,  @Enabled, GETDATE(),@Url , @IconText , @Priority , @Parameters)
 			END
 			ELSE
 			BEGIN
@@ -49,7 +50,8 @@ BEGIN
 					[Url] = @Url,
 					[IconText] = @IconText,
 					[Priority] = @Priority,
-					[Enabled] = @Enabled
+					[Enabled] = @Enabled,
+					[Parameters] = @Parameters
 				WHERE ID = @ID
 
 				IF(@Node <> @NewNode)

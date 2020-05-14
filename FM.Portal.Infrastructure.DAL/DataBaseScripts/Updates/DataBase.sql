@@ -826,6 +826,9 @@ REFERENCES [org].[User] ([ID])
 ALTER TABLE [pbl].[Download] WITH CHECK ADD FOREIGN KEY ([PaymentID])
 REFERENCES [app].[Payment] ([ID])
 GO
+ALTER Table pbl.Menu
+ADD [Parameters] Nvarchar(Max) NULL
+GO
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
 GO

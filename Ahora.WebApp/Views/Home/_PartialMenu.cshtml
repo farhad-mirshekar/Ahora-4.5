@@ -5,7 +5,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarAhora">
-        <a class="navbar-brand" href="@Url.RouteUrl("Home")">نام فروشگاه شما</a>
+        <a class="navbar-brand" href="@Url.RouteUrl("Home")">@Helper.SiteName</a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
             @RenderMenu(Model)
         </ul>
@@ -51,8 +51,9 @@
     {
         if (item.Children != null && item.Children.Count > 0)
         {
+            var parameters = routeParams(item.Parameters);
             <li class='nav-item dropdown'>
-                <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
                 @ChildRender(item.Children, item.ID)
             </li>
         }
@@ -62,8 +63,9 @@
             {
                 if (item.Url.ToLower() != "login")
                 {
+                    var parameters = routeParams(item.Parameters);
                     <li class="nav-item">
-                        <a class='nav-link' href='@Url.RouteUrl(item.Url)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                        <a class='nav-link' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
                     </li>
                 }
             }
@@ -77,8 +79,9 @@
                 }
                 else
                 {
+                    var parameters = routeParams(item.Parameters);
                     <li class="nav-item">
-                        <a class='nav-link' href='@Url.RouteUrl(item.Url)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                        <a class='nav-link' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
                     </li>
                 }
             }
@@ -95,16 +98,38 @@
             {
                 if (item.Children != null && item.Children.Count > 0)
                 {
+                    var parameters = routeParams(item.Parameters);
                     <li class='dropdown-submenu'>
-                        <a class='dropdown-item dropdown-toggle' href='@Url.RouteUrl(item.Url)'><i class='@item.IconText mr-1'></i>&nbsp;@item.Name</a>";
+                        <a class='dropdown-item dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)'><i class='@item.IconText mr-1'></i>&nbsp;@item.Name</a>";
                         @ChildRender(item.Children, item.ID);
                     </li>
                 }
                 else
                 {
-                    <li><a class='dropdown-item' href='@Url.RouteUrl(item.Url)'><i class='@item.IconText mr-1'></i>@item.Name</a></li>
+                    var parameters = routeParams(item.Parameters);
+                    <li><a class='dropdown-item' href='@Url.RouteUrl(item.Url,parameters)'><i class='@item.IconText mr-1'></i>@item.Name</a></li>
                 }
             }
         }
     </ul>
+}
+@functions{
+    private RouteValueDictionary routeParams(string parameters)
+    {
+        if (!string.IsNullOrEmpty(parameters))
+        {
+            var dictionary = new RouteValueDictionary();
+
+            var parameter = parameters.Split(',');
+            for (int i = 0; i < parameter.Length; i++)
+            {
+                var param = parameter[i].Split('=');
+                dictionary.Add(param[0].Trim(), param[1].Trim().Replace(' ', '_'));
+            }
+            var routeDictionary = new RouteValueDictionary(dictionary);
+            return routeDictionary;
+        }
+        else
+            return null;
+    }
 }

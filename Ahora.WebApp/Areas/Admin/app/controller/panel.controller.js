@@ -2019,8 +2019,8 @@
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('menuController', menuController);
-    menuController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'menuService', '$location', 'toaster', '$timeout', 'toolsService'];
-    function menuController($scope, $q, loadingService, $routeParams, menuService, $location, toaster, $timeout, toolsService) {
+    menuController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'menuService', '$location', '$timeout', 'toolsService','enumService','toaster'];
+    function menuController($scope, $q, loadingService, $routeParams, menuService, $location, toaster,  toolsService, enumService,toaster) {
         let menu = $scope;
         menu.Model = {};
         menu.list = [];
@@ -2033,6 +2033,7 @@
             edit: edit,
             add:add
         }
+        menu.EnableType = toolsService.arrayEnum(enumService.EnableMenuType);
         menu.tree = {
             data: []
             , colDefs: [
