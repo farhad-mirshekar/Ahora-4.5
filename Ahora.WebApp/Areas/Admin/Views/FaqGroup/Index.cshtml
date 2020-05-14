@@ -1,5 +1,5 @@
 ﻿<section ng-show="state === 'cartable'">
-    <button class="btn btn-default btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
     <portal-grid obj="grid"></portal-grid>
 </section>
 <section ng-show="['add','edit'].indexOf(state) !== -1">
@@ -61,33 +61,37 @@
     </div>
 </section>
 
-<script type="text/ng-template" id="faq.html">
-    <div class="modal-content" dir="rtl">
-        <div class="modal-header">
-            <h3 class="modal-title">اضافه کردن سوال برای <span class="text-danger">{{faqgroup.Title}}</span></h3>
-        </div>
-        <div class="modal-body">
-            <form class="form-horizontal" novalidate name="faqAdd">
+<div class="modal fade grid-faq" dir="rtl"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="gridDeleteLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h4 class="modal-title">اضافه کردن سوال برای <span class="text-danger">{{Model.Title}}</span></h4>
+            </div>
+            <div class="modal-body">
                 <div class="form-group">
                     <label for="CategorySub" class="control-label">سوال</label>
                     <div class="col-md-12">
-                        <input type="text" class="form-control" required ng-model="Model.Question" />
+                        <input type="text" class="form-control" ng-model="faq.Model.Question" />
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="CategorySub" class="control-label">پاسخ</label>
                     <div class="col-md-12">
-                        <textarea class="form-control" required ng-model="Model.Answer" cols="5" rows="5" />
+                        <textarea class="form-control" ng-model="faq.Model.Answer" cols="5" rows="5" />
                     </div>
                 </div>
-            </form>
-        </div>
-        <div class="modal-footer pull-left">
-            <button class="btn btn-success" ng-show="state === 'add'" ng-click="add();">ثبت</button>
-            <button class="btn btn-primary" ng-show="state === 'edit'" ng-click="edit();">ویرایش</button>
-            <button class="btn btn-cancel" ng-click="cancel()">انصراف</button>
+            </div>
+            <div class="modal-footer pull-left">
+                <button type="button" class="btn btn-success" ng-click="addFaq()" ng-show="faq.state === 'add'">ثبت</button>
+                <button type="button" class="btn btn-primary" ng-click="editFaq();" ng-show="faq.state === 'edit'">ویرایش</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
         </div>
     </div>
+</div>
 
-</script>
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>

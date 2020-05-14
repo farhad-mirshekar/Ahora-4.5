@@ -21,13 +21,13 @@
                         @foreach (var item in Model)
                         {
                             <div class="card pb-2">
-                                <div class="card-header" data-target="#@item.ID" aria-controls="@item.ID" aria-expanded="false" data-parent="#accordion" data-toggle="collapse">
+                                <div class="card-header" data-target="#collapse-@item.ID" aria-controls="collapse-@item.ID" aria-expanded="false" data-toggle="collapse">
                                     <h5 class="mb-0">
                                         <i class="fa fa-question text-info"></i>
                                         @item.Question
                                     </h5>
                                 </div>
-                                <div id="@item.ID" class="collapse" aria-labelledby="@item.ID" data-parent="#accordion">
+                                <div id="collapse-@item.ID" class="collapse" aria-labelledby="collapse-@item.ID" data-parent="#accordion">
                                     <div class="card-body">
                                         <p class="text-justify">@item.Answer</p>
                                     </div>

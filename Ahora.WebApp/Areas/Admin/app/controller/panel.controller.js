@@ -30,22 +30,26 @@
     }
     //-------------------------------------------------------------------------------------------------------
     app.controller('faqGroupController', faqGroupController);
-    faqGroupController.$inject = ['$scope', '$routeParams', '$location', '$uibModal', 'toaster', 'loadingService', 'faqGroupService', 'faqService', '$q', '$timeout'];
-    function faqGroupController($scope, $routeParams, $location, $uibModal, toaster, loadingService, faqGroupService, faqService, $q, $timeout) {
+    faqGroupController.$inject = ['$scope', '$routeParams', '$location', 'toaster', 'loadingService', 'faqGroupService', 'faqService', '$q', '$timeout'];
+    function faqGroupController($scope, $routeParams, $location, toaster, loadingService, faqGroupService, faqService, $q, $timeout) {
         let faqgroup = $scope;
         faqgroup.state = '';
         faqgroup.Model = {};
         faqgroup.faq = {};
+        faqgroup.faq.Model = {};
+        faqgroup.faq.state = '';
         faqgroup.main = {};
         faqgroup.main.changeState = {
             cartable: cartable,
-            edit: edit
+            edit: edit,
+            add: add
         };
         faqgroup.addFaqGroup = addFaqGroup;
         faqgroup.editFaqGroup = editFaqGroup;
         faqgroup.select = select;
         faqgroup.openModalFaq = openModalFaq;
-        faqgroup.goToPageAdd = goToPageAdd;
+        faqgroup.addFaq = addFaq;
+        faqgroup.editFaq = editFaq;
         faqgroup.grid = {
             bindingObject: faqgroup
             , columns: [{ name: 'Title', displayName: 'دسته بندی سوال' }]
@@ -56,36 +60,56 @@
         init();
         function init() {
             loadingService.show();
-            switch ($routeParams.state) {
-                case 'cartable':
-                    cartable();
-                    loadingService.hide();
-                    break;
-                case 'add':
-                    faqgroup.state = 'add';
-                    loadingService.hide();
-                    break;
-                case 'edit':
-                    faqgroup.state = 'edit';
-                    faqGroupService.get($routeParams.id).then((result) => {
-                        edit(result);
-                    })
-                    loadingService.hide();
-                    break;
-            }
+            return $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        faqgroup.main.changeState.cartable();
+                        break;
+                    case 'add':
+                        faqgroup.main.changeState.add();
+                        break;
+                    case 'edit':
+                        faqgroup.state = 'edit';
+                        faqGroupService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
         }
-        function goToPageAdd() {
+        function cartable() {
+            loadingService.show();
+            clearModel();
+            faqgroup.state = 'cartable';
+            $location.path('faq-group/cartable');
+            loadingService.hide();
+        }
+        function edit(model) {
+            loadingService.show();
+            faqgroup.faq = {};
+            return $q.resolve().then(() => {
+                return faqService.list(model.ID);
+            }).then((result) => {
+                faqgroup.faq = result;
+                faqgroup.state = 'edit';
+                faqgroup.Model = model;
+                $location.path(`faq-group/edit/${faqgroup.Model.ID}`);
+            }).finally(loadingService.hide);
+        }
+        function add() {
+            loadingService.show();
+            faqgroup.state = 'add';
             $location.path('/faq-group/add');
+            loadingService.hide();
         }
+
         function addFaqGroup() {
             loadingService.show();
             return faqGroupService.add(faqgroup.Model).then((result) => {
                 faqgroup.grid.getlist(false);
                 toaster.pop('success', '', 'تغییرات با موفقیت انجام گردید');
                 faqgroup.Model = result;
-                $timeout(function () {
-                    cartable();
-                }, 1000);
+                faqgroup.main.changeState.edit(faqgroup.Model);
             }).finally(loadingService.hide);
         }
         function editFaqGroup() {
@@ -101,111 +125,50 @@
                 }, 1000);
             }).finally(loadingService.hide);
         }
-        function cartable() {
-            faqgroup.Model = {};
-            faqgroup.state = 'cartable';
-            $location.path('faq-group/cartable');
-        }
-        function edit(model) {
-            loadingService.show();
-            return $q.resolve().then(() => {
-                return faqService.list(model.ID);
-            }).then((result) => {
-                faqgroup.faq = result;
-                faqgroup.state = 'edit';
-                faqgroup.Model = model;
-                $location.path(`faq-group/edit/${faqgroup.Model.ID}`);
-            }).finally(loadingService.hide);
-        }
         function openModalFaq() {
-
-            var modalInstanse = $uibModal.open({
-                templateUrl: 'faq.html',
-                controller: 'faqController',
-                size: 'lg',
-                ariaLabelledBy: 'modal-title',
-                ariaDescribedBy: 'modal-body',
-                resolve: {
-                    faqgroup: () => { return faqgroup.Model; },
-                    faqmodel: () => { return null; }
-                }
-            })
+            faqgroup.faq.Model = {};
+            faqgroup.faq.state = 'add';
+            $(".grid-faq").modal("show");
         }
         function select(model) {
-            var modalInstanse = $uibModal.open({
-                templateUrl: 'faq.html',
-                controller: 'faqController',
-                size: 'lg',
-                ariaLabelledBy: 'modal-title',
-                ariaDescribedBy: 'modal-body',
-                resolve: {
-                    faqgroup: () => { return faqgroup.Model; },
-                    faqmodel: () => { return angular.copy(model); }
-                }
-            })
-        }
-    }
-
-    //-------------------------------------------------------------------------------------------------------
-
-    app.controller('faqController', faqController);
-    faqController.$inject = ['$scope', '$uibModalInstance', '$timeout', 'toaster', 'loadingService', 'faqgroup', 'faqService', '$window', 'faqmodel', '$q'];
-    function faqController($scope, $uibModalInstance, $timeout, toaster, loadingService, faqgroup, faqService, $window, faqmodel, $q) {
-        let faq = $scope;
-        faq.cancel = cancel;
-        faq.add = add;
-        faq.edit = edit;
-        faq.state = 'addd';
-        if (faqmodel === null) {
-            faq.state = 'add';
-            faq.Model = {};
-        }
-        else {
-            faq.Model = faqmodel;
-            faq.state = 'edit';
+            faqgroup.faq.state = 'edit';
+            faqgroup.faq.Model = angular.copy(model);
+            $(".grid-faq").modal("show");
         }
 
-        faq.faqgroup = faqgroup;
-        function add() {
-            loadingService.show();
-            faq.Model.FAQGroupID = faqgroup.ID;
-            return $q.resolve().then(() => {
-                return faqService.add(faq.Model);
-            }).then(() => {
-                toaster.pop('success', '', 'تغییرات با موفقیت انجام گردید');
-                $timeout(function () {
-                    cancel();
-                }, 100);
-                $timeout(function () {
-                    $window.location.reload();
-                }, 100);
-            }).catch((error) => {
-                toaster.pop('error', "", "مشکلی اتفاق افتاده است");
-            }).finally(loadingService.hide);
-        }
-        function edit() {
-            faq.Model.FAQGroupID = faqgroup.ID;
+        function addFaq() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return faqService.edit(faq.Model);
+                return faqService.add(faqgroup.faq.Model);
             }).then(() => {
-                toaster.pop('success', '', 'تغییرات با موفقیت انجام گردید');
+                toaster.pop('success', '', 'سوال با موفقیت ثبت گردید');
                 $timeout(function () {
-                    cancel();
-                }, 1000);
-                $timeout(function () {
-                    $window.location.reload();
+                    $('.grid-faq').modal('hide');
                 }, 100);
-            }).catch((error) => {
-                toaster.pop('error', "", "مشکلی اتفاق افتاده است");
+
             }).finally(loadingService.hide);
         }
-        function cancel() {
-            $uibModalInstance.dismiss();
+        function editFaq() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return faqService.edit(faqgroup.faq.Model);
+            }).then(() => {
+                return faqGroupService.get(faqgroup.Model.ID);
+            }).then((result) => {
+                return edit(result);
+            }).then(() => {
+                toaster.pop('success', '', 'سوال با موفقیت ویرایش گردید');
+                $timeout(function () {
+                    $('.grid-faq').modal('hide');
+                }, 100);
+            }).finally(loadingService.hide);
         }
-
+        function clearModel() {
+            faqgroup.Model = {};
+            faqgroup.faq.Model = {};
+            faqgroup.faq.state = '';
+        }
     }
-
     //-------------------------------------------------------------------------------------------------------
     app.controller('profileController', profileController);
     profileController.$inject = ['$scope', 'profileService'];
@@ -221,7 +184,7 @@
             })
         }
     }
-    //------------------------------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------------------------------------------------
     app.controller('commandController', commandController);
     commandController.$inject = ['$scope', '$q', 'commandService', 'loadingService', '$routeParams', '$location', 'toaster', '$timeout', 'toolsService', 'enumService'];
     function commandController($scope, $q, commandService, loadingService, $routeParams, $location, toaster, $timeout, toolsService, enumService) {
@@ -229,17 +192,43 @@
         command.Model = {};
         command.list = [];
         command.lists = [];
-        command.state = 'cartable';
-        command.goToPageAdd = goToPageAdd;
+        command.state = '';
+
         command.addCommand = addCommand;
         command.addSubCommand = addSubCommand;
         command.editCommand = editCommand;
         command.commandType = toolsService.arrayEnum(enumService.CommandsType);
         command.changeState = {
-            cartable: cartable
+            cartable: cartable,
+            add: add
         }
         init();
-
+        command.tree = {
+            data: []
+            , colDefs: [
+                { field: 'Name', displayName: 'عنوان انگلیسی' }
+                , { field: 'Title', displayName: 'نام مجوز' }
+                , {
+                    field: ''
+                    , displayName: ''
+                    , cellTemplate: (
+                        `<div class='pull-left'>
+                            <i class='fa fa-plus tgrid-action pl-1 text-success' style='cursor:pointer;' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
+                            <i class='fa fa-pencil tgrid-action pl-1 text-primary' style='cursor:pointer;' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
+                            <i class='fa fa-trash tgrid-action pl-1 text-danger' style='cursor:pointer;' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
+                        </div>`)
+                    , cellTemplateScope: {
+                        edit: edit,
+                        add: addSubCommand,
+                        remove: remove
+                    }
+                }
+            ]
+            , expandingProperty: {
+                field: "Title"
+                , displayName: "عنوان"
+            }
+        };
         function init() {
             loadingService.show();
             $q.resolve().then(() => {
@@ -264,36 +253,9 @@
         } // end init
 
         function cartable() {
-            command.tree = {
-                data: []
-                , colDefs: [
-                    { field: 'Name', displayName: 'عنوان انگلیسی' }
-                    , { field: 'Title', displayName: 'نام مجوز' }
-                    , {
-                        field: ''
-                        , displayName: ''
-                        , cellTemplate: (
-                            `<div class='pull-left'>
-                            <i class='fa fa-plus tgrid-action pl-1 text-success' style='cursor:pointer;' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
-                            <i class='fa fa-pencil tgrid-action pl-1 text-primary' style='cursor:pointer;' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
-                            <i class='fa fa-trash tgrid-action pl-1 text-danger' style='cursor:pointer;' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
-                        </div>`)
-                        , cellTemplateScope: {
-                            edit: edit,
-                            add: addSubCommand,
-                            remove: remove
-                        }
-                    }
-                ]
-                , expandingProperty: {
-                    field: "Title"
-                    , displayName: "عنوان"
-                }
-            };
             commandService.list().then((result) => {
                 setTreeObject(result);
             });
-            command.state = 'cartable';
             $location.path('command/cartable');
         }
         function edit(parent) {
@@ -305,28 +267,28 @@
                 return commandService.listByNode({ Node: result.ParentNode });
             }).then((result) => {
                 command.Model.ParentID = result[0].ID;
-                $location.path(`/command/edit/${command.Model.ID}`);
                 command.state = 'edit';
+                $('#command-modal').modal('show');
             }).finally(loadingService.hide)
         }
-        function goToPageAdd(parent) {
+        function add(parent) {
             loadingService.show();
             parent = parent || {};
-            command.state = 'add';
             command.Model = { ParentID: parent.ID };
-            $location.path('/command/add');
+            command.state = 'add';
+            $('#command-modal').modal('show');
             loadingService.hide();
         }
+
         function addCommand() {
             command.Model.Name = command.Model.FullName;
             loadingService.show();
             return $q.resolve().then(() => {
                 commandService.add(command.Model).then((result) => {
                     toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
+                    $('#command-modal').modal('hide');
+                    command.changeState.cartable();
                     loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 1000);
                 })
             }).catch((error) => {
                 toaster.pop('error', '', 'خطای ناشناخته');
@@ -339,17 +301,15 @@
                 commandService.edit(command.Model).then((result) => {
                     toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
                     loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 1000);
+                    $('#command-modal').modal('hide');
+                    command.changeState.cartable();
                 })
             }).catch((error) => {
                 toaster.pop('error', '', 'خطای ناشناخته');
             }).finally(loadingService.hide);
         }
         function addSubCommand(parent) {
-            command.state = 'add';
-            goToPageAdd(parent);
+            command.changeState.add(parent);
         }
         function setTreeObject(commands) {
             commands.map((item) => {

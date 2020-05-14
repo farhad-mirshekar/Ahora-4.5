@@ -1,5 +1,5 @@
-﻿<section ng-show="state === 'cartable'">
-    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+﻿<section>
+    <button class="btn btn-success btn-circle pull-left" ng-click="changeState.add();"><i class="fa fa-plus"></i></button>
     <tree-grid tree-data="tree.data"
                col-defs="tree.colDefs"
                expand-on="tree.expandingProperty"
@@ -8,37 +8,50 @@
                icon-expand="fa fa-plus"
                icon-collapse="fa fa-minus"></tree-grid>
 </section>
-<section ng-show="['add','edit'].indexOf(state) !== -1">
-    <h2 class="main-title" ng-show="state==='edit'">ویرایش</h2>
-    <h2 class="main-title" ng-show="state==='add'">افزودن</h2>
-    <div class="card-body">
-        <div class="form-horizontal">
-            <div class="form-group">
-                <div class="col-md-10">
-                    <label for="Type" class="control-label">نوع دستور</label>
-                    <select class="form-control" ng-model="Model.Type">
-                        <option ng-repeat="row in commandType" ng-value="row.Model">{{row.Name}}</option>
-                    </select>
+
+<div class="modal fade" dir="rtl"
+     id="command-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="gridDeleteLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h2 class="main-title" ng-show="state==='edit'">ویرایش</h2>
+                <h2 class="main-title" ng-show="state==='add'">افزودن</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="Type" class="control-label">نوع دستور</label>
+                            <select class="form-control" ng-model="Model.Type">
+                                <option ng-repeat="row in commandType" ng-value="row.Model">{{row.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="CategorySub" class="control-label">نام لاتین</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" ng-required="true" ng-model="Model.FullName" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">نام فارسی</label>
+                            <input type="text" class="form-control" ng-required="true" ng-model="Model.Title" />
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="CategorySub" class="control-label">نام لاتین</label>
-                <div class="col-md-10">
-                    <input type="text" class="form-control" ng-required="true" ng-model="Model.FullName" />
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    <label for="CategorySub" class="control-label">نام فارسی</label>
-                    <input type="text" class="form-control" ng-required="true" ng-model="Model.Title" />
-                </div>
+            <div class="modal-footer pull-left">
+                <button type="submit" ng-click="addCommand()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
+                <button type="submit" ng-click="editCommand()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
             </div>
         </div>
     </div>
-    <div class="btn-group-justified pull-left mb-5">
-        <button type="submit" ng-click="addCommand()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
-        <button type="submit" ng-click="editCommand()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
-        <a href="" ng-click="changeState.cartable()" class="btn btn-cancel">بازگشت</a>
-    </div>
-</section>
+</div>
+
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
