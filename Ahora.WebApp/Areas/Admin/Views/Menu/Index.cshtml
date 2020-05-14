@@ -1,5 +1,5 @@
-﻿<div ng-show="state === 'cartable'">
-    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+﻿<div>
+    <button class="btn btn-success btn-circle pull-left" ng-click="changeState.add();"><i class="fa fa-plus"></i></button>
         <tree-grid tree-data="tree.data"
                    col-defs="tree.colDefs"
                    expand-on="tree.expandingProperty"
@@ -8,54 +8,72 @@
                    icon-expand="fa fa-plus"
                    icon-collapse="fa fa-minus"></tree-grid>
 </div>
-<section ng-show="['add','edit'].indexOf(state) !== -1">
-    <h2 class="main-title" ng-show="state==='edit'">ویرایش</h2>
-    <h2 class="main-title" ng-show="state==='add'">افزودن</h2>
-        <div class="card-body">
-            <div class="form-horizontal">
-                <div class="form-group">
-                    <label for="CategorySub" class="control-label">نام منو</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" ng-required="true" ng-model="Model.Name" />
+
+<div class="modal fade" dir="rtl"
+     id="menu-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h2 class="main-title" ng-show="state==='edit'">ویرایش</h2>
+                <h2 class="main-title" ng-show="state==='add'">افزودن</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="CategorySub" class="control-label">نام منو</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" ng-model="Model.Name" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="CategorySub" class="control-label">آدرس</label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" ng-required="true" ng-model="Model.Url" />
+                    <div class="form-group">
+                        <label for="CategorySub" class="control-label">آدرس</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" ng-model="Model.Url" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="CategorySub" class="control-label">اولویت نمایش</label>
-                    <div class="col-md-10">
-                        <input type="number" class="form-control" ng-required="true" ng-model="Model.Priority" />
+                    <div class="form-group">
+                        <label for="CategorySub" class="control-label">
+                            پارامترها
+                            <i class="fa fa-info-circle text-info" data-container="body" title="نحوه پر کردن پارامترها" data-toggle="popover" data-placement="left" data-content="برای جدا کردن پارامترها از ویرگول استفاده نمایید">
+                            </i>
+                        </label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" ng-model="Model.Parameters" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="CategorySub" class="control-label">
-                        آیکون
-                        <i class="fa fa-info" data-container="body" title="نحوه استفاده از آیکن ها" data-toggle="popover" data-placement="left" data-content="برای استفاده شما می توانید به سایت http://www.google.com مراجعه کرده و آیکن مورد نظر خود را انتخاب نمایید">
-                        </i>
-                    </label>
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" ng-required="true" ng-model="Model.IconText" />
+                    <div class="form-group">
+                        <label for="CategorySub" class="control-label">اولویت نمایش</label>
+                        <div class="col-md-10">
+                            <input type="number" class="form-control" ng-model="Model.Priority" />
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="CategorySub" class="control-label">نمایش در لیست</label>
-                    <div class="col-md-10">
-                        <input type="checkbox" class="form-control" ng-required="true" ng-model="Model.Enabled" />
+                    <div class="form-group">
+                        <label for="CategorySub" class="control-label">
+                            آیکون
+                            <i class="fa fa-info-circle text-info" data-container="body" title="نحوه استفاده از آیکن ها" data-toggle="popover" data-placement="left" data-content="برای استفاده شما می توانید به سایت http://www.google.com مراجعه کرده و آیکن مورد نظر خود را انتخاب نمایید">
+                            </i>
+                        </label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control" ng-model="Model.IconText" />
+                        </div>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">نمایش لیست</label>
+                        <input class="form-check-input ml-3" type="checkbox" ng-model="Model.Enabled">
                     </div>
                 </div>
             </div>
+            <div class="modal-footer pull-left">
+                <button type="submit" ng-click="addMenu()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
+                <button type="submit" ng-click="editMenu()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
         </div>
-        <div class="btn-group-justified pull-left mb-5">
-            <button type="submit" ng-click="addMenu()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
-            <button type="submit" ng-click="editMenu()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
-            <a href="" ng-click="changeState.cartable()" class="btn btn-cancel">بازگشت</a>
-        </div>
-</section>
-
+    </div>
+</div>
 <script>
     $(function () {
         $('[data-toggle="popover"]').popover({

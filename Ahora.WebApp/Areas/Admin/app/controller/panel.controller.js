@@ -2025,13 +2025,13 @@
         menu.Model = {};
         menu.list = [];
         menu.lists = [];
-        menu.state = 'cartable';
-        menu.goToPageAdd = goToPageAdd;
+        menu.state = '';
         menu.addMenu = addMenu;
         menu.editMenu = editMenu;
         menu.changeState = {
             cartable: cartable,
-            edit: edit
+            edit: edit,
+            add:add
         }
         menu.tree = {
             data: []
@@ -2082,17 +2082,25 @@
         }
 
         function cartable() {
-            menuService.list().then((result) => {
+            menu.Model = {};
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return menuService.list();
+            }).then((result) => {
                 setTreeObject(result);
-            });
-            menu.state = 'cartable';
-            $location.path('menu/cartable');
+                menu.state = 'cartable';
+                $location.path('menu/cartable');
+            }).catch(() => {
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
         function add(parent) {
+            loadingService.show();
             parent = parent || {};
             menu.Model = { ParentID: parent.ID };
             menu.state = 'add';
-            $location.path('/menu/add');
+            $('#menu-modal').modal('show');
+            loadingService.hide();
         }
         function edit(model) {
             loadingService.show();
@@ -2102,16 +2110,14 @@
             }).then((result) => {
                 menu.state = 'edit';
                 menu.Model.ParentID = result.ID;
-                $location.path(`/menu/edit/${menu.Model.ID}`);
+                $('#menu-modal').modal('show');
             }).finally(loadingService.hide);
 
         }
+
         function addFirst(parent) {
             menu.state = 'add';
-            goToPageAdd(parent);
-        }
-        function goToPageAdd(parent) {
-            add(parent);
+            menu.changeState.add(parent);
         }
         function addMenu() {
             loadingService.show();
@@ -2120,9 +2126,8 @@
             }).then((result) => {
                 toaster.pop('success', '', 'منو جدید با موفقیت اضافه گردید');
                 loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 1000);
+                menu.changeState.cartable();
+                $('#menu-modal').modal('hide');
             }).catch((error) => {
                 toaster.pop('error', '', 'خطا');
                 loadingService.hide();
@@ -2136,9 +2141,8 @@
                 menu.Model = result;
                 toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 1000);
+                menu.changeState.cartable();
+                $('#menu-modal').modal('hide');
             }).catch((error) => {
                 toaster.pop('error', '', 'خطا');
                 loadingService.hide();

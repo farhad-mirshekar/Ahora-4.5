@@ -238,6 +238,7 @@ element {
     margin-bottom: 13px;
     border-bottom: 1px solid #ddd;
     padding-bottom: 10px;
+    width:100%;
 }
 
 .card-body label {
