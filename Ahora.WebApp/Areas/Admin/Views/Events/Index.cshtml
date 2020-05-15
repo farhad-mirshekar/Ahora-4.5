@@ -3,7 +3,7 @@
     <portal-grid obj="grid"></portal-grid>
 </div>
 <section ng-show="['add','edit'].indexOf(state) !== -1">
-    <h2 class="main-title" ng-show="state==='add'">افزودن رویداد </h2>
+    <h2 class="main-title" ng-show="state==='add'">افزودن رویداد</h2>
     <h2 class="main-title" ng-show="state==='edit'">ویرایش رویداد</h2>
     <div id="newsSection">
         <div class="container">
@@ -94,12 +94,10 @@
                     </div>
                 </uib-tab>
                 <uib-tab heading="بارگذاری عکس">
-                    <portal-upload main="attachment"
-                                   pic="pic"></portal-upload>
+                    <portal-upload obj="pic"></portal-upload>
                 </uib-tab>
                 <uib-tab heading="بارگذاری ویدیو">
-                    <portal-upload-video main="attachment"
-                                         video="video"></portal-upload-video>
+                    <portal-upload obj="video"></portal-upload>
                 </uib-tab>
             </uib-tabset>
         </div>

@@ -8,8 +8,7 @@
             restrict: 'E',
             templateUrl: './Areas/Admin/app/directive/upload/upload.html',
             scope: {
-                main: '=main',
-                pic: '=pic'
+                obj: '=obj'
             }
             , link: link
         }
@@ -23,38 +22,20 @@
             scope.browse = browse;
             scope.upload = upload;
             scope.confirmRemove = confirmRemove;
-            scope.main.reset = reset;
+            scope.obj.reset = reset;
             scope.fileSelected = false;
             scope.uploading = false;
-            scope.validTypes = scope.pic.validTypes || [
-                "application/vnd.ms-excel",
-                "application/msexcel",
-                "application/x-msexcel",
-                "application/x-ms-excel",
-                "application/x-excel",
-                "application/x-dos_ms_excel",
-                "application/xls",
-                "application/x-xls",
-                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                "application/msword",
-                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            scope.validTypes = scope.obj.validTypes || [
                 "application/pdf",
                 "application/zip",
                 "application/x-zip-compressed",
                 "application/x-7z-compressed",
                 "application/x-rar-compressed",
                 "image/jpeg",
-                "image/x-citrix-jpeg",
-                "image/png",
-                "image/x-citrix-png",
-                "image/x-png",
-                "image/tiff",
-                "image/gif",
-                "image/bmp",
-                "image/svg+xml"
+                "image/png"
             ];
             scope.path = '';
-            switch (scope.pic.type) {
+            switch (scope.obj.type) {
                 case '3':
                     scope.path = 'news';
                     break;
@@ -92,16 +73,16 @@
                 }).then((result) => {
                     if (result && result.length > 0) {
                         for (var i = 0; i < result.length; i++) {
-                            if (result[i].PathType !== 7) // only pic add
-                                scope.main.listPicUploaded = [].concat(result);
+                            if (result[i].PathType === parseInt(scope.obj.type)) // only obj add
+                                scope.obj.listUploaded = [].concat(result);
                         }
                     }
                     else
-                        scope.main.listPicUploaded = [];
+                        scope.obj.listUploaded = [];
                 })
             }
             function remove(item) {
-                var model = { ID: item.ID, FileName: item.FileName, PathType: scope.pic.type };
+                var model = { ID: item.ID, FileName: item.FileName, PathType: scope.obj.type };
                 scope.deleteBuffer = model;
                 element.find(".upload-delete").modal("show");
             }
@@ -112,21 +93,23 @@
                     if (result) {
                         scope.deleteBuffer = {};
                         element.find(".upload-delete").modal("hide");
-                        scope.main.listPicUploaded = [];
+                        scope.obj.listUploaded = [];
                         return init();
                     }
                 })
             }
             function reset() {
                 scope.tempListFile = [];
+                scope.obj.list = [];
+                scope.obj.listUploaded = [];
             }
             function removeTemp(item) {
                 loadingService.show();
                 return $q.resolve().then(() => {
                     var index = scope.tempListFile.indexOf(item);
                     scope.tempListFile.splice(index, 1);
-                    scope.pic.list.splice(index, 1);
-                    return attachmentService.remove({ FileName: item.FileName, PathType: scope.pic.type });
+                    scope.obj.list.splice(index, 1);
+                    return attachmentService.remove({ FileName: item.FileName, PathType: scope.obj.type });
                 }).catch(() => {
                     loadingService.hide();
                 }).finally(loadingService.hide);
@@ -137,18 +120,23 @@
             function upload() {
                 loadingService.show();
                 return $q.resolve().then(() => {
-                    if (scope.pic.validTypes.length && scope.pic.validTypes.indexOf(file.type) === -1)
-                        return toaster.pop('error', '', "قالب فایل انتخاب شده مجاز نیست");
-                    if (window.FormData !== undefined) {
-                        const formData = new FormData();
-                        formData.append(file.name, file, file.name);
-                        scope.uploading = true; // rename to state // **state
-                        scope.fileSelected = false;
-                        return uploadService.upload({ type: scope.pic.type, data: formData });
+                    if (scope.obj.validTypes.length && scope.obj.validTypes.indexOf(file.type) === -1) {
+                        toaster.pop('error', '', 'قالب فایل انتخاب شده مجاز نیست');
+                        return $q.reject();
+                    }
+                    else {
+
+                        if (window.FormData !== undefined) {
+                            const formData = new FormData();
+                            formData.append(file.name, file, file.name);
+                            scope.uploading = true; // rename to state // **state
+                            scope.fileSelected = false;
+                            return uploadService.upload({ type: scope.obj.type, data: formData });
+                        }
                     }
                 }).then((result) => {
                     scope.tempListFile.push(result);
-                    scope.pic.list.push(result.FileName);
+                    scope.obj.list.push(result.FileName);
                 })
                     .finally(loadingService.hide);
             }

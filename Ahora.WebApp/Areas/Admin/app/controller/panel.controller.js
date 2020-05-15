@@ -612,13 +612,15 @@
         product.Attribute = {};
         product.ProductVariant = {};
         product.Model.Errors = [];
-        product.pic = { type: '6', allowMultiple: true };
+
+        product.pic = { type: '6', allowMultiple: true, validTypes: 'image/jpeg' };
         product.pic.list = [];
-        product.attachment = {};
-        product.attachment.listPicUploaded = [];
-        product.attachment.listFileUploaded = [];
-        product.file = { type: '10', allowMultiple: false };
+        product.pic.listUploaded = [];
+
+        product.file = { type: '10', allowMultiple: false, validTypes: 'application/x-zip-compressed' };
         product.file.list = [];
+        product.file.listUploaded = [];
+
         product.froalaOption = angular.copy(froalaOption.main);
         product.froalaOptions = angular.copy(froalaOption.main);
         product.Attribute.Sub = false;
@@ -668,15 +670,15 @@
             }).then(() => {
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
-                product.attachment.listPicUploaded = [];
-                product.attachment.listFileUploaded = [];
+                product.pic.listUploaded = [];
+                product.file.listUploaded = [];
 
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         if (result[i].PathType === 10)
-                            product.attachment.listFileUploaded.push(result[i]);
+                            product.file.listUploaded.push(result[i]);
                         else
-                            product.attachment.listPicUploaded.push(result[i]);
+                            product.pic.listUploaded.push(result[i]);
                     }
                 }
                 product.state = 'edit';
@@ -721,7 +723,7 @@
 
                 if (product.pic.list.length) {
                     product.pics = [];
-                    if (product.attachment.listPicUploaded && product.attachment.listPicUploaded.length === 0) {
+                    if (product.pic.listUploaded && product.pic.listUploaded.length === 0) {
                         product.pics.push({ ParentID: product.Model.ID, Type: 1, FileName: product.pic.list[0], PathType: product.pic.type });
                     } else {
                         for (var i = 0; i < product.pic.list.length; i++) {
@@ -739,23 +741,23 @@
                 }
                 return true;
             }).then((result) => {
+                product.pics = [];
+                product.files = [];
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
-                product.attachment.listPicUploaded = [];
-                product.attachment.listFileUploaded = [];
+                product.pic.listUploaded = [];
+                product.file.listUploaded = [];
 
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         if (result[i].PathType === 10)
-                            product.attachment.listFileUploaded.push(result[i]);
+                            product.file.listUploaded.push(result[i]);
                         else
-                            product.attachment.listPicUploaded.push(result[i]);
+                            product.pic.listUploaded.push(result[i]);
                     }
                 }
-                product.pics = [];
-                product.pic.list = [];
-                product.files = [];
-                product.file.list = [];
+                product.pic.reset();
+                product.file.reset();
                 toaster.pop('success', '', 'محصول جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
             })
@@ -1423,13 +1425,12 @@
         let article = $scope;
         article.Model = {};
         article.main = {};
-        article.attachment = {};
         article.Model.Errors = [];
-        article.attachment.listPicUploaded = [];
-        article.pic = { type: '4', allowMultiple: false };
+        article.pic = { type: '4', allowMultiple: false, validTypes: 'image/jpeg' };
         article.pic.list = [];
+        article.pic.listUploaded = [];
+
         article.state = '';
-        article.goToPageAdd = goToPageAdd;
         article.addArticle = addArticle;
         article.editArticle = editArticle;
         article.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
@@ -1521,16 +1522,13 @@
             }).then(() => {
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
-                article.Model.listPicUploaded = [];
                 if (result && result.length > 0)
-                    article.attachment.listPicUploaded = [].concat(result);
+                    article.pic.listUploaded = [].concat(result);
                 article.state = 'edit';
                 $location.path(`/article/edit/${model.ID}`);
             }).finally(loadingService.hide);
         }
-        function goToPageAdd() {
-            add();
-        }
+
         function addArticle() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -1539,20 +1537,19 @@
                 article.Model = result;
                 if (article.pic.list.length) {
                     article.pics = [];
-                    if (article.attachment.listPicUploaded === 0) {
+                    if (article.pic.listUploaded === 0) {
                         article.pics.push({ ParentID: article.Model.ID, Type: 2, FileName: article.pic.list[0], PathType: article.pic.type });
                     }
                     return attachmentService.add(article.pics);
                 }
                 return true;
             }).then(() => {
+                article.pics = [];
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
-                article.attachment.listPicUploaded = [];
                 if (result && result.length > 0)
-                    article.attachment.listPicUploaded = [].concat(result);
-                article.pics = [];
-                article.pic.list = [];
+                    article.pic.listUploaded = [].concat(result);
+                article.pic.reset();
                 article.grid.getlist(false);
                 toaster.pop('success', '', 'مقاله جدید با موفقیت اضافه گردید');
                 loadingService.hide();
@@ -1583,20 +1580,19 @@
                 article.Model = result;
                 if (article.pic.list.length) {
                     article.pics = [];
-                    if (article.attachment.listPicUploaded.length === 0) {
+                    if (article.pic.listUploaded.length === 0) {
                         article.pics.push({ ParentID: article.Model.ID, Type: 2, FileName: article.pic.list[0], PathType: article.pic.type });
                     }
                     return attachmentService.add(article.pics);
                 }
                 return true;
             }).then(() => {
+                article.pics = [];
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
-                article.attachment.listPicUploaded = [];
                 if (result && result.length > 0)
-                    article.attachment.listPicUploaded = [].concat(result);
-                article.pics = [];
-                article.pic.list = [];
+                    article.pic.listUploaded = [].concat(result);
+                article.pic.reset();
                 article.grid.getlist(false);
                 toaster.pop('success', '', 'مقاله با موفقیت ویرایش گردید');
                 loadingService.hide();
@@ -1632,7 +1628,7 @@
         }
         function clearModel() {
             article.Model = {};
-            article.attachment.listPicUploaded = [];
+            article.pic.listUploaded = [];
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
@@ -1642,18 +1638,18 @@
         let news = $scope;
         news.Model = {};
         news.main = {};
-        news.attachment = {};
-        news.attachment.listPicUploaded = [];
-        news.pic = { type: '3', allowMultiple: false };
+       
+        news.pic = { type: '3', allowMultiple: false, validTypes: 'image/jpeg' };
+        news.pic.listUploaded = [];
         news.pic.list = [];
         news.main.changeState = {
             cartable: cartable,
-            edit: edit
+            edit: edit,
+            add:add
         }
         news.Model.Errors = [];
         news.state = '';
         news.froalaOption = angular.copy(froalaOption.main);
-        news.goToPageAdd = goToPageAdd;
         news.addNews = addNews;
         news.editNews = editNews;
         news.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
@@ -1744,15 +1740,13 @@
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
                 if (result && result.length > 0)
-                    news.attachment.listPicUploaded = [].concat(result);
+                    news.pic.listUploaded = [].concat(result);
             }).then(() => {
                 news.state = 'edit';
                 $location.path(`/news/edit/${model.ID}`);
             }).finally(loadingService.hide);
         }
-        function goToPageAdd() {
-            add();
-        }
+
         function addNews() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -1761,20 +1755,19 @@
                 news.Model = result;
                 if (news.pic.list.length) {
                     news.pics = [];
-                    if (!news.attachment.listPicUploaded) {
+                    if (!news.pic.listUploaded) {
                         news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
                     }
                     return attachmentService.add(news.pics);
                 }
                 return true;
             }).then((result) => {
+                news.pics = [];
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
-                news.attachment.listPicUploaded = [];
                 if (result && result.length > 0)
-                    news.attachment.listPicUploaded = [].concat(result);
-                news.pics = [];
-                news.pic.list = [];
+                    news.pic.listUploaded = [].concat(result);
+                news.pic.reset();
                 news.grid.getlist(false);
                 toaster.pop('success', '', 'خبر جدید با موفقیت اضافه گردید');
                 loadingService.hide();
@@ -1805,20 +1798,19 @@
                 news.Model = result;
                 if (news.pic.list.length) {
                     news.pics = [];
-                    if (!news.attachment.listPicUploaded) {
+                    if (!news.pic.listUploaded) {
                         news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
                     }
                     return attachmentService.add(news.pics);
                 }
                 return true;
             }).then((result) => {
+                news.pics = [];
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
-                news.attachment.listPicUploaded = [];
                 if (result && result.length > 0)
-                    news.attachment.listPicUploaded = [].concat(result);
-                news.pics = [];
-                news.pic.list = [];
+                    news.pic.listUploaded = [].concat(result);
+                news.pic.reset();
                 news.grid.getlist(false);
                 toaster.pop('success', '', 'خبر جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
@@ -1853,7 +1845,7 @@
         }
         function clearModel() {
             news.Model = {};
-            news.attachment.listPicUploaded = [];
+            news.pic.listUploaded = [];
         }
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -2173,15 +2165,16 @@
     function sliderController($scope, $q, loadingService, $routeParams, sliderService, $location, toaster, $timeout, attachmentService, toolsService, enumService) {
         let slider = $scope;
         slider.Model = {};
-        slider.Model.listPicUploaded = [];
         slider.Model.Errors = [];
         slider.state = '';
-        slider.pic = { type: '5', allowMultiple: false };
+        slider.pic = { type: '8', allowMultiple: false, validTypes: 'image/jpeg' };
         slider.pic.list = [];
+        slider.pic.listUploaded = [];
         slider.main = {};
         slider.main.changeState = {
             cartable: cartable,
-            edit: edit
+            edit: edit,
+            add:add
         }
         slider.grid = {
             bindingObject: slider
@@ -2193,7 +2186,7 @@
             , globalSearch: true
             , displayNameFormat: ['Title']
         };
-        slider.goToPageAdd = goToPageAdd;
+
         slider.addSlider = addSlider;
         slider.editSlider = editSlider;
         slider.typeEnable = toolsService.arrayEnum(enumService.ShowArticleType);
@@ -2232,42 +2225,43 @@
 
         }
         function edit(model) {
+            loadingService.show();
             return $q.resolve().then(() => {
                 slider.Model = model;
                 return attachmentService.list({ ParentID: slider.Model.ID });
             }).then((result) => {
-                slider.Model.listPicUploaded = [];
+                slider.pic.listUploaded = [];
                 if (result && result.length > 0)
-                    slider.Model.listPicUploaded = [].concat(result);
+                    slider.pic.listUploaded = [].concat(result);
             }).then(() => {
                 slider.state = 'edit';
                 $location.path(`/slider/edit/${model.ID}`);
-            })
+            }).catch(() => {
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
 
-        function goToPageAdd() {
-            add();
-        }
         function addSlider() {
             loadingService.show();
             return $q.resolve().then(() => {
                 sliderService.add(slider.Model).then((result) => {
                     slider.Model = result;
-                    slider.Model.listPicUploaded = [];
                     if (slider.pic.list.length) {
                         slider.pics = [];
-                        if (slider.Model.listPicUploaded.length === 0) {
+                        if (slider.pic.listUploaded.length === 0) {
                             slider.pics.push({ ParentID: slider.Model.ID, Type: 2, FileName: slider.pic.list[0], PathType: slider.pic.type });
                         }
                         return attachmentService.add(slider.pics);
                     }
+                    return true;
                 }).then((result) => {
+                    slider.pics = [];
                     return attachmentService.list({ ParentID: slider.Model.ID });
                 }).then((result) => {
                     if (result && result.length > 0)
-                        slider.Model.listPicUploaded = [].concat(result);
-                    slider.pics = [];
-                    slider.pic.list = [];
+                        slider.pic.listUploaded = [].concat(result);
+
+                    slider.pic.reset();
                     slider.grid.getlist();
                     toaster.pop('success', '', 'اسلایدر جدید با موفقیت اضافه گردید');
                     loadingService.hide();
@@ -2297,19 +2291,20 @@
                 sliderService.edit(slider.Model).then((result) => {
                     if (slider.pic.list.length) {
                         slider.pics = [];
-                        if (slider.Model.listPicUploaded.length === 0) {
+                        if (slider.pic.listUploaded.length === 0) {
                             slider.pics.push({ ParentID: slider.Model.ID, Type: 2, FileName: slider.pic.list[0], PathType: slider.pic.type });
                         }
                         return attachmentService.add(slider.pics);
                     }
-                    //slider.Model = result;
+                    slider.Model = result;
+                    return true;
                 }).then((result) => {
+                    slider.pics = [];
                     return attachmentService.list({ ParentID: slider.Model.ID });
                 }).then((result) => {
                     if (result && result.length > 0)
-                        slider.Model.listPicUploaded = [].concat(result);
-                    slider.pics = [];
-                    slider.pic.list = [];
+                        slider.pic.listUploaded = [].concat(result);
+                    slider.pic.reset();
                     slider.grid.getlist();
                     toaster.pop('success', '', 'اسلایدر جدید با موفقیت اضافه گردید');
                     loadingService.hide();
@@ -2375,14 +2370,13 @@
         events.Model = {};
         events.Model.Errors = [];
 
-        events.attachment = {};
-        events.attachment.listPicUploaded = [];
-        events.attachment.listVideoUploaded = [];
-
-        events.pic = { type: '8', allowMultiple: false };
+        events.pic = { type: '8', allowMultiple: false, validTypes: 'image/jpeg'};
         events.pic.list = [];
-        events.video = { type: '7', allowMultiple: false };
+        events.pic.listUploaded = [];
+
+        events.video = { type: '7', allowMultiple: false, validTypes:'video/mp4' };
         events.video.list = [];
+        events.video.listUploaded = [];
 
         events.main = {};
         events.main.changeState = {
@@ -2462,14 +2456,14 @@
             }).then(() => {
                 return attachmentService.list({ ParentID: events.Model.ID });
             }).then((result) => {
-                events.attachment.listPicUploaded = [];
-                events.attachment.listVideoUploaded = [];
+                events.pic.listUploaded = [];
+                events.video.listUploaded = [];
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         if (result[i].PathType === 8)
-                            events.attachment.listPicUploaded = [].concat(result[i]);
+                            events.pic.listUploaded = [].concat(result[i]);
                         if (result[i].PathType === 7)
-                            events.attachment.listVideoUploaded = [].concat(result[i]);
+                            events.video.listUploaded = [].concat(result[i]);
                     }
                 }
             }).then(() => {
@@ -2485,36 +2479,35 @@
                     events.Model = angular.copy(result);
                     if (events.pic.list.length) {
                         events.pics = [];
-                        if (events.attachment.listPicUploaded.length === 0) {
+                        if (events.pic.listUploaded.length === 0) {
                             events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
                             return attachmentService.add(events.pics);
                         }
                     }
+                    return true;
                 }).then(() => {
                     if (events.video.list.length) {
                         events.videos = [];
-                        if (events.attachment.listVideoUploaded.length === 0) {
+                        if (events.video.listUploaded.length === 0) {
                             events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
                             return attachmentService.add(events.videos);
                         }
                     }
                 }).then((result) => {
+                    events.pics = [];
+                    events.videos = [];
                     return attachmentService.list({ ParentID: events.Model.ID });
                 }).then((result) => {
-                    events.attachment.listPicUploaded = [];
-                    events.attachment.listVideoUploaded = [];
+                    events.pic.reset();
+                    events.video.reset();
                     if (result && result.length > 0) {
                         for (var i = 0; i < result.length; i++) {
                             if (result[i].PathType === 8)
-                                events.attachment.listPicUploaded = [].concat(result[i]);
+                                events.pic.listUploaded = [].concat(result[i]);
                             if (result[i].PathType === 7)
-                                events.attachment.listVideoUploaded = [].concat(result[i]);
+                                events.video.listUploaded = [].concat(result[i]);
                         }
                     }
-                    events.pics = [];
-                    events.pic.list = [];
-                    events.videos = [];
-                    event.video.list = [];
                     events.grid.getlist(false);
                     toaster.pop('success', '', 'رویداد جدید با موفقیت اضافه گردید');
                     loadingService.hide();
@@ -2545,36 +2538,36 @@
                     events.Model = angular.copy(result);
                     if (events.pic.list.length) {
                         events.pics = [];
-                        if (events.attachment.listPicUploaded.length === 0) {
+                        if (events.pic.listUploaded.length === 0) {
                             events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
                             return attachmentService.add(events.pics);
                         }
                     }
+                    return true;
                 }).then(() => {
                     if (events.video.list.length) {
                         events.videos = [];
-                        if (events.attachment.listVideoUploaded.length === 0) {
+                        if (events.video.listUploaded.length === 0) {
                             events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
                             return attachmentService.add(events.videos);
                         }
                     }
                 }).then((result) => {
+                    events.pics = [];
+                    events.videos = [];
                     return attachmentService.list({ ParentID: events.Model.ID });
                 }).then((result) => {
-                    events.attachment.listPicUploaded = [];
-                    events.attachment.listVideoUploaded = [];
                     if (result && result.length > 0) {
                         for (var i = 0; i < result.length; i++) {
                             if (result[i].PathType === 8)
-                                events.attachment.listPicUploaded = [].concat(result[i]);
+                                events.pic.listUploaded = [].concat(result[i]);
                             if (result[i].PathType === 7)
-                                events.attachment.listVideoUploaded = [].concat(result[i]);
+                                events.video.listUploaded = [].concat(result[i]);
                         }
                     }
-                    events.pics = [];
-                    events.pic.list = [];
-                    events.videos = [];
-                    events.video.list = [];
+
+                    events.pic.reset();
+                    events.video.reset();
                     events.grid.getlist(false);
                     toaster.pop('success', '', 'رویداد جدید با موفقیت ویرایش گردید');
                     loadingService.hide();
@@ -2612,8 +2605,6 @@
         function clearModel() {
             $('.js-example-tags').empty();
             events.Model = {};
-            events.attachment.listPicUploaded = [];
-            events.attachment.listVideoUploaded = [];
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------

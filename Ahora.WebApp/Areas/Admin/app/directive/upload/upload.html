@@ -1,29 +1,31 @@
-﻿<!--<div class="card-header">
-    <h3 class="main-title" ng-show="pic.allowMultiple">آپلود تصاویر</h3>
-    <h3 class="main-title"  ng-show="!pic.allowMultiple">آپلود تصویر</h3>
-</div>-->
-<div class="container">
+﻿<div class="container">
     <div class="row">
-        <div class="col-md-12" ng-if="(pic.allowMultiple === false && main.listPicUploaded.length === 0) || pic.allowMultiple">
+        <div class="col-md-12" ng-if="(obj.allowMultiple === false && obj.listUploaded.length === 0) || obj.allowMultiple">
             <div class="upload-text">
-                <input type="file" style="display:none" id="file" name='file' onchange="angular.element(this).scope().selectFile(event)" accept="{{pic.validTypes}}" />
+                <input type="file" style="display:none" id="file" name='file' onchange="angular.element(this).scope().selectFile(event)" accept="{{obj.validTypes}}" />
                 <button type="button" class="btn btn-primary" ng-click="browse()"><i class="fa fa-folder-open mr-1"></i>انتخاب فایل</button>
                 <button type="button" class="btn btn-success" ng-click="upload()" ng-disabled="!fileSelected || uploading"><i class="fa fa-cloud-upload mr-1"></i>بارگذاری</button>
             </div>
         </div>
         <div class="col-md-12 mt-3" ng-show="tempListFile.length > 0">
-            <h2 class="main-title">تصاویری که در حال حاضر بارگذاری کرده اید</h2>
+            <h2 class="main-title" ng-show="path == 'events' || path == 'article' || path == 'news' || path == 'slider' || path == 'product'">تصاویری که در حال حاضر بارگذاری کرده اید</h2>
+            <h2 class="main-title" ng-show="path === 'video'">ویدیوهایی که در حال حاضر بارگذاری کرده اید</h2>
+            <h2 class="main-title" ng-show="path === 'file'">فایل هایی که در حال حاضر بارگذاری کرده اید</h2>
             <div class="ml-2 mt-2 d-sm-inline-block" ng-repeat="row in tempListFile track by $index" style="width: 10rem;">
-                <img ng-src="../../../../../Content/TemporaryFiles/{{path}}/{{row.FileName}}" class="card-img-top" />
+                <img ng-show="path !== 'video' && path !== 'file'" ng-src="../../../../../Content/TemporaryFiles/{{path}}/{{row.FileName}}" class="card-img-top" />
+                <label ng-show="path === 'video' || path === 'file'" class="control-label">{{row.FileName}}</label>
                 <div class="pull-left">
                     <i class="fa fa-close" ng-click="removeTemp(row)"></i>
                 </div>
             </div>
         </div>
-        <div class="col-md-12 mt-3" ng-if="main.listPicUploaded.length">
-            <h2 class="main-title">تصاویری که بارگذاری کرده اید</h2>
-            <div class="ml-2 mt-2 d-sm-inline-block" ng-repeat="row in main.listPicUploaded track by $index" style="width: 10rem;">
-                <img ng-src="../../../../../Content/TemporaryFiles/{{row.Path}}/{{row.FileName}}" class="card-img-top" />
+        <div class="col-md-12 mt-3" ng-if="obj.listUploaded.length">
+            <h2 class="main-title" ng-show="path == 'events' || path == 'article' || path == 'news' || path == 'slider' || path == 'product'">تصاویری که بارگذاری کرده اید</h2>
+            <h2 class="main-title" ng-show="path === 'video'">ویدیوهایی که بارگذاری کرده اید</h2>
+            <h2 class="main-title" ng-show="path === 'file'">فایل هایی که بارگذاری کرده اید</h2>
+            <div class="ml-2 mt-2 d-sm-inline-block" ng-repeat="row in obj.listUploaded track by $index" style="width: 10rem;">
+                <img ng-show="path !== 'video' && path !== 'file'" ng-src="../../../../../Content/TemporaryFiles/{{row.Path}}/{{row.FileName}}" class="card-img-top" />
+                <label ng-show="path === 'video' || path === 'file'" class="control-label">{{row.FileName}}</label>
                 <div class="pull-left">
                     <i class="fa fa-close" ng-click="remove(row)" ng-show="(row.Type !== 1)"></i>
                     <span class="text-danger" ng-show="row.Type === 1">تصویر اصلی</span>
@@ -54,4 +56,3 @@
         </div>
     </div>
 </div>
-<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
