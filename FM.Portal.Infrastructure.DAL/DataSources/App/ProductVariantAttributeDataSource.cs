@@ -80,5 +80,23 @@ namespace FM.Portal.Infrastructure.DAL
         {
             return Modify(false, model);
         }
+
+        public Result Delete(Guid ID)
+        {
+            try
+            {
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ID", ID);
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spDeleteProductVariantAttribute", param);
+                    if (result > 0)
+                        return Result.Successful();
+                    else
+                        return Result.Failure();
+                }
+            }
+            catch (Exception e) { throw; }
+        }
     }
 }

@@ -11,5 +11,6 @@ namespace FM.Portal.DataSource
         Result<ProductVariantAttribute> Update(ProductVariantAttribute model);
         DataTable List(Guid ProductVariantAttributeID);
         Result<ProductVariantAttribute> Get(Guid ID);
+        Result Delete(Guid ID);
     }
 }

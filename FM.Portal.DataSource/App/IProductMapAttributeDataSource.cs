@@ -11,5 +11,6 @@ namespace FM.Portal.DataSource
         Result<ProductMapAttribute> Update(ProductMapAttribute model);
         DataTable List(Guid ProductID);
         Result<ProductMapAttribute> Get(Guid ID);
+        Result Delete(Guid ID);
     }
 }

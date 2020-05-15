@@ -33,9 +33,12 @@ namespace FM.Portal.Domain
         public Result<List<ListAttributeForProductVM>> List(Guid ProductID)
         {
             var table = ConvertDataTableToList.BindList<ListAttributeForProductVM>(_dataSource.List(ProductID));
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<ListAttributeForProductVM>>.Successful(data: table);
             return Result<List<ListAttributeForProductVM>>.Failure();
         }
+        public Result Delete(Guid ID)
+        => _dataSource.Delete(ID);
+
     }
 }

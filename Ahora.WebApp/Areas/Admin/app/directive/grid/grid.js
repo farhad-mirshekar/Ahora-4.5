@@ -50,7 +50,9 @@
             if (grid.obj === null) {
                 console.log('null');
             }
-            getItems();
+            if (grid.obj.initLoad)
+                getItems();
+
             function getItems() {
                 return $q.resolve().then(() => {
                     return grid.obj.listService(scope.obj.options());

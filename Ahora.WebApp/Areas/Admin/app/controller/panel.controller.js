@@ -605,12 +605,15 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('productController', productController);
-    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'discountService', 'toolsService', 'enumService','froalaOption'];
+    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'discountService', 'toolsService', 'enumService', 'froalaOption'];
     function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, discountService, toolsService, enumService, froalaOption) {
         var product = $scope;
         product.Model = {};
         product.Attribute = {};
+        product.Attribute.Model = {};
+
         product.ProductVariant = {};
+        product.ProductVariant.Model = {};
         product.Model.Errors = [];
 
         product.pic = { type: '6', allowMultiple: true, validTypes: 'image/jpeg' };
@@ -623,7 +626,7 @@
 
         product.froalaOption = angular.copy(froalaOption.main);
         product.froalaOptions = angular.copy(froalaOption.main);
-        product.Attribute.Sub = false;
+
         product.ProductVariant.showGrid = false;
         product.ProductVariant.Parent = true;
         product.addProductMapAttribute = addProductMapAttribute;
@@ -631,8 +634,83 @@
         product.addProductVarient = addProductVarient;
         product.listProductVarient = listProductVarient;
         product.editProduct = editProduct;
-
+        product.showAttributeModal = showAttributeModal;
         product.selectDiscountType = toolsService.arrayEnum(enumService.DiscountType);
+        product.Attribute.grid = {
+            bindingObject: product.Attribute
+            , columns: [{ name: 'Name', displayName: 'عنوان' }]
+            , listService: productMapattributeService.list
+            , options: () => {
+                return product.Model.ID 
+            }
+            , initLoad: false
+            , actions: [
+                {
+                    class: "fa fa-plus text-info mr-2 cursor-grid operation-icon"
+                    , name: "add"
+                    , title: "افزودن اطلاعات"
+                    , onclick: (selected) => {
+                        loadingService.show();
+                        product.ProductVariant.Model.ProductVariantAttributeID = selected.ID;
+                        listProductVarient(selected.ID);
+                        $('#attribute-modal').modal('show');
+                        loadingService.hide();
+                    }
+                }
+                , {
+                    class: 'fa fa-search text-primary mr-2 cursor-grid operation-icon'
+                    , name: 'show'
+                    , title: 'مشاهده زیر گروه'
+                    , onclick: (selected) => {
+                        product.ProductVariant.showGrid = true;
+                        product.Attribute.showGrid = false;
+                        product.ProductVariant.Parent = false;
+                        return listProductVarient(selected.ID);
+                    }
+                }
+                , {
+                    class: 'fa fa-times text-danger mr-2 cursor-grid operation-icon'
+                    , name: 'remove'
+                    , title: 'حذف'
+                    , onclick: (selected) => {
+                        loadingService.show();
+                        productMapattributeService.remove(selected.ID).then(() => {
+                            product.Attribute.grid.getlist();
+                            loadingService.hide();
+                        })
+                    }
+                }
+            ]
+        };
+        product.ProductVariant.grid = {
+            bindingObject: product.ProductVariant
+            , columns: [{ name: 'Name', displayName: 'عنوان' }]
+            , listService: productVariantattributeService.list
+            , options: () => {
+                return product.ProductVariant.search;
+            }
+            , initLoad: false
+            , actions: [{
+                    class: 'fa fa-pencil text-info mr-2 cursor-grid operation-icon'
+                    , name: 'edit'
+                    , title: 'مشاهده'
+                , onclick: (selected) => {
+                    showAttributeModal(selected);
+                    }
+                }
+                , {
+                    class: 'fa fa-times'
+                    , name: 'remove'
+                    , title: 'حذف'
+                    , onclick: (selected) => {
+                        productVariantattributeService.remove(selected.ID).then(() => {
+                            product.ProductVariant.grid.getlist();
+                            loadingService.hide();
+                        })
+                    }
+                }
+            ]
+        };
         init();
 
         function init() {
@@ -666,7 +744,7 @@
             }).then(() => {
                 return listAttribute();
             }).then(() => {
-                return listAttributeProduct(product.Model.ID);
+                product.Attribute.grid.getlist();
             }).then(() => {
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
@@ -797,34 +875,38 @@
             })
         }
         function addProductMapAttribute() {
-            product.Attribute.ProductID = product.Model.ID;
-            product.Attribute.attributeControlType = 1;
-            product.Attribute.IsRequired = 1;
+            product.Attribute.Model.ProductID = product.Model.ID;
+            product.Attribute.Model.attributeControlType = 1;
+            product.Attribute.Model.IsRequired = 1;
             loadingService.show();
-            return productMapattributeService.add(product.Attribute).then((result) => {
-                return listAttributeProduct(product.Model.ID);
+            return productMapattributeService.add(product.Attribute.Model).then((result) => {
+                product.Attribute.grid.getlist();
             }).catch((error) => {
                 loadingService.hide();
             }).finally(loadingService.hide)
         }
-        function listAttributeProduct(model) {
-            productMapattributeService.list(model).then((result) => {
-                product.Attribute.showGrid = true;
-                product.ProductVariant.Parent = true;
-                product.Attribute.Grid = [].concat(result);
-            })
-        }
         function addProductVarient() {
-            productVariantattributeService.add(product.ProductVariant).then((result) => {
-                product.Attribute.Sub = false;
-                listAttributeProduct(product.Model.ID);
-            })
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return productVariantattributeService.save(product.ProductVariant.Model);
+            }).then((result) => {
+                product.ProductVariant.Model = {};
+                $('#attribute-modal').modal('hide');
+                product.ProductVariant.grid.getlist();
+            }).catch(() => {
+                toaster.pop('error', '', 'خطای نامشخص');
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
         function listProductVarient(model) {
-            return productVariantattributeService.list(model).then((result) => {
-                product.ProductVariant.showGrid = true;
-                product.ProductVariant.Grid = [].concat(result);
-            })
+            product.ProductVariant.search = model;
+            product.ProductVariant.grid.getlist(model);
+        }
+        function showAttributeModal(item) {
+            loadingService.show();
+            product.ProductVariant.Model = item;
+            $('#attribute-modal').modal('show');
+            loadingService.hide();
         }
 
     }
@@ -841,6 +923,7 @@
             , onEdit: null
             , route: 'product'
             , globalSearch: true
+            , initLoad: true
         };
         product.goToPageAdd = goToPageAdd;
         function goToPageAdd() {
@@ -869,6 +952,7 @@
             , listService: attributeService.list
             , onEdit: attribute.main.changeState.edit
             , globalSearch: true
+            , initLoad:true
         };
         init();
 
@@ -1212,7 +1296,7 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('commentController', commentController);
-    commentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService','froalaOption'];
+    commentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption'];
     function commentController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
         let comment = $scope;
         comment.Model = {};
@@ -1420,7 +1504,7 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('articleController', articleController);
-    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService','froalaOption'];
+    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption'];
     function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption) {
         let article = $scope;
         article.Model = {};
@@ -1633,19 +1717,19 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('newsController', newsController);
-    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService','froalaOption'];
+    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption'];
     function newsController($scope, $q, loadingService, $routeParams, newsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption) {
         let news = $scope;
         news.Model = {};
         news.main = {};
-       
+
         news.pic = { type: '3', allowMultiple: false, validTypes: 'image/jpeg' };
         news.pic.listUploaded = [];
         news.pic.list = [];
         news.main.changeState = {
             cartable: cartable,
             edit: edit,
-            add:add
+            add: add
         }
         news.Model.Errors = [];
         news.state = '';
@@ -2011,8 +2095,8 @@
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('menuController', menuController);
-    menuController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'menuService', '$location', '$timeout', 'toolsService','enumService','toaster'];
-    function menuController($scope, $q, loadingService, $routeParams, menuService, $location, toaster,  toolsService, enumService,toaster) {
+    menuController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'menuService', '$location', '$timeout', 'toolsService', 'enumService', 'toaster'];
+    function menuController($scope, $q, loadingService, $routeParams, menuService, $location, toaster, toolsService, enumService, toaster) {
         let menu = $scope;
         menu.Model = {};
         menu.list = [];
@@ -2023,7 +2107,7 @@
         menu.changeState = {
             cartable: cartable,
             edit: edit,
-            add:add
+            add: add
         }
         menu.EnableType = toolsService.arrayEnum(enumService.EnableMenuType);
         menu.tree = {
@@ -2174,7 +2258,7 @@
         slider.main.changeState = {
             cartable: cartable,
             edit: edit,
-            add:add
+            add: add
         }
         slider.grid = {
             bindingObject: slider
@@ -2361,7 +2445,7 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('eventsController', eventsController);
-    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService','froalaOption'];
+    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption'];
     function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption) {
         let events = $scope;
         events.state = '';
@@ -2370,11 +2454,11 @@
         events.Model = {};
         events.Model.Errors = [];
 
-        events.pic = { type: '8', allowMultiple: false, validTypes: 'image/jpeg'};
+        events.pic = { type: '8', allowMultiple: false, validTypes: 'image/jpeg' };
         events.pic.list = [];
         events.pic.listUploaded = [];
 
-        events.video = { type: '7', allowMultiple: false, validTypes:'video/mp4' };
+        events.video = { type: '7', allowMultiple: false, validTypes: 'video/mp4' };
         events.video.list = [];
         events.video.listUploaded = [];
 
@@ -2609,7 +2693,7 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('commentPortalController', commentPortalController);
-    commentPortalController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService','froalaOption'];
+    commentPortalController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption'];
     function commentPortalController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
         let comment = $scope;
         comment.Model = {};

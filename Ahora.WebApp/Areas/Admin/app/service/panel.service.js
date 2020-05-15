@@ -951,7 +951,8 @@
             add: add,
             edit: edit,
             get: get,
-            list: list
+            list: list,
+            remove:remove
 
         }
         return service;
@@ -1016,6 +1017,21 @@
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
+        }
+        function remove(model) {
+            return $http({
+                method: 'POST',
+                url: url + `delete/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `delete/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
         }
     }
 
@@ -1024,14 +1040,20 @@
     function productVariantattributeService($http, callbackService) {
         var url = '/api/v1/ProductVariantAttribute/'
         var service = {
-            add: add,
-            edit: edit,
+            save: save,
             get: get,
-            list: list
+            list: list,
+            remove:remove
 
         }
         return service;
 
+        function save(model) {
+            if (!model.ID)
+                return add(model);
+            else
+                edit(model);
+        }
         function add(model) {
             return $http({
                 method: 'POST',
@@ -1092,6 +1114,21 @@
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
+        }
+        function remove(model) {
+            return $http({
+                method: 'POST',
+                url: url + `delete/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `delete/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
         }
     }
 

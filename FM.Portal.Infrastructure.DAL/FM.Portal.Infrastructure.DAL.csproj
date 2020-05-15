@@ -133,10 +133,12 @@
     <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spGetProductAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spGetsProductAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductAttribute\app.spModifyProductAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spDeleteProductMapAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spGetProductMapAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spGetsProductMapAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spModifyProductMapAttribute.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spGeProductVariantAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spDeleteProductVariantAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spGetProductVariantAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spGetsProductVariantAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spModifyProductVariantAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Product\app.spGetProduct.sql" />

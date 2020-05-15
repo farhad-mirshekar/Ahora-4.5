@@ -20,6 +20,9 @@ namespace FM.Portal.Domain
             return _dataSource.Insert(model);
         }
 
+        public Result Delete(Guid ID)
+        => _dataSource.Delete(ID);
+
         public Result<ProductVariantAttribute> Edit(ProductVariantAttribute model)
         {
             return _dataSource.Update(model);
@@ -33,7 +36,7 @@ namespace FM.Portal.Domain
         public Result<List<ProductVariantAttribute>> List(Guid ProductVariantAttributeID)
         {
             var table = ConvertDataTableToList.BindList<ProductVariantAttribute>(_dataSource.List(ProductVariantAttributeID));
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<ProductVariantAttribute>>.Successful(data: table);
             return Result<List<ProductVariantAttribute>>.Failure();
         }
