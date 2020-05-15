@@ -85,4 +85,7 @@
     <Compile Include="Ptl\ISliderService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy "$(TargetFileName)" "$(SolutionDir)\Ahora.WebApp\libs"</PostBuildEvent>
+  </PropertyGroup>
 </Project>
