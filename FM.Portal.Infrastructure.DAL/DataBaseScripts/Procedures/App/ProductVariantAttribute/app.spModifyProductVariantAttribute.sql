@@ -9,23 +9,25 @@ CREATE PROCEDURE app.spModifyProductVariantAttribute
 @ProductVariantAttributeID UNIQUEIDENTIFIER,
 @Name NVARCHAR(400),
 @IsPreSelected bit,
-@IsNewRecord bit
+@IsNewRecord bit,
+@Price Money
 --WITH ENCRYPTION
 AS
 BEGIN
 	IF @IsNewRecord = 1 --insert
 		BEGIN
 			INSERT INTO [app].[ProductVariantAttributeValue]
-				(ID,ProductVariantAttributeId,Name,IsPreSelected, CreationDate)
+				(ID,ProductVariantAttributeId,Name,IsPreSelected, CreationDate , Price)
 			VALUES
-				(@ID, @ProductVariantAttributeID,@Name,@IsPreSelected , GETDATE())
+				(@ID, @ProductVariantAttributeID,@Name,@IsPreSelected , GETDATE() , @Price)
 		END
 	ELSE -- update
 		BEGIN
 			UPDATE [app].[ProductVariantAttributeValue]
 			SET
 				[Name]=@Name,
-				[IsPreSelected] = @IsPreSelected
+				[IsPreSelected] = @IsPreSelected,
+				[Price] = @Price
 			WHERE
 				[ID] = @ID
 		END

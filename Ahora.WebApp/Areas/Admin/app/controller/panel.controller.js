@@ -56,6 +56,7 @@
             , listService: faqGroupService.list
             , onEdit: faqgroup.main.changeState.edit
             , globalSearch: true
+            , initLoad:true
         };
         init();
         function init() {
@@ -352,6 +353,7 @@
             , listService: roleService.list
             , onEdit: role.main.changeState.edit
             , globalSearch: true
+            , initLoad: true
         };
         init();
 
@@ -684,7 +686,8 @@
         };
         product.ProductVariant.grid = {
             bindingObject: product.ProductVariant
-            , columns: [{ name: 'Name', displayName: 'عنوان' }]
+            , columns: [{ name: 'Name', displayName: 'عنوان' },
+                { name: 'Price', displayName: 'قیمت' }]
             , listService: productVariantattributeService.list
             , options: () => {
                 return product.ProductVariant.search;
@@ -1055,6 +1058,7 @@
             , onEdit: category.main.changeState.edit
             , route: 'category'
             , globalSearch: true
+            , initLoad:true
         };
         init();
 
@@ -1208,6 +1212,7 @@
             , listService: discountService.list
             , onEdit: discount.main.changeState.edit
             , globalSearch: true
+            , initLoad: true
         };
         discount.selectDiscountType = toolsService.arrayEnum(enumService.DiscountType);
         init();
@@ -1320,6 +1325,7 @@
             , options: () => {
                 return 6;
             }
+            , initLoad: true
         };
         comment.selectCommentType = toolsService.arrayEnum(enumService.CommentType);
         init();
@@ -1399,6 +1405,7 @@
             , listService: categoryPortalService.list
             , onEdit: category.main.changeState.edit
             , globalSearch: true
+            , initLoad: true
         };
         init();
 
@@ -1537,6 +1544,7 @@
             , route: 'article'
             , globalSearch: true
             , displayNameFormat: ['Title']
+            , initLoad: true
         };
         article.froalaOption = angular.copy(froalaOption.main);
         function init() {
@@ -1748,6 +1756,7 @@
             , onEdit: news.main.changeState.edit
             , globalSearch: true
             , displayNameFormat: ['Title']
+            , initLoad: true
         };
 
         init();
@@ -2269,6 +2278,7 @@
             , route: 'slider'
             , globalSearch: true
             , displayNameFormat: ['Title']
+            , initLoad: true
         };
 
         slider.addSlider = addSlider;
@@ -2485,6 +2495,7 @@
             , globalSearch: true
             , searchBy: 'Title'
             , displayNameFormat: ['Title']
+            , initLoad: true
         };
         init();
         function init() {
@@ -2719,6 +2730,7 @@
             , globalSearch: true
             , showRemove: true
             , options: () => { return comment.Search.CommentForType }
+            , initLoad: true
         };
 
         comment.selectCommentType = toolsService.arrayEnum(enumService.CommentType);
@@ -2813,6 +2825,7 @@
                 else
                     return true;
             }
+            , initLoad: true
         };
         init();
 
@@ -2909,6 +2922,7 @@
                 if (action === 'edit')
                     return true;
             }
+            , initLoad: true
         };
         function init() {
             loadingService.show();
@@ -3112,6 +3126,7 @@
                 else
                     return true;
             }
+            , initLoad: true
         };
         init();
 

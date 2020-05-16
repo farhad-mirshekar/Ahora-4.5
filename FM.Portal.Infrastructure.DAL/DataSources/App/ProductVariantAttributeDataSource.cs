@@ -16,13 +16,14 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[5];
+                    SqlParameter[] param = new SqlParameter[6];
                     param[0] = new SqlParameter("@ID", model.ID);
 
                     param[1] = new SqlParameter("@IsPreSelected", model.IsPreSelected);
                     param[2] = new SqlParameter("@Name", model.Name);
                     param[3] = new SqlParameter("@ProductVariantAttributeID", model.ProductVariantAttributeID);
                     param[4] = new SqlParameter("@IsNewRecord", IsNewRecord);
+                    param[5] = new SqlParameter("@Price", model.Price);
 
                     SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyProductVariantAttribute", param);
 
@@ -50,6 +51,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.Name = SQLHelper.CheckStringNull(dr["Name"]);
                             obj.ProductVariantAttributeID = SQLHelper.CheckGuidNull(dr["ProductVariantAttributeID"]);
+                            obj.Price = SQLHelper.CheckDecimalNull(dr["Price"]);
                         }
                     }
 

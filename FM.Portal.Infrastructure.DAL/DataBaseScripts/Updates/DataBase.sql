@@ -664,6 +664,9 @@ GO
 ALTER TABLE app.OrderDetail
 ADD Quantity INT
 GO
+ALTER TABLE app.ProductVariantAttributeValue
+ADD Price MONEY NULL
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO

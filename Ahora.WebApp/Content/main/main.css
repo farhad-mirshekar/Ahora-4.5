@@ -235,3 +235,10 @@ div.comment-container li {
     z-index: 9999;
     background: url("../../Areas/Admin/Content/img/loading.gif") no-repeat center center rgba(0,0,0,0.25)
 }
+.text-decoration-line-through {
+    text-decoration: line-through !important;
+}
+.img-box-product{
+    width:269px;
+    height:269px;
+}

@@ -47,7 +47,16 @@
                                         <option value="-1"></option>
                                         @foreach (var sub in item.ProductVariantAttributeValue)
                                         {
-                                            <option name="@controlId" id="@controlId" value="@sub.ID">@sub.Name</option>
+                                            var text = "";
+                                            if (sub.Price > 0)
+                                            {
+                                                text = $"{sub.Name} - {string.Format("{0:C0}", sub.Price).Replace("$", "")}";
+                                            }
+                                            else
+                                            {
+                                                text = sub.Name;
+                                            }
+                                            <option name="@controlId" id="@controlId" value="@sub.ID">@text</option>
                                         }
                                     </select>
                                 </div>

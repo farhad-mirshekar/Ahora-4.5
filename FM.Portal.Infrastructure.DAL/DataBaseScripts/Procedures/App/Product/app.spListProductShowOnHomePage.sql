@@ -12,11 +12,18 @@ BEGIN
 	SELECT
 		Top (@Count)
 		Product.TrackingCode,
+		Product.DiscountType AS SelfProductDiscountType,
+		Product.Discount AS SelfProductDiscount,
+		Product.Price,
 		product.Name,
 		attachment.PathType,
 		attachment.[FileName],
 		cat.HasDiscountsApplied,
-		disc.[Name] AS DiscountName
+		disc.[Name] AS DiscountName,
+		disc.DiscountAmount,
+		disc.DiscountPercentage,
+		disc.DiscountType
+		
 	FROM 
 		app.Product product
 	INNER JOIN 

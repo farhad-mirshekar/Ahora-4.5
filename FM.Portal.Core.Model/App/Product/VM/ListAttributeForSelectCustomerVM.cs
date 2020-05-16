@@ -18,5 +18,6 @@ namespace FM.Portal.Core.Model
         public Guid ID { get; set; }
         public string Name { get; set; }
         public bool IsPreSelected { get; set; }
+        public decimal Price { get; set; }
     }
 }

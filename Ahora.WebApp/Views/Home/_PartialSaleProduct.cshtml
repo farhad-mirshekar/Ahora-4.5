@@ -9,11 +9,82 @@
                 <div class="row">
                     @foreach (var item in Model)
                     {
-                        <div class="col-md-4">
+                        decimal temp1 = 0;
+                        decimal temp2 = 0;
+                        <div class="col-lg-4 col-md-6 col-sm-6 d-flex align-items-stretch">
                             <div class="card">
-                                <img src="~/Content/TemporaryFiles/@Enum.GetName(typeof(PathType), item.PathType)/@item.FileName" alt="@item.Name.Replace(' ', '_')" class="card-img-top img-rounded" />
+                                <div class="img-box-product">
+                                    <img src="~/Content/TemporaryFiles/@Enum.GetName(typeof(PathType), item.PathType)/@item.FileName" alt="@item.Name.Replace(' ', '_')" class="card-img-top img-rounded" />
+                                </div>
                                 <div class="card-body">
                                     <h5 class="card-title">@(item.Name.Length > 20 ? item.Name.Substring(0, 19) + " ...." : item.Name)</h5>
+                                    <div class="d-block">
+                                        @if (item.CallForPrice)
+                                        {
+                                            <label class="text-danger control-label">جهت اطلاع از قیمت تماس حاصل فرمایید</label>
+                                        }
+                                        else
+                                        {
+                                            if (item.HasDiscountsApplied || item.SelfProductDiscountType != DiscountType.نامشخص)
+                                            {
+                                                <label class="control-label text-decoration-line-through">
+                                                    قیمت اصلی : @string.Format("{0:C0} تومان", item.Price).Replace("$", "")
+                                                </label>
+                                            }
+                                            else
+                                            {
+                                                <label class="control-label">
+                                                    قیمت اصلی : @string.Format("{0:C0} تومان", item.Price).Replace("$", "")
+                                                </label>
+                                            }
+                                            if (item.SelfProductDiscountType != DiscountType.نامشخص)
+                                            {
+                                                if (item.SelfProductDiscountType == DiscountType.مبلغی)
+                                                {
+                                                    temp1 = item.SelfProductDiscount;
+                                                    <label class="control-label text-info">
+                                                        تخفیف محصول : @string.Format("{0:C0} تومان", item.SelfProductDiscount).Replace("$", "")
+                                                    </label>
+                                                }
+                                                else if (item.SelfProductDiscountType == DiscountType.درصدی)
+                                                {
+                                                    temp1 = (item.Price * item.SelfProductDiscount) / 100;
+                                                    <label class="control-label text-info">
+                                                        تخفیف محصول : @string.Format("{0:C0} درصد", item.SelfProductDiscount).Replace("$", "")
+                                                    </label>
+                                                }
+                                            }
+                                            if (item.HasDiscountsApplied)
+                                            {
+                                                if (item.DiscountType != DiscountType.نامشخص)
+                                                {
+                                                    if (item.DiscountType == DiscountType.مبلغی)
+                                                    {
+                                                        temp2 = item.DiscountAmount;
+                                                        var text = $"تخفیف {item.DiscountName} : {string.Format("{0:C0} تومان", item.DiscountAmount).Replace("$", "")}";
+                                                        <label class="control-label text-danger">
+                                                            @text
+                                                        </label>
+                                                    }
+                                                    else if (item.DiscountType == DiscountType.درصدی)
+                                                    {
+                                                        temp2 = (item.Price * item.DiscountPercentage) / 100;
+                                                        var text = $"تخفیف {item.DiscountName} : {string.Format("{0:C0} درصد", item.DiscountPercentage).Replace("$", "")}";
+                                                        <label class="control-label text-danger">
+                                                            @text
+                                                        </label>
+                                                    }
+                                                }
+                                            }
+                                            if (item.HasDiscountsApplied || item.SelfProductDiscountType != DiscountType.نامشخص)
+                                            {
+                                                var priceNew = item.Price - (temp1 + temp2);
+                                                <label class="control-label text-success">
+                                                    قیمت نهایی : @string.Format("{0:C0} تومان", priceNew).Replace("$", "")
+                                                </label>
+                                            }
+                                        }
+                                    </div>
                                 </div>
                                 <div class="card-footer">
                                     <div class="btn-group-justified" style="float:left">
@@ -28,4 +99,3 @@
         </div>
     </div>
 </section>
-
