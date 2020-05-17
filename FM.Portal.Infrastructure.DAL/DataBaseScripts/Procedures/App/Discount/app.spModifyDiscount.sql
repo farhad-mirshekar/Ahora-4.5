@@ -8,7 +8,6 @@ CREATE PROCEDURE app.spModifyDiscount
 @ID UNIQUEIDENTIFIER,
 @Name NVARCHAR(200),
 @DiscountType TINYINT,
-@DiscountPercentage int,
 @DiscountAmount Decimal(18,3),
 @isNewRecord bit
 --WITH ENCRYPTION
@@ -17,9 +16,9 @@ BEGIN
 	IF @isNewRecord = 1 --insert
 		BEGIN
 			INSERT INTO [app].[Discount]
-				(ID,[Name],[DiscountType] ,[DiscountPercentage] , [DiscountAmount], CreationDate)
+				(ID,[Name],[DiscountType]  , [DiscountAmount], CreationDate)
 			VALUES
-				(@ID, @Name , @DiscountType , @DiscountPercentage , @DiscountAmount , GETDATE())
+				(@ID, @Name , @DiscountType , @DiscountAmount , GETDATE())
 		END
 	ELSE -- update
 		BEGIN
@@ -27,7 +26,6 @@ BEGIN
 			SET
 				[Name] = @Name,
 				[DiscountType] = @DiscountType,
-				[DiscountPercentage] = @DiscountPercentage,
 				[DiscountAmount] = @DiscountAmount
 			WHERE
 				[ID] = @ID

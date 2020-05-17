@@ -15,5 +15,9 @@ namespace FM.Portal.Core.Model
         public string DiscountName { get; set; }
         public decimal DiscountAmount { get; set; }
         public bool HasDiscountsApplied { get; set; }
+        public DiscountType DiscountType { get; set; }
+        public DiscountType SelfProductDiscountType { get; set; }
+        public decimal SelfProductDiscountAmount { get; set; }
+        public bool HasDiscount { get; set; }
     }
 }

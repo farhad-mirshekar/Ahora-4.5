@@ -17,14 +17,13 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[6];
+                    SqlParameter[] param = new SqlParameter[5];
                     param[0] = new SqlParameter("@ID", model.ID);
 
                     param[1] = new SqlParameter("@Name", model.Name);
                     param[2] = new SqlParameter("@DiscountType", (byte)model.DiscountType);
-                    param[3] = new SqlParameter("@DiscountPercentage", model.DiscountPercentage);
-                    param[4] = new SqlParameter("@DiscountAmount", model.DiscountAmount);
-                    param[5] = new SqlParameter("@isNewRecord", isNewRecord);
+                    param[3] = new SqlParameter("@DiscountAmount", model.DiscountAmount);
+                    param[4] = new SqlParameter("@isNewRecord", isNewRecord);
 
                     SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyDiscount", param);
 
@@ -51,7 +50,6 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.DiscountType =(DiscountType) SQLHelper.CheckIntNull(dr["DiscountType"]);
-                            obj.DiscountPercentage = SQLHelper.CheckIntNull(dr["DiscountPercentage"]);
                             obj.DiscountAmount = SQLHelper.CheckDecimalNull(dr["DiscountAmount"]);
                         }
                     }

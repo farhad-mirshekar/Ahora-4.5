@@ -50,7 +50,7 @@ namespace FM.Portal.Domain
                 return Result.Failure(message: "نام تخفیف را وارد نمایید");
             if(model.DiscountType == DiscountType.درصدی)
             {
-                if(model.DiscountPercentage == 0)
+                if(model.DiscountAmount == 0)
                     return Result.Failure(message: "درصد تخفیف وارد شود");
             }
             if (model.DiscountType == DiscountType.مبلغی)

@@ -14,7 +14,11 @@ BEGIN
 		cart.*,
 		cat.HasDiscountsApplied,
 		disc.Name AS DiscountName,
-		disc.DiscountAmount
+		disc.DiscountAmount,
+		disc.DiscountType,
+		product.HasDiscount,
+		product.Discount AS SelfProductDiscountAmount,
+		product.DiscountType AS SelfProductDiscountType
 	FROM 
 		[app].[ShoppingCartItem] cart
 	INNER JOIN	

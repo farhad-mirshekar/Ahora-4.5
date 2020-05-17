@@ -14,6 +14,7 @@ BEGIN
 		product.*,
 		disc.[Name] AS DiscountName,
 		disc.DiscountAmount,
+		disc.DiscountType AS DiscountTypes,
 		category.HasDiscountsApplied
 	FROM	
 		[app].[Product] product

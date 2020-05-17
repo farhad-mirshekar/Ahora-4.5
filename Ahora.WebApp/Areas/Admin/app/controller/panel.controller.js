@@ -1271,7 +1271,7 @@
                 return discountService.add(discount.Model)
             }).then((result) => {
                 discount.grid.getlist(false);
-                toaster.pop('success', '', 'دسته بندی جدید با موفقیت اضافه گردید');
+                toaster.pop('success', '', 'تخفیف جدید با موفقیت اضافه گردید');
                 loadingService.hide();
                 $timeout(function () {
                     cartable();
@@ -1288,7 +1288,7 @@
             }).then((result) => {
                 discount.grid.getlist(false);
                 discount.Model = result;
-                toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
+                toaster.pop('success', '', 'تخفیف با موفقیت ویرایش گردید');
                 loadingService.hide();
                 $timeout(function () {
                     cartable();

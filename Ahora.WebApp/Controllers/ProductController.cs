@@ -110,13 +110,14 @@ namespace Ahora.WebApp.Controllers
                                             message = $"{item.TextPrompt} را انتخاب نمایید"
                                         });
 
-                                    model.AttributeJsonVM json = new model.AttributeJsonVM();
+                                    var json = new model.AttributeJsonVM();
                                     json.AttributeName = attributeMain.Data.TextPrompt;
                                     json.ID = selectedAttributeId;
                                     json.Name = attributeDetail.Data.Name;
                                     json.ProductVariantAttributeID = attributeMain.Data.ID;
+                                    json.Price = attributeDetail.Data.Price;
 
-                                    model.ShoppingCartItem cart = new model.ShoppingCartItem();
+                                    var cart = new model.ShoppingCartItem();
                                     cart.ProductID = product.ID;
                                     cart.UserID = SQLHelper.CheckGuidNull(User.Identity.Name);
                                     cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);
@@ -152,7 +153,7 @@ namespace Ahora.WebApp.Controllers
                 }
             }else
             {
-                model.ShoppingCartItem cart = new model.ShoppingCartItem();
+                var cart = new model.ShoppingCartItem();
                 cart.ProductID = product.ID;
                 cart.UserID = SQLHelper.CheckGuidNull(User.Identity.Name);
                 cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);

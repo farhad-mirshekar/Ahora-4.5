@@ -40,13 +40,13 @@ namespace Ahora.WebApp.Controllers
         public virtual ActionResult TrendingProduct()
         {
             var result = _service.ListProductShowOnHomePage(Helper.CountShowProduct);
-            return PartialView("_PartialTrendingProduct", result.Data);
+            return PartialView("_PartialProduct", result.Data);
         }
         [ChildActionOnly]
         public virtual ActionResult SaleProduct()
         {
             var result = _service.ListProductShowOnHomePage(Helper.CountShowProduct);
-            return PartialView("_PartialSaleProduct", result.Data);
+            return PartialView("_PartialProduct", result.Data);
         }
 
         [ChildActionOnly]

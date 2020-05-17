@@ -116,6 +116,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.DiscountAmount = SQLHelper.CheckDecimalNull(dr["DiscountAmount"]);
                             obj.HasDiscountsApplied = SQLHelper.CheckBoolNull(dr["HasDiscountsApplied"]);
                             obj.DiscountType =(DiscountType) SQLHelper.CheckByteNull(dr["DiscountType"]);
+                            obj.DiscountTypes = (DiscountType)SQLHelper.CheckByteNull(dr["DiscountTypes"]);
                             obj.HasDiscount = SQLHelper.CheckBoolNull(dr["HasDiscount"]);
                             obj.IsDownload = SQLHelper.CheckBoolNull(dr["IsDownload"]);
                         }

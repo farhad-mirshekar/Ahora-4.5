@@ -68,8 +68,8 @@
                                                     }
                                                     else if (item.DiscountType == DiscountType.درصدی)
                                                     {
-                                                        temp2 = (item.Price * item.DiscountPercentage) / 100;
-                                                        var text = $"تخفیف {item.DiscountName} : {string.Format("{0:C0} درصد", item.DiscountPercentage).Replace("$", "")}";
+                                                        temp2 = (item.Price * item.DiscountAmount) / 100;
+                                                        var text = $"تخفیف {item.DiscountName} : {string.Format("{0:C0} درصد", item.DiscountAmount).Replace("$", "")}";
                                                         <label class="control-label text-danger">
                                                             @text
                                                         </label>

@@ -38,6 +38,7 @@ namespace FM.Portal.Core.Model
 
         //only show
         public string DiscountName { get; set; }
+        public DiscountType DiscountTypes { get; set; }
         public decimal DiscountAmount { get; set; }
         public bool HasDiscountsApplied { get; set; }
         public int CountSelect { get; set; } 

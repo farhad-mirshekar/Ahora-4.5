@@ -2045,8 +2045,7 @@
     <Content Include="Views\Faq\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Home\_PartialMenu.cshtml" />
-    <Content Include="Views\Home\_PartialSaleProduct.cshtml" />
-    <Content Include="Views\Home\_PartialTrendingProduct.cshtml" />
+    <Content Include="Views\Home\_PartialProduct.cshtml" />
     <Content Include="Views\News\Detail.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />

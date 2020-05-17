@@ -21,7 +21,6 @@ BEGIN
 		cat.HasDiscountsApplied,
 		disc.[Name] AS DiscountName,
 		disc.DiscountAmount,
-		disc.DiscountPercentage,
 		disc.DiscountType
 		
 	FROM 
