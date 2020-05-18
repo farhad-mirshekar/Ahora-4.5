@@ -70,7 +70,7 @@ namespace Ahora.WebApp.Controllers
                 if (!result.Success)
                     return View("error");
 
-                List<ShoppingItemVM> cart = new List<ShoppingItemVM>();
+                var cart = new List<ShoppingItemVM>();
                 foreach (var item in result.Data)
                 {
                     var product = _productService.Get(item.ProductID);
@@ -79,7 +79,7 @@ namespace Ahora.WebApp.Controllers
                         var attachmentResult = _attachmentService.List(product.Data.ID);
                         var attachment = attachmentResult.Data;
                         var picUrl = $"{attachment.Select(x => x.Path).First()}/{attachment.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
-                        List<AttributeJsonVM> attribute = new List<AttributeJsonVM>();
+                        var attribute = new List<AttributeJsonVM>();
                         if (item.AttributeJson != "" && item.AttributeJson != null)
                         {
                             var json = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
@@ -93,7 +93,14 @@ namespace Ahora.WebApp.Controllers
                             ShoppingID = SQLHelper.CheckGuidNull(shoppingID),
                             ImageUrl = picUrl,
                             Attribute = attribute,
-                            Quantity = item.Quantity
+                            Quantity = item.Quantity,
+                            HasDiscountsApplied = item.HasDiscountsApplied,
+                            DiscountAmount = item.DiscountAmount,
+                            DiscountName = item.DiscountName,
+                            DiscountType = item.DiscountType,
+                            HasDiscount = item.HasDiscount,
+                            SelfProductDiscountAmount = item.SelfProductDiscountAmount,
+                            SelfProductDiscountType = item.SelfProductDiscountType
                         });
                     }
 

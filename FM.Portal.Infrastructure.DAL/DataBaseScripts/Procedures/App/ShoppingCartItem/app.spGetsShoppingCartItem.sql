@@ -24,9 +24,9 @@ BEGIN
 	INNER JOIN	
 		[app].[Product] product ON cart.ProductID = product.ID
 	LEFT JOIN
-		[app].[Category] cat ON product.CategoryID = cart.ID
+		[app].[Category] cat ON product.CategoryID = cat.ID
 	LEFT JOIN
-		[app].[Category_Discount_Mapping] catMapdisc ON cat.ID = catMapdisc.ID
+		[app].[Category_Discount_Mapping] catMapdisc ON cat.ID = catMapdisc.CategoryID
 	LEFT JOIN
 		[app].[Discount] disc ON catMapdisc.DiscountID = disc.ID
 	WHERE 

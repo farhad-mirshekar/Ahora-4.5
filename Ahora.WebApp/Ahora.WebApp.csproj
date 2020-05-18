@@ -280,9 +280,8 @@
     <Content Include="Areas\Admin\Content\js\checkbox.js" />
     <Content Include="Areas\Admin\Content\js\popper.min.js" />
     <Content Include="Areas\Admin\Content\js\select2.min.js" />
-    <Content Include="Areas\User\Content\admin\admin.css" />
+    <Content Include="Areas\User\Content\css\user\user.css" />
     <Content Include="Areas\User\Content\bootstrap-rtl\bootstrap-rtl.css" />
-    <Content Include="Areas\User\Content\css\admin\admin.css" />
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.svg" />
     <Content Include="Areas\User\Content\img\logo.png" />
     <Content Include="Areas\User\Content\js\custom.js" />
@@ -313,7 +312,6 @@
     <Content Include="Content\main\Site.css" />
     <Content Include="Content\TemporaryFiles\article\5372f221-7b28-4798-bfab-1eb85d6b078c.png" />
     <Content Include="Content\TemporaryFiles\article\91f99722-777d-4f16-adaf-6a124148c8ff.jpg" />
-    <Content Include="Content\TemporaryFiles\events\c8d7596b-2960-40c4-a90b-03c7fedec6a3.jpg" />
     <Content Include="Content\TemporaryFiles\news\9de0b04d-2ffc-4c35-b4bb-0c00d334d40e.jpg" />
     <Content Include="Content\TemporaryFiles\product\076ce4ec-0046-4a74-94a8-52bd494700cc.jpg" />
     <Content Include="Content\TemporaryFiles\product\202d5f69-7768-42ae-8261-bec899c43ceb.jpg" />
@@ -929,6 +927,7 @@
     <Content Include="Areas\User\Views\Shared\_Alert.cshtml" />
     <Content Include="Areas\Admin\Views\Department\Index.cshtml" />
     <Content Include="Areas\Admin\Views\User\Index.cshtml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
     <Content Include="Scripts\froala-editor\css\froala_editor.min.css" />
@@ -2174,6 +2173,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Areas\User\Models\" />
+    <Folder Include="Content\TemporaryFiles\editor\" />
+    <Folder Include="Content\TemporaryFiles\events\" />
+    <Folder Include="Content\TemporaryFiles\file\" />
     <Folder Include="Content\TemporaryFiles\video\" />
     <Folder Include="Files\Report-Excel\" />
     <Folder Include="Views\Download\" />

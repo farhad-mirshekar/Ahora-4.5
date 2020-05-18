@@ -36,5 +36,7 @@ BEGIN
 		[app].[Bank] bank ON orders.BankID = bank.ID
 	WHERE 
 		payment.TransactionStatus = 0
+	ORDER BY
+		payment.CreationDate DESC
 END
 

@@ -56,7 +56,7 @@
             , listService: faqGroupService.list
             , onEdit: faqgroup.main.changeState.edit
             , globalSearch: true
-            , initLoad:true
+            , initLoad: true
         };
         init();
         function init() {
@@ -643,7 +643,7 @@
             , columns: [{ name: 'Name', displayName: 'عنوان' }]
             , listService: productMapattributeService.list
             , options: () => {
-                return product.Model.ID 
+                return product.Model.ID
             }
             , initLoad: false
             , actions: [
@@ -687,31 +687,31 @@
         product.ProductVariant.grid = {
             bindingObject: product.ProductVariant
             , columns: [{ name: 'Name', displayName: 'عنوان' },
-                { name: 'Price', displayName: 'قیمت' }]
+            { name: 'Price', displayName: 'قیمت' }]
             , listService: productVariantattributeService.list
             , options: () => {
                 return product.ProductVariant.search;
             }
             , initLoad: false
             , actions: [{
-                    class: 'fa fa-pencil text-info mr-2 cursor-grid operation-icon'
-                    , name: 'edit'
-                    , title: 'مشاهده'
+                class: 'fa fa-pencil text-info mr-2 cursor-grid operation-icon'
+                , name: 'edit'
+                , title: 'مشاهده'
                 , onclick: (selected) => {
                     showAttributeModal(selected);
-                    }
                 }
+            }
                 , {
-                    class: 'fa fa-times'
-                    , name: 'remove'
-                    , title: 'حذف'
-                    , onclick: (selected) => {
-                        productVariantattributeService.remove(selected.ID).then(() => {
-                            product.ProductVariant.grid.getlist();
-                            loadingService.hide();
-                        })
-                    }
+                class: 'fa fa-times'
+                , name: 'remove'
+                , title: 'حذف'
+                , onclick: (selected) => {
+                    productVariantattributeService.remove(selected.ID).then(() => {
+                        product.ProductVariant.grid.getlist();
+                        loadingService.hide();
+                    })
                 }
+            }
             ]
         };
         init();
@@ -955,7 +955,7 @@
             , listService: attributeService.list
             , onEdit: attribute.main.changeState.edit
             , globalSearch: true
-            , initLoad:true
+            , initLoad: true
         };
         init();
 
@@ -1058,7 +1058,7 @@
             , onEdit: category.main.changeState.edit
             , route: 'category'
             , globalSearch: true
-            , initLoad:true
+            , initLoad: true
         };
         init();
 
@@ -2814,7 +2814,9 @@
             , columns: [{ name: 'BuyerInfo', displayName: 'نام و نام خانوادگی خریدار' },
             { name: 'BuyerPhone', displayName: 'اطلاعات تماس' },
             { name: 'BankNameString', displayName: 'نام بانک' },
-            { name: 'CountBuy', displayName: 'تعداد خرید' }]
+            { name: 'CountBuy', displayName: 'تعداد خرید' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ خرید' }
+            ]
             , listService: paymentService.list
             , globalSearch: true
             , onEdit: payment.main.changeState.view
