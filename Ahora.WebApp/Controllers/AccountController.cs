@@ -77,7 +77,7 @@ namespace Ahora.WebApp.Controllers
         [HttpPost]
         public JsonResult IsAlreadyUserName(string UserName)
         {
-            var getUserResult = _service.Get(UserName.Trim(), null, null , UserType.کاربر_درون_سازمانی);
+            var getUserResult = _service.Get(UserName.Trim(), null, null, UserType.کاربر_درون_سازمانی);
             var user = getUserResult.Data;
             if (user.ID != Guid.Empty)
                 return Json(false);
@@ -92,56 +92,58 @@ namespace Ahora.WebApp.Controllers
 
         private async Task<JsonResult> GetToken(Token model, string returnUrl)
         {
-            var user = _service.Get(model.username, model.password, null , UserType.Unknown);
-            if (user.Success && user.Data.ID != Guid.Empty)
+            try
             {
-                if (user.Data.Type == UserType.کاربر_درون_سازمانی)
+                var user = _service.Get(model.username, model.password, null, UserType.Unknown);
+                if (user.Success && user.Data.ID != Guid.Empty)
                 {
-                    using (var client = new HttpClient())
+                    if (user.Data.Type == UserType.کاربر_درون_سازمانی)
                     {
-                        client.BaseAddress = new Uri("http://localhost:61837/");
-                        client.DefaultRequestHeaders.Accept.Clear();
-                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                        //setup login data
-                        var formContent = new FormUrlEncodedContent(new[]
-                        {  new KeyValuePair<string, string>("grant_type", "password"),
+                        using (var client = new HttpClient())
+                        {
+                            client.BaseAddress = new Uri($"{Request.Url.Scheme}://{Request.Url.Authority}");
+                            client.DefaultRequestHeaders.Accept.Clear();
+                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                            //setup login data
+                            var formContent = new FormUrlEncodedContent(new[]
+                            {  new KeyValuePair<string, string>("grant_type", "password"),
                            new KeyValuePair<string, string>("username", model.username),
                            new KeyValuePair<string, string>("password", model.password),
                         });
-                        //send request
-                        HttpResponseMessage responseMessage = await client.PostAsync("/Token", formContent);
-                        var result = await responseMessage.Content.ReadAsStringAsync();
-                        var tokenvm = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenVM>(result);
-                        switch (responseMessage.StatusCode)
-                        {
-                            case System.Net.HttpStatusCode.OK:
-                                {
-                                    Session.RemoveAll();
-                                    SetAuthCookie(user.Data.ID.ToString(), "Admin", false);
-                                    Session.Add("login", true);
-                                    Session.Timeout = 30;
-                                    return Json(new { status = 1, token = tokenvm, userid = user.Data.ID, type = user.Data.Type, authorizationData = tokenvm });
-                                }
-                            default:
-                                return Json(new { status = 0, token = "" });
+                            //send request
+                            HttpResponseMessage responseMessage = await client.PostAsync("/Token", formContent);
+                            var result = await responseMessage.Content.ReadAsStringAsync();
+                            var tokenvm = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenVM>(result);
+                            switch (responseMessage.StatusCode)
+                            {
+                                case System.Net.HttpStatusCode.OK:
+                                    {
+                                        Session.RemoveAll();
+                                        SetAuthCookie(user.Data.ID.ToString(), "Admin", false);
+                                        Session.Add("login", true);
+                                        Session.Timeout = 30;
+                                        return Json(new { status = 1, token = tokenvm, userid = user.Data.ID, type = user.Data.Type, authorizationData = tokenvm });
+                                    }
+                                default:
+                                    return Json(new { status = 0, token = "" });
+                            }
                         }
+                    }
+                    else
+                    {
+                        SetAuthCookie(user.Data.ID.ToString(), "User", false);
+                        Session.RemoveAll();
+                        Session.Add("login", true);
+                        Session.Timeout = 30;
+                        return Json(new { status = 1, token = "", userid = "", type = user.Data.Type, url = returnUrl });
                     }
                 }
                 else
                 {
-                    SetAuthCookie(user.Data.ID.ToString(), "User", false);
-                    Session.RemoveAll();
-                    Session.Add("login", true);
-                    Session.Timeout = 30;
-                    return Json(new { status = 1, token = "", userid = "", type = user.Data.Type, url = returnUrl });
+                    return Json(new { status = 0, token = "" });
                 }
             }
-            else
-            {
-                return Json(new { status = 0, token = "" });
-            }
-
-
+            catch (Exception e) { throw; }
         }
 
         private async Task<JsonResult> GetRefreshToken(Token model)
