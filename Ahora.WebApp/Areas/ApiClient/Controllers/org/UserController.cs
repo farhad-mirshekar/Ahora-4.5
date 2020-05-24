@@ -71,5 +71,14 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             }
             catch (Exception e) { return NotFound(); }
         }
+        [HttpPost, Route("ResetPassword/{UserID:guid}")]
+        public IHttpActionResult ResetPassword(Guid UserID)
+        {
+            try
+            {
+                return Ok();
+            }
+            catch { return NotFound(); }
+        }
     }
 }

@@ -13,5 +13,6 @@ namespace FM.Portal.Core.Service
         Result<User> Get(string Username , string Password,string NationalCode , UserType userType);
         Result.Result SetPassword(SetPasswordVM model);
         Result<List<User>> List();
+        Result.Result ResetPassword(Guid UserID);
     }
 }

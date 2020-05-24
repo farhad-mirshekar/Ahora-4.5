@@ -478,6 +478,7 @@
         };
         position.searchNationalCode = searchNationalCode;
         position.addPosition = addPosition;
+        position.resetPassword = resetPassword;
         position.departmentChange = departmentChange;
         init();
 
@@ -571,6 +572,9 @@
             }).finally(loadingService.hide);
         }
 
+        function resetPassword(selected) {
+
+        }
         function departmentChange() {
             loadingService.show();
             return $q.resolve().then(() => {
