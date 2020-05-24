@@ -1,5 +1,5 @@
 ﻿<section>
-    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    <button class="btn btn-success btn-circle pull-left" ng-click="changeState.add();"><i class="fa fa-plus"></i></button>
     <tree-grid tree-data="tree.data"
                col-defs="tree.colDefs"
                expand-on="tree.expandingProperty"
@@ -51,6 +51,28 @@
             <div class="modal-footer pull-left">
                 <button type="submit" ng-click="addCategory()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
                 <button type="submit" ng-click="editCategory()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" dir="rtl"
+     id="category-portal-delete"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h3 class="modal-title">تایید حذف</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                    آیا از حذف <strong class="text-danger">{{displayName}}</strong> اطمینان دارید ؟
+                </p>
+            </div>
+            <div class="modal-footer pull-left">
+                <button class="btn btn-danger" ng-click="confirmRemove()">تایید</button>
                 <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
             </div>
         </div>

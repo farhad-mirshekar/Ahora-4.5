@@ -15,20 +15,14 @@ namespace FM.Portal.Domain.Ptl
         public Result<Category> Add(Category model)
             => _dataSource.Insert(model);
 
+        public Result Delete(Guid ID)
+        => _dataSource.Delete(ID);
+
         public Result<Category> Edit(Category model)
             => _dataSource.Update(model);
 
         public Result<Category> Get(Guid ID)
             => _dataSource.Get(ID);
-
-        public Result<List<Category>> ListByNode(string Node)
-        {
-            var table = ConvertDataTableToList.BindList<Category>(_dataSource.ListByNode(Node));
-            if (table.Count > 0 || table.Count == 0)
-                return Result<List<Category>>.Successful(data: table);
-            return Result<List<Category>>.Failure();
-        }
-
         public Result<List<GetCountCategoryVM>> GetCountCategory()
         {
             var table = ConvertDataTableToList.BindList<GetCountCategoryVM>(_dataSource.GetCountCategory());

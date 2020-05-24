@@ -68,12 +68,12 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
                 return NotFound();
             }
         }
-        [HttpPost, Route("ListByNode")]
-        public IHttpActionResult ListByNode(FM.Portal.Core.Model.NodeVM model)
+        [HttpPost, Route("Delete/{ID:guid}")]
+        public IHttpActionResult Delete(Guid ID)
         {
             try
             {
-                var result = _service.ListByNode(model.Node);
+                var result = _service.Delete(ID);
                 return Ok(result);
             }
             catch (Exception e)

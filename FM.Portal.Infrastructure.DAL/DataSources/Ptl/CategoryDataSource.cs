@@ -43,7 +43,6 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
             catch (Exception e) { throw; }
 
         }
-
         public Result<Category> Insert(Category model)
         {
             model.ID = Guid.NewGuid();
@@ -53,7 +52,6 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
         {
             return Modify(false, model);
         }
-
         public Result<Category> Get(Guid ID)
         {
             try
@@ -85,14 +83,6 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
             catch (Exception e) { return Result<Category>.Failure(); }
 
         }
-
-        public DataTable ListByNode(string Node)
-        {
-            SqlParameter[] param = new SqlParameter[1];
-            param[0] = new SqlParameter("@Node", Node);
-            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetCategoryByNode", param);
-        }
-
         public DataTable GetCountCategory()
         {
 
@@ -102,6 +92,23 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
             }
             catch (Exception e) { throw; }
 
+        }
+        public Result Delete(Guid ID)
+        {
+            try
+            {
+                SqlParameter[] param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ID", ID);
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteCategory", param);
+                    if (result > 0)
+                        return Result.Successful();
+                    else
+                        return Result.Failure();
+                }
+            }
+            catch (Exception e) { throw; }
         }
     }
 }

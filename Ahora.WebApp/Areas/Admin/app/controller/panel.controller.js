@@ -1397,6 +1397,7 @@
         category.addCategory = addCategory;
         category.addSubCategory = addSubCategory;
         category.editCategory = editCategory;
+        category.confirmRemove = confirmRemove;
         category.changeState = {
             cartable: cartable,
             add: add
@@ -1515,11 +1516,19 @@
         }
         function remove(model) {
             loadingService.show();
+            category.deleteBuffer = model;
+            category.displayName = model.Title;
+            $('#category-portal-delete').modal('show');
+            loadingService.hide();
+        }
+        function confirmRemove() {
+            loadingService.show();
             return $q.resolve().then(() => {
-                return categoryPortalController.remove(model.ID);
+                return categoryPortalService.remove(category.deleteBuffer.ID);
             }).then(() => {
-                return categoryPortalController.list();
+                return categoryPortalService.list();
             }).then((result) => {
+                $('#category-portal-delete').modal('hide');
                 setTreeObject(result);
             }).finally(loadingService.hide);
         }
@@ -1727,7 +1736,7 @@
             categoryPortalService.list().then((result) => {
                 article.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
-                    if (result[i].ParentID !== '00000000-0000-0000-0000-000000000000') {
+                    if (result[i].ParentNode !== '/') {
                         article.typecategory.push({ Name: result[i].Title, Model: result[i].ID });
                     }
                 }
@@ -1945,7 +1954,7 @@
             categoryPortalService.list().then((result) => {
                 news.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
-                    if (result[i].ParentID !== '00000000-0000-0000-0000-000000000000') {
+                    if (result[i].ParentNode !== '/') {
                         news.typecategory.push({ Name: result[i].Title, Model: result[i].ID });
                     }
                 }
@@ -2706,7 +2715,7 @@
             return categoryPortalService.list().then((result) => {
                 events.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
-                    if (result[i].ParentID !== '00000000-0000-0000-0000-000000000000') {
+                    if (result[i].ParentNode !== '/') {
                         events.typecategory.push({ Name: result[i].Title, Model: result[i].ID });
                     }
                 }

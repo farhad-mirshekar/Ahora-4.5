@@ -1222,7 +1222,7 @@
             edit: edit,
             get: get,
             list: list,
-            listByNode: listByNode
+            remove: remove
 
         }
         return service;
@@ -1288,17 +1288,16 @@
                 return callbackService.onError({ result: result });
             })
         }
-        function listByNode(model) {
+        function remove(model) {
             return $http({
                 method: 'POST',
-                url: url + 'ListByNode',
-                data: model,
+                url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + localStorage.access_token
                 }
             }).then(function (result) {
-                return callbackService.onSuccess({ result: result, request: url + 'ListByNode' });
+                return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
             }).catch(function (result) {
                 return callbackService.onError({ result: result });
             })
