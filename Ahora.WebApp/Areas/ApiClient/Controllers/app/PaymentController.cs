@@ -1,5 +1,4 @@
-﻿using FM.Bank.Core.Model;
-using FM.Portal.Core.Common;
+﻿using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Result;
 using FM.Portal.Core.Service;
