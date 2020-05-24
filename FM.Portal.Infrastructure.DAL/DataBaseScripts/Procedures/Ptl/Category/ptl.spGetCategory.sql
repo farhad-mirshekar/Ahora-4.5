@@ -1,18 +1,37 @@
 USE [Ahora]
 GO
-IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('ptl.spGetCategory'))
-	DROP PROCEDURE ptl.spGetCategory
+
+/****** Object:  StoredProcedure [ptl].[spGetCategory]    Script Date: 5/24/2020 1:48:59 PM ******/
+SET ANSI_NULLS ON
 GO
 
-CREATE PROCEDURE ptl.spGetCategory
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+ALTER PROCEDURE [ptl].[spGetCategory]
 @ID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
 BEGIN
+	DECLARE @ParentID UNIQUEIDENTIFIER,
+	@ParentNode HIERARCHYID
+	SET @ParentNode = (SELECT Top 1 [Node].GetAncestor(1).ToString() FROM ptl.Category WHERE ID = @ID)
+	SET @ParentID = (SELECT ID FROM ptl.Category WHERE Node = @ParentNode)
 	SELECT 
-		cat.*
+		cat.ID,
+		cat.[Node].ToString() Node,
+		cat.[Node].GetAncestor(1).ToString() ParentNode,
+		cat.CreationDate,
+		cat.IncludeInLeftMenu,
+		cat.IncludeInTopMenu,
+		cat.Title,
+		@ParentID AS ParentID
 	FROM	
 		[ptl].[Category] cat
 	WHERE 
 		cat.ID = @ID
 END
+GO
+
+

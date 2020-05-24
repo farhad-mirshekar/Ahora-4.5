@@ -21,8 +21,13 @@ namespace FM.Portal.Domain.Ptl
         public Result<Category> Get(Guid ID)
             => _dataSource.Get(ID);
 
-        public Result<Category> GetByParent(Guid ID)
-            => _dataSource.GetByParent(ID);
+        public Result<List<Category>> ListByNode(string Node)
+        {
+            var table = ConvertDataTableToList.BindList<Category>(_dataSource.ListByNode(Node));
+            if (table.Count > 0 || table.Count == 0)
+                return Result<List<Category>>.Successful(data: table);
+            return Result<List<Category>>.Failure();
+        }
 
         public Result<List<GetCountCategoryVM>> GetCountCategory()
         {
@@ -35,7 +40,7 @@ namespace FM.Portal.Domain.Ptl
         public Result<List<Category>> List()
         {
             var table = ConvertDataTableToList.BindList<Category>(_dataSource.List());
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<Category>>.Successful(data: table);
             return Result<List<Category>>.Failure();
         }

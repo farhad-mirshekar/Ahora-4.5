@@ -2,9 +2,7 @@
 using FM.Portal.Core.Service.Ptl;
 using FM.Portal.FrameWork.Api.Controller;
 using System;
-using System.Linq;
 using System.Web.Http;
-using FM.Portal.Core.Extention.CategoryPortal;
 
 namespace Ahora.WebApp.Areas.ApiClient.Controllers
 {
@@ -49,19 +47,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             try
             {
                 var result = _service.List();
-                var model = result.Data.Select(x =>
-                {
-                    var category = new Category();
-                    category.ID = x.ID;
-                    category.ParentID = x.ParentID;
-                    category.IncludeInLeftMenu = x.IncludeInLeftMenu;
-                    category.IncludeInTopMenu = x.IncludeInTopMenu;
-                    category.Title = x.GetFormattedBreadCrumb(_service);
-                    return category;
-
-                });
-                var results = FM.Portal.Core.Result.Result<System.Collections.Generic.List<Category>>.Successful(data: model.ToList());
-                return Ok(results);
+                return Ok(result);
             }
             catch (Exception e)
             {
@@ -75,6 +61,19 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             try
             {
                 var result = _service.Get(ID);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
+        }
+        [HttpPost, Route("ListByNode")]
+        public IHttpActionResult ListByNode(FM.Portal.Core.Model.NodeVM model)
+        {
+            try
+            {
+                var result = _service.ListByNode(model.Node);
                 return Ok(result);
             }
             catch (Exception e)

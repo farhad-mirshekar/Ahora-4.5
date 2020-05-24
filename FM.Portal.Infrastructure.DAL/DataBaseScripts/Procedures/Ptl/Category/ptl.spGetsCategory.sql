@@ -8,12 +8,14 @@ CREATE PROCEDURE ptl.spGetsCategory
 --WITH ENCRYPTION
 AS
 BEGIN
-	;WITH main AS(
-	SELECT *
-	FROM ptl.Category
-	)
-
-	SELECT * 
-	FROM main
+	SELECT 
+		cat.ID,
+		cat.[Node].ToString() Node,
+		cat.[Node].GetAncestor(1).ToString() ParentNode,
+		cat.CreationDate,
+		cat.IncludeInLeftMenu,
+		cat.IncludeInTopMenu,
+		cat.Title
+	FROM ptl.Category cat
 	ORDER BY [CreationDate]
 END

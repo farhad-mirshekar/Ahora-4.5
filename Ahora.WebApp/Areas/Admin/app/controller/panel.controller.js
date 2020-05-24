@@ -1386,38 +1386,58 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('categoryPortalController', categoryPortalController);
-    categoryPortalController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'categoryPortalService', '$location', 'toaster', '$timeout'];
-    function categoryPortalController($scope, $q, loadingService, $routeParams, categoryPortalService, $location, toaster, $timeout) {
+    categoryPortalController.$inject = ['$scope', '$q', 'categoryPortalService', 'loadingService', '$routeParams', '$location', 'toaster','toolsService'];
+    function categoryPortalController($scope, $q, categoryPortalService, loadingService, $routeParams, $location, toaster, toolsService) {
         let category = $scope;
         category.Model = {};
-        category.main = {};
-        category.main.changeState = {
-            cartable: cartable,
-            edit: edit
-        }
+        category.list = [];
+        category.lists = [];
         category.state = '';
-        category.goToPageAdd = goToPageAdd;
-        category.addCategory = addCategory;
-        category.editCategory = editCategory;
-        category.grid = {
-            bindingObject: category
-            , columns: [{ name: 'Title', displayName: 'عنوان مقاله' }]
-            , listService: categoryPortalService.list
-            , onEdit: category.main.changeState.edit
-            , globalSearch: true
-            , initLoad: true
-        };
-        init();
 
+        category.addCategory = addCategory;
+        category.addSubCategory = addSubCategory;
+        category.editCategory = editCategory;
+        category.changeState = {
+            cartable: cartable,
+            add: add
+        }
+        init();
+        category.tree = {
+            data: []
+            , colDefs: [
+                , { field: 'Title', displayName: 'نام' }
+                , {
+                    field: ''
+                    , displayName: ''
+                    , cellTemplate: (
+                        `<div class='pull-left'>
+                            <i class='fa fa-plus tgrid-action pl-1 text-success' style='cursor:pointer;' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
+                            <i class='fa fa-pencil tgrid-action pl-1 text-primary' style='cursor:pointer;' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
+                            <i class='fa fa-trash tgrid-action pl-1 text-danger' style='cursor:pointer;' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
+                        </div>`)
+                    , cellTemplateScope: {
+                        edit: edit,
+                        add: addSubCategory,
+                        remove: remove
+                    }
+                }
+            ]
+            , expandingProperty: {
+                field: "Title"
+                , displayName: "عنوان"
+            }
+        };
         function init() {
             loadingService.show();
             $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
                         cartable();
+                        loadingService.hide();
                         break;
                     case 'add':
-                        add();
+                        goToPageAdd();
+                        loadingService.hide();
                         break;
                     case 'edit':
                         categoryPortalService.get($routeParams.id).then((result) => {
@@ -1427,86 +1447,81 @@
                 }
             }).finally(loadingService.hide);
 
-        }
+
+        } // end init
 
         function cartable() {
-            category.state = 'cartable';
-            $location.path('/category-portal/cartable');
+            categoryPortalService.list().then((result) => {
+                setTreeObject(result);
+            });
+            $location.path('category-portal/cartable');
         }
-        function add() {
+        function edit(parent) {
             loadingService.show();
             return $q.resolve().then(() => {
-                return select();
-            }).then(() => {
-                category.state = 'add';
-                $location.path('/category-portal/add');
-            }).finally(loadingService.hide)
-
-        }
-        function edit(model) {
-            loadingService.show();
-            return $q.resolve().then(() => {
-                return categoryPortalService.get(model.ID);
+                return categoryPortalService.get(parent.ID);
             }).then((result) => {
                 category.Model = result;
-                if (category.Model.ParentID !== "00000000-0000-0000-0000-000000000000") {
-                    $('#hassubmenu').prop('checked', true);
-                    $("#ParentID").prop("disabled", false);
-                } else {
-                    $('#hassubmenu').prop('checked', false);
-                    $("#ParentID").prop("disabled", true);
-                }
-                return select();
-            }).then(() => {
+            //    return categoryPortalService.listByNode({ Node: result.ParentNode });
+            //}).then((result) => {
                 category.state = 'edit';
-                $location.path(`/category-portal/edit/${category.Model.ID}`);
-            }).finally(loadingService.hide);
+                $('#category-portal-modal').modal('show');
+            }).finally(loadingService.hide)
+        }
+        function add(parent) {
+            loadingService.show();
+            parent = parent || {};
+            category.Model = { ParentID: parent.ID };
+            category.state = 'add';
+            $('#category-portal-modal').modal('show');
+            loadingService.hide();
+        }
 
-        }
-        function goToPageAdd() {
-            add();
-        }
         function addCategory() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return categoryPortalService.add(category.Model);
-            }).then((result) => {
-                category.grid.getlist(false);
-                category.Model = result;
-                toaster.pop('success', '', 'دسته بندی جدید با موفقیت درج گردید');
-                loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 100);
+                categoryPortalService.add(category.Model).then((result) => {
+                    toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
+                    $('#category-portal-modal').modal('hide');
+                    category.changeState.cartable();
+                    loadingService.hide();
+                })
             }).catch((error) => {
-                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                toaster.pop('error', '', 'خطای ناشناخته');
             }).finally(loadingService.hide);
         }
         function editCategory() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return categoryPortalService.edit(category.Model);
-            }).then((result) => {
-                category.Model = result;
-                category.grid.getlist(false);
-                toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
-                loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 100);
+                categoryPortalService.edit(category.Model).then((result) => {
+                    toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
+                    loadingService.hide();
+                    $('#category-portal-modal').modal('hide');
+                    category.changeState.cartable();
+                })
             }).catch((error) => {
-                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                toaster.pop('error', '', 'خطای ناشناخته');
             }).finally(loadingService.hide);
         }
-        function select() {
-            return categoryPortalService.list().then((result) => {
-                category.selectCategory = [];
-                for (i = 0; i < result.length; i++) {
-                    if (result[i].ParentID === '00000000-0000-0000-0000-000000000000') {
-                        category.selectCategory.push({ Model: result[i].ID, Name: result[i].Title });
-                    }
-                }
-            })
+        function addSubCategory(parent) {
+            category.changeState.add(parent);
+        }
+        function setTreeObject(categorys) {
+            categorys.map((item) => {
+                if (item.ParentNode === '/')
+                    item.expanded = true;
+            });
+            category.tree.data = toolsService.getTreeObject(categorys, 'Node', 'ParentNode', '/');
+        }
+        function remove(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return categoryPortalController.remove(model.ID);
+            }).then(() => {
+                return categoryPortalController.list();
+            }).then((result) => {
+                setTreeObject(result);
+            }).finally(loadingService.hide);
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------

@@ -25,7 +25,7 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[6];
+                    SqlParameter[] param = new SqlParameter[7];
                     param[0] = new SqlParameter("@ID", model.ID);
 
                     param[1] = new SqlParameter("@IncludeInTopMenu", model.IncludeInTopMenu);
@@ -33,6 +33,7 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
                     param[3] = new SqlParameter("@IncludeInLeftMenu", model.IncludeInLeftMenu);
                     param[4] = new SqlParameter("@Title", model.Title);
                     param[5] = new SqlParameter("@isNewRecord", isNewrecord);
+                    param[6] = new SqlParameter("@Node", model.Node);
 
                     SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyCategory", param);
 
@@ -57,7 +58,7 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
         {
             try
             {
-                Category obj = new Category();
+                var obj = new Category();
                 SqlParameter[] param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
@@ -73,6 +74,8 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
                             obj.IncludeInLeftMenu = SQLHelper.CheckBoolNull(dr["IncludeInLeftMenu"]);
                             obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
+                            obj.Node = SQLHelper.CheckStringNull(dr["Node"]);
+                            obj.ParentNode = SQLHelper.CheckStringNull(dr["ParentNode"]);
                         }
                     }
 
@@ -83,33 +86,11 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
 
         }
 
-        public Result<Category> GetByParent(Guid ID)
+        public DataTable ListByNode(string Node)
         {
-            try
-            {
-                Category obj = new Category();
-                SqlParameter[] param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ParentID", ID);
-
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
-                {
-                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetByParentCategory", param))
-                    {
-                        while (dr.Read())
-                        {
-                            obj.IncludeInTopMenu = SQLHelper.CheckBoolNull(dr["IncludeInTopMenu"]);
-                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
-                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
-                            obj.IncludeInLeftMenu = SQLHelper.CheckBoolNull(dr["IncludeInLeftMenu"]);
-                            obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
-                            obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
-                        }
-                    }
-
-                }
-                return Result<Category>.Successful(data: obj);
-            }
-            catch (Exception e) { return Result<Category>.Failure(); }
+            SqlParameter[] param = new SqlParameter[1];
+            param[0] = new SqlParameter("@Node", Node);
+            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetCategoryByNode", param);
         }
 
         public DataTable GetCountCategory()

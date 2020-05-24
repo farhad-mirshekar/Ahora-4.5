@@ -1,4 +1,4 @@
-USE [Ahora]
+﻿USE [Ahora]
 GO
 IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('ptl.spModifyCategory'))
 	DROP PROCEDURE ptl.spModifyCategory
@@ -10,28 +10,58 @@ CREATE PROCEDURE ptl.spModifyCategory
 @IncludeInTopMenu bit,
 @IncludeInLeftMenu bit,
 @ParentID UNIQUEIDENTIFIER,
-@isNewRecord bit
+@isNewRecord bit,
+@Node HIERARCHYID
 --WITH ENCRYPTION
 AS
 BEGIN
-	IF @isNewRecord = 1 --insert
-		BEGIN
-			INSERT INTO [ptl].[Category]
-				(ID,[Title],[ParentID], [IncludeInTopMenu],[IncludeInLeftMenu], CreationDate)
-			VALUES
-				(@ID, @Title , @ParentID , @IncludeInTopMenu,@IncludeInLeftMenu , GETDATE())
-		END
-	ELSE -- update
-		BEGIN
-			UPDATE [ptl].[Category]
-			SET
-				[ParentID]=@ParentID ,
-				[IncludeInTopMenu] = @IncludeInTopMenu ,
-				[IncludeInLeftMenu] = @IncludeInLeftMenu ,
-				[Title] = @Title
-			WHERE
-				[ID] = @ID
-		END
+	SET XACT_ABORT ON;
 
+	DECLARE 
+		@ParentNode HIERARCHYID,
+		@LastChildNode HIERARCHYID,
+		@NewNode HIERARCHYID
+
+	IF EXISTS(SELECT 1 FROM ptl.Category WHERE ID <> @ID AND REPLACE([Title], ' ', '') = REPLACE(@Title, ' ', ''))
+		THROW 50000, N'نام تکراری است', 1
+
+	IF @Node IS NULL 
+		OR @ParentID <> COALESCE((SELECT TOP 1 ID FROM ptl.Category WHERE @Node.GetAncestor(1) = [Node]), 0x)
+	BEGIN
+		SET @ParentNode = COALESCE((SELECT [Node] FROM ptl.Category WHERE ID = @ParentID), HIERARCHYID::GetRoot())
+		SET @LastChildNode = (SELECT MAX([Node]) FROM ptl.Category WHERE [Node].GetAncestor(1) = @ParentNode)
+		SET @NewNode = @ParentNode.GetDescendant(@LastChildNode, NULL)
+	END
+	BEGIN TRY
+		BEGIN TRAN
+			IF @isNewRecord = 1 --insert
+				BEGIN
+					INSERT INTO [ptl].[Category]
+						(ID,[Title],[Node], [IncludeInTopMenu],[IncludeInLeftMenu], CreationDate)
+					VALUES
+						(@ID, @Title , @NewNode , @IncludeInTopMenu,@IncludeInLeftMenu , GETDATE())
+				END
+			ELSE -- update
+				BEGIN
+					UPDATE [ptl].[Category]
+					SET
+						[IncludeInTopMenu] = @IncludeInTopMenu ,
+						[IncludeInLeftMenu] = @IncludeInLeftMenu ,
+						[Title] = @Title
+					WHERE
+						[ID] = @ID
+
+						IF(@Node <> @NewNode)
+						BEGIN
+							UPDATE [ptl].[Category]
+							SET [Node] = [Node].GetReparentedValue(@Node, @NewNode)
+							WHERE [Node].IsDescendantOf(@Node) = 1
+						END
+				END
+			COMMIT
+	END TRY
+	BEGIN CATCH
+		;THROW
+	END CATCH
 	RETURN @@ROWCOUNT
 END

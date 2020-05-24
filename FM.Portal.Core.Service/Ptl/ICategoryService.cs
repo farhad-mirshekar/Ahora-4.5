@@ -11,7 +11,7 @@ namespace FM.Portal.Core.Service.Ptl
         Result<Category> Edit(Category model);
         Result<List<Category>> List();
         Result<Category> Get(Guid ID);
-        Result<Category> GetByParent(Guid ID);
+        Result<List<Category>> ListByNode(string Node);
         Result<List<GetCountCategoryVM>> GetCountCategory();
         
     }

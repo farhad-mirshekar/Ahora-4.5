@@ -1221,7 +1221,8 @@
             add: add,
             edit: edit,
             get: get,
-            list: list
+            list: list,
+            listByNode: listByNode
 
         }
         return service;
@@ -1284,6 +1285,21 @@
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
             }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function listByNode(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'ListByNode',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'ListByNode' });
+            }).catch(function (result) {
                 return callbackService.onError({ result: result });
             })
         }
