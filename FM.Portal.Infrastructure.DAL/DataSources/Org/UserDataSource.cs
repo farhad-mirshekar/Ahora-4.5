@@ -115,7 +115,7 @@ namespace FM.Portal.Infrastructure.DAL
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     SqlParameter[] param = new SqlParameter[3];
-                    param[0] = new SqlParameter("@ID",_requestInfo.UserId);
+                    param[0] = new SqlParameter("@ID",model.UserID);
                     param[1] = new SqlParameter("@Password", model.NewPassword);
                     param[2] = new SqlParameter("@PasswordExpireDate", DateTime.Now);
                    int i= SQLHelper.CheckIntNull(SQLHelper.ExecuteScalar(con, CommandType.StoredProcedure, "org.spSetUserPassword", param));

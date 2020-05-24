@@ -55,6 +55,15 @@ namespace FM.Portal.Domain
             return Result<List<User>>.Failure();
         }
 
+        public Result ResetPassword(Guid UserID)
+        {
+            var userResult = Get(UserID);
+            if (!userResult.Success)
+                return Result.Failure(message:"کاربر یافت نشد");
+            var user = userResult.Data;
+            return _dataSource.SetPassword(new SetPasswordVM {NewPassword = user.NationalCode.HashText() , UserID = user.ID });
+        }
+
         public Result SetPassword(SetPasswordVM model)
         {
             if (_requestInfo.UserName == model.NewPassword)

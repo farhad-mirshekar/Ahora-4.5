@@ -13,6 +13,5 @@ namespace FM.Portal.DataSource
         Result<User> Get(Guid? ID, string Username, string Password, string NationalCode , UserType userType);
         Result SetPassword(SetPasswordVM model);
         DataTable List();
-        Result ResetPassword(Guid UserID);
     }
 }

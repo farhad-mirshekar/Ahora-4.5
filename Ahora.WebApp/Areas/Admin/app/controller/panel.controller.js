@@ -458,8 +458,8 @@
 
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('positionController', positionController);
-    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService'];
-    function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService, departmentService) {
+    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService','userService'];
+    function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService, departmentService, userService) {
         let position = $scope;
         position.department = $scope;
         position.department.Model = {};
@@ -573,9 +573,19 @@
         }
 
         function resetPassword(selected) {
-
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return userService.resetPassword(selected.UserID);
+            }).then(() => {
+                loadingService.hide();
+                toaster.pop('success', '', 'رمز عبور با موفقیت تغییر کرد');
+            }).catch((error) => {
+                toaster.pop('error', '', error || 'خطای ناشناخته');
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
         function departmentChange() {
+            position.listPositions = [];
             loadingService.show();
             return $q.resolve().then(() => {
                 return positionService.list({ DepartmentID: position.department.Model.DepartmentID });

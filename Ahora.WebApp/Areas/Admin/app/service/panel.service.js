@@ -2309,7 +2309,8 @@
         var service = {
             add: add,
             get: get,
-            list: list
+            list: list,
+            resetPassword: resetPassword
         };
         return service;
 
@@ -2355,6 +2356,21 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `list` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function resetPassword(model) {
+            return $http({
+                method: 'POST',
+                url: url + `resetPassword/${model}`,
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `resetPassword/${model}` });
             }).catch(function (result) {
                 return callbackService.onError({ result: result });
             })

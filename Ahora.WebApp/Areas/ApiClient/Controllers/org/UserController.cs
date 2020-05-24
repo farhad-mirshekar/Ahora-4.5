@@ -76,7 +76,8 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         {
             try
             {
-                return Ok();
+                var result = _service.ResetPassword(UserID);
+                return Ok(result);
             }
             catch { return NotFound(); }
         }

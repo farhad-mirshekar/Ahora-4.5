@@ -24,7 +24,7 @@ namespace FM.Portal.Domain
         public Result<List<ProductAttribute>> List()
         {
             var table = ConvertDataTableToList.BindList<ProductAttribute>(_dataSource.List());
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<ProductAttribute>>.Successful(data: table);
             return Result<List<ProductAttribute>>.Failure();
         }
