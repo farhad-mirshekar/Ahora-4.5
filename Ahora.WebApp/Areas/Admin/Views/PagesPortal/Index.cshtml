@@ -1,0 +1,57 @@
+﻿<section>
+    <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
+    <portal-grid obj="grid"></portal-grid>
+</section>
+<div class="modal fade" dir="rtl"
+     id="pages-portal-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h2 class="main-title" ng-show="state==='edit'">ویرایش</h2>
+                <h2 class="main-title" ng-show="state==='add'">افزودن</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="Type" class="control-label">نوع صفحه</label>
+                            <select class="form-control" ng-model="Model.PageType">
+                                <option ng-repeat="row in pageType" ng-value="row.Model">{{row.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">نام صفحه</label>
+                            <input type="text" class="form-control" ng-model="Model.Name" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">توضیحات سئو</label>
+                            <input type="text" class="form-control" ng-model="Model.UrlDesc" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="Type" class="control-label">فعال/غیرفعال</label>
+                            <select class="form-control" ng-model="Model.Enabled">
+                                <option ng-repeat="row in enableType" ng-value="row.Model">{{row.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer pull-left">
+                <button type="submit" ng-click="addPages()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
+                <button type="submit" ng-click="editPages()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+

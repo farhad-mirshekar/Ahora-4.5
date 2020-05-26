@@ -3251,4 +3251,79 @@
             loadingService.hide();
         }
     }
+    //-------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('pagesPortalController', pagesPortalController);
+    pagesPortalController.$inject = ['$scope', '$q', 'loadingService', 'pagesPortalService', 'toolsService','enumService','toaster'];
+    function pagesPortalController($scope, $q, loadingService, pagesPortalService, toolsService, enumService,toaster) {
+        let pages = $scope;
+        pages.Model = {};
+        pages.main = {};
+
+        pages.addPages = addPages;
+        pages.editPages = editPages;
+        pages.main.changeState = {
+            edit: edit,
+            add:add
+        }
+        pages.pageType = toolsService.arrayEnum(enumService.PageType);
+        pages.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
+        pages.grid = {
+            bindingObject: pages
+            , columns: [{ name: 'Name', displayName: 'نام صفحه' },
+                { name: 'PageType', displayName: 'نوع صفحه', type: 'enum', source: enumService.PageType },]
+            , listService: pagesPortalService.list
+            , deleteService: pagesPortalService.remove
+            , globalSearch: true
+            , onEdit: pages.main.changeState.edit
+            , initLoad: true
+            , displayNameFormat: ['Name'],
+            searchBy: 'Name'
+        };
+        function add() {
+            loadingService.show();
+            $('#pages-portal-modal').modal('show');
+            pages.Model = { };
+            pages.state = 'add';
+            loadingService.hide();
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                pages.state = 'edit';
+                pages.Model = model;
+                $('#pages-portal-modal').modal('show');
+            }).finally(loadingService.hide);
+
+        }
+        function addPages() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return pagesPortalService.add(pages.Model);
+            }).then((result) => {
+                toaster.pop('success', '', 'صفحه جدید با موفقیت اضافه گردید');
+                pages.Model = {};
+                pages.grid.getlist();
+                $('#pages-portal-modal').modal('hide');
+                loadingService.hide();
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطا');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+        function editPages() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return pagesPortalService.edit(pages.Model)
+            }).then((result) => {
+                toaster.pop('success', '', 'صفحه جدید با موفقیت ویرایش گردید');
+                pages.Model = {};
+                pages.grid.getlist();
+                $('#pages-portal-modal').modal('hide');
+                loadingService.hide();
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطا');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+    }
 })();

@@ -88,6 +88,7 @@
     <Compile Include="DataSources\Ptl\CategoryDataSource.cs" />
     <Compile Include="DataSources\Ptl\EventsDataSource.cs" />
     <Compile Include="DataSources\Ptl\NewsDataSource.cs" />
+    <Compile Include="DataSources\Ptl\PagesDataSource.cs" />
     <Compile Include="DataSources\Ptl\SliderDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -237,6 +238,10 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetsNews.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetsNewsByCount.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spModifyNews.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Pages\ptl.DeletePages.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Pages\ptl.GetPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Pages\ptl.GetsPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Pages\ptl.spModifyPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spDeleteSlider.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spGetSlider.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spGetsSlider.sql" />
@@ -244,6 +249,7 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spModifySlider.sql" />
     <Content Include="DataBaseScripts\Updates\DataBase.sql" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "$(SolutionDir)\Ahora.WebApp\libs"</PostBuildEvent>

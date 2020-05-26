@@ -84,6 +84,7 @@
     <Compile Include="Ptl\ICategoryDataSource.cs" />
     <Compile Include="Ptl\IEventsDataSource.cs" />
     <Compile Include="Ptl\INewsDataSource.cs" />
+    <Compile Include="Ptl\IPagesDataSource.cs" />
     <Compile Include="Ptl\ISliderDataSource.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

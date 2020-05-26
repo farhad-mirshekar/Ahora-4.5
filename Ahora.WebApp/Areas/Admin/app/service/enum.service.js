@@ -74,6 +74,10 @@
 			},
 			enumService.BankName = {
 				'1': 'بانک ملی'
+			},
+			enumService.PageType = {
+				'1': 'داینامیک',
+				'2': 'استاتیک'
 			}
 
 		return enumService;

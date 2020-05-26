@@ -105,13 +105,16 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IContactDataSource, ContactDataSource>();
             container.RegisterType<IContactService, ContactService>();
 
+            container.RegisterType<DataSource.Ptl.IPagesDataSource, Infrastructure.DAL.Ptl.PagesDataSource>();
+            container.RegisterType<Core.Service.Ptl.IPagesService, Domain.Ptl.PagesService>();
+
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));
             container.RegisterType<IRequestInfo, RequestInfo>();
             container.RegisterType<IAppSetting, AppSetting>();
 
-            DependencyResolver.SetResolver(new Unity. UnityDependencyResolver(container));
+            DependencyResolver.SetResolver(new Unity.UnityDependencyResolver(container));
         }
     }
 }

@@ -104,6 +104,7 @@
     <Compile Include="Ptl\CategoryService.cs" />
     <Compile Include="Ptl\EventsService.cs" />
     <Compile Include="Ptl\NewsServive.cs" />
+    <Compile Include="Ptl\PagesService.cs" />
     <Compile Include="Ptl\SliderService.cs" />
   </ItemGroup>
   <ItemGroup>

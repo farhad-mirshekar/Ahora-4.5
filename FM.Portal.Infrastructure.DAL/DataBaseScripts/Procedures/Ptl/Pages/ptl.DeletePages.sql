@@ -1,0 +1,17 @@
+﻿USE [Ahora]
+GO
+
+IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('ptl.spDeletePages'))
+	DROP PROCEDURE ptl.spDeletePages
+GO
+
+CREATE PROCEDURE ptl.spDeletePages
+	@ID UNIQUEIDENTIFIER
+--WITH ENCRYPTION
+AS
+BEGIN
+	DELETE FROM ptl.Pages
+	WHERE ID = @ID
+	RETURN @@ROWCOUNT
+
+END
