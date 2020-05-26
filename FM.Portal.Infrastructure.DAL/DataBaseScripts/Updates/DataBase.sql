@@ -832,6 +832,21 @@ GO
 ALTER Table pbl.Menu
 ADD [Parameters] Nvarchar(Max) NULL
 GO
+CREATE TABLE [pbl].[Contact](
+	[ID] [uniqueidentifier]  NOT NULL,
+	[FirstName] [nvarchar](1000) NOT NULL,
+	[LastName] [nvarchar](1000) NOT NULL,
+	[Title] [nvarchar](1000) NOT NULL,
+	[Description] [nvarchar](MAX) NOT NULL,
+	[Phone] [nvarchar](20) NOT NULL,
+	[Email] [nvarchar](100) NOT NULL,
+	[CreationDate] [smalldatetime] NULL,
+CONSTRAINT [PK_Contact] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
 GO

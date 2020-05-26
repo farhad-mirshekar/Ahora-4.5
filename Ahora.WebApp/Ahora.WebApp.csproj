@@ -927,6 +927,7 @@
     <Content Include="Areas\User\Views\Shared\_Alert.cshtml" />
     <Content Include="Areas\Admin\Views\Department\Index.cshtml" />
     <Content Include="Areas\Admin\Views\User\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Contact\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
@@ -2085,6 +2086,7 @@
     <Compile Include="Areas\Admin\Controllers\Org\ProfileController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\RoleController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\UserController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Pbl\ContactController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\GeneralSettingController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\MenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\NotificationController.cs" />
@@ -2112,6 +2114,7 @@
     <Compile Include="Areas\ApiClient\Controllers\org\RoleController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\UserController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\AttachmentController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\pbl\ContactController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\GeneralSettingController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\MenuController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\NotificationController.cs" />
@@ -2163,6 +2166,7 @@
     <Content Include="Views\Redirect\Melli.cshtml" />
     <Content Include="Views\Comment\_PartialError.cshtml" />
     <Content Include="Views\Redirect\_PartialDownload.cshtml" />
+    <Content Include="Views\Home\Contact.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

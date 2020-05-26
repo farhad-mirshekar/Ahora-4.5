@@ -1,0 +1,59 @@
+﻿<section>
+    <portal-grid obj="grid"></portal-grid>
+</section>
+<div class="modal fade" dir="rtl"
+     id="contact-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h2 class="main-title">مشاهده پیام</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">نام</label>
+                            <label class="text-success">{{Model.FirstName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">نام خانوادگی</label>
+                            <label class="text-success">{{Model.LastName}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">شماره تلفن</label>
+                            <label class="text-success">{{Model.Phone}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">پست الکترونیکی</label>
+                            <label class="text-success">{{Model.Email}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">موضوع پیام</label>
+                            <label class="text-success">{{Model.Title}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <label for="CategorySub" class="control-label">متن پیام</label>
+                            <p class="text-success text-justify">{{Model.Description}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer pull-left">
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>

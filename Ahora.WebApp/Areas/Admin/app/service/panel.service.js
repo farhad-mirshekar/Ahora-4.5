@@ -2377,6 +2377,61 @@
         }
     }
 
+    app.factory('contactService', contactService);
+    contactService.$inject = ['$http', 'callbackService'];
+    function contactService($http, callbackService) {
+        var url = '/api/v1/contact/'
+        var service = {
+            list: list,
+            get: get,
+            remove: remove,
+        };
+        return service;
+
+        function list() {
+            return $http({
+                method: 'POST',
+                url: url + 'list',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'list' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function remove(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Delete/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+            })
+        }
+    }
+
     app.factory('callbackService', callbackService);
     callbackService.$inject = ['$q', '$http', 'authenticationService'];
     function callbackService($q, $http, authenticationService) {

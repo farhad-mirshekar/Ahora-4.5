@@ -13,6 +13,11 @@ namespace Ahora.WebApp
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
+               "Contact",
+               "Contact",
+               new { controller = "Home", action = "Contact", Name = UrlParameter.Optional },
+               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
+            routes.MapRoute(
                "Download-File-Zip",
                "Download/File/{Token}",
                new { controller = "Download", action = "FileZip", Name = UrlParameter.Optional },

@@ -3154,7 +3154,7 @@
             cartable: cartable
         }
         user.grid = {
-            bindingObject: payment
+            bindingObject: user
             , columns: [{ name: 'FirstName', displayName: 'نام' },
             { name: 'LastName', displayName: 'نام خانوادگی' }]
             , listService: userService.list
@@ -3221,6 +3221,34 @@
             }).then((result) => {
                 setTreeObject(result);
             }).finally(loadingService.hide);
+        }
+    }
+    //--------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('contactController', contactController);
+    contactController.$inject = ['$scope',  'contactService', 'loadingService'];
+    function contactController($scope, contactService, loadingService) {
+        let contact = $scope;
+        contact.Model = {};
+        contact.grid = {
+            bindingObject: contact
+            , columns: [{ name: 'FirstName', displayName: 'نام' },
+                { name: 'LastName', displayName: 'نام خانوادگی' },
+                { name: 'Title', displayName: 'موضوع پیام' },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            , listService: contactService.list
+            , deleteService: contactService.remove
+            , globalSearch: true
+            , onEdit: show
+            , initLoad: true
+            , displayNameFormat: (selected) => {
+                return `پیام ${selected.FirstName} ${selected.LastName}`;
+            }
+        };
+        function show(selected) {
+            loadingService.show();
+            contact.Model = selected;
+            $('#contact-modal').modal('show');
+            loadingService.hide();
         }
     }
 })();

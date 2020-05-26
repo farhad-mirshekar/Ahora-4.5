@@ -1,0 +1,89 @@
+﻿@model FM.Portal.Core.Model.ContactVM
+@section BodySection{
+    <section class="card">
+        <div class="card-header">
+            <h5 class="card-title">فرم تماس با ما</h5>
+        </div>
+        <div class="card-body form-horizontal">
+            <form id="contact-form">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="FirstName">نام</label>
+                            @Html.TextBoxFor(u => u.FirstName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(r => r.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label" for="LastName">نام خانوادگی</label>
+                            @Html.TextBoxFor(u => u.LastName, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(r => r.LastName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label" for="CellPhone">موضوع</label>
+                            @Html.TextBoxFor(u => u.Title, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(r => r.Title, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label" for="NationalCode">تلفن تماس</label>
+                            @Html.TextBoxFor(u => u.Phone, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(r => r.Phone, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label" for="CellPhone">پست الکترونیک</label>
+                            @Html.TextBoxFor(u => u.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(r => r.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label" for="UserName">متن پیام</label>
+                            @Html.TextAreaFor(u => u.Description, new { @class = "form-control", @placeholder = "متن پیام" })
+                            @Html.ValidationMessageFor(r => r.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" id="btncontact" class="btn btn-success pull-left">ارسال</button>
+            </form>
+        </div>
+    </section>
+}
+@section scripts{
+    <script>
+        $('#contact-form').submit((e) => {
+            e.preventDefault();
+            if ($('#FirstName').val() != '' && $('#LastName').val() != '' && $('#Title').val() != '' && $('#Phone').val() != '' && $('#Email').val() != '' && $('#Description').val() != '') {
+                $.ajax({
+                    cache: false,
+                    url: 'contact',
+                    data: $('#contact-form').serialize(),
+                    type: 'post',
+                    success: (response) => {
+                        if (response.Success) {
+                            var noty = window.noty({ text: response.Message, type: 'success', timeout: 2500 });
+
+                        }
+                        else {
+                            var noty = window.noty({ text: response.Message, type: 'warning', timeout: 2500 });
+                            return false;
+                        }
+                        return false;
+                    },
+                });
+            } else {
+                var noty = window.noty({ text: 'پر کردن تمامی فیلد ها الزامی می باشد', type: 'error', timeout: 2500 });
+            }
+        })
+    </script>
+}
