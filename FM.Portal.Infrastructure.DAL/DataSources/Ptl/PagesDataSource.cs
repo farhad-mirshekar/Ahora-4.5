@@ -48,8 +48,12 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
             try
             {
                 var obj = new Pages();
-                var param = new SqlParameter[1];
+                var param = new SqlParameter[2];
                 param[0] = new SqlParameter("@ID", ID);
+                param[0].Value = DBNull.Value;
+
+                param[1] = new SqlParameter("@TrackingCode", SqlDbType.NVarChar);
+                param[1].Value = DBNull.Value;
 
                 using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
@@ -77,11 +81,15 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
             }
         }
 
-        public DataTable List()
+        public DataTable List(PagesListVM listVM)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsPage", null);
+                var param = new SqlParameter[1];
+                param[0] = new SqlParameter("@PageType", SqlDbType.TinyInt);
+                param[0].Value = listVM.PageType != Core.Model.PageType.نامشخص ? listVM.PageType : (object)DBNull.Value;
+                
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsPage", param);
             }
             catch (Exception e) { throw; }
         }
@@ -105,6 +113,43 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
 
             }
             catch (Exception e) { throw; }
+        }
+
+        public Result<Pages> Get(string TrackingCode)
+        {
+            try
+            {
+                var obj = new Pages();
+                var param = new SqlParameter[2];
+                param[0] = new SqlParameter("@ID", SqlDbType.UniqueIdentifier);
+                param[0].Value = DBNull.Value;
+
+                param[1] = new SqlParameter("@TrackingCode", TrackingCode);
+
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetPage", param))
+                    {
+                        while (dr.Read())
+                        {
+                            obj.Name = SQLHelper.CheckStringNull(dr["Name"]);
+                            obj.PageType = (Core.Model.PageType)SQLHelper.CheckByteNull(dr["PageType"]);
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.TrackingCode = SQLHelper.CheckStringNull(dr["TrackingCode"]);
+                            obj.UrlDesc = SQLHelper.CheckStringNull(dr["UrlDesc"]);
+                            obj.Enabled = (Core.Model.EnableMenuType)SQLHelper.CheckByteNull(dr["Enabled"]);
+                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
+                        }
+                    }
+
+                }
+                return Result<Pages>.Successful(data: obj);
+            }
+            catch
+            {
+                return Result<Pages>.Failure();
+            }
         }
     }
 }

@@ -1023,4 +1023,29 @@ CREATE TABLE [ptl].[Pages](
 
 ALTER TABLE [ptl].[Pages] WITH CHECK ADD FOREIGN KEY ([UserID])
 REFERENCES [org].[User] ([ID])
+GO
+
+CREATE TABLE [ptl].[DynamicPage](
+	[ID] [uniqueidentifier] NOT NULL,
+	[TrackingCode] [Nvarchar](100) NULL,
+	[Name] [Nvarchar](2000) NULL,
+	[Body] [Nvarchar](MAX) NOT NULL,
+	[Description] [Nvarchar](1000) NOT NULL,
+	[PageID] [uniqueidentifier] NOT NULL,
+	[MetaKeywords] [Nvarchar](1000) NULL,
+	[VisitedCount] [Int] NULL Default 0,
+	[IsShow] [Tinyint] NULL,
+	[UserID] [UniqueIdentifier] NOT NULL,
+	[UrlDesc] [Nvarchar](1000) NOT NULL,
+	[CreationDate] SmallDateTime
+ CONSTRAINT [PK_DynamicPage] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [ptl].[DynamicPage] WITH CHECK ADD FOREIGN KEY ([UserID])
+REFERENCES [org].[User] ([ID])
+ALTER TABLE [ptl].[DynamicPage] WITH CHECK ADD FOREIGN KEY ([PageID])
+REFERENCES [ptl].[Pages] ([ID])
 

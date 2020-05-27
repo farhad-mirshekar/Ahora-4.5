@@ -133,12 +133,14 @@
     <Compile Include="Ptl\Article\VM\ArticleListVM.cs" />
     <Compile Include="Ptl\Category\Category.cs" />
     <Compile Include="Ptl\Category\VM\GetCountCategoryVM.cs" />
-    <Compile Include="Ptl\DynamicPages\DynamicPages.cs" />
+    <Compile Include="Ptl\DynamicPage\DynamicPage.cs" />
+    <Compile Include="Ptl\DynamicPage\VM\DynamicPageListVM.cs" />
     <Compile Include="Ptl\Events\Events.cs" />
     <Compile Include="Ptl\Events\VM\EventsListVM.cs" />
     <Compile Include="Ptl\News\News.cs" />
     <Compile Include="Ptl\News\VM\NewsListVM.cs" />
     <Compile Include="Ptl\Pages\Pages.cs" />
+    <Compile Include="Ptl\Pages\VM\PagesListVM.cs" />
     <Compile Include="Ptl\Slider\Slider.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,19 +2,23 @@
 using System;
 using System.Collections.Generic;
 
-namespace FM.Portal.Core.Model.Ptl
+namespace FM.Portal.Core.Model
 {
-   public class DynamicPages:Entity
+   public class DynamicPage:Entity
     {
+        public string Name { get; set; }
         public string TrackingCode { get; set; }
         public string Body { get; set; }
         public string Description { get; set; }
         public Guid PageID { get; set; }
-        public string MetaKeyword { get; set; }
+        public string MetaKeywords { get; set; }
         public int VisitedCount { get; set; }
-        public bool IsShow { get; set; }
+        public EnableMenuType IsShow { get; set; }
         public Guid UserID { get; set; }
         public List<String> Tags { get; set; }
         public string UrlDesc { get; set; }
+
+        //show only
+        public string PageName { get; set; }
     }
 }

@@ -10,7 +10,8 @@ namespace FM.Portal.DataSource.Ptl
         Result<Pages> Insert(Pages model);
         Result<Pages> Update(Pages model);
         Result<Pages> Get(Guid ID);
-        DataTable List();
+        Result<Pages> Get(string TrackingCode);
+        DataTable List(PagesListVM listVM);
         Result Delete(Guid ID);
     }
 }

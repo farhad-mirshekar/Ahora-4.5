@@ -10,7 +10,8 @@ namespace FM.Portal.Core.Service.Ptl
         Result<Pages> Add(Pages model);
         Result<Pages> Edit(Pages model);
         Result<Pages> Get(Guid ID);
-        Result<List<Pages>> List();
+        Result<Pages> Get(string TrackingCode);
+        Result<List<Pages>> List(PagesListVM listVM);
         Result.Result Delete(Guid ID);
     }
 }

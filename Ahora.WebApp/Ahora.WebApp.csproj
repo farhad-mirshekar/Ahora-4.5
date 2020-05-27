@@ -929,6 +929,7 @@
     <Content Include="Areas\Admin\Views\User\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Contact\Index.cshtml" />
     <Content Include="Areas\Admin\Views\PagesPortal\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\DynamicPage\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
@@ -2094,6 +2095,7 @@
     <Compile Include="Areas\Admin\Controllers\Pbl\PagesController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\ArticleController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\CategoryPortalController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Ptl\DynamicPageController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\EventsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\NewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\PagesPortalController.cs" />
@@ -2123,6 +2125,7 @@
     <Compile Include="Areas\ApiClient\Controllers\pbl\PagesController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\ArticleController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\CategoryPortalController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\Ptl\DynamicPageController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\EventsController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\NewsController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\PagesPortalController.cs" />
@@ -2136,6 +2139,7 @@
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\DownloadController.cs" />
+    <Compile Include="Controllers\DynamicPageController.cs" />
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FaqGroupController.cs" />
@@ -2170,6 +2174,7 @@
     <Content Include="Views\Comment\_PartialError.cshtml" />
     <Content Include="Views\Redirect\_PartialDownload.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
+    <Content Include="Views\DynamicPage\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

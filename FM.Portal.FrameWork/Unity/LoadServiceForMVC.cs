@@ -108,6 +108,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<DataSource.Ptl.IPagesDataSource, Infrastructure.DAL.Ptl.PagesDataSource>();
             container.RegisterType<Core.Service.Ptl.IPagesService, Domain.Ptl.PagesService>();
 
+            container.RegisterType<IDynamicPageDataSource, DynamicPageDataSource>();
+            container.RegisterType<IDynamicPageService, DynamicPageService>();
+
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

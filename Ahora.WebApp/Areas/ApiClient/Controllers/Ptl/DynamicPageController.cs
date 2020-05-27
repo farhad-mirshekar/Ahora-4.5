@@ -1,20 +1,19 @@
-﻿using FM.Portal.Core.Model.Ptl;
-using FM.Portal.Core.Service.Ptl;
+﻿using FM.Portal.Core.Model;
+using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.Api.Controller;
 using System;
 using System.Web.Http;
 
 namespace Ahora.WebApp.Areas.ApiClient.Controllers
 {
-    [RoutePrefix("api/v1/PagesPortal")]
-    public class PagesPortalController : BaseApiController<IPagesService>
+    [RoutePrefix("api/v1/DynamicPage")]
+    public class DynamicPageController : BaseApiController<IDynamicPageService>
     {
-        public PagesPortalController(IPagesService service) : base(service)
+        public DynamicPageController(IDynamicPageService service) : base(service)
         {
         }
-
         [HttpPost, Route("Add")]
-        public IHttpActionResult Add(Pages model)
+        public IHttpActionResult Add(DynamicPage model)
         {
             try
             {
@@ -28,7 +27,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         }
 
         [HttpPost, Route("Edit")]
-        public IHttpActionResult Edit(Pages model)
+        public IHttpActionResult Edit(DynamicPage model)
         {
             try
             {
@@ -42,7 +41,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         }
 
         [HttpPost, Route("List")]
-        public IHttpActionResult List(PagesListVM listVM)
+        public IHttpActionResult List(DynamicPageListVM listVM)
         {
             try
             {

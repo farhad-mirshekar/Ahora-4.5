@@ -6,7 +6,8 @@ IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('ptl.spGetP
 GO
 
 CREATE PROCEDURE ptl.spGetPage
-	@ID UNIQUEIDENTIFIER
+	@ID UNIQUEIDENTIFIER,
+	@TrackingCode NVARCHAR(100)
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -15,7 +16,8 @@ BEGIN
 	SELECT 
 		pages.*
 	FROM ptl.Pages pages
-	WHERE (ID = @ID)
-
+	WHERE 
+		(@ID IS NULL OR ID = @ID)
+	AND (@TrackingCode IS NULL OR TrackingCode = @TrackingCode)
 	RETURN @@ROWCOUNT
 END

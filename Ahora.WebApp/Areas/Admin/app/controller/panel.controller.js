@@ -458,7 +458,7 @@
 
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('positionController', positionController);
-    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService','userService'];
+    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService', 'userService'];
     function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService, departmentService, userService) {
         let position = $scope;
         position.department = $scope;
@@ -1400,7 +1400,7 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('categoryPortalController', categoryPortalController);
-    categoryPortalController.$inject = ['$scope', '$q', 'categoryPortalService', 'loadingService', '$routeParams', '$location', 'toaster','toolsService'];
+    categoryPortalController.$inject = ['$scope', '$q', 'categoryPortalService', 'loadingService', '$routeParams', '$location', 'toaster', 'toolsService'];
     function categoryPortalController($scope, $q, categoryPortalService, loadingService, $routeParams, $location, toaster, toolsService) {
         let category = $scope;
         category.Model = {};
@@ -1477,8 +1477,8 @@
                 return categoryPortalService.get(parent.ID);
             }).then((result) => {
                 category.Model = result;
-            //    return categoryPortalService.listByNode({ Node: result.ParentNode });
-            //}).then((result) => {
+                //    return categoryPortalService.listByNode({ Node: result.ParentNode });
+                //}).then((result) => {
                 category.state = 'edit';
                 $('#category-portal-modal').modal('show');
             }).finally(loadingService.hide)
@@ -3225,16 +3225,16 @@
     }
     //--------------------------------------------------------------------------------------------------------------------------------------
     app.controller('contactController', contactController);
-    contactController.$inject = ['$scope',  'contactService', 'loadingService'];
+    contactController.$inject = ['$scope', 'contactService', 'loadingService'];
     function contactController($scope, contactService, loadingService) {
         let contact = $scope;
         contact.Model = {};
         contact.grid = {
             bindingObject: contact
             , columns: [{ name: 'FirstName', displayName: 'نام' },
-                { name: 'LastName', displayName: 'نام خانوادگی' },
-                { name: 'Title', displayName: 'موضوع پیام' },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            { name: 'LastName', displayName: 'نام خانوادگی' },
+            { name: 'Title', displayName: 'موضوع پیام' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: contactService.list
             , deleteService: contactService.remove
             , globalSearch: true
@@ -3253,8 +3253,8 @@
     }
     //-------------------------------------------------------------------------------------------------------------------------------------
     app.controller('pagesPortalController', pagesPortalController);
-    pagesPortalController.$inject = ['$scope', '$q', 'loadingService', 'pagesPortalService', 'toolsService','enumService','toaster'];
-    function pagesPortalController($scope, $q, loadingService, pagesPortalService, toolsService, enumService,toaster) {
+    pagesPortalController.$inject = ['$scope', '$q', 'loadingService', 'pagesPortalService', 'toolsService', 'enumService', 'toaster'];
+    function pagesPortalController($scope, $q, loadingService, pagesPortalService, toolsService, enumService, toaster) {
         let pages = $scope;
         pages.Model = {};
         pages.main = {};
@@ -3263,14 +3263,14 @@
         pages.editPages = editPages;
         pages.main.changeState = {
             edit: edit,
-            add:add
+            add: add
         }
         pages.pageType = toolsService.arrayEnum(enumService.PageType);
         pages.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
         pages.grid = {
             bindingObject: pages
             , columns: [{ name: 'Name', displayName: 'نام صفحه' },
-                { name: 'PageType', displayName: 'نوع صفحه', type: 'enum', source: enumService.PageType },]
+            { name: 'PageType', displayName: 'نوع صفحه', type: 'enum', source: enumService.PageType },]
             , listService: pagesPortalService.list
             , deleteService: pagesPortalService.remove
             , globalSearch: true
@@ -3282,7 +3282,7 @@
         function add() {
             loadingService.show();
             $('#pages-portal-modal').modal('show');
-            pages.Model = { };
+            pages.Model = {};
             pages.state = 'add';
             loadingService.hide();
         }
@@ -3323,6 +3323,167 @@
             }).catch((error) => {
                 toaster.pop('error', '', 'خطا');
                 loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+    }
+    //------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('dynamicPageController', dynamicPageController);
+    dynamicPageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'dynamicPageService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption', 'pagesPortalService'];
+    function dynamicPageController($scope, $q, loadingService, $routeParams, dynamicPageService, $location, toaster, $timeout, toolsService, enumService, froalaOption, pagesPortalService) {
+        let pages = $scope;
+        pages.Model = {};
+        pages.main = {};
+        pages.Search = {};
+        pages.Search.Model = {};
+        pages.Model.Errors = [];
+
+        pages.state = '';
+        pages.addDynamicPage = addDynamicPage;
+        pages.editDynamicPage = editDynamicPage;
+        pages.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
+        init();
+        pages.main.changeState = {
+            add: add,
+            edit: edit,
+            cartable: cartable
+        }
+        pages.grid = {
+            bindingObject: pages
+            , columns: [{ name: 'Name', displayName: 'نام صفحه' },
+            { name: 'TrackingCode', displayName: 'کد' }]
+            , listService: dynamicPageService.list
+            , deleteService: dynamicPageService.remove
+            , onAdd: pages.main.changeState.add
+            , onEdit: pages.main.changeState.edit
+            , globalSearch: true
+            , displayNameFormat: ['Name']
+            , initLoad: true
+            , options: () => { return pages.Search.Model }
+        };
+        pages.froalaOption = angular.copy(froalaOption.main);
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return pagesPortalService.list({ PageType: 1 });
+            }).then((result) => {
+                if (result.length > 0) {
+                    pages.listPages = [];
+                    for (var i = 0; i < result.length; i++) {
+                        pages.listPages.push({ Name: result[i].Name, Model: result[i].ID });
+                    }
+                }
+            }).then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'add':
+                        add();
+                        break;
+                    case 'edit':
+                        dynamicPageService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+        }
+        function cartable() {
+            loadingService.show();
+            $('.js-example-tags').empty();
+            clearModel();
+            pages.state = 'cartable';
+            $location.path('/dynamic-page/cartable');
+            loadingService.hide();
+        }
+        function add() {
+            loadingService.show();
+            pages.state = 'add';
+            $location.path('/dynamic-page/add');
+            loadingService.hide();
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return dynamicPageService.get(model.ID);
+            }).then((model) => {
+                pages.Model = model;
+                if (pages.Model.Tags !== null && pages.Model.Tags.length > 0) {
+                    var newOption = [];
+                    for (var i = 0; i < pages.Model.Tags.length; i++) {
+                        newOption.push(new Option(pages.Model.Tags[i], pages.Model.Tags[i], false, true));
+                    }
+                    $timeout(() => {
+                        $('.js-example-tags').append(newOption).trigger('change');
+                    }, 0);
+                }
+                pages.state = 'edit';
+                $location.path(`/dynamic-page/edit/${pages.Model.ID}`);
+            }).finally(loadingService.hide);
+        }
+
+        function addDynamicPage() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                pages.Model.PageID = pages.Search.Model.PageID;
+                return dynamicPageService.add(pages.Model);
+            }).then((result) => {
+                pages.Model = result;
+                pages.grid.getlist(false);
+                toaster.pop('success', '', 'صفحه جدید با موفقیت اضافه گردید');
+                pages.main.changeState.cartable();
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#dynamicPageSection').offset().top - $('#dynamicPageSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    pages.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#dynamicPageSection').offset().top - $('#dynamicPageSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
+        }
+        function editDynamicPage() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return dynamicPageService.edit(pages.Model);
+            }).then((result) => {
+                pages.Model = result;
+                pages.grid.getlist(false);
+                toaster.pop('success', '', 'صفحه با موفقیت ویرایش گردید');
+                pages.main.changeState.cartable();
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#dynamicPageSection').offset().top - $('#dynamicPageSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    pages.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#dynamicPageSection').offset().top - $('#dynamicPageSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
+        }
+        function clearModel() {
+            pages.Model = {};
+        }
+        function pageDropDown() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return pagesPortalService.list({ PageType: 1 });
+            }).then(() => {
+
             }).finally(loadingService.hide);
         }
     }

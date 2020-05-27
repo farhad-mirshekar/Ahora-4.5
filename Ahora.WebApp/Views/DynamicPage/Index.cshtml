@@ -1,0 +1,36 @@
+﻿@model List<FM.Portal.Core.Model.DynamicPage>
+@{
+    ViewBag.Title = ViewBag.Title;
+}
+@section BodySection{
+    <section class="card">
+        <div class="card-header">
+            <span class="card-title">صفحه @ViewBag.Title</span>
+        </div>
+        <div class="card-body">
+            @foreach (var item in Model)
+            {
+                <section class="card">
+                    <div class="position-relative">
+                        <div class="pull-left text-center mr-3">
+                            <label class="text-info">@FM.Portal.Core.Common.Helper.GetPersianDay(item.CreationDate) @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(item.CreationDate))</label><br />
+                            <label class="text-info">@FM.Portal.Core.Common.Helper.GetPersianYear(item.CreationDate)</label>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">@item.Name</h3>
+                        <p class="card-text">@item.Description</p>
+                    </div>
+                    <div class="card-footer">
+                        <div class="btn-group-justified pull-left">
+                            <a href="@Url.RouteUrl("ArticleDetail",new { TrackingCode=item.TrackingCode , Seo=item.UrlDesc.Replace(" ","_").Replace(':','_')})" class="btn btn-outline-success btn-lg btn-block">
+                                ادامه
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            }
+        </div>
+    </section>
+    }

@@ -31,9 +31,12 @@ namespace FM.Portal.Domain.Ptl
         public Result<Pages> Get(Guid ID)
         => _dataSource.Get(ID);
 
-        public Result<List<Pages>> List()
+        public Result<Pages> Get(string TrackingCode)
+        => _dataSource.Get(TrackingCode);
+
+        public Result<List<Pages>> List(PagesListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<Pages>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<Pages>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<Pages>>.Successful(data: table);
             return Result<List<Pages>>.Failure();
