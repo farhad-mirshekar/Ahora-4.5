@@ -13,10 +13,14 @@ BEGIN
 	SET NOCOUNT ON;
 	SELECT 
 		dpages.*,
-		pages.Name AS PageName
+		pages.Name AS PageName,
+		attachment.PathType,
+		attachment.[FileName]
 	FROM ptl.DynamicPage dpages
 	INNER JOIN
 		ptl.Pages pages ON dpages.PageID = pages.ID
+	LEFT JOIN
+		pbl.Attachment attachment ON dpages.ID = attachment.ParentID
 	WHERE
 		dpages.PageID = @PageID
 	ORDER BY [CreationDate]

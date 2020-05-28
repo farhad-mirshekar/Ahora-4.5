@@ -10,6 +10,7 @@ namespace FM.Portal.DataSource
         Result<DynamicPage> Insert(DynamicPage model);
         Result<DynamicPage> Update(DynamicPage model);
         Result<DynamicPage> Get(Guid ID);
+        Result<DynamicPage> Get(string  TrackingCode);
         DataTable List(DynamicPageListVM listVM);
         Result Delete(Guid ID);
     }

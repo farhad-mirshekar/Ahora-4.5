@@ -2175,6 +2175,7 @@
     <Content Include="Views\Redirect\_PartialDownload.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\DynamicPage\Index.cshtml" />
+    <Content Include="Views\DynamicPage\Detail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

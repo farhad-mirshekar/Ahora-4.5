@@ -39,6 +39,9 @@ namespace FM.Portal.Domain
         public Result<DynamicPage> Get(Guid ID)
         => _dataSource.Get(ID);
 
+        public Result<DynamicPage> Get(string TrackingCode)
+       => _dataSource.Get(TrackingCode);
+
         public Result<List<DynamicPage>> List(DynamicPageListVM listVM)
         {
             var table = ConvertDataTableToList.BindList<DynamicPage>(_dataSource.List(listVM));

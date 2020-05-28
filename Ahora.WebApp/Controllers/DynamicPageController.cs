@@ -27,5 +27,18 @@ namespace Ahora.WebApp.Controllers
             ViewBag.Title = page.Name;
             return View(dynamicPageResult.Data);
         }
+        public ActionResult Detail(string TrackingCode, string Seo)
+        {
+            if(string.IsNullOrEmpty(TrackingCode))
+                return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
+
+            var dynamicPageResult = _dynamicPageService.Get(TrackingCode);
+            if (!dynamicPageResult.Success)
+                return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
+            var dynamicPage = dynamicPageResult.Data;
+
+            ViewBag.Title = dynamicPage.Name;
+            return View(dynamicPage);
+        }
     }
 }

@@ -37,41 +37,21 @@ namespace FM.Portal.Infrastructure.DAL
 
         public Result<DynamicPage> Get(Guid ID)
         {
-            try
-            {
-                var obj = new DynamicPage();
-                var param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ID", ID);
+            var param = new SqlParameter[2];
+            param[0] = new SqlParameter("@ID", ID);
+            param[1] = new SqlParameter("@TrackingCode",SqlDbType.NVarChar);
+            param[1].Value = DBNull.Value;
+            return _Get(param);
+        }
 
-                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
-                {
-                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetDynamicPage", param))
-                    {
-                        while (dr.Read())
-                        {
-                            obj.Body = SQLHelper.CheckStringNull(dr["Body"]);
-                            obj.Description = SQLHelper.CheckStringNull(dr["Description"]);
-                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
-                            obj.TrackingCode = SQLHelper.CheckStringNull(dr["TrackingCode"]);
-                            obj.UrlDesc = SQLHelper.CheckStringNull(dr["UrlDesc"]);
-                            obj.IsShow = (Core.Model.EnableMenuType)SQLHelper.CheckByteNull(dr["IsShow"]);
-                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
-                            obj.MetaKeywords = SQLHelper.CheckStringNull(dr["MetaKeywords"]);
-                            obj.PageID = SQLHelper.CheckGuidNull(dr["PageID"]);
-                            obj.PageName = SQLHelper.CheckStringNull(dr["PageName"]);
-                            obj.VisitedCount = SQLHelper.CheckIntNull(dr["VisitedCount"]);
-                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
-                            obj.Name = SQLHelper.CheckStringNull(dr["Name"]);
-                        }
-                    }
+        public Result<DynamicPage> Get(string TrackingCode)
+        {
+            var param = new SqlParameter[2];
+            param[0] = new SqlParameter("@ID", SqlDbType.UniqueIdentifier);
+            param[0].Value = DBNull.Value;
 
-                }
-                return Result<DynamicPage>.Successful(data: obj);
-            }
-            catch
-            {
-                return Result<DynamicPage>.Failure();
-            }
+            param[1] = new SqlParameter("@TrackingCode", TrackingCode);
+            return _Get(param);
         }
 
         public Result<DynamicPage> Insert(DynamicPage model)
@@ -117,6 +97,44 @@ namespace FM.Portal.Infrastructure.DAL
                 }
             }
             catch (Exception e) { throw; }
+        }
+        private Result<DynamicPage> _Get(SqlParameter[] param)
+        {
+            try
+            {
+                var obj = new DynamicPage();
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetDynamicPage", param))
+                    {
+                        while (dr.Read())
+                        {
+                            obj.Body = SQLHelper.CheckStringNull(dr["Body"]);
+                            obj.Description = SQLHelper.CheckStringNull(dr["Description"]);
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.TrackingCode = SQLHelper.CheckStringNull(dr["TrackingCode"]);
+                            obj.UrlDesc = SQLHelper.CheckStringNull(dr["UrlDesc"]);
+                            obj.IsShow = (Core.Model.EnableMenuType)SQLHelper.CheckByteNull(dr["IsShow"]);
+                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                            obj.MetaKeywords = SQLHelper.CheckStringNull(dr["MetaKeywords"]);
+                            obj.PageID = SQLHelper.CheckGuidNull(dr["PageID"]);
+                            obj.PageName = SQLHelper.CheckStringNull(dr["PageName"]);
+                            obj.VisitedCount = SQLHelper.CheckIntNull(dr["VisitedCount"]);
+                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
+                            obj.Name = SQLHelper.CheckStringNull(dr["Name"]);
+                            obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
+                            obj.PathType = (Core.Model.PathType)SQLHelper.CheckByteNull(dr["PathType"]);
+                            obj.TrackingCodeParent = SQLHelper.CheckStringNull(dr["TrackingCodeParent"]);
+                        }
+                    }
+
+                }
+                return Result<DynamicPage>.Successful(data: obj);
+            }
+            catch
+            {
+                return Result<DynamicPage>.Failure();
+            }
         }
     }
 }
