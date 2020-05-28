@@ -3329,14 +3329,17 @@
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('dynamicPageController', dynamicPageController);
-    dynamicPageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'dynamicPageService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption', 'pagesPortalService'];
-    function dynamicPageController($scope, $q, loadingService, $routeParams, dynamicPageService, $location, toaster, $timeout, toolsService, enumService, froalaOption, pagesPortalService) {
+    dynamicPageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'dynamicPageService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption', 'pagesPortalService', 'attachmentService'];
+    function dynamicPageController($scope, $q, loadingService, $routeParams, dynamicPageService, $location, toaster, $timeout, toolsService, enumService, froalaOption, pagesPortalService, attachmentService) {
         let pages = $scope;
         pages.Model = {};
         pages.main = {};
         pages.Search = {};
         pages.Search.Model = {};
         pages.Model.Errors = [];
+        pages.pic = { type: '1', allowMultiple: false, validTypes: 'image/jpeg' };
+        pages.pic.list = [];
+        pages.pic.listUploaded = [];
 
         pages.state = '';
         pages.addDynamicPage = addDynamicPage;
@@ -3409,6 +3412,11 @@
                 return dynamicPageService.get(model.ID);
             }).then((model) => {
                 pages.Model = model;
+                return attachmentService.list({ ParentID: pages.Model.ID });
+            }).then((result) => {
+                pages.pic.reset();
+                if (result && result.length > 0)
+                    pages.pic.listUploaded = [].concat(result);
                 if (pages.Model.Tags !== null && pages.Model.Tags.length > 0) {
                     var newOption = [];
                     for (var i = 0; i < pages.Model.Tags.length; i++) {
@@ -3430,6 +3438,16 @@
                 return dynamicPageService.add(pages.Model);
             }).then((result) => {
                 pages.Model = result;
+                if (pages.pic.list.length) {
+                    pages.pics = [];
+                    if (pages.pic.listUploaded.length === 0) {
+                        pages.pics.push({ ParentID: pages.Model.ID, Type: 2, FileName: pages.pic.list[0], PathType: pages.pic.type });
+                    }
+                    return attachmentService.add(pages.pics);
+                }
+                return true;
+            }).then(() => {
+                pages.pic.reset();
                 pages.grid.getlist(false);
                 toaster.pop('success', '', 'صفحه جدید با موفقیت اضافه گردید');
                 pages.main.changeState.cartable();
@@ -3456,8 +3474,18 @@
                 return dynamicPageService.edit(pages.Model);
             }).then((result) => {
                 pages.Model = result;
+                if (pages.pic.list.length) {
+                    pages.pics = [];
+                    if (pages.pic.listUploaded.length === 0) {
+                        pages.pics.push({ ParentID: pages.Model.ID, Type: 2, FileName: pages.pic.list[0], PathType: pages.pic.type });
+                    }
+                    return attachmentService.add(pages.pics);
+                }
+                return true;
+            }).then(() => {
                 pages.grid.getlist(false);
                 toaster.pop('success', '', 'صفحه با موفقیت ویرایش گردید');
+                pages.pic.reset();
                 pages.main.changeState.cartable();
                 loadingService.hide();
             }).catch((error) => {

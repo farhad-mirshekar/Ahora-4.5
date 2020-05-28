@@ -36,6 +36,9 @@
             ];
             scope.path = '';
             switch (scope.obj.type) {
+                case '1':
+                    scope.path = 'pages';
+                    break;
                 case '3':
                     scope.path = 'news';
                     break;

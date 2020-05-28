@@ -10,6 +10,7 @@
     public enum PathType : byte
     {
         unknown = 0,
+        pages=1,
         product = 6,
         article = 4,
         news = 3,
@@ -17,7 +18,7 @@
         video=7,
         events=8,
         editor=9,
-        file=10
+        file=10,
     }
     public enum UserType : byte
     {
