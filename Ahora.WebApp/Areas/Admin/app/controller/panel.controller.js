@@ -875,11 +875,10 @@
         }
         function categoryType() {
             return categoryService.list().then((result) => {
-                var list = [].concat(result);
                 product.categoryType = [];
-                for (var i = 0; i < list.length; i++) {
-                    if (list[i].ParentID !== '00000000-0000-0000-0000-000000000000')
-                        product.categoryType.push({ Model: list[i].ID, Name: list[i].Title });
+                for (var i = 0; i < result.length; i++) {
+                    if (result[i].ParentNode !== '/')
+                        product.categoryType.push({ Model: result[i].ID, Name:result[i].Title });
                 }
             })
         }
@@ -1051,41 +1050,59 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('categoryController', categoryController);
-    categoryController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'categoryService', '$location', 'toaster', '$timeout', 'categoryMapDiscountService', 'discountService'];
-    function categoryController($scope, $q, loadingService, $routeParams, categoryService, $location, toaster, $timeout, categoryMapDiscountService, discountService) {
+    categoryController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'categoryService', '$location', 'toaster', 'discountService','toolsService'];
+    function categoryController($scope, $q, loadingService, $routeParams, categoryService, $location, toaster, discountService, toolsService) {
         let category = $scope;
         category.Model = {};
-        category.main = {};
-        category.main.changeState = {
-            cartable: cartable,
-            edit: edit
-        }
+        category.list = [];
+        category.lists = [];
         category.state = '';
-        category.error = {};
-        category.error.show = false;;
-        category.goToPageAdd = goToPageAdd;
-        category.addCategory = addCategory;
-        category.editCategory = editCategory;
-        category.grid = {
-            bindingObject: category
-            , columns: [{ name: 'Title', displayName: 'عنوان' }]
-            , listService: categoryService.list
-            , onEdit: category.main.changeState.edit
-            , route: 'category'
-            , globalSearch: true
-            , initLoad: true
-        };
-        init();
 
+        category.addCategory = addCategory;
+        category.addSubCategory = addSubCategory;
+        category.editCategory = editCategory;
+        category.confirmRemove = confirmRemove;
+        category.changeState = {
+            cartable: cartable,
+            add: add
+        }
+        init();
+        category.tree = {
+            data: []
+            , colDefs: [
+                , { field: 'Title', displayName: 'نام' }
+                , {
+                    field: ''
+                    , displayName: ''
+                    , cellTemplate: (
+                        `<div class='pull-left'>
+                            <i class='fa fa-plus tgrid-action pl-1 text-success' style='cursor:pointer;' ng-click='cellTemplateScope.add(row.branch)' title='افزودن'></i>
+                            <i class='fa fa-pencil tgrid-action pl-1 text-primary' style='cursor:pointer;' ng-click='cellTemplateScope.edit(row.branch)' title='ویرایش'></i>
+                            <i class='fa fa-trash tgrid-action pl-1 text-danger' style='cursor:pointer;' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
+                        </div>`)
+                    , cellTemplateScope: {
+                        edit: edit,
+                        add: addSubCategory,
+                        remove: remove
+                    }
+                }
+            ]
+            , expandingProperty: {
+                field: "Title"
+                , displayName: "عنوان"
+            }
+        };
         function init() {
             loadingService.show();
-            $q.resolve().then(() => {
+            return $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
                         cartable();
+                        loadingService.hide();
                         break;
                     case 'add':
-                        add();
+                        goToPageAdd();
+                        loadingService.hide();
                         break;
                     case 'edit':
                         categoryService.get($routeParams.id).then((result) => {
@@ -1095,104 +1112,94 @@
                 }
             }).finally(loadingService.hide);
 
-        }
+
+        } // end init
+
         function cartable() {
-            category.state = 'cartable';
-            $location.path('/category/cartable');
-        }
-        function add() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return select();
+                return categoryService.list();
+            }).then((result) => {
+                setTreeObject(result);
             }).then(() => {
                 return listDiscount();
             }).then(() => {
-                category.state = 'add';
-                $location.path('/category/add');
+                $location.path('category/cartable');
+                loadingService.hide();
             }).finally(loadingService.hide);
         }
-        function edit(model) {
+        function edit(parent) {
             loadingService.show();
             return $q.resolve().then(() => {
-                return categoryService.get(model.ID);
+                return categoryService.get(parent.ID);
             }).then((result) => {
                 category.Model = result;
-                return select();
-            }).then(() => {
-                return listDiscount();
-            }).then(() => {
                 category.state = 'edit';
-                if (category.Model.ParentID !== "00000000-0000-0000-0000-000000000000") {
-                    $('#hassubmenu').prop('checked', true);
-                    $("#ParentID").prop("disabled", false);
-                } else {
-                    $('#hassubmenu').prop('checked', false);
-                    $("#ParentID").prop("disabled", true);
-                }
-                $location.path(`/category/edit/${category.Model.ID}`);;
-            }).finally(loadingService.hide);
+                $('#category-modal').modal('show');
+            }).finally(loadingService.hide)
         }
-        function goToPageAdd() {
-            add();
+        function add(parent) {
+            loadingService.show();
+            parent = parent || {};
+            category.Model = { ParentID: parent.ID };
+            category.state = 'add';
+            $('#category-modal').modal('show');
+            loadingService.hide();
         }
+
         function addCategory() {
             loadingService.show();
-            $q.resolve().then(() => {
-                return categoryService.add(category.Model);
-            }).then((result) => {
-                category.Model = result;
-                category.grid.getlist(false);
-                toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
-                loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 100);
+            return $q.resolve().then(() => {
+                categoryService.add(category.Model).then((result) => {
+                    toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
+                    $('#category-modal').modal('hide');
+                    category.changeState.cartable();
+                    loadingService.hide();
+                })
             }).catch((error) => {
-                if (!error) {
-                    $('#content > div').animate({
-                        scrollTop: $('#categorySection').offset().top - $('#categorySection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    var listError = error.split('&&');
-                    category.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#categorySection').offset().top - $('#categorySection').offsetParent().offset().top
-                    }, 'slow');
-                }
-                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-
-            })
+                toaster.pop('error', '', 'خطای ناشناخته');
+            }).finally(loadingService.hide);
         }
         function editCategory() {
             loadingService.show();
-            $q.resolve().then(() => {
-                return categoryService.edit(category.Model);
-            }).then((result) => {
-                category.Model = result;
-                category.grid.getlist(false);
-                toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
-                loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 100);
+            return $q.resolve().then(() => {
+                categoryService.edit(category.Model).then((result) => {
+                    toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
+                    loadingService.hide();
+                    $('#category-modal').modal('hide');
+                    category.changeState.cartable();
+                })
             }).catch((error) => {
-                category.error.show = true;
-                $('#content > div').animate({
-                    scrollTop: $('#categorySection').offset().top - $('#categorySection').offsetParent().offset().top
-                }, 'slow');
-                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-
+                toaster.pop('error', '', 'خطای ناشناخته');
             }).finally(loadingService.hide);
         }
-        function select() {
-            categoryService.list().then((result) => {
-                category.selectCategory = [];
-                for (i = 0; i < result.length; i++) {
-                    if (result[i].ParentID === '00000000-0000-0000-0000-000000000000') {
-                        category.selectCategory.push({ Model: result[i].ID, Name: result[i].Title });
-                    }
-                }
-            })
+        function addSubCategory(parent) {
+            category.changeState.add(parent);
+        }
+        function setTreeObject(categorys) {
+            categorys.map((item) => {
+                if (item.ParentNode === '/')
+                    item.expanded = true;
+            });
+            category.tree.data = toolsService.getTreeObject(categorys, 'Node', 'ParentNode', '/');
+        }
+        function remove(model) {
+            loadingService.show();
+            category.deleteBuffer = model;
+            category.displayName = model.Title;
+            $('#category-delete').modal('show');
+            loadingService.hide();
+        }
+        function confirmRemove() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return categoryService.remove(category.deleteBuffer.ID);
+            }).then(() => {
+                return categoryService.list();
+            }).then((result) => {
+                $('#category-delete').modal('hide');
+                setTreeObject(result);
+            }).finally(loadingService.hide);
         }
         function listDiscount() {
             return $q.resolve().then(() => {

@@ -11,6 +11,6 @@ namespace FM.Portal.DataSource
         Result<Category> Update(Category model);
         DataTable List();
         Result<Category> Get(Guid ID);
-        Result<Category> GetByParent(Guid ID);
+        Result Delete(Guid ID);
     }
 }

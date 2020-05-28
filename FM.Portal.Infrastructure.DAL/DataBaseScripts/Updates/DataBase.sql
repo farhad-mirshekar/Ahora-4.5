@@ -667,6 +667,11 @@ GO
 ALTER TABLE app.ProductVariantAttributeValue
 ADD Price MONEY NULL
 GO
+ALTER TABLE app.Category
+ADD [Node] [hierarchyid] NULL
+ALTER TABLE app.Category
+DROP COLUMN ParentID
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO
@@ -1048,4 +1053,17 @@ ALTER TABLE [ptl].[DynamicPage] WITH CHECK ADD FOREIGN KEY ([UserID])
 REFERENCES [org].[User] ([ID])
 ALTER TABLE [ptl].[DynamicPage] WITH CHECK ADD FOREIGN KEY ([PageID])
 REFERENCES [ptl].[Pages] ([ID])
+GO
+CREATE TABLE [ptl].[Category](
+	[ID] [uniqueidentifier] NOT NULL,
+	[Title] [nvarchar](100) NULL,
+	[IncludeInTopMenu] [bit] NULL,
+	[IncludeInLeftMenu] [bit] NULL,
+	[CreationDate] [smalldatetime] NULL,
+	[Node] [hierarchyid] NULL,
+ CONSTRAINT [PK_Category] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 

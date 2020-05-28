@@ -3,8 +3,6 @@ using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.Api.Controller;
 using System;
 using System.Web.Http;
-using System.Linq;
-using FM.Portal.Core.Extention.Category;
 
 namespace Ahora.WebApp.Areas.ApiClient.Controllers
 {
@@ -49,20 +47,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             try
             {
                 var result = _service.List();
-                var model = result.Data.Select(x =>
-                {
-                    var category = new Category();
-                    category.ID = x.ID;
-                    category.ParentID = x.ParentID;
-                    category.IncludeInLeftMenu = x.IncludeInLeftMenu;
-                    category.IncludeInTopMenu = x.IncludeInTopMenu;
-                    category.HasDiscountsApplied = x.HasDiscountsApplied;
-                    category.Title = CategoryExtention.GetFormattedBreadCrumb(x,_service);
-                    return category;
-
-                });
-                var results = FM.Portal.Core.Result.Result<System.Collections.Generic.List<Category>>.Successful(data: model.ToList());
-                return Ok(results);
+                return Ok(result);
             }
             catch (Exception e)
             {
@@ -76,6 +61,20 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             try
             {
                 var result = _service.Get(ID);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost, Route("Delete/{ID:guid}")]
+        public IHttpActionResult Delete(Guid ID)
+        {
+            try
+            {
+                var result = _service.Delete(ID);
                 return Ok(result);
             }
             catch (Exception e)

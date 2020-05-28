@@ -8,12 +8,14 @@ CREATE PROCEDURE app.spGetsCategory
 --WITH ENCRYPTION
 AS
 BEGIN
-	;WITH main AS(
-	SELECT *
-	FROM app.Category
-	)
-
-	SELECT * 
-	FROM main
+	SELECT 
+		cat.ID,
+		cat.[Node].ToString() Node,
+		cat.[Node].GetAncestor(1).ToString() ParentNode,
+		cat.CreationDate,
+		cat.IncludeInLeftMenu,
+		cat.IncludeInTopMenu,
+		cat.Title
+	FROM app.Category cat
 	ORDER BY [CreationDate]
 END

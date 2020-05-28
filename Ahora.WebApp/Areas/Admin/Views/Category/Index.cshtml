@@ -1,100 +1,101 @@
-﻿<section ng-show="state ==='cartable'">
-    <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
-    <portal-grid obj="grid"></portal-grid>
+﻿<section>
+    <button class="btn btn-success btn-circle pull-left" ng-click="changeState.add();"><i class="fa fa-plus"></i></button>
+    <tree-grid tree-data="tree.data"
+               col-defs="tree.colDefs"
+               expand-on="tree.expandingProperty"
+               expand-to="tree.expandTo"
+               icon-leaf="fa fa-circle-o"
+               icon-expand="fa fa-plus"
+               icon-collapse="fa fa-minus"></tree-grid>
 </section>
 
-<section ng-show="['add','edit'].indexOf(state) !== -1">
-    <h2 class="main-title" ng-show="state ==='add'">افزودن</h2>
-    <h2 class="main-title" ng-show="state ==='edit'">ویرایش</h2>
-    <div id="categorySection">
-        <div ng-show="error.show" class="alert alert-danger">
-            <ul ng-repeat="row in Model.errors">
-                <li>{{row}}</li>
-            </ul>
-        </div>
-        <div class="card-body form-horizontal">
-            <div class="form-group">
-                <div class="col-md-10">
-                    <label for="Title" class="control-label">نام</label>
-                    <input type="text" class="form-control" ng-model="Model.Title" />
-                </div>
+<div class="modal fade" dir="rtl"
+     id="category-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h2 class="main-title" ng-show="state==='edit'">ویرایش</h2>
+                <h2 class="main-title" ng-show="state==='add'">افزودن</h2>
             </div>
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-2">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" id="hassubmenu"> آیا زیر منو شود ؟
-                        </label>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">نام</label>
+                            <input type="text" class="form-control" ng-model="Model.Title" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="Model.IncludeInTopMenu"> در منو (بالا) قرار گیرد ؟
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="Model.IncludeInLeftMenu"> در منو (چپ) قرار گیرد ؟
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-2">
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="Model.HasDiscountsApplied"> اعمال تخفیف
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-2">
+                            <div class="checkbox">
+                                <select class="form-control" id="ParentID" ng-model="Model.DiscountID" ng-show="Model.HasDiscountsApplied">
+                                    <option ng-repeat="row in listDiscount" ng-value="row.Model">{{row.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    <label for="CategorySub" class="control-label">نمایش منو</label>
-                    <select class="form-control" id="ParentID" ng-model="Model.ParentID">
-                        <option ng-repeat="row in selectCategory" ng-value="row.Model">{{row.Name}}</option>
-                    </select>
-                </div>
+            <div class="modal-footer pull-left">
+                <button type="submit" ng-click="addCategory()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
+                <button type="submit" ng-click="editCategory()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
             </div>
-
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-2">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="Model.IncludeInTopMenu"> در منو (بالا) قرار گیرد ؟
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-2">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="Model.IncludeInLeftMenu"> در منو (چپ) قرار گیرد ؟
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-2">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox" ng-model="Model.HasDiscountsApplied"> اعمال تخفیف
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-6 col-md-offset-2">
-                    <div class="checkbox">
-                        <select class="form-control" id="ParentID" ng-model="Model.DiscountID" ng-show="Model.HasDiscountsApplied">
-                            <option ng-repeat="row in listDiscount" ng-value="row.Model">{{row.Name}}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="btn-group-justified pull-left mb-5">
-            <button type="submit" ng-click="addCategory()" ng-if="state==='add'" class="btn btn-success">افزودن</button>
-            <button type="submit" ng-click="editCategory()" ng-if="state==='edit'" class="btn btn-primary">ویرایش</button>
-            <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
         </div>
     </div>
-</section>
-
-
+</div>
+<div class="modal fade" dir="rtl"
+     id="category-delete"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h3 class="modal-title">تایید حذف</h3>
+            </div>
+            <div class="modal-body">
+                <p>
+                    آیا از حذف <strong class="text-danger">{{displayName}}</strong> اطمینان دارید ؟
+                </p>
+            </div>
+            <div class="modal-footer pull-left">
+                <button class="btn btn-danger" ng-click="confirmRemove()">تایید</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
 
-<script>
-    $(document).ready(function () {
-        $("#ParentID").prop("disabled", true);
-        $("#hassubmenu").change(function () {
-            if ($(this).is(":checked")) {
-                $("#ParentID").prop("disabled", false);
-            } else {
-                $("#ParentID").prop("disabled", true);
-            }
-        })
-    })
-</script>
 

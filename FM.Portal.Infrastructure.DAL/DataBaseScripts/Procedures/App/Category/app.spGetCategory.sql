@@ -9,8 +9,20 @@ CREATE PROCEDURE app.spGetCategory
 --WITH ENCRYPTION
 AS
 BEGIN
+	DECLARE @ParentID UNIQUEIDENTIFIER,
+	@ParentNode HIERARCHYID
+	SET @ParentNode = (SELECT Top 1 [Node].GetAncestor(1).ToString() FROM app.Category WHERE ID = @ID)
+	SET @ParentID = (SELECT ID FROM app.Category WHERE Node = @ParentNode)
 	SELECT 
-		cat.*,
+		cat.ID,
+		cat.[Node].ToString() Node,
+		cat.[Node].GetAncestor(1).ToString() ParentNode,
+		cat.CreationDate,
+		cat.IncludeInLeftMenu,
+		cat.IncludeInTopMenu,
+		cat.HasDiscountsApplied,
+		cat.Title,
+		@ParentID AS ParentID,
 		map.DiscountID
 	FROM	
 		[app].[Category] cat

@@ -21,8 +21,8 @@ namespace FM.Portal.Domain
         public Result<Category> Get(Guid ID)
             => _dataSource.Get(ID);
 
-        public Result<Category> GetByParent(Guid ID)
-            => _dataSource.GetByParent(ID);
+        public Result Delete(Guid ID)
+            => _dataSource.Delete(ID);
 
         public Result<List<Category>> List()
         {

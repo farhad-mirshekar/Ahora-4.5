@@ -97,10 +97,10 @@
     <Content Include="DataBaseScripts\Procedures\App\Bank\app.spGetActiveBank.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CategoryMapDiscount\app.spDeleteCategoryMapDiscountByCategoryID.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CategoryMapDiscount\app.spModifyCategoryMapDiscount.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetByParentCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetsCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spModifyCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\Category\app.spDeleteCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spGetCommentMapUser.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spIsUserLikeOrUnlike.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spModifyCommentMapUser.sql" />

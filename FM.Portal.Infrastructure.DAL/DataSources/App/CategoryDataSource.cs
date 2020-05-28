@@ -26,7 +26,7 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 var commands = new List<SqlCommand>();
 
-                SqlParameter[] param = new SqlParameter[7];
+                SqlParameter[] param = new SqlParameter[8];
                 param[0] = new SqlParameter("@ID", model.ID);
 
                 param[1] = new SqlParameter("@IncludeInTopMenu", model.IncludeInTopMenu);
@@ -35,6 +35,7 @@ namespace FM.Portal.Infrastructure.DAL
                 param[4] = new SqlParameter("@Title", model.Title);
                 param[5] = new SqlParameter("@isNewRecord", isNewrecord);
                 param[6] = new SqlParameter("@HasDiscountsApplied", model.HasDiscountsApplied);
+                param[7] = new SqlParameter("@Node", model.Node);
                 commands.Add(SQLHelper.CreateCommand("app.spModifyCategory", CommandType.StoredProcedure, param));
 
                 if (model.HasDiscountsApplied)
@@ -69,24 +70,26 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                Category obj = new Category();
-                SqlParameter[] param = new SqlParameter[1];
+                var obj = new Category();
+                var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetCategory", param))
+                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetCategory", param))
                     {
                         while (dr.Read())
                         {
                             obj.IncludeInTopMenu = SQLHelper.CheckBoolNull(dr["IncludeInTopMenu"]);
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
-                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]); ;
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.IncludeInLeftMenu = SQLHelper.CheckBoolNull(dr["IncludeInLeftMenu"]);
                             obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
                             obj.HasDiscountsApplied = SQLHelper.CheckBoolNull(dr["HasDiscountsApplied"]);
                             obj.DiscountID = SQLHelper.CheckGuidNull(dr["DiscountID"]);
+                            obj.Node = SQLHelper.CheckStringNull(dr["Node"]);
+                            obj.ParentNode = SQLHelper.CheckStringNull(dr["ParentNode"]);
                         }
                     }
 
@@ -97,35 +100,22 @@ namespace FM.Portal.Infrastructure.DAL
 
         }
 
-        public Result<Category> GetByParent(Guid ID)
+        public Result Delete(Guid ID)
         {
             try
             {
-                Category obj = new Category();
-                SqlParameter[] param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ParentID", ID);
-
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                var param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ID", ID);
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetByParentCategory", param))
-                    {
-                        while (dr.Read())
-                        {
-                            obj.IncludeInTopMenu = SQLHelper.CheckBoolNull(dr["IncludeInTopMenu"]);
-                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
-                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
-                            obj.IncludeInLeftMenu = SQLHelper.CheckBoolNull(dr["IncludeInLeftMenu"]);
-                            obj.HasDiscountsApplied = SQLHelper.CheckBoolNull(dr["HasDiscountsApplied"]);
-                            obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
-                            obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
-                            obj.DiscountID = SQLHelper.CheckGuidNull(dr["DiscountID"]);
-                        }
-                    }
-
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spDeleteCategory", param);
+                    if (result > 0)
+                        return Result.Successful();
+                    else
+                        return Result.Failure();
                 }
-                return Result<Category>.Successful(data: obj);
             }
-            catch (Exception e) { return Result<Category>.Failure(); }
+            catch (Exception e) { throw; }
         }
     }
 }
