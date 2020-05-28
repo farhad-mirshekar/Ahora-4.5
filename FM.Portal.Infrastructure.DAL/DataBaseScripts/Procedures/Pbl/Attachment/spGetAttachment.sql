@@ -12,18 +12,17 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
-
-		
-	SELECT ID
-			, ParentID  
-			, [Type]
-			, [FileName]
-			, Comment
-			, [Data]
-			, [CreationDate]
-			,[PathType]
-	FROM pbl.Attachment	
-	WHERE ID = @ID
+	;WITH Extra AS
+	(
+		SELECT ID , [Data] FROM pbl.AttachmentExtra WHERE ID = @ID
+	)
+	SELECT 
+		attachment.*,
+		extra.Data
+	FROM pbl.Attachment	attachment
+	INNER JOIN
+		Extra extra ON attachment.ID = extra.ID
+	WHERE attachment.ID = @ID
 
 	RETURN @@ROWCOUNT
 END

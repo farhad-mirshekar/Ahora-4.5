@@ -20,8 +20,8 @@ BEGIN
 		[Type],
 		[FileName],
 		Comment,
-		[PathType],
-		CASE WHEN @ReturnData = 1 THEN attachment.[Data] ELSE NULL END [Data]
+		[PathType]
+		--CASE WHEN @ReturnData = 1 THEN attachment.[Data] ELSE NULL END [Data]
 	FROM pbl.Attachment
 	WHERE ParentID = @ParentID
 		AND (@Type < 1 OR [Type] = @Type)

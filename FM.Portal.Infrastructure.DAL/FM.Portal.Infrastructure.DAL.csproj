@@ -252,6 +252,8 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spGetsSlider.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spGetsSliderByCount.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Slider\ptl.spModifySlider.sql" />
+    <Content Include="DataBaseScripts\Synonyms\pbl.AttachmentExtra.sql" />
+    <Content Include="DataBaseScripts\Updates\DataBase-Extra.sql" />
     <Content Include="DataBaseScripts\Updates\DataBase.sql" />
   </ItemGroup>
   <ItemGroup />

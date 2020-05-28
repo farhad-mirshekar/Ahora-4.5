@@ -22,6 +22,9 @@ BEGIN
 
 	BEGIN TRY
 		BEGIN TRAN
+			DELETE FROM pbl.AttachmentExtra
+			WHERE ID = @ID
+
 			DELETE FROM pbl.Attachment
 			WHERE ID = @ID
 		COMMIT

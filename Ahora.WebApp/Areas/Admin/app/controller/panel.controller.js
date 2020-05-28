@@ -840,6 +840,9 @@
                 product.files = [];
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
+                product.pic.reset();
+                product.file.reset();
+
                 product.pic.listUploaded = [];
                 product.file.listUploaded = [];
 
@@ -851,8 +854,6 @@
                             product.pic.listUploaded.push(result[i]);
                     }
                 }
-                product.pic.reset();
-                product.file.reset();
                 toaster.pop('success', '', 'محصول جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
             })
@@ -2298,7 +2299,7 @@
         slider.Model = {};
         slider.Model.Errors = [];
         slider.state = '';
-        slider.pic = { type: '8', allowMultiple: false, validTypes: 'image/jpeg' };
+        slider.pic = { type: '5', allowMultiple: false, validTypes: 'image/jpeg' };
         slider.pic.list = [];
         slider.pic.listUploaded = [];
         slider.main = {};

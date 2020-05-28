@@ -33,17 +33,26 @@ BEGIN
 		BEGIN TRAN
 			IF @IsNewRecord = 1 -- insert
 			BEGIN
-				INSERT INTO pbl.Attachment
-				(ID, ParentID, [Type], [FileName], [Data], [CreationDate],[PathType])
+				INSERT INTO pbl.AttachmentExtra
+				(ID,ParentID ,[Data],CreationDate)
 				VALUES
-				(@ID, @ParentID, @Type, @FileName, @Data, GETDATE(),@PathType)
+				(@ID,@ParentID , @Data , GETDATE())
+
+				INSERT INTO pbl.Attachment
+				(ID, ParentID, [Type], [FileName], [CreationDate],[PathType])
+				VALUES
+				(@ID, @ParentID, @Type, @FileName, GETDATE(),@PathType)
 			END
 			ELSE
 			BEGIN
 				SET @ParentID = (SELECT ParentID FROM pbl.Attachment WHERE ID = @ID)
 
+				UPDATE pbl.AttachmentExtra
+				SET [Data] = @Data
+				WHERE ID = @ID
+
 				UPDATE pbl.Attachment
-				SET [FileName] = @FileName, [Data] = @Data
+				SET [FileName] = @FileName
 				WHERE ID = @ID
 			END
 		COMMIT

@@ -13,18 +13,23 @@ BEGIN
 	SET NOCOUNT ON;
 	SET XACT_ABORT ON;
 
-		
+	;WITH Extra AS
+	(
+		SELECT ID,[Data] FROM pbl.AttachmentExtra WHERE ParentID = @ParentID
+	)
 	SELECT 
-		ID
-		, ParentID  
-		, [Type]
-		, [FileName]
-		, Comment
-		, [Data]
-		, [CreationDate]
-		,[PathType]
+		attachment.ID
+		, attachment.ParentID  
+		, attachment.[Type]
+		, attachment.[FileName]
+		, attachment.Comment
+		, extra.[Data]
+		, attachment.[CreationDate]
+		,attachment.[PathType]
 	FROM 
-		pbl.Attachment	
+		pbl.Attachment attachment
+	INNER JOIN
+		Extra extra ON attachment.ID = extra.ID	
 	WHERE 
 		ParentID = @ParentID AND 
 		PathType = 7
