@@ -46,12 +46,12 @@ namespace FM.Portal.Domain
                         var child = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(children[i].Node));
                         if (child.Count > 0)
                         {
-                            menus.Add(new MenuVM { IconText = children[i].IconText, Url = children[i].Url, ID = children[i].ID, Name = children[i].Name, Children = ChildRender(child) });
+                            menus.Add(new MenuVM { IconText = children[i].IconText, Url = children[i].Url, ID = children[i].ID, Name = children[i].Name, Children = ChildRender(child), Parameters=children[i].Parameters });
                             //str += ChildRender(child, children[i].ID);
                         }
 
                         else
-                            menus.Add(new MenuVM { IconText = children[i].IconText, Url = children[i].Url, ID = children[i].ID, Name = children[i].Name, Children = null });
+                            menus.Add(new MenuVM { IconText = children[i].IconText, Url = children[i].Url, ID = children[i].ID, Name = children[i].Name, Children = null , Parameters=children[i].Parameters });
 
                     }
                 }
@@ -71,11 +71,11 @@ namespace FM.Portal.Domain
                     var subchild = ConvertDataTableToList.BindList<Menu>(_dataSource.GetChildren(child[i].Node));
                     if (subchild.Count > 0)
                     {
-                        menus.Add(new MenuVM { IconText = child[i].IconText, Url = child[i].Url, ID = child[i].ID, Name = child[i].Name, Children = ChildRender(subchild) });
+                        menus.Add(new MenuVM { IconText = child[i].IconText, Url = child[i].Url, ID = child[i].ID, Name = child[i].Name, Children = ChildRender(subchild) ,Parameters=child[i].Parameters});
                     }
                     else
                     {
-                        menus.Add(new MenuVM { IconText = child[i].IconText, Url =child[i].Url, ID = child[i].ID, Name = child[i].Name});
+                        menus.Add(new MenuVM { IconText = child[i].IconText, Url =child[i].Url, ID = child[i].ID, Name = child[i].Name, Parameters = child[i].Parameters });
                     }
                 }
             }
