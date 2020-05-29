@@ -48,7 +48,7 @@ namespace FM.Portal.Domain
         public Result<List<ShoppingCartItem>> List(Guid ShoppingID)
         {
             var table = ConvertDataTableToList.BindList<ShoppingCartItem>(_dataSource.List(ShoppingID));
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<ShoppingCartItem>>.Successful(data: table);
             return Result<List<ShoppingCartItem>>.Failure();
         }

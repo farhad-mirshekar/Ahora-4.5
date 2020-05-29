@@ -26,8 +26,8 @@ namespace FM.Portal.Domain
 
         public Result<List<Category>> List()
         {
-            var table =ConvertDataTableToList.BindList<Category>(_dataSource.List());
-            if (table.Count > 0)
+            var table = ConvertDataTableToList.BindList<Category>(_dataSource.List());
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<Category>>.Successful(data: table);
             return Result<List<Category>>.Failure();
         }

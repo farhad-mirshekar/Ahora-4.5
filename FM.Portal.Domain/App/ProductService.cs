@@ -45,7 +45,7 @@ namespace FM.Portal.Domain
         public Result<List<Product>> List()
         {
             var table = ConvertDataTableToList.BindList<Product>(_dataSource.List());
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<Product>>.Successful(data: table);
             return Result<List<Product>>.Failure();
         }

@@ -104,7 +104,7 @@ namespace FM.Portal.Domain
         public Result<List<Article>> List()
         {
             var table = ConvertDataTableToList.BindList<Article>(_dataSource.List());
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<Article>>.Successful(data: table);
             return Result<List<Article>>.Failure();
         }

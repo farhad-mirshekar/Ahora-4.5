@@ -32,7 +32,7 @@ namespace FM.Portal.Domain
         public Result<List<Command>> List()
         {
             var table =ConvertDataTableToList.BindList<Command>(_dataSource.List());
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<Command>>.Successful(data: table);
             return Result<List<Command>>.Failure();
         }

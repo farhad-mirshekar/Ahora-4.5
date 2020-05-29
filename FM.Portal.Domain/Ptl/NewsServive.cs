@@ -104,7 +104,7 @@ namespace FM.Portal.Domain
         public Result<List<News>> List()
         {
             var table = ConvertDataTableToList.BindList<News>(_dataSource.List());
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<News>>.Successful(data: table);
             return Result<List<News>>.Failure();
         }
@@ -112,7 +112,7 @@ namespace FM.Portal.Domain
         public Result<List<NewsListVM>> List(int count)
         {
             var table = ConvertDataTableToList.BindList<NewsListVM>(_dataSource.List(count));
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<NewsListVM>>.Successful(data: table);
             return Result<List<NewsListVM>>.Failure();
         }

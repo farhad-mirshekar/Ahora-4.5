@@ -40,7 +40,7 @@ namespace FM.Portal.Domain
         public Result<List<UserAddress>> List(Guid ID)
         {
             var table = ConvertDataTableToList.BindList<UserAddress>(_dataSource.List(ID));
-            if (table.Count > 0)
+            if (table.Count > 0 || table.Count == 0)
                 return Result<List<UserAddress>>.Successful(data: table);
             return Result<List<UserAddress>>.Failure();
         }
