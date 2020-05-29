@@ -51,16 +51,27 @@ BEGIN
 			TrackingCode
 		FROM app.Product
 		WHERE RemoverID IS NULL
+	),
+	DynamicPage AS
+	(
+		SELECT
+			ID,
+			MetaKeywords,
+			TrackingCode,
+			Name,
+			UrlDesc
+		FROM ptl.DynamicPage
 	)
 	
 	SELECT 
 		tag.[Name],
-		COALESCE(news.ID,events.ID,article.ID , product.ID) AS DocumentID,
-		COALESCE(news.TrackingCode,events.TrackingCode,article.TrackingCode , product.TrackingCode) AS TrackingCode,
-		COALESCE(news.Title,events.Title,article.Title , product.[Name]) AS DocumentTitle,
-		COALESCE(news.UrlDesc,events.UrlDesc,article.UrlDesc , product.MetaTitle) AS DocumentUrlDesc,
+		COALESCE(news.ID,events.ID,article.ID , product.ID,dynamicPage.ID) AS DocumentID,
+		COALESCE(news.TrackingCode,events.TrackingCode,article.TrackingCode , product.TrackingCode,dynamicPage.TrackingCode) AS TrackingCode,
+		COALESCE(news.Title,events.Title,article.Title , product.[Name],dynamicPage.[Name]) AS DocumentTitle,
+		COALESCE(news.UrlDesc,events.UrlDesc,article.UrlDesc , product.MetaTitle,dynamicPage.UrlDesc) AS DocumentUrlDesc,
 		CAST((
 				CASE 
+					WHEN dynamicPage.ID IS NOT NULL THEN 1
 					WHEN news.ID IS NOT NULL THEN 3
 					WHEN events.ID IS NOT NULL THEN 8
 					WHEN article.ID IS NOT NULL THEN 4
@@ -79,6 +90,8 @@ BEGIN
 		 Article article ON map.DocumentID = article.ID
 	LEFT JOIN
 		 Product product ON map.DocumentID = product.ID
+	LEFT JOIN
+		 DynamicPage dynamicPage ON map.DocumentID = dynamicPage.ID
 	WHERE
 		tag.Name LIKE CONCAT('%', @NewName,'%')
 END

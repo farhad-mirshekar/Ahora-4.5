@@ -92,6 +92,7 @@
     public enum DocumentTypeForTags : byte
     {
         نامشخص = 0,
+        صفحات = 1,
         اخبار = 3,
         مقاله = 4,
         محصولات = 6,

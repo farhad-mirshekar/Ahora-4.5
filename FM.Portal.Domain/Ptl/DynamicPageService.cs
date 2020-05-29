@@ -12,9 +12,12 @@ namespace FM.Portal.Domain
     public class DynamicPageService : IDynamicPageService
     {
         private readonly IDynamicPageDataSource _dataSource;
-        public DynamicPageService(IDynamicPageDataSource dataSource)
+        private readonly ITagsService _tagsService;
+        public DynamicPageService(IDynamicPageDataSource dataSource
+                                  , ITagsService tagsService)
         {
             _dataSource = dataSource;
+            _tagsService = tagsService;
         }
         public Result<DynamicPage> Add(DynamicPage model)
         {
@@ -22,6 +25,15 @@ namespace FM.Portal.Domain
             if (!validateResult.Success)
                 return Result<DynamicPage>.Failure(message: validateResult.Message);
             model.ID = Guid.NewGuid();
+            if (model.Tags.Count > 0)
+            {
+                var tags = new List<Tags>();
+                foreach (var item in model.Tags)
+                {
+                    tags.Add(new Tags { Name = item });
+                }
+                _tagsService.Insert(tags, model.ID);
+            }
             return _dataSource.Insert(model);
         }
 
@@ -33,14 +45,59 @@ namespace FM.Portal.Domain
             var validateResult = ValidateModel(model);
             if (!validateResult.Success)
                 return Result<DynamicPage>.Failure(message: validateResult.Message);
+            if (model.Tags.Count > 0)
+            {
+                var tags = new List<Tags>();
+                foreach (var item in model.Tags)
+                {
+                    tags.Add(new Tags { Name = item });
+                }
+                _tagsService.Insert(tags, model.ID);
+            }
+            else
+            {
+                _tagsService.Delete(model.ID);
+            }
             return _dataSource.Update(model);
         }
 
         public Result<DynamicPage> Get(Guid ID)
-        => _dataSource.Get(ID);
+        {
+            var dynamicPageResult = _dataSource.Get(ID);
+            if (dynamicPageResult.Success)
+            {
+                var resultTag = _tagsService.List(ID);
+                if (resultTag.Success)
+                {
+                    List<string> tags = new List<string>();
+                    foreach (var item in resultTag.Data)
+                    {
+                        tags.Add(item.Name);
+                    }
+                    dynamicPageResult.Data.Tags = tags;
+                }
+            }
+            return dynamicPageResult;
+        }
 
         public Result<DynamicPage> Get(string TrackingCode)
-       => _dataSource.Get(TrackingCode);
+        {
+            var dynamicPageResult = _dataSource.Get(TrackingCode);
+            if (dynamicPageResult.Success)
+            {
+                var resultTag = _tagsService.List(dynamicPageResult.Data.ID);
+                if (resultTag.Success)
+                {
+                    List<string> tags = new List<string>();
+                    foreach (var item in resultTag.Data)
+                    {
+                        tags.Add(item.Name);
+                    }
+                    dynamicPageResult.Data.Tags = tags;
+                }
+            }
+            return dynamicPageResult;
+        }
 
         public Result<List<DynamicPage>> List(DynamicPageListVM listVM)
         {

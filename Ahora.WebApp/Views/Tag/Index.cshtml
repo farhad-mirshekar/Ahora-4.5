@@ -56,6 +56,14 @@
                                                 </a>
                                                 break;
                                             }
+                                        case DocumentTypeForTags.صفحات:
+                                            {
+                                                <a href="@Url.RouteUrl("PagesPriview" , new {TrackingCode = item.TrackingCode , Seo=@CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc) })" class="btn btn-outline-success btn-lg btn-block">
+                                                    ادامه
+                                                    <i class="fa fa-arrow-left"></i>
+                                                </a>
+                                                break;
+                                            }
                                     }
                                 </div>
                             </div>
