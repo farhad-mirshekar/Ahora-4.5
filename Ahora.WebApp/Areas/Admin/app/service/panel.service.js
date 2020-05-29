@@ -2632,6 +2632,120 @@
         }
     }
 
+    app.factory('linkService', linkService);
+    linkService.$inject = ['$http', 'callbackService','$q'];
+    function linkService($http, callbackService,$q) {
+        var url = '/api/v1/link/'
+        var service = {
+            add: add,
+            edit: edit,
+            get: get,
+            list: list,
+            remove: remove
+
+        }
+        return service;
+
+        function add(model) {
+            model.Errors = [];
+            if (!model.Name)
+                model.Errors.push('نام پیوند را وارد نمایید');
+            if (!model.Url)
+                model.Errors.push('آدرس پیوند را وارد نمایید');
+            if (!model.Description)
+                model.Errors.push('توضیحات پیوند را وارد نمایید');
+            if (model.Errors.length > 0)
+                return $q.reject();
+
+            return $http({
+                method: 'POST',
+                url: url + 'Add',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function edit(model) {
+            model.Errors = [];
+
+            if (!model.Name)
+                model.Errors.push('نام پیوند را وارد نمایید');
+            if (!model.Url)
+                model.Errors.push('آدرس پیوند را وارد نمایید');
+            if (!model.Description)
+                model.Errors.push('توضیحات پیوند را وارد نمایید');
+            if (model.Errors.length > 0)
+                return $q.reject();
+
+            return $http({
+                method: 'POST',
+                url: url + 'edit',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            })
+                .catch(function (result) {
+                    callbackService.onError({ result: result });
+                })
+        }
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function list(model) {
+            return $http({
+                method: 'post',
+                url: url + 'list',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'List' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function remove(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Delete/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+    }
+
     app.factory('callbackService', callbackService);
     callbackService.$inject = ['$q', '$http', 'authenticationService'];
     function callbackService($q, $http, authenticationService) {

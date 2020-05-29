@@ -852,6 +852,26 @@ CONSTRAINT [PK_Contact] PRIMARY KEY CLUSTERED
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
+CREATE TABLE [pbl].[Link](
+	[ID] [uniqueidentifier]  NOT NULL,
+	[UserID] [uniqueidentifier] NOT NULL,
+	[Enabled] [tinyint] NOT NULL,
+	[Url] [nvarchar](max) NOT NULL,
+	[Description] [nvarchar](1000) NULL,
+	[IconText] [nvarchar](100) NULL,
+	[ShowFooter] [bit] NULL DEFAULT 1,
+	[Priority] [Int] NULL,
+	[CreationDate] [smalldatetime] NULL,
+CONSTRAINT [PK_Link] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [pbl].[Link] WITH CHECK ADD FOREIGN KEY ([UserID])
+REFERENCES [org].[User] ([ID])
+GO
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
 GO

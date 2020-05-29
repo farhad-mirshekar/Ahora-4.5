@@ -1,0 +1,22 @@
+﻿USE [Ahora]
+GO
+
+IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('pbl.spGetLink'))
+	DROP PROCEDURE pbl.spGetLink
+GO
+
+CREATE PROCEDURE pbl.spGetLink
+	@ID UNIQUEIDENTIFIER
+--WITH ENCRYPTION
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+
+	SELECT 
+		link.*
+	FROM pbl.Link link
+	WHERE (ID = @ID)
+
+	RETURN @@ROWCOUNT
+END

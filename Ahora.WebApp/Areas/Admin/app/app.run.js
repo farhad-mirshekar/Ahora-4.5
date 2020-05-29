@@ -38,7 +38,8 @@
                     { route: '#/menu/cartable', title: 'مدیریت منو', hasShow: () => { return toolsService.checkPermission('pgmenu') }, icon: 'fa-bars' },
                     { route: '#/general-setting', title: 'تنظیمات سایت', hasShow: () => { return toolsService.checkPermission('pggeneral-setting') }, icon: 'fa-gear' },
                     { route: '#/pages/cartable', title: 'آدرس صفحات', hasShow: () => { return toolsService.checkPermission('pgaddresspages')  }, icon: 'fa-gear' },
-                    { route: '#/contact-us', title: 'ارتباط با ما', hasShow: () => { return toolsService.checkPermission('pgcontactus')  }, icon: 'fa fa-globe' },
+                    { route: '#/contact-us', title: 'ارتباط با ما', hasShow: () => { return toolsService.checkPermission('pgcontactus') }, icon: 'fa fa-globe' },
+                    { route: '#/link', title: 'پیوندها', hasShow: () => { return toolsService.checkPermission('pglink') }, icon: 'fa fa-globe' },
                 ]
             },
             {

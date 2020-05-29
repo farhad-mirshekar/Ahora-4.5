@@ -95,6 +95,7 @@
     <Compile Include="Pbl\ContactService.cs" />
     <Compile Include="Pbl\DownloadService.cs" />
     <Compile Include="Pbl\GeneralSettingService.cs" />
+    <Compile Include="Pbl\LinkService.cs" />
     <Compile Include="Pbl\MenuService.cs" />
     <Compile Include="Pbl\NotificationService.cs" />
     <Compile Include="Pbl\PagesService.cs" />

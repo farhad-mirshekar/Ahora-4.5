@@ -1,0 +1,100 @@
+﻿<section>
+    <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
+    <portal-grid obj="grid"></portal-grid>
+</section>
+<div class="modal fade" dir="rtl"
+     id="link-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h2 class="main-title" ng-show="state==='edit'">ویرایش</h2>
+                <h2 class="main-title" ng-show="state==='add'">افزودن</h2>
+            </div>
+            <div class="modal-body" id="linkSection">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-show="Model.Errors.length" class="alert alert-danger">
+                            <ul ng-repeat="row in Model.Errors">
+                                <li>{{row}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">نام لینک</label>
+                            <input type="text" class="form-control" ng-model="Model.Name" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">آدرس</label>
+                            <input type="text" class="form-control" ng-model="Model.Url" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">توضیحات</label>
+                            <input type="text" class="form-control" ng-model="Model.Description" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">اولویت نمایش</label>
+                            <input type="number" class="form-control" ng-model="Model.Priority" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="CategorySub" class="control-label">
+                                آیکون
+                                <i class="fa fa-info-circle text-info" data-container="body" title="نحوه استفاده از آیکن ها" data-toggle="popover" data-placement="left" data-content="برای استفاده شما می توانید به سایت http://www.google.com مراجعه کرده و آیکن مورد نظر خود را انتخاب نمایید">
+                                </i>
+                            </label>
+                            <input type="text" class="form-control" ng-model="Model.IconText" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="Type" class="control-label">نمایش در منو</label>
+                            <select class="form-control" ng-model="Model.Enabled">
+                                <option ng-repeat="row in enableType" ng-value="row.Model">{{row.Name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6 d-inline-flex">
+                                    <label for="CategorySub" class="control-label">نمایش لینک</label>
+                                    <div class="ml-3">
+                                        <input type="checkbox" ng-model="Model.IsShow" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 d-inline-flex">
+                                    <label for="CategorySub" class="control-label">نمایش در Footer</label>
+                                    <div class="ml-3">
+                                        <input type="checkbox" ng-model="Model.ShowFooter" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer pull-left">
+                <button type="submit" ng-click="addLink()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
+                <button type="submit" ng-click="editLink()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+
+

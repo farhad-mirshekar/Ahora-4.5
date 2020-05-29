@@ -121,6 +121,8 @@
     <Compile Include="Pbl\Download\Download.cs" />
     <Compile Include="Pbl\GeneralSetting\GeneralSetting.cs" />
     <Compile Include="Pbl\GeneralSetting\VM\SettingVM.cs" />
+    <Compile Include="Pbl\Link\Link.cs" />
+    <Compile Include="Pbl\Link\VM\LinkListVM.cs" />
     <Compile Include="Pbl\Menu\Menu.cs" />
     <Compile Include="Pbl\Menu\VM\GetModelVM.cs" />
     <Compile Include="Pbl\Menu\VM\MenuVM.cs" />

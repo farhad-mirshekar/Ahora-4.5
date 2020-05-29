@@ -36,7 +36,8 @@
                 .when("/user/:state/:id?", { templateUrl: "/Admin/user/index", controller: 'userController', reloadOnUrl: false })
                 .when("/contact-us/", { templateUrl: "/Admin/contact/index", controller: 'contactController' })
                 .when("/pages-portal/", { templateUrl: "/Admin/PagesPortal/index", controller: 'pagesPortalController' })
-                .when("/dynamic-page/:state/:id?", { templateUrl: "/Admin/DynamicPage/index", controller: 'dynamicPageController', reloadOnUrl: false })// add;
+                .when("/dynamic-page/:state/:id?", { templateUrl: "/Admin/DynamicPage/index", controller: 'dynamicPageController', reloadOnUrl: false })
+                .when("/link/", { templateUrl: "/Admin/link/index", controller: 'linkController' })// add;
 
 
                 .otherwise({

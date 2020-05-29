@@ -80,6 +80,7 @@
     <Compile Include="DataSources\Pbl\ContactDataSource.cs" />
     <Compile Include="DataSources\Pbl\DownloadDataSource.cs" />
     <Compile Include="DataSources\Pbl\GeneralSettingDataSource.cs" />
+    <Compile Include="DataSources\Pbl\LinkDataSource.cs" />
     <Compile Include="DataSources\Pbl\MenuDataSource.cs" />
     <Compile Include="DataSources\Pbl\NotificationDataSource.cs" />
     <Compile Include="DataSources\Pbl\PagesDataSource.cs" />
@@ -210,6 +211,10 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.GetsActiveNotification.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.GetsNotification.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Notification\pbl.ReadNotification.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Link\pbl.DeleteLink.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Link\pbl.GetLink.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Link\pbl.GetsLink.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Link\pbl.spModifyLink.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.DeletePages.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Pages\pbl.GetsPage.sql" />

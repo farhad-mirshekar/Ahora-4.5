@@ -878,7 +878,7 @@
                 product.categoryType = [];
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].ParentNode !== '/')
-                        product.categoryType.push({ Model: result[i].ID, Name:result[i].Title });
+                        product.categoryType.push({ Model: result[i].ID, Name: result[i].Title });
                 }
             })
         }
@@ -1050,7 +1050,7 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('categoryController', categoryController);
-    categoryController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'categoryService', '$location', 'toaster', 'discountService','toolsService'];
+    categoryController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'categoryService', '$location', 'toaster', 'discountService', 'toolsService'];
     function categoryController($scope, $q, loadingService, $routeParams, categoryService, $location, toaster, discountService, toolsService) {
         let category = $scope;
         category.Model = {};
@@ -3520,6 +3520,105 @@
                 return pagesPortalService.list({ PageType: 1 });
             }).then(() => {
 
+            }).finally(loadingService.hide);
+        }
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('linkController', linkController);
+    linkController.$inject = ['$scope', '$q', 'loadingService', 'linkService', 'toolsService', 'enumService', 'toaster'];
+    function linkController($scope, $q, loadingService, linkService, toolsService, enumService, toaster) {
+        let link = $scope;
+        link.Model = {};
+        link.Model.Errors = [];
+        link.main = {};
+
+        link.addLink = addLink;
+        link.editLink = editLink;
+        link.main.changeState = {
+            edit: edit,
+            add: add
+        }
+        link.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
+        link.grid = {
+            bindingObject: link
+            , columns: [{ name: 'Name', displayName: 'نام صفحه' },
+            { name: 'Url', displayName: 'آدرس' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            , listService: linkService.list
+            , deleteService: linkService.remove
+            , globalSearch: true
+            , onEdit: link.main.changeState.edit
+            , initLoad: true
+            , displayNameFormat: ['Name'],
+            searchBy: 'Name'
+        };
+        function add() {
+            loadingService.show();
+            $('#link-modal').modal('show');
+            link.Model = {};
+            link.state = 'add';
+            loadingService.hide();
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                link.state = 'edit';
+                link.Model = model;
+                $('#link-modal').modal('show');
+            }).finally(loadingService.hide);
+
+        }
+        function addLink() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return linkService.add(link.Model);
+            }).then((result) => {
+                toaster.pop('success', '', 'پیوند جدید با موفقیت اضافه گردید');
+                link.Model = {};
+                link.grid.getlist();
+                $('#link-modal').modal('hide');
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#linkSection').offset().top - $('#linkSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    link.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#link-modal').offset().top - $('#link-modal').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+        function editLink() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return linkService.edit(link.Model)
+            }).then((result) => {
+                toaster.pop('success', '', 'صفحه جدید با موفقیت ویرایش گردید');
+                link.Model = {};
+                link.grid.getlist();
+                $('#link-modal').modal('hide');
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#linkSection').offset().top - $('#linkSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    link.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#linkSection').offset().top - $('#linkSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
             }).finally(loadingService.hide);
         }
     }

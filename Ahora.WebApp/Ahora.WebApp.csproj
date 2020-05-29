@@ -926,6 +926,7 @@
     <Content Include="Areas\Admin\Views\Contact\Index.cshtml" />
     <Content Include="Areas\Admin\Views\PagesPortal\Index.cshtml" />
     <Content Include="Areas\Admin\Views\DynamicPage\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Link\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
@@ -2086,6 +2087,7 @@
     <Compile Include="Areas\Admin\Controllers\Org\UserController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\ContactController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\GeneralSettingController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Pbl\LinkController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\MenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\NotificationController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\PagesController.cs" />
@@ -2116,6 +2118,7 @@
     <Compile Include="Areas\ApiClient\Controllers\pbl\AttachmentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\ContactController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\GeneralSettingController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\pbl\LinkController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\MenuController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\NotificationController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\PagesController.cs" />
