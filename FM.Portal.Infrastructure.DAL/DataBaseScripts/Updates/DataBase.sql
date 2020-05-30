@@ -1101,3 +1101,19 @@ CREATE TABLE [ptl].[StaticPage](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
+CREATE TABLE [ptl].[Banner](
+	[ID] [uniqueidentifier] NOT NULL,
+	[Name] [Nvarchar](1000) NOT NULL,
+	[Description] [Nvarchar](1000) NULL,
+	[BannerType] [Tinyint] NULL,
+	[Enabled] [Tinyint] NULL Default 0,
+	[UserID] [Uniqueidentifier] NULL,
+	[CreationDate] [SmalldateTime] NOT NULL
+ CONSTRAINT [PK_Banner] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [ptl].[Banner] WITH CHECK ADD FOREIGN KEY ([UserID])
+REFERENCES [org].[User] ([ID])

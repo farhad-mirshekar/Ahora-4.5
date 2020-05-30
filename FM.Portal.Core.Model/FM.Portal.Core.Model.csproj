@@ -133,6 +133,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ptl\Article\Article.cs" />
     <Compile Include="Ptl\Article\VM\ArticleListVM.cs" />
+    <Compile Include="Ptl\Banner\Banner.cs" />
+    <Compile Include="Ptl\Banner\VM\BannerListVM.cs" />
     <Compile Include="Ptl\Category\Category.cs" />
     <Compile Include="Ptl\Category\VM\GetCountCategoryVM.cs" />
     <Compile Include="Ptl\DynamicPage\DynamicPage.cs" />

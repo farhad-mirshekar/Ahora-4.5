@@ -3624,8 +3624,8 @@
     }
     //-------------------------------------------------------------------------------------------------------------------------------------
     app.controller('staticPageController', staticPageController);
-    staticPageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'staticPageService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption', 'pagesPortalService', 'attachmentService'];
-    function staticPageController($scope, $q, loadingService, $routeParams, staticPageService, $location, toaster, $timeout, toolsService, enumService, froalaOption, pagesPortalService, attachmentService) {
+    staticPageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'staticPageService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption', 'attachmentService'];
+    function staticPageController($scope, $q, loadingService, $routeParams, staticPageService, $location, toaster, $timeout, toolsService, enumService, froalaOption, attachmentService) {
         let pages = $scope;
         pages.Model = {};
         pages.main = {};
@@ -3662,15 +3662,6 @@
         function init() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return pagesPortalService.list({ PageType: 1 });
-            }).then((result) => {
-                if (result.length > 0) {
-                    pages.listPages = [];
-                    for (var i = 0; i < result.length; i++) {
-                        pages.listPages.push({ Name: result[i].Name, Model: result[i].ID });
-                    }
-                }
-            }).then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
                         cartable();
@@ -3757,6 +3748,175 @@
         }
         function clearModel() {
             pages.Model = {};
+        }
+    }
+    //------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('bannerController', bannerController);
+    bannerController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'bannerService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'attachmentService'];
+    function bannerController($scope, $q, loadingService, $routeParams, bannerService, $location, toaster, $timeout, toolsService, enumService, attachmentService) {
+        let banner = $scope;
+        banner.Model = {};
+        banner.main = {};
+        banner.Search = {};
+        banner.Search.Model = {};
+        banner.Model.Errors = [];
+        banner.pic = { type: '2', allowMultiple: false, validTypes: 'image/jpeg' };
+        banner.pic.list = [];
+        banner.pic.listUploaded = [];
+
+        banner.state = '';
+        banner.addBanner = addBanner;
+        banner.editBanner = editBanner;
+        banner.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
+        banner.bannerType = toolsService.arrayEnum(enumService.BannerType);
+        init();
+        banner.main.changeState = {
+            add: add,
+            edit: edit,
+            cartable: cartable
+        }
+        banner.grid = {
+            bindingObject: banner
+            , columns: [{ name: 'Name', displayName: 'نام بنر' },
+                { name: 'BannerType', displayName: 'نوع بنر', type: 'enum', source: enumService.BannerType },
+                { name: 'Enabled', displayName: 'فعال/غیرفعال', type: 'enum', source: enumService.EnableMenuType },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }
+            ]
+            , listService: bannerService.list
+            , deleteService: bannerService.remove
+            , onAdd: banner.main.changeState.add
+            , onEdit: banner.main.changeState.edit
+            , globalSearch: true
+            , displayNameFormat: ['Name']
+            , initLoad: true
+        };
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'add':
+                        add();
+                        break;
+                    case 'edit':
+                        bannerService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+        }
+        function cartable() {
+            loadingService.show();
+            clearModel();
+            banner.state = 'cartable';
+            $location.path('/banner/cartable');
+            loadingService.hide();
+        }
+        function add() {
+            loadingService.show();
+            clearModel();
+            banner.state = 'add';
+            $location.path('/banner/add');
+            loadingService.hide();
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return bannerService.get(model.ID);
+            }).then((model) => {
+                banner.Model = model;
+                return attachmentService.list({ ParentID: banner.Model.ID });
+            }).then((result) => {
+                banner.pic.reset();
+                if (result && result.length > 0)
+                    banner.pic.listUploaded = [].concat(result);
+                banner.state = 'edit';
+                $location.path(`/banner/edit/${banner.Model.ID}`);
+            }).finally(loadingService.hide);
+        }
+
+        function addBanner() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return bannerService.add(banner.Model);
+            }).then((result) => {
+                banner.Model = result;
+                if (banner.pic.list.length) {
+                    banner.pics = [];
+                    if (banner.pic.listUploaded.length === 0) {
+                        banner.pics.push({ ParentID: banner.Model.ID, Type: 2, FileName: banner.pic.list[0], PathType: banner.pic.type });
+                    }
+                    return attachmentService.add(banner.pics);
+                }
+                return true;
+            }).then(() => {
+                banner.grid.getlist(false);
+                toaster.pop('success', '', 'بنر با موفقیت اضافه گردید');
+                banner.pic.reset();
+                banner.main.changeState.cartable();
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#bannerSection').offset().top - $('#bannerSection').offsetParent().offset().top
+                    }, 'slow');
+                    toaster.pop('error', '', error || 'خطایی اتفاق افتاده است');
+                } else {
+                    var listError = error.split('&&');
+                    banner.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#bannerSection').offset().top - $('#bannerSection').offsetParent().offset().top
+                    }, 'slow');
+                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                }
+
+
+            }).finally(loadingService.hide);
+        }
+        function editBanner() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return bannerService.edit(banner.Model);
+            }).then((result) => {
+                banner.Model = result;
+                if (banner.pic.list.length) {
+                    banner.pics = [];
+                    if (banner.pic.listUploaded.length === 0) {
+                        banner.pics.push({ ParentID: banner.Model.ID, Type: 2, FileName: banner.pic.list[0], PathType: banner.pic.type });
+                    }
+                    return attachmentService.add(banner.pics);
+                }
+                return true;
+            }).then(() => {
+                banner.grid.getlist(false);
+                toaster.pop('success', '', 'بنر با موفقیت ویرایش گردید');
+                banner.pic.reset();
+                banner.main.changeState.cartable();
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#bannerSection').offset().top - $('#bannerSection').offsetParent().offset().top
+                    }, 'slow');
+                    toaster.pop('error', '', error || 'خطایی اتفاق افتاده است');
+                } else {
+                    var listError = error.split('&&');
+                    banner.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#bannerSection').offset().top - $('#bannerSection').offsetParent().offset().top
+                    }, 'slow');
+                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                }
+
+                
+            }).finally(loadingService.hide);
+        }
+        function clearModel() {
+            banner.Model = {};
+            banner.pic.listUploaded = [];
         }
     }
 })();

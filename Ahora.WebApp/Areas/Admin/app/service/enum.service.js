@@ -11,6 +11,8 @@
 				'2': 'ثانویه'
 			},
 			enumService.PathType = {
+				'1': 'pages',
+				'2': 'banner',
 				'3': 'news',
 				'4': 'article',
 				'5': 'slider',
@@ -67,6 +69,7 @@
 				'8': 'رویدادها'
 			},
 			enumService.DocumentTypeForTags = {
+				'1': 'صفحات',
 				'3': 'اخبار',
 				'4': 'مقاله',
 				'6': 'محصولات',
@@ -78,6 +81,10 @@
 			enumService.PageType = {
 				'1': 'داینامیک',
 				'2': 'استاتیک'
+			},
+			enumService.BannerType = {
+				'1': 'تبلیغات',
+				'2': 'صفحات'
 			}
 
 		return enumService;

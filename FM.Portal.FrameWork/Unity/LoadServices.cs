@@ -130,6 +130,9 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IStaticPageDataSource, StaticPageDataSource>();
             _container.RegisterType<IStaticPageService, StaticPageService>();
 
+            _container.RegisterType<IBannerDataSource, BannerDataSource>();
+            _container.RegisterType<IBannerService, BannerService>();
+
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

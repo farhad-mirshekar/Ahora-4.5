@@ -38,7 +38,8 @@
                 .when("/pages-portal/", { templateUrl: "/Admin/PagesPortal/index", controller: 'pagesPortalController' })
                 .when("/dynamic-page/:state/:id?", { templateUrl: "/Admin/DynamicPage/index", controller: 'dynamicPageController', reloadOnUrl: false })
                 .when("/link/", { templateUrl: "/Admin/link/index", controller: 'linkController' })
-                .when("/static-page/:state/:id?", { templateUrl: "/Admin/StaticPage/index", controller: 'staticPageController', reloadOnUrl: false })// add;
+                .when("/static-page/:state/:id?", { templateUrl: "/Admin/StaticPage/index", controller: 'staticPageController', reloadOnUrl: false })
+                .when("/banner/:state/:id?", { templateUrl: "/Admin/banner/index", controller: 'bannerController', reloadOnUrl: false })// add;
 
 
                 .otherwise({

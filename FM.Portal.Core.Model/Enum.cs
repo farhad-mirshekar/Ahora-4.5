@@ -11,6 +11,7 @@
     {
         unknown = 0,
         pages=1,
+        banner = 2,
         product = 6,
         article = 4,
         news = 3,
@@ -109,4 +110,11 @@
         داینامیک = 1,
         استاتیک = 2
     }
+    public enum BannerType : byte
+    {
+        نامشخص = 0,
+        تبلیغات = 1,
+        صفحات = 2
+    }
+
 }

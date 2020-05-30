@@ -86,6 +86,7 @@
     <Compile Include="DataSources\Pbl\PagesDataSource.cs" />
     <Compile Include="DataSources\Pbl\TagsDataSource.cs" />
     <Compile Include="DataSources\Ptl\ArticleDataSource.cs" />
+    <Compile Include="DataSources\Ptl\BannerDataSource.cs" />
     <Compile Include="DataSources\Ptl\CategoryDataSource.cs" />
     <Compile Include="DataSources\Ptl\DynamicPageDataSource.cs" />
     <Compile Include="DataSources\Ptl\EventsDataSource.cs" />
@@ -235,6 +236,10 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetCountCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetsCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spModifyCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.DeleteBanner.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.GetsBanner.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.GetBanner.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.spModifyBanner.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.DeleteStaticPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.GetStaticPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.GetsStaticPage.sql" />

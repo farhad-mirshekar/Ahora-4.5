@@ -60,10 +60,11 @@
                     { route: '#/news/cartable', title: 'کارتابل اخبار', hasShow: () => { return toolsService.checkPermission('pgnews') }, icon: 'fa-newspaper-o' },
                     { route: '#/slider/cartable', title: 'کارتابل تصاویر کشویی', hasShow: () => { return toolsService.checkPermission('pgsliders')}, icon: 'fa-sliders' },
                     { route: '#/events/cartable', title: 'کارتابل رویداد', hasShow: () => { return toolsService.checkPermission('pgevents') }, icon: 'fa-sliders' },
-                    { route: '#/comment-portal/cartable', title: 'کارتابل نظرات', hasShow: () => { return true; }, icon: 'fa-comments-o' },
-                    { route: '#/pages-portal/', title: 'ساخت صفحات', hasShow: () => { return true; }, icon: 'fa-comments-o' },
-                    { route: '#/dynamic-page/cartable', title: 'کارتابل صفحات داینامیک', hasShow: () => { return true; }, icon: 'fa-comments-o' },
-                    { route: '#/static-page/cartable', title: 'کارتابل صفحات استاتیک', hasShow: () => { return true; }, icon: 'fa-comments-o' },
+                    { route: '#/comment-portal/cartable', title: 'کارتابل نظرات', hasShow: () => { return toolsService.checkPermission('pgcomment-portal'); }, icon: 'fa-comments-o' },
+                    { route: '#/pages-portal/', title: 'ساخت صفحات', hasShow: () => { return toolsService.checkPermission('pgcreate-page'); }, icon: 'fa-comments-o' },
+                    { route: '#/dynamic-page/cartable', title: 'کارتابل صفحات داینامیک', hasShow: () => { return toolsService.checkPermission('pgdynamic-page'); }, icon: 'fa-comments-o' },
+                    { route: '#/static-page/cartable', title: 'کارتابل صفحات استاتیک', hasShow: () => { return toolsService.checkPermission('pgstatic-page'); }, icon: 'fa-comments-o' },
+                    { route: '#/banner/cartable', title: 'مدیریت بنر', hasShow: () => { return true; }, icon: 'fa-comments-o' },
                 ]
             }
             , {

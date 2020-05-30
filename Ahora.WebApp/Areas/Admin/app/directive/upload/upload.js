@@ -39,6 +39,9 @@
                 case '1':
                     scope.path = 'pages';
                     break;
+                case '2':
+                    scope.path = 'banner';
+                    break;
                 case '3':
                     scope.path = 'news';
                     break;
