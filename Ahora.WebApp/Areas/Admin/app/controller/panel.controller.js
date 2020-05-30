@@ -3622,4 +3622,141 @@
             }).finally(loadingService.hide);
         }
     }
+    //-------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('staticPageController', staticPageController);
+    staticPageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'staticPageService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption', 'pagesPortalService', 'attachmentService'];
+    function staticPageController($scope, $q, loadingService, $routeParams, staticPageService, $location, toaster, $timeout, toolsService, enumService, froalaOption, pagesPortalService, attachmentService) {
+        let pages = $scope;
+        pages.Model = {};
+        pages.main = {};
+        pages.Search = {};
+        pages.Search.Model = {};
+        pages.Model.Errors = [];
+        pages.pic = { type: '1', allowMultiple: false, validTypes: 'image/jpeg' };
+        pages.pic.list = [];
+        pages.pic.listUploaded = [];
+
+        pages.state = '';
+        pages.editStaticPage = editStaticPage;
+        pages.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
+        pages.bannerShow = toolsService.arrayEnum(enumService.EnableMenuType);
+        init();
+        pages.main.changeState = {
+            edit: edit,
+            cartable: cartable
+        }
+        pages.grid = {
+            bindingObject: pages
+            , columns: [{ name: 'Name', displayName: 'نام صفحه' },
+            { name: 'TrackingCode', displayName: 'کد' }]
+            , listService: staticPageService.list
+            , deleteService: staticPageService.remove
+            , onAdd: pages.main.changeState.add
+            , onEdit: pages.main.changeState.edit
+            , globalSearch: true
+            , displayNameFormat: ['Name']
+            , initLoad: true
+            , options: () => { return pages.Search.Model }
+        };
+        pages.froalaOption = angular.copy(froalaOption.main);
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return pagesPortalService.list({ PageType: 1 });
+            }).then((result) => {
+                if (result.length > 0) {
+                    pages.listPages = [];
+                    for (var i = 0; i < result.length; i++) {
+                        pages.listPages.push({ Name: result[i].Name, Model: result[i].ID });
+                    }
+                }
+            }).then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'add':
+                        add();
+                        break;
+                    case 'edit':
+                        staticPageService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+        }
+        function cartable() {
+            loadingService.show();
+            $('.js-example-tags').empty();
+            clearModel();
+            pages.state = 'cartable';
+            $location.path('/static-page/cartable');
+            loadingService.hide();
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return staticPageService.get(model.ID);
+            }).then((model) => {
+                pages.Model = model;
+                return attachmentService.list({ ParentID: pages.Model.ID });
+            }).then((result) => {
+                pages.pic.reset();
+                if (result && result.length > 0)
+                    pages.pic.listUploaded = [].concat(result);
+                if (pages.Model.Tags !== null && pages.Model.Tags.length > 0) {
+                    var newOption = [];
+                    for (var i = 0; i < pages.Model.Tags.length; i++) {
+                        newOption.push(new Option(pages.Model.Tags[i], pages.Model.Tags[i], false, true));
+                    }
+                    $timeout(() => {
+                        $('.js-example-tags').append(newOption).trigger('change');
+                    }, 0);
+                }
+                pages.state = 'edit';
+                $location.path(`/static-page/edit/${pages.Model.ID}`);
+            }).finally(loadingService.hide);
+        }
+
+        function editStaticPage() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return staticPageService.edit(pages.Model);
+            }).then((result) => {
+                pages.Model = result;
+                if (pages.pic.list.length) {
+                    pages.pics = [];
+                    if (pages.pic.listUploaded.length === 0) {
+                        pages.pics.push({ ParentID: pages.Model.ID, Type: 2, FileName: pages.pic.list[0], PathType: pages.pic.type });
+                    }
+                    return attachmentService.add(pages.pics);
+                }
+                return true;
+            }).then(() => {
+                pages.grid.getlist(false);
+                toaster.pop('success', '', 'صفحه با موفقیت ویرایش گردید');
+                pages.pic.reset();
+                pages.main.changeState.cartable();
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#staticPageSection').offset().top - $('#staticPageSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    pages.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#staticPageSection').offset().top - $('#staticPageSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
+        }
+        function clearModel() {
+            pages.Model = {};
+        }
+    }
 })();

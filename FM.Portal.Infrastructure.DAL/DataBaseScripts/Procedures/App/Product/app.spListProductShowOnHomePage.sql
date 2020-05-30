@@ -9,6 +9,22 @@ CREATE PROCEDURE app.spListProductShowOnHomePage
 --WITH ENCRYPTION
 AS
 BEGIN
+;WITH Discount AS
+(
+	SELECT 
+		cat.ID,
+		cat.HasDiscountsApplied,
+		disc.[Name] AS DiscountName,
+		disc.DiscountAmount,
+		disc.DiscountType
+	FROM app.Category cat
+	LEFT JOIN
+		app.Category_Discount_Mapping catMapdisc ON cat.ID = catMapdisc.CategoryID
+	LEFT JOIN
+	    app.Discount disc ON catMapdisc.DiscountID = disc.ID
+	WHERE 
+		catMapdisc.Active = 1
+)
 	SELECT
 		Top (@Count)
 		Product.TrackingCode,
@@ -18,21 +34,17 @@ BEGIN
 		product.Name,
 		attachment.PathType,
 		attachment.[FileName],
-		cat.HasDiscountsApplied,
-		disc.[Name] AS DiscountName,
-		disc.DiscountAmount,
-		disc.DiscountType
+		discount.HasDiscountsApplied,
+		discount.DiscountName,
+		discount.DiscountAmount,
+		discount.DiscountType
 		
 	FROM 
 		app.Product product
 	INNER JOIN 
 		pbl.Attachment attachment ON product.ID = attachment.ParentID
-	INNER JOIN
-		app.Category cat ON product.CategoryID = cat.ID
-	LEFT JOIN
-		app.Category_Discount_Mapping catMapdisc ON cat.ID = catMapdisc.CategoryID
-	LEFT JOIN
-	    app.Discount disc ON catMapdisc.DiscountID = disc.ID
+	LEFT JOIN 
+		Discount discount ON product.CategoryID = discount.ID
 	WHERE
 		attachment.[Type] = 1
 END

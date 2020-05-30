@@ -114,6 +114,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<ILinkDataSource, LinkDataSource>();
             container.RegisterType<ILinkService, LinkService>();
 
+            container.RegisterType<IStaticPageDataSource, StaticPageDataSource>();
+            container.RegisterType<IStaticPageService, StaticPageService>();
+
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

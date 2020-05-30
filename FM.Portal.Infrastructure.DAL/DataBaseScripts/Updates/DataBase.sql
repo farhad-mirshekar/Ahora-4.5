@@ -1086,4 +1086,18 @@ CREATE TABLE [ptl].[Category](
 	[ID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
+CREATE TABLE [ptl].[StaticPage](
+	[ID] [uniqueidentifier] NOT NULL,
+	[TrackingCode] [Nvarchar](100) NOT NULL,
+	[Description] [Nvarchar](1000) NULL,
+	[AttachmentID] [uniqueidentifier] NULL,
+	[MetaKeywords] [Nvarchar](1000) NULL,
+	[VisitedCount] [Int] NULL Default 0,
+	[BannerShow] [Tinyint] NULL Default 0,
+	[Body] [Nvarchar](MAX) NULL,
+ CONSTRAINT [PK_StaticPage] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
 

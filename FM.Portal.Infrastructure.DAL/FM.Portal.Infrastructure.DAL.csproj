@@ -92,6 +92,7 @@
     <Compile Include="DataSources\Ptl\NewsDataSource.cs" />
     <Compile Include="DataSources\Ptl\PagesDataSource.cs" />
     <Compile Include="DataSources\Ptl\SliderDataSource.cs" />
+    <Compile Include="DataSources\Ptl\StaticPageDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +235,10 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetCountCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetsCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spModifyCategory.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.DeleteStaticPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.GetStaticPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.GetsStaticPage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.spModifyStaticPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\DynamicPage\ptl.DeleteDynamicPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\DynamicPage\ptl.GetDynamicPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\DynamicPage\ptl.GetsDynamicPage.sql" />

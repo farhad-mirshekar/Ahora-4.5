@@ -108,6 +108,7 @@
     <Compile Include="Ptl\NewsServive.cs" />
     <Compile Include="Ptl\PagesService.cs" />
     <Compile Include="Ptl\SliderService.cs" />
+    <Compile Include="Ptl\StaticPageService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -63,8 +63,7 @@
                     { route: '#/comment-portal/cartable', title: 'کارتابل نظرات', hasShow: () => { return true; }, icon: 'fa-comments-o' },
                     { route: '#/pages-portal/', title: 'ساخت صفحات', hasShow: () => { return true; }, icon: 'fa-comments-o' },
                     { route: '#/dynamic-page/cartable', title: 'کارتابل صفحات داینامیک', hasShow: () => { return true; }, icon: 'fa-comments-o' },
-
-
+                    { route: '#/static-page/cartable', title: 'کارتابل صفحات استاتیک', hasShow: () => { return true; }, icon: 'fa-comments-o' },
                 ]
             }
             , {

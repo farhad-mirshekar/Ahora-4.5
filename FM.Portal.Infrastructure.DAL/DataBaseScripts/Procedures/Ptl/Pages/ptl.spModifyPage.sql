@@ -16,7 +16,7 @@ CREATE PROCEDURE ptl.spModifyPages
 --WITH ENCRYPTION
 AS
 BEGIN
-
+	BEGIN TRAN
 	IF @IsNewRecord = 1 -- insert
 			BEGIN
 				DECLARE @TrackingCode Nvarchar(20)
@@ -26,6 +26,14 @@ BEGIN
 				(ID,[TrackingCode],[Name],[UrlDesc],[PageType],[UserID],[Enabled],[CreationDate])
 				VALUES
 				(@ID, @TrackingCode,@Name,@UrlDesc,@PageType,@UserID,@Enabled,GETDATE())
+
+				IF @PageType = 2
+				BEGIN
+				INSERT INTO ptl.StaticPage
+				(ID,[TrackingCode])
+				VALUES
+				(@ID, @TrackingCode)
+				END
 			END
 			ELSE
 			BEGIN
@@ -39,5 +47,6 @@ BEGIN
 				WHERE ID = @ID
 
 			END
+		COMMIT
 	RETURN @@ROWCOUNT
 END

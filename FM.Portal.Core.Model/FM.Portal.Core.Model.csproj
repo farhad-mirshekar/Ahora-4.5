@@ -144,6 +144,7 @@
     <Compile Include="Ptl\Pages\Pages.cs" />
     <Compile Include="Ptl\Pages\VM\PagesListVM.cs" />
     <Compile Include="Ptl\Slider\Slider.cs" />
+    <Compile Include="Ptl\StaticPage\StaticPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FM.Portal.Core\FM.Portal.Core.csproj">
