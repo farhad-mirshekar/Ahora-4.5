@@ -37,7 +37,7 @@
                     <ul class="nav flex-column" ng-repeat="row in Menus" ng-if="row.hasShow()">
                         <li class="nav-item">
                             <div class="nav-link" ng-click="row.open = !row.open" data-toggle="collapse" href="#{{row.name}}">
-                                <span class="panel-title">{{row.title}}</span>
+                                <span class="card-title">{{row.title}}</span>
                                 <i ng-class="{'fa fa-angle-up':row.open,'fa fa-angle-down':!row.open}"></i>
                             </div>
                             <div id="{{row.name}}" class="collapse" aria-expanded="true">

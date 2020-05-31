@@ -37,9 +37,9 @@
                     { route: '#/faq-group/cartable', title: 'پرسش های متداول', hasShow: () => { return toolsService.checkPermission('pgfaq') }, icon: 'fa-question' },
                     { route: '#/menu/cartable', title: 'مدیریت منو', hasShow: () => { return toolsService.checkPermission('pgmenu') }, icon: 'fa-bars' },
                     { route: '#/general-setting', title: 'تنظیمات سایت', hasShow: () => { return toolsService.checkPermission('pggeneral-setting') }, icon: 'fa-gear' },
-                    { route: '#/pages/cartable', title: 'آدرس صفحات', hasShow: () => { return toolsService.checkPermission('pgaddresspages')  }, icon: 'fa-gear' },
-                    { route: '#/contact-us', title: 'ارتباط با ما', hasShow: () => { return toolsService.checkPermission('pgcontactus') }, icon: 'fa fa-globe' },
-                    { route: '#/link', title: 'پیوندها', hasShow: () => { return toolsService.checkPermission('pglink') }, icon: 'fa fa-globe' },
+                    { route: '#/pages/cartable', title: 'آدرس صفحات', hasShow: () => { return toolsService.checkPermission('pgaddresspages') }, icon: 'fa-address-book' },
+                    { route: '#/contact-us', title: 'ارتباط با ما', hasShow: () => { return toolsService.checkPermission('pgcontactus') }, icon: 'fa-at' },
+                    { route: '#/link', title: 'پیوندها', hasShow: () => { return toolsService.checkPermission('pglink') }, icon: 'fa-anchor' },
                 ]
             },
             {
@@ -58,19 +58,19 @@
                     { route: '#/category-portal/cartable', title: 'دسته بندی اخبار', hasShow: () => { return toolsService.checkPermission('pgportal-category') }, icon: 'fa-archive' },
                     { route: '#/article/cartable', title: 'کارتابل مقالات', hasShow: () => { return toolsService.checkPermission('pg-article') }, icon: 'fa-newspaper-o' },
                     { route: '#/news/cartable', title: 'کارتابل اخبار', hasShow: () => { return toolsService.checkPermission('pgnews') }, icon: 'fa-newspaper-o' },
+                    { route: '#/events/cartable', title: 'کارتابل رویداد', hasShow: () => { return toolsService.checkPermission('pgevents') }, icon: 'fa-newspaper-o' },
                     { route: '#/slider/cartable', title: 'کارتابل تصاویر کشویی', hasShow: () => { return toolsService.checkPermission('pgsliders')}, icon: 'fa-sliders' },
-                    { route: '#/events/cartable', title: 'کارتابل رویداد', hasShow: () => { return toolsService.checkPermission('pgevents') }, icon: 'fa-sliders' },
                     { route: '#/comment-portal/cartable', title: 'کارتابل نظرات', hasShow: () => { return toolsService.checkPermission('pgcomment-portal'); }, icon: 'fa-comments-o' },
-                    { route: '#/pages-portal/', title: 'ساخت صفحات', hasShow: () => { return toolsService.checkPermission('pgcreate-page'); }, icon: 'fa-comments-o' },
-                    { route: '#/dynamic-page/cartable', title: 'کارتابل صفحات داینامیک', hasShow: () => { return toolsService.checkPermission('pgdynamic-page'); }, icon: 'fa-comments-o' },
-                    { route: '#/static-page/cartable', title: 'کارتابل صفحات استاتیک', hasShow: () => { return toolsService.checkPermission('pgstatic-page'); }, icon: 'fa-comments-o' },
-                    { route: '#/banner/cartable', title: 'مدیریت بنر', hasShow: () => { return true; }, icon: 'fa-comments-o' },
+                    { route: '#/pages-portal/', title: 'ساخت صفحات', hasShow: () => { return toolsService.checkPermission('pgcreate-page'); }, icon: 'fa-window-restore' },
+                    { route: '#/dynamic-page/cartable', title: 'کارتابل صفحات داینامیک', hasShow: () => { return toolsService.checkPermission('pgdynamic-page'); }, icon: 'fa-sticky-note-o' },
+                    { route: '#/static-page/cartable', title: 'کارتابل صفحات استاتیک', hasShow: () => { return toolsService.checkPermission('pgstatic-page'); }, icon: 'fa-sticky-note' },
+                    { route: '#/banner/cartable', title: 'مدیریت بنر', hasShow: () => { return toolsService.checkPermission('pgbanner'); }, icon: 'fa-camera-retro' },
                 ]
             }
             , {
                 name: 'payment', title: 'سفارشات', icon: 'fa-angle-down', hasShow: () => { return true; }
                 , subMenus: [
-                   { route: '#/payment/cartable', title: 'پیگیری سفارشات', hasShow: () => { return true; }, icon: 'fa-archive' },
+                    { route: '#/payment/cartable', title: 'پیگیری سفارشات', hasShow: () => { return true; }, icon: 'fa fa-credit-card' },
                 ]
 
             }
