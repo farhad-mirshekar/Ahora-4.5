@@ -1,6 +1,6 @@
 ﻿<div class="container">
     <div class="row">
-        <div class="col-md-12 text-center">
+        <div class="col-md-12">
             <table st-safe-src="obj.items" st-table="displayedItems" class="table table-condensed table-hover th-center td-center">
                 <thead>
 
@@ -33,14 +33,14 @@
                                    type="text" />
                         </th>
                     </tr>
-                    <tr>
+                    <tr class="text-center">
                         <th style="width: 70px">ردیف</th>
                         <th ng-repeat="row in obj.columns" st-sort="{{row.name}}">{{row.displayName}}</th>
                         <th>عملیات</th>
                     </tr>
 
                 </thead>
-                <tbody>
+                <tbody class="text-center">
                     <tr ng-repeat="item in displayedItems">
                         <td>{{$index + 1}}</td>
                         <td ng-repeat="col in obj.columns">{{cellValue(item,col)}}</td>
