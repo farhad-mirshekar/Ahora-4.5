@@ -27,7 +27,7 @@ BEGIN
 	INNER JOIN
 		ptl.Pages pages ON staticPage.ID = pages.ID
 	LEFT JOIN
-		pbl.Attachment attachemnt ON staticPage.ID = attachemnt.ParentID
+		pbl.Attachment attachemnt ON staticPage.AttachmentID = attachemnt.ParentID
 	WHERE (@ID IS NULL OR pages.ID = @ID)
 	AND (@TrackingCode IS NULL OR pages.TrackingCode = @TrackingCode)
 

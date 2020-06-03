@@ -2154,6 +2154,7 @@
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RedirectController.cs" />
     <Compile Include="Controllers\ShoppingCartController.cs" />
+    <Compile Include="Controllers\StaticPageController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2182,6 +2183,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\DynamicPage\Index.cshtml" />
     <Content Include="Views\DynamicPage\Detail.cshtml" />
+    <Content Include="Views\StaticPage\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

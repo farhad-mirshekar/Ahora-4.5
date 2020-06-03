@@ -3624,13 +3624,11 @@
     }
     //-------------------------------------------------------------------------------------------------------------------------------------
     app.controller('staticPageController', staticPageController);
-    staticPageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'staticPageService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption', 'attachmentService'];
-    function staticPageController($scope, $q, loadingService, $routeParams, staticPageService, $location, toaster, $timeout, toolsService, enumService, froalaOption, attachmentService) {
+    staticPageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'staticPageService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption', 'attachmentService', 'bannerService'];
+    function staticPageController($scope, $q, loadingService, $routeParams, staticPageService, $location, toaster, $timeout, toolsService, enumService, froalaOption, attachmentService, bannerService) {
         let pages = $scope;
         pages.Model = {};
         pages.main = {};
-        pages.Search = {};
-        pages.Search.Model = {};
         pages.Model.Errors = [];
         pages.pic = { type: '1', allowMultiple: false, validTypes: 'image/jpeg' };
         pages.pic.list = [];
@@ -3638,6 +3636,7 @@
 
         pages.state = '';
         pages.editStaticPage = editStaticPage;
+        pages.changeDrop = changeDrop;
         pages.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
         pages.bannerShow = toolsService.arrayEnum(enumService.EnableMenuType);
         init();
@@ -3656,7 +3655,6 @@
             , globalSearch: true
             , displayNameFormat: ['Name']
             , initLoad: true
-            , options: () => { return pages.Search.Model }
         };
         pages.froalaOption = angular.copy(froalaOption.main);
         function init() {
@@ -3749,6 +3747,24 @@
         function clearModel() {
             pages.Model = {};
         }
+        function changeDrop() {
+            loadingService.show();
+            if (pages.Model.BannerShow === 1) {
+                return $q.resolve().then(() => {
+                    return bannerService.list({ bannerType: 1 });
+                }).then((result) => {
+                    if (result.length > 0) {
+                        pages.bannerList = [];
+                        for (var i = 0; i < result.length; i++) {
+                            pages.bannerList.push({ Name: result[i].Name, Model: result[i].ID });
+                        }
+                    }
+                }).catch(() => {
+                    loadingService.hide();
+                }).finally(loadingService.hide)
+            }
+            loadingService.hide();
+        }
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('bannerController', bannerController);
@@ -3778,9 +3794,9 @@
         banner.grid = {
             bindingObject: banner
             , columns: [{ name: 'Name', displayName: 'نام بنر' },
-                { name: 'BannerType', displayName: 'نوع بنر', type: 'enum', source: enumService.BannerType },
-                { name: 'Enabled', displayName: 'فعال/غیرفعال', type: 'enum', source: enumService.EnableMenuType },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }
+            { name: 'BannerType', displayName: 'نوع بنر', type: 'enum', source: enumService.BannerType },
+            { name: 'Enabled', displayName: 'فعال/غیرفعال', type: 'enum', source: enumService.EnableMenuType },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }
             ]
             , listService: bannerService.list
             , deleteService: bannerService.remove
@@ -3911,7 +3927,7 @@
                     toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                 }
 
-                
+
             }).finally(loadingService.hide);
         }
         function clearModel() {

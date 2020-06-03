@@ -49,6 +49,26 @@
                             </div>
                         </div>
                     </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="form-group">
+                                    <label for="IsShow" class="control-label">نمایش بنر</label>
+                                    <select class="form-control" ng-model="Model.BannerShow" ng-change="changeDrop();">
+                                        <option ng-repeat="row in bannerShow" ng-value="row.Model">{{row.Name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-5" ng-show="Model.BannerShow === 1">
+                                <div class="form-group">
+                                    <label for="IsShow" class="control-label">انتخاب بنر</label>
+                                    <select class="form-control" ng-model="Model.AttachmentID">
+                                        <option ng-repeat="row in bannerList" ng-value="row.Model">{{row.Name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="input-group col-md-10 mb-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">متاتگ</span>
