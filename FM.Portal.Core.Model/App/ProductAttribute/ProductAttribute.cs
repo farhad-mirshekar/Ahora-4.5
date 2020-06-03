@@ -1,4 +1,5 @@
 ﻿using FM.Portal.BaseModel;
+using FM.Portal.Core.Common;
 
 namespace FM.Portal.Core.Model
 {
@@ -6,5 +7,8 @@ namespace FM.Portal.Core.Model
     {
         public string Name { get; set; }
         public string Description { get; set; }
+
+        //only show
+        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
     }
 }

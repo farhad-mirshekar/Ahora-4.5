@@ -935,7 +935,8 @@
         product.grid = {
             bindingObject: product
             , columns: [{ name: 'Name', displayName: 'عنوان آگهی' },
-            { name: 'TrackingCode', displayName: 'کدپیگیری' }]
+                { name: 'TrackingCode', displayName: 'کدپیگیری' },
+                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
             , listService: productService.list
             , onEdit: null
             , route: 'product'
@@ -965,7 +966,8 @@
         attribute.editAttribute = editAttribute;
         attribute.grid = {
             bindingObject: attribute
-            , columns: [{ name: 'Name', displayName: 'عنوان' }]
+            , columns: [{ name: 'Name', displayName: 'عنوان' },
+                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
             , listService: attributeService.list
             , onEdit: attribute.main.changeState.edit
             , globalSearch: true
@@ -1230,7 +1232,8 @@
         discount.editDiscount = editDiscount;
         discount.grid = {
             bindingObject: discount
-            , columns: [{ name: 'Name', displayName: 'عنوان تخفیف' }]
+            , columns: [{ name: 'Name', displayName: 'عنوان تخفیف' },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: discountService.list
             , onEdit: discount.main.changeState.edit
             , globalSearch: true
@@ -1261,9 +1264,11 @@
         }
 
         function cartable() {
+            loadingService.show();
             discount.Model = {};
             discount.state = 'cartable';
             $location.path('/discount/cartable');
+            loadingService.hide();
         }
         function add() {
             loadingService.show();
@@ -1338,8 +1343,9 @@
         comment.grid = {
             bindingObject: comment
             , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
-            { name: 'ProductName', displayName: 'نام محصول' },
-            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: { 1: 'درحال بررسی', 2: 'تایید', 3: 'عدم تایید' } }]
+                { name: 'ProductName', displayName: 'نام محصول' },
+                { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: commentService.list
             , onEdit: comment.main.changeState.edit
             , globalSearch: true
@@ -1581,8 +1587,8 @@
         article.grid = {
             bindingObject: article
             , columns: [{ name: 'Title', displayName: 'عنوان مقاله' },
-            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
-            { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
+                { name: 'TrackingCode', displayName: 'کد پیگیری' },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: articleService.list
             , deleteService: articleService.remove
             , onAdd: article.main.changeState.add
@@ -1795,8 +1801,8 @@
         news.grid = {
             bindingObject: news
             , columns: [{ name: 'Title', displayName: 'عنوان خبر' },
-            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
-            { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
+                { name: 'TrackingCode', displayName: 'کد پیگیری' },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: newsService.list
             , deleteService: newsService.remove
             , onEdit: news.main.changeState.edit
@@ -2317,7 +2323,8 @@
         }
         slider.grid = {
             bindingObject: slider
-            , columns: [{ name: 'Title', displayName: 'عنوان اسلایدر' }]
+            , columns: [{ name: 'Title', displayName: 'عنوان اسلایدر' },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: sliderService.list
             , deleteService: sliderService.remove
             , onEdit: edit
@@ -2769,8 +2776,9 @@
         comment.grid = {
             bindingObject: comment
             , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
-            { name: 'ProductName', displayName: 'عنوان' },
-            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: { 1: 'درحال بررسی', 2: 'تایید', 3: 'عدم تایید' } }]
+                { name: 'ProductName', displayName: 'عنوان' },
+                { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
+                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
             , listService: commentService.list
             , onEdit: comment.main.changeState.edit
             , globalSearch: true
@@ -3278,7 +3286,8 @@
         pages.grid = {
             bindingObject: pages
             , columns: [{ name: 'Name', displayName: 'نام صفحه' },
-            { name: 'PageType', displayName: 'نوع صفحه', type: 'enum', source: enumService.PageType },]
+                { name: 'PageType', displayName: 'نوع صفحه', type: 'enum', source: enumService.PageType },
+                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
             , listService: pagesPortalService.list
             , deleteService: pagesPortalService.remove
             , globalSearch: true
@@ -3361,7 +3370,8 @@
         pages.grid = {
             bindingObject: pages
             , columns: [{ name: 'Name', displayName: 'نام صفحه' },
-            { name: 'TrackingCode', displayName: 'کد' }]
+                { name: 'TrackingCode', displayName: 'کد پیگیری' },
+                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
             , listService: dynamicPageService.list
             , deleteService: dynamicPageService.remove
             , onAdd: pages.main.changeState.add
@@ -3541,7 +3551,7 @@
         link.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
         link.grid = {
             bindingObject: link
-            , columns: [{ name: 'Name', displayName: 'نام صفحه' },
+            , columns: [{ name: 'Name', displayName: 'نام لینک' },
             { name: 'Url', displayName: 'آدرس' },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: linkService.list
@@ -3647,7 +3657,8 @@
         pages.grid = {
             bindingObject: pages
             , columns: [{ name: 'Name', displayName: 'نام صفحه' },
-            { name: 'TrackingCode', displayName: 'کد' }]
+                { name: 'TrackingCode', displayName: 'کد پیگیری' },
+                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
             , listService: staticPageService.list
             , deleteService: staticPageService.remove
             , onAdd: pages.main.changeState.add

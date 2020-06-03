@@ -1,4 +1,5 @@
 ﻿using FM.Portal.BaseModel;
+using FM.Portal.Core.Common;
 
 namespace FM.Portal.Core.Model
 {
@@ -14,5 +15,6 @@ namespace FM.Portal.Core.Model
         public string FileName { get; set; }
         public PathType PathType { get; set; }
         public string Path => PathType.ToString();
+        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
     }
 }

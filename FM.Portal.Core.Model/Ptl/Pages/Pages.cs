@@ -1,4 +1,5 @@
 ﻿using FM.Portal.BaseModel;
+using FM.Portal.Core.Common;
 using System;
 
 namespace FM.Portal.Core.Model.Ptl
@@ -11,5 +12,8 @@ namespace FM.Portal.Core.Model.Ptl
         public EnableMenuType Enabled { get; set; }
         public Guid UserID { get; set; }
         public string UrlDesc { get; set; }
+
+        //only show
+        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
     }
 }

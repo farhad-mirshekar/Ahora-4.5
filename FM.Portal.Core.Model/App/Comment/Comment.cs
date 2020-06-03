@@ -1,4 +1,5 @@
 ﻿using FM.Portal.BaseModel;
+using FM.Portal.Core.Common;
 using System;
 using System.Collections.Generic;
 
@@ -17,5 +18,8 @@ namespace FM.Portal.Core.Model
         public string NameFamily { get; set; }
         public CommentForType CommentForType { get; set; }
         public List<Comment> Children { get; set; }
+
+        //only show
+        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
     }
 }

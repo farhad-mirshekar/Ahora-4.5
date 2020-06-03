@@ -12,7 +12,7 @@ namespace FM.Portal.Core.Model
         public string Description { get; set; }
         public string Title { get; set; }
 
-        //
+        //only show
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
     }
 }

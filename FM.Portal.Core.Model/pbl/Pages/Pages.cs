@@ -1,4 +1,5 @@
 ﻿using FM.Portal.BaseModel;
+using FM.Portal.Core.Common;
 using System;
 
 namespace FM.Portal.Core.Model
@@ -15,5 +16,8 @@ namespace FM.Portal.Core.Model
         public string ParentNode { get; set; }
         public Guid ParentID { get; set; }
         public string RouteUrl { get; set; }
+
+        //only show
+        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
     }
 }
