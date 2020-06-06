@@ -20,6 +20,7 @@
         events=8,
         editor=9,
         file=10,
+        gallery=11
     }
     public enum UserType : byte
     {

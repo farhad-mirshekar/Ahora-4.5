@@ -120,6 +120,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IBannerDataSource, BannerDataSource>();
             container.RegisterType<IBannerService, BannerService>();
 
+            container.RegisterType<IGalleryDataSource, GalleryDataSource>();
+            container.RegisterType<IGalleryService, GalleryService>();
+
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

@@ -65,6 +65,7 @@
                     { route: '#/dynamic-page/cartable', title: 'کارتابل صفحات داینامیک', hasShow: () => { return toolsService.checkPermission('pgdynamic-page'); }, icon: 'fa-sticky-note-o' },
                     { route: '#/static-page/cartable', title: 'کارتابل صفحات استاتیک', hasShow: () => { return toolsService.checkPermission('pgstatic-page'); }, icon: 'fa-sticky-note' },
                     { route: '#/banner/cartable', title: 'مدیریت بنر', hasShow: () => { return toolsService.checkPermission('pgbanner'); }, icon: 'fa-camera-retro' },
+                    { route: '#/gallery/cartable', title: 'مدیریت گالری تصاویر', hasShow: () => { return toolsService.checkPermission('pggallery'); }, icon: 'fa fa-photo' },
                 ]
             }
             , {

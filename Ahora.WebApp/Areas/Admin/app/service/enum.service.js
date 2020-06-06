@@ -20,7 +20,8 @@
 				'7': 'video',
 				'8': 'events',
 				'9': 'editor',
-				'10': 'file'
+				'10': 'file',
+				'11': 'gallery'
 			},
 			enumService.UserType = {
 				'1': 'کاربر درون سازمانی',

@@ -73,6 +73,7 @@
     <Compile Include="Pbl\IAttachmentService.cs" />
     <Compile Include="Pbl\IContactService.cs" />
     <Compile Include="Pbl\IDownloadService.cs" />
+    <Compile Include="Pbl\IGalleryService.cs" />
     <Compile Include="Pbl\IGeneralSettingService.cs" />
     <Compile Include="Pbl\IMenuService .cs" />
     <Compile Include="Pbl\INotificationService.cs" />

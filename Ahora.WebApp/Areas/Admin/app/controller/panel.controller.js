@@ -3945,4 +3945,209 @@
             banner.pic.listUploaded = [];
         }
     }
+    //------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('galleryController', galleryController);
+    galleryController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'galleryService', '$location', 'toaster',  'toolsService', 'enumService', 'attachmentService'];
+    function galleryController($scope, $q, loadingService, $routeParams, galleryService, $location, toaster, toolsService, enumService, attachmentService) {
+        let gallery = $scope;
+        gallery.Model = {};
+        gallery.main = {};
+        gallery.Model.Errors = [];
+
+        gallery.pic = { type: '11', allowMultiple: true, validTypes: 'image/jpeg' };
+        gallery.pic.list = [];
+        gallery.pic.listUploaded = [];
+
+        gallery.state = '';
+        gallery.addGallery = addGallery;
+        gallery.editGallery = editGallery;
+        gallery.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
+        init();
+        gallery.main.changeState = {
+            add: add,
+            edit: edit,
+            cartable: cartable
+        }
+        gallery.grid = {
+            bindingObject: gallery
+            , columns: [{ name: 'Name', displayName: 'نام گالری' },
+            { name: 'Enabled', displayName: 'فعال/غیرفعال', type: 'enum', source: enumService.EnableMenuType },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }
+            ]
+            , listService: galleryService.list
+            , deleteService: galleryService.remove
+            , onAdd: gallery.main.changeState.add
+            , onEdit: gallery.main.changeState.edit
+            , globalSearch: true
+            , displayNameFormat: ['Name']
+            , initLoad: true
+        };
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'add':
+                        add();
+                        break;
+                    case 'edit':
+                        galleryService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+        }
+        function cartable() {
+            loadingService.show();
+            clearModel();
+            gallery.state = 'cartable';
+            $location.path('/gallery/cartable');
+            loadingService.hide();
+        }
+        function add() {
+            loadingService.show();
+            clearModel();
+            gallery.state = 'add';
+            $location.path('/gallery/add');
+            loadingService.hide();
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return galleryService.get(model.ID);
+            }).then((model) => {
+                gallery.Model = model;
+                if (gallery.Model.Tags !== null && gallery.Model.Tags.length > 0) {
+                    var newOption = [];
+                    for (var i = 0; i < gallery.Model.Tags.length; i++) {
+                        newOption.push(new Option(gallery.Model.Tags[i], gallery.Model.Tags[i], false, true));
+                    }
+                    $timeout(() => {
+                        $('.js-example-tags').append(newOption).trigger('change');
+                    }, 0);
+                }
+                return attachmentService.list({ ParentID: gallery.Model.ID });
+            }).then((result) => {
+                gallery.pic.reset();
+                if (result && result.length > 0)
+                    gallery.pic.listUploaded = [].concat(result);
+                gallery.state = 'edit';
+                $location.path(`/gallery/edit/${gallery.Model.ID}`);
+            }).finally(loadingService.hide);
+        }
+
+        function addGallery() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return galleryService.add(gallery.Model);
+            }).then((result) => {
+                gallery.Model = result;
+
+                if (gallery.pic.list.length) {
+                    gallery.pics = [];
+                    if (gallery.pic.listUploaded && gallery.pic.listUploaded.length === 0) {
+                        gallery.pics.push({ ParentID: gallery.Model.ID, Type: 1, FileName: gallery.pic.list[0], PathType: gallery.pic.type });
+
+                        for (var i = 1; i < gallery.pic.list.length; i++) {
+                            gallery.pics.push({ ParentID: gallery.Model.ID, Type: 2, FileName: gallery.pic.list[i], PathType: gallery.pic.type });
+                        }
+                    } else {
+                        for (var i = 0; i < gallery.pic.list.length; i++) {
+                            gallery.pics.push({ ParentID: gallery.Model.ID, Type: 2, FileName: gallery.pic.list[i], PathType: gallery.pic.type });
+                        }
+                    }
+                    return attachmentService.add(gallery.pics);
+                }
+                return true;
+            }).then((result) => {
+                gallery.pics = [];
+                return attachmentService.list({ ParentID: gallery.Model.ID });
+            }).then((result) => {
+                gallery.pic.reset();
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        gallery.pic.listUploaded.push(result[i]);
+                    }
+                }
+                gallery.grid.getlist();
+                gallery.main.changeState.cartable();
+                toaster.pop('success', '', 'گالری جدید با موفقیت اضافه گردید');
+                loadingService.hide();
+            }).catch((error) => {
+                    if (!error) {
+                        $('#content > div').animate({
+                            scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
+                        }, 'slow');
+                    } else {
+                        var listError = error.split('&&');
+                        gallery.Model.Errors = [].concat(listError);
+                        $('#content > div').animate({
+                            scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
+                        }, 'slow');
+                    }
+
+                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                }).finally(loadingService.hide);
+        }
+        function editGallery() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return galleryService.edit(gallery.Model);
+            }).then((result) => {
+                gallery.Model = result;
+                if (gallery.pic.list.length) {
+                    gallery.pics = [];
+                    if (gallery.pic.listUploaded && gallery.pic.listUploaded.length === 0) {
+                        gallery.pics.push({ ParentID: gallery.Model.ID, Type: 1, FileName: gallery.pic.list[0], PathType: gallery.pic.type });
+
+                        for (var i = 1; i < gallery.pic.list.length; i++) {
+                            gallery.pics.push({ ParentID: gallery.Model.ID, Type: 2, FileName: gallery.pic.list[i], PathType: gallery.pic.type });
+                        }
+                    } else {
+                        for (var i = 0; i < gallery.pic.list.length; i++) {
+                            gallery.pics.push({ ParentID: gallery.Model.ID, Type: 2, FileName: gallery.pic.list[i], PathType: gallery.pic.type });
+                        }
+                    }
+                    return attachmentService.add(gallery.pics);
+                }
+                return true;
+            }).then((result) => {
+                gallery.pics = [];
+                return attachmentService.list({ ParentID: gallery.Model.ID });
+            }).then((result) => {
+                gallery.pic.reset();
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        gallery.pic.listUploaded.push(result[i]);
+                    }
+                }
+                toaster.pop('success', '', 'گالری جدید با موفقیت ویرایش گردید');
+                gallery.grid.getlist();
+                gallery.main.changeState.cartable();
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    gallery.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
+        }
+        function clearModel() {
+            $('.js-example-tags').empty();
+            gallery.Model = {};
+            gallery.pic.listUploaded = [];
+        }
+    }
 })();

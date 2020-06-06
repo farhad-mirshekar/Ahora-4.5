@@ -39,7 +39,8 @@
                 .when("/dynamic-page/:state/:id?", { templateUrl: "/Admin/DynamicPage/index", controller: 'dynamicPageController', reloadOnUrl: false })
                 .when("/link/", { templateUrl: "/Admin/link/index", controller: 'linkController' })
                 .when("/static-page/:state/:id?", { templateUrl: "/Admin/StaticPage/index", controller: 'staticPageController', reloadOnUrl: false })
-                .when("/banner/:state/:id?", { templateUrl: "/Admin/banner/index", controller: 'bannerController', reloadOnUrl: false })// add;
+                .when("/banner/:state/:id?", { templateUrl: "/Admin/banner/index", controller: 'bannerController', reloadOnUrl: false })
+                .when("/gallery/:state/:id?", { templateUrl: "/Admin/gallery/index", controller: 'galleryController', reloadOnUrl: false })// add;
 
 
                 .otherwise({

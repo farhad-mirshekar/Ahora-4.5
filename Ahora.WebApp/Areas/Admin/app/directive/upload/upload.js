@@ -2,8 +2,8 @@
     angular
         .module('portal')
         .directive('portalUpload', portalUpload);
-    portalUpload.$inject = ['uploadService', 'attachmentService', '$q', '$routeParams', 'loadingService', 'toaster'];
-    function portalUpload(uploadService, attachmentService, $q, $routeParams, loadingService, toaster) {
+    portalUpload.$inject = ['uploadService', 'attachmentService', '$q', '$routeParams', 'loadingService', 'toaster','enumService'];
+    function portalUpload(uploadService, attachmentService, $q, $routeParams, loadingService, toaster, enumService) {
         var directive = {
             restrict: 'E',
             templateUrl: './Areas/Admin/app/directive/upload/upload.html',
@@ -35,38 +35,8 @@
                 "image/png"
             ];
             scope.path = '';
-            switch (scope.obj.type) {
-                case '1':
-                    scope.path = 'pages';
-                    break;
-                case '2':
-                    scope.path = 'banner';
-                    break;
-                case '3':
-                    scope.path = 'news';
-                    break;
-                case '4':
-                    scope.path = 'article';
-                    break;
-                case '5':
-                    scope.path = 'slider';
-                    break;
-                case '6':
-                    scope.path = 'product';
-                    break;
-                case '7':
-                    scope.path = 'video';
-                    break;
-                case '8':
-                    scope.path = 'events';
-                    break;
-                case '9':
-                    scope.path = 'editor';
-                    break;
-                case '10':
-                    scope.path = 'file';
-                    break;
-            }
+            scope.path = enumService.PathType[parseInt(scope.obj.type)];
+
             function selectFile() {
                 file = element.find("input[type='file']").get(0).files[0];
                 scope.fileSelected = true; //**state

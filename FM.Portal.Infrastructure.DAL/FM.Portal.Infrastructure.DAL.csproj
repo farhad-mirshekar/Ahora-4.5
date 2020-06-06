@@ -90,6 +90,7 @@
     <Compile Include="DataSources\Ptl\CategoryDataSource.cs" />
     <Compile Include="DataSources\Ptl\DynamicPageDataSource.cs" />
     <Compile Include="DataSources\Ptl\EventsDataSource.cs" />
+    <Compile Include="DataSources\Ptl\GalleryDataSource.cs" />
     <Compile Include="DataSources\Ptl\NewsDataSource.cs" />
     <Compile Include="DataSources\Ptl\PagesDataSource.cs" />
     <Compile Include="DataSources\Ptl\SliderDataSource.cs" />
@@ -240,6 +241,10 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.GetsBanner.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.GetBanner.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.spModifyBanner.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.DeleteGallery.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.GetGallery.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.GetsGallery.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.spModifyGallery.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.DeleteStaticPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.GetStaticPage.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.GetsStaticPage.sql" />

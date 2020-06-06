@@ -1117,3 +1117,23 @@ CREATE TABLE [ptl].[Banner](
 
 ALTER TABLE [ptl].[Banner] WITH CHECK ADD FOREIGN KEY ([UserID])
 REFERENCES [org].[User] ([ID])
+GO
+CREATE TABLE [ptl].[Gallery](
+	[ID] [uniqueidentifier] NOT NULL,
+	[Name] [Nvarchar](1000) NOT NULL,
+	[Description] [Nvarchar](max) NOT NULL,
+	[VisitedCount] [Int] NULL Default 0,
+	[Enabled] [Tinyint] NULL Default 0,
+	[UserID] [Uniqueidentifier] NOT NULL,
+	[TrackingCode] [Nvarchar](20) NOT NULL,
+	[CreationDate] [SmalldateTime] NOT NULL,
+	[MetaKeywords] NVARCHAR(1000) NULL,
+	[UrlDesc] NVARCHAR(1000) NULL,
+ CONSTRAINT [PK_Gallery] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [ptl].[Gallery] WITH CHECK ADD FOREIGN KEY ([UserID])
+REFERENCES [org].[User] ([ID])

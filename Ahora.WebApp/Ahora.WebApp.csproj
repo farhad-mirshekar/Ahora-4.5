@@ -307,6 +307,10 @@
     <Content Include="Content\main\PagedList.css" />
     <Content Include="Content\main\Site.css" />
     <Content Include="Content\TemporaryFiles\banner\4a089472-14f5-4f40-a4f6-4cbab4e88e0e.jpg" />
+    <Content Include="Content\TemporaryFiles\gallery\33dbd0bc-9471-486e-8f11-1d96cbb29a00.jpg" />
+    <Content Include="Content\TemporaryFiles\gallery\54330447-81bf-4e46-bb80-87d22b81c46a.jpg" />
+    <Content Include="Content\TemporaryFiles\gallery\c6ba721f-bb87-4d06-bea9-58ef5f536532.jpg" />
+    <Content Include="Content\TemporaryFiles\gallery\db13134f-13b4-486a-8098-5ed58f2c6516.jpg" />
     <Content Include="Content\TemporaryFiles\product\097bedfd-99fd-4530-a5ea-38d5fc9981c6.jpg" />
     <Content Include="Content\TemporaryFiles\product\0d35d833-ada9-4902-a54a-8da42d5c479a.jpg" />
     <Content Include="Content\TemporaryFiles\product\14575cc6-9afa-48ef-b47c-158e40a15c99.jpg" />
@@ -930,6 +934,7 @@
     <Content Include="Areas\Admin\Views\Link\Index.cshtml" />
     <Content Include="Areas\Admin\Views\StaticPage\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Banner\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Gallery\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
@@ -2099,6 +2104,7 @@
     <Compile Include="Areas\Admin\Controllers\Ptl\CategoryPortalController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\DynamicPageController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\EventsController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Ptl\GalleryController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\NewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\PagesPortalController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\SliderController.cs" />
@@ -2132,6 +2138,7 @@
     <Compile Include="Areas\ApiClient\Controllers\Ptl\CategoryPortalController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\DynamicPageController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\EventsController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\Ptl\GalleryController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\NewsController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\PagesPortalController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\SliderController.cs" />
