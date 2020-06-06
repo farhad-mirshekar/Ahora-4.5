@@ -56,6 +56,12 @@ namespace Ahora.WebApp.Controllers
                     success = false,
                     message = "خطایی اتفاق افتاده است. دوباره امتحان کنید"
                 });
+            if (product.Data.StockQuantity == 0)
+                return Json(new
+                {
+                    success = false,
+                    message = "موجودی محصول تمام شده است"
+                });
             //var attributes = _service.SelectAttributeForCustomer(ProductID);
 
             if (User.Identity.Name == "")

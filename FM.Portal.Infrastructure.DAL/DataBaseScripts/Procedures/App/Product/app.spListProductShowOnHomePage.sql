@@ -27,11 +27,12 @@ BEGIN
 )
 	SELECT
 		Top (@Count)
-		Product.TrackingCode,
-		Product.DiscountType AS SelfProductDiscountType,
-		Product.Discount AS SelfProductDiscount,
-		Product.Price,
+		product.TrackingCode,
+		product.DiscountType AS SelfProductDiscountType,
+		product.Discount AS SelfProductDiscount,
+		product.Price,
 		product.Name,
+		product.CallForPrice,
 		attachment.PathType,
 		attachment.[FileName],
 		discount.HasDiscountsApplied,
@@ -47,4 +48,5 @@ BEGIN
 		Discount discount ON product.CategoryID = discount.ID
 	WHERE
 		attachment.[Type] = 1
+	AND product.StockQuantity > 0
 END
