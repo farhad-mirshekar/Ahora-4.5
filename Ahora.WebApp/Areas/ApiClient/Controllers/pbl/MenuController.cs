@@ -67,19 +67,6 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
                 return NotFound();
             }
         }
-        [HttpPost, Route("GetByParentNode")]
-        public IHttpActionResult GetByParentNode(GetModelVM model)
-        {
-            try
-            {
-                var result = _service.Get(model.ParentNode);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
         [HttpPost, Route("Delete/{ID:guid}")]
         public IHttpActionResult Delete(Guid ID)
         {

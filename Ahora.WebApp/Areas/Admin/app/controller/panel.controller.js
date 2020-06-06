@@ -2243,11 +2243,10 @@
         function edit(model) {
             loadingService.show();
             return $q.resolve().then(() => {
-                menu.Model = model;
-                return menuService.getbyParentNode({ ParentNode: model.ParentNode });
+                return menuService.get(model.ID)
             }).then((result) => {
+                menu.Model = angular.copy(result);
                 menu.state = 'edit';
-                menu.Model.ParentID = result.ID;
                 $('#menu-modal').modal('show');
             }).finally(loadingService.hide);
 

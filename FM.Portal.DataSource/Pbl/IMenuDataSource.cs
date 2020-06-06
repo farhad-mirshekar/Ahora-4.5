@@ -10,7 +10,6 @@ namespace FM.Portal.DataSource
         Result<Menu> Create(Menu model);
         Result<Menu> Update(Menu model);
         Result<Menu> Get(Guid ID);
-        Result<Menu> Get(string ParentNode);
         DataTable List();
         DataTable GetChildren(string ParentNode);
         Result Delete(Guid ID);

@@ -6,13 +6,15 @@ IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('pbl.spGetM
 GO
 
 CREATE PROCEDURE pbl.spGetMenu
-	@ID UNIQUEIDENTIFIER,
-	@ParentNode HIERARCHYID
+	@ID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
 BEGIN
 	SET NOCOUNT ON;
-
+	DECLARE @ParentID UNIQUEIDENTIFIER,
+	@ParentNode HIERARCHYID
+	SET @ParentNode = (SELECT Top 1 [Node].GetAncestor(1).ToString() FROM pbl.Menu WHERE ID = @ID)
+	SET @ParentID = (SELECT ID FROM pbl.Menu WHERE Node = @ParentNode)
 
 	SELECT 
 		menu.ID,
@@ -25,12 +27,13 @@ BEGIN
 		menu.IconText,
 		menu.[Url],
 		menu.[Priority],
-		menu.[Parameters]
+		menu.[Parameters],
+		menu.CreationDate,
+		@ParentID ParentID
 	FROM 
 		pbl.Menu menu
 	WHERE 
-		(@ID IS NULL OR ID = @ID) AND
-		(@ParentNode IS NULL OR menu.[Node] = @ParentNode)
+		(ID = @ID) 
 
 	RETURN @@ROWCOUNT
 END

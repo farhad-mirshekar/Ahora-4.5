@@ -28,9 +28,6 @@ namespace FM.Portal.Domain
         public Result<Menu> Get(Guid ID)
         => _dataSource.Get(ID);
 
-        public Result<Menu> Get(string ParentNode)
-        => _dataSource.Get(ParentNode);
-
         public Result<List<MenuVM>> GetMenuForWeb(string Node)
         {
             try
