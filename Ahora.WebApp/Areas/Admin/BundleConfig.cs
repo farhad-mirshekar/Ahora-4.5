@@ -16,9 +16,6 @@ namespace Ahora.WebApp.Areas.Admin
                                         "~/Areas/Admin/Content/css/admin/treeGrid.css",
                                         "~/Content/fontawesome/font-awesome.css",
                                         "~/Content/toaster/toaster.css",
-                                        "~/Areas/Admin/Content/fileponed/css/filepond.css",
-                                        "~/Areas/Admin/Content/fileponed/css/filepond-plugin-image-preview.css",
-                                        "~/Areas/Admin/Content/fileponed/css/filepond-plugin-image-edit.css",
                                         "~/Areas/Admin/Content/css/select2/select2.min.css",
                                         "~/Areas/Admin/Content/css/loader/loader.css"));
 
@@ -78,10 +75,6 @@ namespace Ahora.WebApp.Areas.Admin
                                         "~/Scripts/smart-table.min.js",
                                         "~/Areas/Admin/app/directive/checkbox/checkbox.js",
                                         "~/Areas/Admin/app/directive/treegrid/tree-grid-directive.js",
-                                        "~/Areas/Admin/Content/fileponed/js/filepond-plugin-image-preview.js",
-                                        "~/Areas/Admin/Content/fileponed/js/filepond-plugin-image-edit.js",
-                                        "~/Areas/Admin/Content/fileponed/js/filepond-plugin-file-validate-type.js",
-                                        "~/Areas/Admin/Content/fileponed/js/filepond.min.js",
                                         "~/Areas/Admin/app/directive/grid/grid.js",
                                         "~/Areas/Admin/Content/js/select2.min.js",
                                         "~/Areas/Admin/Content/js/checkbox.js"));

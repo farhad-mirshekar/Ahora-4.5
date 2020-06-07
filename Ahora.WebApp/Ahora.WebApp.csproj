@@ -261,14 +261,6 @@
     <Content Include="Areas\Admin\Content\css\fonts\yekannumbers-regular.svg" />
     <Content Include="Areas\Admin\Content\css\loader\loader.css" />
     <Content Include="Areas\Admin\Content\css\select2\select2.min.css" />
-    <Content Include="Areas\Admin\Content\fileponed\css\filepond-plugin-image-edit.css" />
-    <Content Include="Areas\Admin\Content\fileponed\css\filepond-plugin-image-preview.css" />
-    <Content Include="Areas\Admin\Content\fileponed\css\filepond.css" />
-    <Content Include="Areas\Admin\Content\fileponed\js\filepond-plugin-file-validate-type.js" />
-    <Content Include="Areas\Admin\Content\fileponed\js\filepond-plugin-image-edit.js" />
-    <Content Include="Areas\Admin\Content\fileponed\js\filepond-plugin-image-preview.js" />
-    <Content Include="Areas\Admin\Content\fileponed\js\filepond.min.js" />
-    <Content Include="Areas\Admin\Content\fileponed\js\filepond.module.js" />
     <Content Include="Areas\Admin\Content\img\avatar_11_tn.png" />
     <Content Include="Areas\Admin\Content\img\loading.gif" />
     <Content Include="Areas\Admin\Content\img\logo.png" />
