@@ -9,7 +9,6 @@
         'ckeditor',
         'smart-table',
         'treeGrid',
-        'filepond',
         'froala',
         'ngSanitize',
         'checklist-model'
