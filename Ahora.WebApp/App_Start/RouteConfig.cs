@@ -13,6 +13,16 @@ namespace Ahora.WebApp
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             routes.MapRoute(
+              "GalleryImageDetail",
+              "Photo/{TrackingCode}/{Seo}",
+              new { controller = "Gallery", action = "ImageDetail", TrackingCode = UrlParameter.Optional, Seo = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
+            routes.MapRoute(
+              "Gallery",
+              "Gallery/Image/{Page}",
+              new { controller = "Gallery", action = "Image",Page = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
+            routes.MapRoute(
               "StaticPages",
               "Blog/{TrackingCode}/{Seo}",
               new { controller = "StaticPage", action = "Index", TrackingCode = UrlParameter.Optional, Seo = UrlParameter.Optional },

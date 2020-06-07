@@ -1,0 +1,46 @@
+﻿@model FM.Portal.Core.Model.Gallery
+@{
+    ViewBag.Title = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var attachments = (List<Attachment>)ViewBag.attachments;
+}
+@section Head{
+    @Styles.Render("~/bundles/fancyboxcss")
+}
+@section BodySection{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">@Model.Name</div>
+                </div>
+                <div class="card-body">
+                    <label class="control-label text-justify">@Model.Description</label>
+                    @if (attachments != null && attachments.Count > 0)
+                    {
+                        <div class="container mt-2">
+                            <div class="row">
+                                @foreach (var item in attachments)
+                                {
+                                    <div class="col-lg-4">
+                                        <a rel="group" href="~/Content/TemporaryFiles/@Enum.GetName(typeof(PathType), item.PathType)/@item.FileName" class="card fancybox">
+                                            <img class="card-img-top" src="~/Content/TemporaryFiles/@Enum.GetName(typeof(PathType), item.PathType)/@item.FileName" alt="Card image cap">
+                                        </a>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+    @Scripts.Render("~/bundles/fancyboxjs")
+    <script>
+        $(document).ready(function () {
+            $(".fancybox").fancybox();
+        });
+    </script>
+}

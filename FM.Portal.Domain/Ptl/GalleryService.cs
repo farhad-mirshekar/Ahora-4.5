@@ -91,5 +91,13 @@ namespace FM.Portal.Domain
                 return Result<List<Gallery>>.Successful(data: table);
             return Result<List<Gallery>>.Failure();
         }
+
+        public Result<List<GalleryListVM>> List(int Count)
+        {
+            var table = ConvertDataTableToList.BindList<GalleryListVM>(_dataSource.List(Count));
+            if (table.Count > 0 || table.Count == 0)
+                return Result<List<GalleryListVM>>.Successful(data: table);
+            return Result<List<GalleryListVM>>.Failure();
+        }
     }
 }

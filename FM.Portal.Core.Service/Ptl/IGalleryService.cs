@@ -12,6 +12,7 @@ namespace FM.Portal.Core.Service
         Result<Gallery> Get(Guid ID);
         Result<Gallery> Get(string  TrackingCode);
         Result<List<Gallery>> List();
+        Result<List<GalleryListVM>> List(int Count);
         Result.Result Delete(Guid ID);
     }
 }

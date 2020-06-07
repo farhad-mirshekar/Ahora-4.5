@@ -66,6 +66,18 @@ namespace FM.Portal.Infrastructure.DAL
             catch (Exception e) { throw; }
         }
 
+        public DataTable List(int Count)
+        {
+            try
+            {
+                SqlParameter[] param = new SqlParameter[1];
+                Count = Count == 0 ? 4 : Count;
+                param[0] = new SqlParameter("@Count", Count);
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsGalleryByCount", param);
+            }
+            catch (Exception e) { throw; }
+        }
+
         public Result<Gallery> Update(Gallery model)
         => Modify(false, model);
         private Result<Gallery> Modify(bool IsNewRecord, Gallery model)

@@ -19,6 +19,11 @@ namespace Ahora.WebApp
                "~/Content/main/main.css",
                "~/Content/fontawesome/font-awesome.css",
                "~/Content/main/PagedList.css"));
+            bundles.Add(new StyleBundle("~/bundles/fancyboxcss").Include(
+             "~/Content/fancybox/jquery.fancybox.css",
+             "~/Content/fancybox/jquery.fancybox-buttons.css",
+             "~/Content/fancybox/jquery.fancybox-thumbs.css"));
+
             bundles.Add(new ScriptBundle("~/bundles/bootstrap4js").Include(
                 "~/scripts/bootstrap4/popper.min.js",
                 "~/scripts/bootstrap4/bootstrap.min.js"
@@ -26,6 +31,11 @@ namespace Ahora.WebApp
             bundles.Add(new ScriptBundle("~/bundles/mainSite").Include(
                 "~/scripts/jquery.unobtrusive-ajax.js"
                 ));
+            bundles.Add(new ScriptBundle("~/bundles/fancyboxjs").Include(
+                "~/scripts/fancybox/jquery.mousewheel-3.0.6.pack.js",
+             "~/scripts/fancybox/jquery.fancybox.js",
+             "~/scripts/fancybox/jquery.fancybox-buttons.js",
+             "~/scripts/fancybox/jquery.fancybox-media.js"));
 
         }
     }

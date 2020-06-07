@@ -142,6 +142,7 @@
     <Compile Include="Ptl\Events\Events.cs" />
     <Compile Include="Ptl\Events\VM\EventsListVM.cs" />
     <Compile Include="Ptl\Gallery\Gallery.cs" />
+    <Compile Include="Ptl\Gallery\VM\GalleryListVM.cs" />
     <Compile Include="Ptl\News\News.cs" />
     <Compile Include="Ptl\News\VM\NewsListVM.cs" />
     <Compile Include="Ptl\Pages\Pages.cs" />

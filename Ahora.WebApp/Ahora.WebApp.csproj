@@ -291,6 +291,13 @@
     <Content Include="Content\bootstrap\bootstrap-reboot.min.css" />
     <Content Include="Content\bootstrap\bootstrap.css" />
     <Content Include="Content\bootstrap\bootstrap.min.css" />
+    <Content Include="Content\fancybox\blank.gif" />
+    <Content Include="Content\fancybox\fancybox_buttons.png" />
+    <Content Include="Content\fancybox\fancybox_loading%402x.gif" />
+    <Content Include="Content\fancybox\fancybox_loading.gif" />
+    <Content Include="Content\fancybox\fancybox_overlay.png" />
+    <Content Include="Content\fancybox\fancybox_sprite%402x.png" />
+    <Content Include="Content\fancybox\fancybox_sprite.png" />
     <Content Include="Content\fontawesome\font-awesome.css" />
     <Content Include="Content\fontawesome\font-awesome.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
@@ -303,6 +310,9 @@
     <Content Include="Content\img\error-img.png" />
     <Content Include="Content\img\faq.png" />
     <Content Include="Content\img\login.jpg" />
+    <Content Include="Content\fancybox\jquery.fancybox-buttons.css" />
+    <Content Include="Content\fancybox\jquery.fancybox-thumbs.css" />
+    <Content Include="Content\fancybox\jquery.fancybox.css" />
     <Content Include="Content\main\main.css" />
     <Content Include="Content\main\PagedList.css" />
     <Content Include="Content\main\Site.css" />
@@ -1915,6 +1925,12 @@
     <Content Include="Scripts\i18n\angular-locale_zh.js" />
     <Content Include="Scripts\i18n\angular-locale_zu-za.js" />
     <Content Include="Scripts\i18n\angular-locale_zu.js" />
+    <Content Include="Scripts\fancybox\jquery.fancybox-buttons.js" />
+    <Content Include="Scripts\fancybox\jquery.fancybox-media.js" />
+    <Content Include="Scripts\fancybox\jquery.fancybox-thumbs.js" />
+    <Content Include="Scripts\fancybox\jquery.fancybox.js" />
+    <Content Include="Scripts\fancybox\jquery.fancybox.pack.js" />
+    <Content Include="Scripts\fancybox\jquery.mousewheel-3.0.6.pack.js" />
     <Content Include="Scripts\jquery\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery\jquery-3.4.1.min.js" />
     <Content Include="Scripts\jquery\jquery-3.4.1.slim.js" />
@@ -2156,6 +2172,7 @@
     <Compile Include="Controllers\EventsController.cs" />
     <Compile Include="Controllers\FaqController.cs" />
     <Compile Include="Controllers\FaqGroupController.cs" />
+    <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
@@ -2191,6 +2208,8 @@
     <Content Include="Views\DynamicPage\Index.cshtml" />
     <Content Include="Views\DynamicPage\Detail.cshtml" />
     <Content Include="Views\StaticPage\Index.cshtml" />
+    <Content Include="Views\Gallery\Image.cshtml" />
+    <Content Include="Views\Gallery\ImageDetail.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -12,6 +12,7 @@ namespace FM.Portal.DataSource
         Result<Gallery> Get(Guid ID);
         Result<Gallery> Get(string TrackingCode);
         DataTable List();
+        DataTable List(int Count);
         Result Delete(Guid ID);
     }
 }

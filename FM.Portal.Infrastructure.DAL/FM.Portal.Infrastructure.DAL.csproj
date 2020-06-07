@@ -243,6 +243,7 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.spModifyBanner.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.DeleteGallery.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.GetGallery.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.GetsGalleryByCount.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.GetsGallery.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.spModifyGallery.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\StaticPage\ptl.DeleteStaticPage.sql" />
