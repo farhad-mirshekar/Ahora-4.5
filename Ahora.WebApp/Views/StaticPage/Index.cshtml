@@ -3,6 +3,7 @@
 @using System.Linq;
 @{
     ViewBag.Title = ViewBag.Title;
+    var attachments = (List<Attachment>)ViewBag.attachments;
 }
 @section Metatag{
     <meta itemprop="name" name="twitter:title" property="dc.title" content="@Model.Name">
@@ -16,11 +17,7 @@
     @{
         if (Model.BannerShow == EnableMenuType.فعال)
         {
-            <div class="row">
-                <div class="col-md-12 d-flex justify-content-center">
-                    <img src="~/Content/TemporaryFiles/@Model.Path/@Model.FileName" />
-                </div>
-            </div>
+            @Html.Partial("_PartialCarousel",attachments)
         }
     }
 }

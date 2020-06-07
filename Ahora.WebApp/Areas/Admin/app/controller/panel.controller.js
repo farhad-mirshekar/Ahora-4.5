@@ -3778,15 +3778,15 @@
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('bannerController', bannerController);
-    bannerController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'bannerService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'attachmentService'];
-    function bannerController($scope, $q, loadingService, $routeParams, bannerService, $location, toaster, $timeout, toolsService, enumService, attachmentService) {
+    bannerController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'bannerService', '$location', 'toaster', 'toolsService', 'enumService', 'attachmentService'];
+    function bannerController($scope, $q, loadingService, $routeParams, bannerService, $location, toaster, toolsService, enumService, attachmentService) {
         let banner = $scope;
         banner.Model = {};
         banner.main = {};
         banner.Search = {};
         banner.Search.Model = {};
         banner.Model.Errors = [];
-        banner.pic = { type: '2', allowMultiple: false, validTypes: 'image/jpeg' };
+        banner.pic = { type: '2', allowMultiple: true, validTypes: 'image/jpeg' };
         banner.pic.list = [];
         banner.pic.listUploaded = [];
 
@@ -3873,7 +3873,9 @@
                 if (banner.pic.list.length) {
                     banner.pics = [];
                     if (banner.pic.listUploaded.length === 0) {
-                        banner.pics.push({ ParentID: banner.Model.ID, Type: 2, FileName: banner.pic.list[0], PathType: banner.pic.type });
+                        for (var i = 0; i < banner.pic.list.length; i++) {
+                            banner.pics.push({ ParentID: banner.Model.ID, Type: 2, FileName: banner.pic.list[i], PathType: banner.pic.type });
+                        }
                     }
                     return attachmentService.add(banner.pics);
                 }
@@ -3910,9 +3912,9 @@
                 banner.Model = result;
                 if (banner.pic.list.length) {
                     banner.pics = [];
-                    if (banner.pic.listUploaded.length === 0) {
-                        banner.pics.push({ ParentID: banner.Model.ID, Type: 2, FileName: banner.pic.list[0], PathType: banner.pic.type });
-                    }
+                        for (var i = 0; i < banner.pic.list.length; i++) {
+                            banner.pics.push({ ParentID: banner.Model.ID, Type: 2, FileName: banner.pic.list[i], PathType: banner.pic.type });
+                        }
                     return attachmentService.add(banner.pics);
                 }
                 return true;
@@ -3920,6 +3922,7 @@
                 banner.grid.getlist(false);
                 toaster.pop('success', '', 'بنر با موفقیت ویرایش گردید');
                 banner.pic.reset();
+                debugger
                 banner.main.changeState.cartable();
                 loadingService.hide();
             }).catch((error) => {

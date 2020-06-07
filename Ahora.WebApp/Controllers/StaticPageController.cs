@@ -7,8 +7,11 @@ namespace Ahora.WebApp.Controllers
 {
     public class StaticPageController : BaseController<IStaticPageService>
     {
-        public StaticPageController(IStaticPageService service) : base(service)
+        private readonly IAttachmentService _attachmentService;
+        public StaticPageController(IStaticPageService service
+                                    , IAttachmentService attachmentService) : base(service)
         {
+            _attachmentService = attachmentService;
         }
 
         // GET: StaticPage
@@ -21,7 +24,12 @@ namespace Ahora.WebApp.Controllers
             if (!staticPageResult.Success)
                 return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
             var staticPage = staticPageResult.Data;
-
+            if(staticPage.BannerShow == FM.Portal.Core.Model.EnableMenuType.فعال)
+            {
+                var attachmentsResult = _attachmentService.List(staticPage.AttachmentID);
+                if (attachmentsResult.Success)
+                    ViewBag.attachments = attachmentsResult.Data;
+            }
             ViewBag.Title = staticPage.Name;
             return View(staticPage);
         }

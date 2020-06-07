@@ -309,6 +309,7 @@
     <Content Include="Content\main\PagedList.css" />
     <Content Include="Content\main\Site.css" />
     <Content Include="Content\TemporaryFiles\banner\4a089472-14f5-4f40-a4f6-4cbab4e88e0e.jpg" />
+    <Content Include="Content\TemporaryFiles\banner\719dbf16-5573-4112-b55a-f0ad73a8dde1.jpg" />
     <Content Include="Content\TemporaryFiles\gallery\33dbd0bc-9471-486e-8f11-1d96cbb29a00.jpg" />
     <Content Include="Content\TemporaryFiles\gallery\54330447-81bf-4e46-bb80-87d22b81c46a.jpg" />
     <Content Include="Content\TemporaryFiles\gallery\c6ba721f-bb87-4d06-bea9-58ef5f536532.jpg" />
@@ -2068,7 +2069,7 @@
     <Content Include="Views\Product\_PartialPrice.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_PartialCarousel.cshtml" />
+    <Content Include="Views\Shared\_PartialSlider.cshtml" />
     <Content Include="Views\Shared\_PartialFooter.cshtml" />
     <Content Include="Views\Shared\_PartialSideArticle.cshtml" />
     <Content Include="Views\Shared\_PartialSideNews.cshtml" />
@@ -2202,6 +2203,7 @@
     <Content Include="Views\StaticPage\Index.cshtml" />
     <Content Include="Views\Gallery\Image.cshtml" />
     <Content Include="Views\Gallery\ImageDetail.cshtml" />
+    <Content Include="Views\Shared\_PartialCarousel.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
