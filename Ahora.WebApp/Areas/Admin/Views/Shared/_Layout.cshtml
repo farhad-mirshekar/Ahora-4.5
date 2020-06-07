@@ -32,22 +32,25 @@
                         <img class="m-auto d-block" src="Areas/Admin/Content/img/logo.png" />
                     </div>
                 </div>
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column" ng-repeat="row in Menus" ng-if="row.hasShow()">
-                        <li class="nav-item">
-                            <div class="nav-link" ng-click="row.open = !row.open" data-toggle="collapse" href="#{{row.name}}">
+                <div class="sidebar-sticky" id="sidebar-menu-container" style="margin-bottom:50px;">
+                    <div class="nav flex-column" ng-repeat="row in Menus" ng-if="row.hasShow()">
+                        <div class="card-header menu" data-parent="#sidebar-menu-container">
+                            <div class="card-title" data-toggle="collapse" href="{{'#' + row.name}}">
                                 <span class="card-title">{{row.title}}</span>
-                                <i ng-class="{'fa fa-angle-up':row.open,'fa fa-angle-down':!row.open}"></i>
+                                <i class="fa fa-angle-down pull-left"></i>
+                                @*<i ng-class="{'fa fa-angle-up':menu.open,'fa fa-angle-down':!menu.open}" class="pull-left"></i>*@
                             </div>
-                            <div id="{{row.name}}" class="collapse" aria-expanded="true">
-                                <ul class="nav flex-column sub-menu">
-                                    <li class="nav-item" ng-repeat="sub in row.subMenus" ng-if="!sub.hasShow || sub.hasShow()">
-                                        <a href="{{sub.route}}">{{sub.title}}<i class="fa {{sub.icon}} mr-2"></i></a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
+                        </div>
+                        <div id="{{row.name}}" class="collapse"  data-parent="#sidebar-menu-container">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"
+                                    ng-repeat="sub in row.subMenus"
+                                    ng-if="!sub.checkVisibility || sub.checkVisibility()">
+                                    <a href="{{sub.route}}">{{sub.title}}<i class="fa {{sub.icon}} mr-2"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </nav>
 
