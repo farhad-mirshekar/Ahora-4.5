@@ -26,7 +26,8 @@ BEGIN
 		Pages.[Description],
 		pages.[Enabled],
 		pages.[Deleted],
-		pages.RouteUrl
+		pages.RouteUrl,
+		pages.CreationDate
 	FROM pbl.Pages pages
 	ORDER BY Title
 

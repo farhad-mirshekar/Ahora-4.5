@@ -64,6 +64,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.ParentNode = SQLHelper.CheckStringNull(dr["ParentNode"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
                             obj.RouteUrl = SQLHelper.CheckStringNull(dr["RouteUrl"]);
+                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
                         }
                     }
 
