@@ -1,99 +1,100 @@
 ﻿@model List<ShoppingItemVM>
-    <div class="card">
-        <div class="card-header">
-            <label class="card-title">اطلاعات محصول</label>
-        </div>
-        <div class="card-body">
-            <section>
-                @foreach (var item in Model)
-                {
-                    decimal temp1 = 0;
-                    decimal temp2 = 0;
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-2">
-                                <img class="img-fluid img-thumbnail" src="~/Content/TemporaryFiles/@item.ImageUrl" title="" />
-                            </div>
-                            <div class="col-md-10">
-                                <div class="container mt-4">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="pull-right">
-                                                <h6>@item.ProductName</h6>
-                                                @if (item.Attribute.Count > 0)
+<div class="card">
+    <div class="card-header">
+        <label class="card-title">اطلاعات محصول</label>
+    </div>
+    <div class="card-body">
+        <section>
+            @foreach (var item in Model)
+            {
+                decimal temp1 = 0;
+                decimal temp2 = 0;
+                decimal attributePrice = 0;
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img class="img-fluid img-thumbnail" src="~/Content/TemporaryFiles/@item.ImageUrl" title="" />
+                        </div>
+                        <div class="col-md-10">
+                            <div class="container mt-4">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="pull-right">
+                                            <h6>@item.ProductName</h6>
+                                            @if (item.Attribute.Count > 0)
+                                            {
+                                                foreach (var attribute in item.Attribute)
                                                 {
-                                                    foreach (var attribute in item.Attribute)
+                                                    <label>@attribute.AttributeName : @attribute.Name</label>
+                                                    if (attribute.Price > 0)
                                                     {
-                                                        <label>@attribute.AttributeName : @attribute.Name</label>
-                                                        if (attribute.Price > 0)
-                                                        {
-                                                            <label>@string.Format("{0:C0} تومان", attribute.Price).Replace("$", "")</label>
-                                                        }
+                                                        attributePrice = attribute.Price;
+                                                        <label>@string.Format("{0:C0} تومان", attribute.Price).Replace("$", "")</label>
                                                     }
                                                 }
-                                            </div>
+                                            }
                                         </div>
-                                        <div class="col-md-6">
-                                            <div class="pull-left">
-                                                <div class="container m-auto">
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label>قیمت واحد:</label>
-                                                            <label>@string.Format("{0:C0} تومان", item.ProductPrice).Replace("$", "")</label>
-                                                            @{
-                                                                if (item.HasDiscount)
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="pull-left">
+                                            <div class="container m-auto">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label>قیمت واحد:</label>
+                                                        <label>@string.Format("{0:C0} تومان", item.ProductPrice).Replace("$", "")</label>
+                                                        @{
+                                                            if (item.HasDiscount)
+                                                            {
+                                                                if (item.SelfProductDiscountType == DiscountType.درصدی)
                                                                 {
-                                                                    if (item.SelfProductDiscountType == DiscountType.درصدی)
-                                                                    {
-                                                                        temp1 = (item.ProductPrice * item.SelfProductDiscountAmount) / 100;
-                                                                        <label class="control-label">
-                                                                            تخفیف :
-                                                                        </label>
-                                                                        <label class="control-label text-danger">
-                                                                            @string.Format("{0:C0} درصد", item.SelfProductDiscountAmount).Replace("$", "")
-                                                                        </label>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        temp1 = item.SelfProductDiscountAmount;
-                                                                        <label class="control-label">
-                                                                            تخفیف :
-                                                                        </label>
-                                                                        <label class="control-label text-danger">
-                                                                            @string.Format("{0:C0} تومان", item.SelfProductDiscountAmount).Replace("$", "")
-                                                                        </label>
-                                                                    }
+                                                                    temp1 = (item.ProductPrice * item.SelfProductDiscountAmount) / 100;
+                                                                    <label class="control-label">
+                                                                        تخفیف :
+                                                                    </label>
+                                                                    <label class="control-label text-danger">
+                                                                        @string.Format("{0:C0} درصد", item.SelfProductDiscountAmount).Replace("$", "")
+                                                                    </label>
                                                                 }
-                                                                if (item.HasDiscountsApplied)
+                                                                else
                                                                 {
-                                                                    if (item.DiscountType == DiscountType.درصدی)
-                                                                    {
-                                                                        temp2 = (item.ProductPrice * item.DiscountAmount) / 100;
-                                                                        <label class="control-label">
-                                                                            تخفیف » @item.DiscountName :
-                                                                        </label>
-                                                                        <label class="control-label text-danger">
-                                                                            @string.Format("{0:C0} درصد", item.DiscountAmount).Replace("$", "")
-                                                                        </label>
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        temp2 = item.DiscountAmount;
-                                                                        <label class="control-label">
-                                                                            تخفیف » @item.DiscountName :
-                                                                        </label>
-                                                                        <label class="control-label text-danger">
-                                                                            @string.Format("{0:C0} تومان", item.DiscountAmount).Replace("$", "")
-                                                                        </label>
-                                                                    }
+                                                                    temp1 = item.SelfProductDiscountAmount;
+                                                                    <label class="control-label">
+                                                                        تخفیف :
+                                                                    </label>
+                                                                    <label class="control-label text-danger">
+                                                                        @string.Format("{0:C0} تومان", item.SelfProductDiscountAmount).Replace("$", "")
+                                                                    </label>
                                                                 }
                                                             }
+                                                            if (item.HasDiscountsApplied)
+                                                            {
+                                                                if (item.DiscountType == DiscountType.درصدی)
+                                                                {
+                                                                    temp2 = (item.ProductPrice * item.DiscountAmount) / 100;
+                                                                    <label class="control-label">
+                                                                        تخفیف » @item.DiscountName :
+                                                                    </label>
+                                                                    <label class="control-label text-danger">
+                                                                        @string.Format("{0:C0} درصد", item.DiscountAmount).Replace("$", "")
+                                                                    </label>
+                                                                }
+                                                                else
+                                                                {
+                                                                    temp2 = item.DiscountAmount;
+                                                                    <label class="control-label">
+                                                                        تخفیف » @item.DiscountName :
+                                                                    </label>
+                                                                    <label class="control-label text-danger">
+                                                                        @string.Format("{0:C0} تومان", item.DiscountAmount).Replace("$", "")
+                                                                    </label>
+                                                                }
+                                                            }
+                                                        }
 
-                                                        </div>
-                                                        <div class="col-md-12">
-                                                            <label>مبلغ :</label>
-                                                            <label>@string.Format("{0:C0} تومان", (item.ProductPrice - (temp1 + temp2)) * item.Quantity).Replace("$", "")</label>
-                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label>مبلغ :</label>
+                                                        <label>@string.Format("{0:C0} تومان", (attributePrice + (item.ProductPrice - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
                                                     </div>
                                                 </div>
                                             </div>
@@ -103,8 +104,9 @@
                             </div>
                         </div>
                     </div>
-                }
-            </section>
-        </div>
+                </div>
+            }
+        </section>
     </div>
+</div>
 

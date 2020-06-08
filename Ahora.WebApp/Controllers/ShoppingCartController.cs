@@ -297,7 +297,7 @@ namespace Ahora.WebApp.Controllers
         }
         public ActionResult CartEmpty()
         {
-            return View();
+            return View("~/Views/ShoppingCart/_PartialCartEmpty.cshtml");
         }
         #endregion
 

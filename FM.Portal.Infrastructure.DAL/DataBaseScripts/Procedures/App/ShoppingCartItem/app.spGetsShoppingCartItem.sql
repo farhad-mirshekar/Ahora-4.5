@@ -9,11 +9,26 @@ CREATE PROCEDURE app.spGetsShoppingCartItem
 --WITH ENCRYPTION
 AS
 BEGIN
-	;WITH main AS(
+;WITH Discount AS
+(
+	SELECT 
+		cat.ID,
+		cat.HasDiscountsApplied,
+		disc.[Name] AS DiscountName,
+		disc.DiscountAmount,
+		disc.DiscountType
+	FROM app.Category cat
+	INNER JOIN
+		app.Category_Discount_Mapping catMapdisc ON cat.ID = catMapdisc.CategoryID
+	INNER JOIN
+	    app.Discount disc ON catMapdisc.DiscountID = disc.ID
+	WHERE 
+		catMapdisc.Active = 1
+)
 	SELECT 
 		cart.*,
-		cat.HasDiscountsApplied,
-		disc.Name AS DiscountName,
+		disc.HasDiscountsApplied,
+		disc.DiscountName,
 		disc.DiscountAmount,
 		disc.DiscountType,
 		product.HasDiscount,
@@ -24,16 +39,7 @@ BEGIN
 	INNER JOIN	
 		[app].[Product] product ON cart.ProductID = product.ID
 	LEFT JOIN
-		[app].[Category] cat ON product.CategoryID = cat.ID
-	LEFT JOIN
-		[app].[Category_Discount_Mapping] catMapdisc ON cat.ID = catMapdisc.CategoryID
-	LEFT JOIN
-		[app].[Discount] disc ON catMapdisc.DiscountID = disc.ID
+		Discount disc ON product.CategoryID = disc.ID
 	WHERE 
 		[ShoppingID]=@ShoppingID
-	)
-
-	SELECT * 
-	FROM main
-	ORDER BY [CreationDate]
 END
