@@ -2,7 +2,8 @@
     angular
         .module('portal')
         .factory('froalaOption', froalaOption);
-    function froalaOption() {
+    froalaOption.$inject = ['loadingService','attachmentService','$q'];
+    function froalaOption(loadingService,attachmentService,$q) {
         var option = {};
         option.main = {
             toolbarButtons: {
@@ -39,6 +40,32 @@
 
                     // Video was uploaded to the server.
                 },
+                'image.removed': function ($img) {
+                    var fileName = $img.attr('src').split('/');
+                    loadingService.show();
+                    return $q.resolve().then(() => {
+                        return attachmentService.remove({ FileName: fileName[4], PathType: 9 });
+                    }).then((result) => {
+                        if (result) {
+                            loadingService.hide();
+                        }
+                    }).catch(() => {
+                        loadingService.hide();
+                    }).finally(loadingService.hide);
+                },
+                'video.removed': function ($video) {
+                    var fileName = $video.attr('src').split('/');
+                    loadingService.show();
+                    return $q.resolve().then(() => {
+                        return attachmentService.remove({ FileName: fileName[4], PathType: 7 });
+                    }).then((result) => {
+                        if (result) {
+                            loadingService.hide();
+                        }
+                    }).catch(() => {
+                        loadingService.hide();
+                    }).finally(loadingService.hide);
+                }
             }
         };
         option.comment = {
