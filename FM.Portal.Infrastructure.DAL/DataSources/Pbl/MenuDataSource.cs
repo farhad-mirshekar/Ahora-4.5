@@ -3,6 +3,7 @@ using System.Data;
 using System.Data.SqlClient;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
+using FM.Portal.Core.Owin;
 using FM.Portal.Core.Result;
 using FM.Portal.DataSource;
 
@@ -10,13 +11,18 @@ namespace FM.Portal.Infrastructure.DAL
 {
     public class MenuDataSource : IMenuDataSource
     {
+        private readonly IRequestInfo _requestInfo;
+        public MenuDataSource(IRequestInfo requestInfo)
+        {
+            _requestInfo = requestInfo;
+        }
         private Result<Menu> Modify(bool IsNewRecord, Menu model)
         {
             try
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[10];
+                    SqlParameter[] param = new SqlParameter[11];
                     param[0] = new SqlParameter("@ID", model.ID);
                     param[1] = new SqlParameter("@Enabled", (byte)model.Enabled);
                     param[2] = new SqlParameter("@IsNewRecord", IsNewRecord);
@@ -27,8 +33,9 @@ namespace FM.Portal.Infrastructure.DAL
                     param[7] = new SqlParameter("@IconText", model.IconText);
                     param[8] = new SqlParameter("@Priority", model.Priority);
                     param[9] = new SqlParameter("@Parameters", model.Parameters);
+                    param[10] = new SqlParameter("@ForeignLink", (byte)model.ForeignLink);
 
-                   var result =  SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "pbl.spModifyMenu", param);
+                    var result =  SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "pbl.spModifyMenu", param);
                     if(result > 0)
                         return Get(model.ID);
                     return Result<Menu>.Failure();
@@ -57,7 +64,7 @@ namespace FM.Portal.Infrastructure.DAL
                         while (dr.Read())
                         {
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
-                            obj.Deleted = SQLHelper.CheckBoolNull(dr["Deleted"]);
+                            obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
                             obj.Enabled = (EnableMenuType)SQLHelper.CheckByteNull(dr["Enabled"]);
                             obj.Node = SQLHelper.CheckStringNull(dr["Node"]);
                             obj.ParentNode = SQLHelper.CheckStringNull(dr["ParentNode"]);
@@ -68,6 +75,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.Parameters = SQLHelper.CheckStringNull(dr["Parameters"]);
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
                             obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
+                            obj.ForeignLink = (EnableMenuType)SQLHelper.CheckByteNull(dr["ForeignLink"]);
                         }
                     }
 
@@ -109,8 +117,10 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[1];
+                SqlParameter[] param = new SqlParameter[2];
                 param[0] = new SqlParameter("@ID", ID);
+                param[1] = new SqlParameter("@RemoverID", _requestInfo.UserId);
+
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     int i = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "pbl.spDeleteMenu", param);

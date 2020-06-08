@@ -11,5 +11,6 @@ namespace FM.Portal.Core.Model
         public string IconText { get; set; }
         public string Parameters { get; set; }
         public List<MenuVM> Children { get; set; }
+        public EnableMenuType ForeignLink { get; set; }
     }
 }

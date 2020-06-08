@@ -51,11 +51,21 @@
     {
         if (item.Children != null && item.Children.Count > 0)
         {
-            var parameters = routeParams(item.Parameters);
-            <li class='nav-item dropdown'>
-                <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
-                @ChildRender(item.Children, item.ID)
-            </li>
+            if (item.ForeignLink == EnableMenuType.غیرفعال)
+            {
+                var parameters = routeParams(item.Parameters);
+                <li class='nav-item dropdown'>
+                    <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                    @ChildRender(item.Children, item.ID)
+                </li>
+            }
+            else
+            {
+                <li class='nav-item dropdown'>
+                    <a class='nav-link dropdown-toggle' href='@item.Url' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                    @ChildRender(item.Children, item.ID)
+                </li>
+            }
         }
         else
         {
@@ -63,10 +73,21 @@
             {
                 if (item.Url.ToLower() != "login")
                 {
-                    var parameters = routeParams(item.Parameters);
-                    <li class="nav-item">
-                        <a class='nav-link' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
-                    </li>
+                    if (item.ForeignLink == EnableMenuType.غیرفعال)
+                    {
+                        var parameters = routeParams(item.Parameters);
+                        <li class='nav-item dropdown'>
+                            <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                            @ChildRender(item.Children, item.ID)
+                        </li>
+                    }
+                    else
+                    {
+                        <li class='nav-item dropdown'>
+                            <a class='nav-link dropdown-toggle' href='@item.Url' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                            @ChildRender(item.Children, item.ID)
+                        </li>
+                    }
                 }
             }
             else
@@ -79,10 +100,19 @@
                 }
                 else
                 {
-                    var parameters = routeParams(item.Parameters);
-                    <li class="nav-item">
-                        <a class='nav-link' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
-                    </li>
+                    if (item.ForeignLink == EnableMenuType.غیرفعال)
+                    {
+                        var parameters = routeParams(item.Parameters);
+                        <li class='nav-item'>
+                            <a class='nav-link' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="nav-item">
+                            <a class='nav-link' href='@item.Url' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                        </li>
+                    }
                 }
             }
 
@@ -98,16 +128,39 @@
             {
                 if (item.Children != null && item.Children.Count > 0)
                 {
-                    var parameters = routeParams(item.Parameters);
-                    <li class='dropdown-submenu'>
-                        <a class='dropdown-item dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)'><i class='@item.IconText mr-1'></i>&nbsp;@item.Name</a>";
-                        @ChildRender(item.Children, item.ID);
-                    </li>
+                    if (item.ForeignLink == EnableMenuType.غیرفعال)
+                    {
+                        var parameters = routeParams(item.Parameters);
+                        <li class='nav-item dropdown'>
+                            <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                            @ChildRender(item.Children, item.ID)
+                        </li>
+                    }
+                    else
+                    {
+                        <li class='nav-item dropdown'>
+                            <a class='nav-link dropdown-toggle' href='@item.Url' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                            @ChildRender(item.Children, item.ID)
+                        </li>
+                    }
                 }
                 else
                 {
-                    var parameters = routeParams(item.Parameters);
-                    <li><a class='dropdown-item' href='@Url.RouteUrl(item.Url,parameters)'><i class='@item.IconText mr-1'></i>@item.Name</a></li>
+                    if (item.ForeignLink == EnableMenuType.غیرفعال)
+                    {
+                        var parameters = routeParams(item.Parameters);
+                        <li class='nav-item dropdown'>
+                            <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                            @ChildRender(item.Children, item.ID)
+                        </li>
+                    }
+                    else
+                    {
+                        <li class='nav-item dropdown'>
+                            <a class='nav-link dropdown-toggle' href='@item.Url' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                            @ChildRender(item.Children, item.ID)
+                        </li>
+                    }
                 }
             }
         }

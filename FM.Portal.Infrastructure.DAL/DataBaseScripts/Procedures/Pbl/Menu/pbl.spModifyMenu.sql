@@ -15,7 +15,8 @@ CREATE PROCEDURE pbl.spModifyMenu
 	@Url Nvarchar(max),
 	@IconText Nvarchar(256),
 	@Priority Int,
-	@Parameters Nvarchar(Max)
+	@Parameters Nvarchar(Max),
+	@ForeignLink TINYINT
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -38,9 +39,9 @@ BEGIN
 			IF @IsNewRecord = 1 -- insert
 			BEGIN
 				INSERT INTO pbl.Menu
-				(ID, [Node],[Name],[Enabled],[CreationDate],[Url],[IconText],[Priority],[Parameters])
+				(ID, [Node],[Name],[Enabled],[CreationDate],[Url],[IconText],[Priority],[Parameters],[ForeignLink])
 				VALUES
-				(@ID, @NewNode , @Name ,  @Enabled, GETDATE(),@Url , @IconText , @Priority , @Parameters)
+				(@ID, @NewNode , @Name ,  @Enabled, GETDATE(),@Url , @IconText , @Priority , @Parameters,@ForeignLink)
 			END
 			ELSE
 			BEGIN
@@ -51,7 +52,8 @@ BEGIN
 					[IconText] = @IconText,
 					[Priority] = @Priority,
 					[Enabled] = @Enabled,
-					[Parameters] = @Parameters
+					[Parameters] = @Parameters,
+					[ForeignLink] = @ForeignLink
 				WHERE ID = @ID
 
 				IF(@Node <> @NewNode)

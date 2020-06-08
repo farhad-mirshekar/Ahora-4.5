@@ -22,18 +22,20 @@ BEGIN
 		menu.[Node].GetAncestor(1).ToString() AS ParentNode,
 		menu.[Name],
 		menu.RemoverID,
-		menu.Deleted,
+		menu.RemoverDate,
 		menu.[Enabled],
 		menu.IconText,
 		menu.[Url],
 		menu.[Priority],
 		menu.[Parameters],
 		menu.CreationDate,
-		@ParentID ParentID
+		@ParentID ParentID,
+		menu.ForeignLink
 	FROM 
 		pbl.Menu menu
 	WHERE 
 		(ID = @ID) 
+	AND menu.RemoverID IS NULL
 
 	RETURN @@ROWCOUNT
 END

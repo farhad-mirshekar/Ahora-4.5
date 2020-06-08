@@ -18,14 +18,16 @@ BEGIN
 		menu.[Node].GetAncestor(1).ToString() AS ParentNode,
 		menu.[Name],
 		menu.RemoverID,
-		menu.Deleted,
+		menu.RemoverDate,
 		menu.[Enabled],
 		menu.[Url],
 		menu.IconText,
 		menu.[Priority],
 		menu.[Parameters],
-		menu.CreationDate
+		menu.CreationDate,
+		menu.ForeignLink
 	FROM pbl.Menu menu
+	WHERE menu.RemoverID IS NULL
 	ORDER BY menu.[Priority] 
 
 	RETURN @@ROWCOUNT

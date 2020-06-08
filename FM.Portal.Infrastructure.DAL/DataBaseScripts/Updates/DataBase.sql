@@ -722,9 +722,10 @@ CREATE TABLE [pbl].[Menu](
 	[Node] [hierarchyid] NOT NULL,
 	[Name] [Nvarchar](256) NOT NULL,
 	[CreationDate] [smalldatetime] NOT NULL,
-	[Deleted] [bit] NULL Default 0,
+	[RemoverDate] [smalldatetime] NULL,
 	[RemoverID] [Uniqueidentifier] NULL,
 	[Enabled] [Tinyint] NULL,
+	[ForeignLink] [Tinyint] NULL,
 	[Url] [Nvarchar] NOT NULL
  CONSTRAINT [PK_Menu] PRIMARY KEY CLUSTERED 
 (

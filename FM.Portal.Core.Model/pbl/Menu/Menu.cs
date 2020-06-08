@@ -7,7 +7,6 @@ namespace FM.Portal.Core.Model
    public class Menu : Entity
     {
         public string Name { get; set; }
-        public bool Deleted { get; set; }
         public EnableMenuType Enabled { get; set; }
         public string Node { get; set; }
         public string ParentNode { get; set; }
@@ -16,6 +15,9 @@ namespace FM.Portal.Core.Model
         public string IconText { get; set; }
         public int Priority { get; set; }
         public string Parameters { get; set; }
+        public EnableMenuType ForeignLink { get; set; }
+        public Guid RemoverID { get; set; }
+        public DateTime RemoverDate { get; set; }
 
         //only show
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
