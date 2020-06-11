@@ -82,6 +82,8 @@
     <Compile Include="App\Payment\VM\PaymentListForUserVM.cs" />
     <Compile Include="App\Payment\VM\PaymentListVM.cs" />
     <Compile Include="App\ProductAttribute\ProductAttribute.cs" />
+    <Compile Include="App\ProductType\ProductType.cs" />
+    <Compile Include="App\ProductType\VM\ProductTypeListVM.cs" />
     <Compile Include="App\ProductVariantAttribute\ProductVariantAttribute.cs" />
     <Compile Include="App\ProductVariantAttribute\VM\AttributeJsonVM.cs" />
     <Compile Include="App\Product\Product.cs" />

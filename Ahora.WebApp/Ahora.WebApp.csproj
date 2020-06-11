@@ -938,6 +938,7 @@
     <Content Include="Areas\Admin\Views\StaticPage\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Banner\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Gallery\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductType\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
@@ -2096,6 +2097,7 @@
     <Compile Include="Areas\Admin\Controllers\App\PaymentController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\ProductAttributeController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\ProductController.cs" />
+    <Compile Include="Areas\Admin\Controllers\App\ProductTypeController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\CommandController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\DepartmentController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\PositionController.cs" />
@@ -2129,6 +2131,7 @@
     <Compile Include="Areas\ApiClient\Controllers\app\ProductAttributeController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductMapAttributeController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\app\ProductTypeController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductVariantAttributeController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\CommandController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\DepartmentController.cs" />

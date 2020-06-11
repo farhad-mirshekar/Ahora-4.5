@@ -1,0 +1,48 @@
+﻿<section ng-show="state ==='cartable'">
+    <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
+    <portal-grid obj="grid"></portal-grid>
+</section>
+
+<section ng-show="['add','edit'].indexOf(state) !== -1">
+    <h2 class="main-title" ng-show="state ==='add'">افزودن</h2>
+    <h2 class="main-title" ng-show="state ==='edit'">ویرایش</h2>
+    <div class="card-body form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="Name" class="control-label">نام</label>
+                <input type="text" class="form-control" ng-model="Model.Name" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="DiscountAmount" class="control-label">توضیحات</label>
+                <input type="text" class="form-control" ng-model="Model.Description" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="DiscountAmount" class="control-label">مبلغ بار</label>
+                <input type="text" class="form-control" ng-model="Model.Price" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="DiscountType" class="control-label">فعال / غیرفعال</label>
+                <select class="form-control" ng-model="Model.Enabled">
+                    <option ng-repeat="row in enableType" ng-value="row.Model">{{row.Name}}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="btn-group-justified pull-left mb-5">
+        <button type="submit" ng-click="editProductType()" ng-if="state ==='edit'" class="btn btn-primary">ویرایش</button>
+        <button type="submit" ng-click="addProductType()" ng-if="state ==='add'" class="btn btn-success">افزودن</button>
+        <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
+    </div>
+</section>
+
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
+
+
+
+

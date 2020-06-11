@@ -672,6 +672,23 @@ ADD [Node] [hierarchyid] NULL
 ALTER TABLE app.Category
 DROP COLUMN ParentID
 GO
+CREATE TABLE [app].[ProductType](
+	[ID] uniqueidentifier NOT NULL,
+	[Name] NVARCHAR(1000) NOT NULL,
+	[Description] NVARCHAR(1000) NOT NULL,
+	[Price] Decimal(18,3) NULL,
+	[Enabled] [Tinyint] NULL,
+	[UserID] uniqueidentifier NOT NULL,
+	[CreationDate] [SMALLDATETIME] NOT NULL
+ CONSTRAINT [PK_ProductType] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [app].[ProductType] ADD FOREIGN KEY ([UserID])
+REFERENCES org.[User] (ID)
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO

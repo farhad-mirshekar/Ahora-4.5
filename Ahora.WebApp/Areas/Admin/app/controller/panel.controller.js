@@ -935,8 +935,8 @@
         product.grid = {
             bindingObject: product
             , columns: [{ name: 'Name', displayName: 'عنوان آگهی' },
-                { name: 'TrackingCode', displayName: 'کدپیگیری' },
-                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
+            { name: 'TrackingCode', displayName: 'کدپیگیری' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: productService.list
             , onEdit: null
             , route: 'product'
@@ -967,7 +967,7 @@
         attribute.grid = {
             bindingObject: attribute
             , columns: [{ name: 'Name', displayName: 'عنوان' },
-                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: attributeService.list
             , onEdit: attribute.main.changeState.edit
             , globalSearch: true
@@ -1233,7 +1233,7 @@
         discount.grid = {
             bindingObject: discount
             , columns: [{ name: 'Name', displayName: 'عنوان تخفیف' },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: discountService.list
             , onEdit: discount.main.changeState.edit
             , globalSearch: true
@@ -1343,9 +1343,9 @@
         comment.grid = {
             bindingObject: comment
             , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
-                { name: 'ProductName', displayName: 'نام محصول' },
-                { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            { name: 'ProductName', displayName: 'نام محصول' },
+            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: commentService.list
             , onEdit: comment.main.changeState.edit
             , globalSearch: true
@@ -1591,8 +1591,8 @@
         article.grid = {
             bindingObject: article
             , columns: [{ name: 'Title', displayName: 'عنوان مقاله' },
-                { name: 'TrackingCode', displayName: 'کد پیگیری' },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            { name: 'TrackingCode', displayName: 'کد پیگیری' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: articleService.list
             , deleteService: articleService.remove
             , onAdd: article.main.changeState.add
@@ -1695,7 +1695,7 @@
                         return attachmentService.add(article.videos);
                     }
                 }
-            }).then(() => { 
+            }).then(() => {
                 article.videos = [];
                 article.pics = [];
                 return attachmentService.list({ ParentID: article.Model.ID });
@@ -1829,8 +1829,8 @@
         news.grid = {
             bindingObject: news
             , columns: [{ name: 'Title', displayName: 'عنوان خبر' },
-                { name: 'TrackingCode', displayName: 'کد پیگیری' },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            { name: 'TrackingCode', displayName: 'کد پیگیری' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: newsService.list
             , deleteService: newsService.remove
             , onEdit: news.main.changeState.edit
@@ -2351,7 +2351,7 @@
         slider.grid = {
             bindingObject: slider
             , columns: [{ name: 'Title', displayName: 'عنوان اسلایدر' },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: sliderService.list
             , deleteService: sliderService.remove
             , onEdit: edit
@@ -2803,9 +2803,9 @@
         comment.grid = {
             bindingObject: comment
             , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
-                { name: 'ProductName', displayName: 'عنوان' },
-                { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
-                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
+            { name: 'ProductName', displayName: 'عنوان' },
+            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: commentService.list
             , onEdit: comment.main.changeState.edit
             , globalSearch: true
@@ -3313,8 +3313,8 @@
         pages.grid = {
             bindingObject: pages
             , columns: [{ name: 'Name', displayName: 'نام صفحه' },
-                { name: 'PageType', displayName: 'نوع صفحه', type: 'enum', source: enumService.PageType },
-                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
+            { name: 'PageType', displayName: 'نوع صفحه', type: 'enum', source: enumService.PageType },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: pagesPortalService.list
             , deleteService: pagesPortalService.remove
             , globalSearch: true
@@ -3397,8 +3397,8 @@
         pages.grid = {
             bindingObject: pages
             , columns: [{ name: 'Name', displayName: 'نام صفحه' },
-                { name: 'TrackingCode', displayName: 'کد پیگیری' },
-                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
+            { name: 'TrackingCode', displayName: 'کد پیگیری' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: dynamicPageService.list
             , deleteService: dynamicPageService.remove
             , onAdd: pages.main.changeState.add
@@ -3684,8 +3684,8 @@
         pages.grid = {
             bindingObject: pages
             , columns: [{ name: 'Name', displayName: 'نام صفحه' },
-                { name: 'TrackingCode', displayName: 'کد پیگیری' },
-                {name:'CreationDatePersian',displayName:'تاریخ ایجاد'}]
+            { name: 'TrackingCode', displayName: 'کد پیگیری' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: staticPageService.list
             , deleteService: staticPageService.remove
             , onAdd: pages.main.changeState.add
@@ -3940,9 +3940,9 @@
                 banner.Model = result;
                 if (banner.pic.list.length) {
                     banner.pics = [];
-                        for (var i = 0; i < banner.pic.list.length; i++) {
-                            banner.pics.push({ ParentID: banner.Model.ID, Type: 2, FileName: banner.pic.list[i], PathType: banner.pic.type });
-                        }
+                    for (var i = 0; i < banner.pic.list.length; i++) {
+                        banner.pics.push({ ParentID: banner.Model.ID, Type: 2, FileName: banner.pic.list[i], PathType: banner.pic.type });
+                    }
                     return attachmentService.add(banner.pics);
                 }
                 return true;
@@ -3978,7 +3978,7 @@
     }
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('galleryController', galleryController);
-    galleryController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'galleryService', '$location', 'toaster',  'toolsService', 'enumService', 'attachmentService'];
+    galleryController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'galleryService', '$location', 'toaster', 'toolsService', 'enumService', 'attachmentService'];
     function galleryController($scope, $q, loadingService, $routeParams, galleryService, $location, toaster, toolsService, enumService, attachmentService) {
         let gallery = $scope;
         gallery.Model = {};
@@ -4108,20 +4108,20 @@
                 toaster.pop('success', '', 'گالری جدید با موفقیت اضافه گردید');
                 loadingService.hide();
             }).catch((error) => {
-                    if (!error) {
-                        $('#content > div').animate({
-                            scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
-                        }, 'slow');
-                    } else {
-                        var listError = error.split('&&');
-                        gallery.Model.Errors = [].concat(listError);
-                        $('#content > div').animate({
-                            scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
-                        }, 'slow');
-                    }
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    gallery.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
+                    }, 'slow');
+                }
 
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                }).finally(loadingService.hide);
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
         }
         function editGallery() {
             loadingService.show();
@@ -4181,4 +4181,132 @@
             gallery.pic.listUploaded = [];
         }
     }
+    //------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('productTypeController', productTypeController);
+    productTypeController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'productTypeService', '$location', 'toaster', 'toolsService', 'enumService'];
+    function productTypeController($scope, $q, loadingService, $routeParams, productTypeService, $location, toaster, toolsService, enumService) {
+        let productType = $scope;
+        productType.Model = {};
+        productType.main = {};
+        productType.main.changeState = {
+            cartable: cartable,
+            edit: edit,
+            add: add
+        };
+        productType.Errors = [];
+        productType.state = '';
+        productType.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
+
+        productType.addProductType = addProductType;
+        productType.editProductType = editProductType;
+        productType.grid = {
+            bindingObject: productType
+            , columns: [{ name: 'Name', displayName: 'نام' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            , listService: productTypeService.list
+            , onEdit: productType.main.changeState.edit
+            , globalSearch: true
+            , initLoad: true
+        };
+        init();
+
+
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'add':
+                        add();
+                        break;
+                    case 'edit':
+                        productTypeService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+
+        }
+
+        function cartable() {
+            loadingService.show();
+            productType.Model = {};
+            productType.state = 'cartable';
+            $location.path('/product-type/cartable');
+            loadingService.hide();
+        }
+        function add() {
+            loadingService.show();
+            productType.state = 'add';
+            $location.path('/product-type/add');
+            loadingService.hide();
+
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                productType.state = 'edit';
+                productType.Model = model;
+                $location.path(`/product-type/edit/${productType.Model.ID}`);
+            }).finally(loadingService.hide);
+
+        }
+
+        function addProductType() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return productTypeService.add(productType.Model)
+            }).then((result) => {
+                productType.grid.getlist(false);
+                toaster.pop('success', '', 'با موفقیت اضافه گردید');
+                loadingService.hide();
+                productType.main.changeState.cartable();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#ProductTypeSection').offset().top - $('#ProductTypeSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    productType.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#ProductTypeSection').offset().top - $('#ProductTypeSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+        function editProductType() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return productTypeService.edit(productType.Model)
+            }).then((result) => {
+                productType.grid.getlist(false);
+                toaster.pop('success', '', 'با موفقیت ویرایش گردید');
+                loadingService.hide();
+                productType.main.changeState.cartable();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#ProductTypeSection').offset().top - $('#ProductTypeSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    productType.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#ProductTypeSection').offset().top - $('#ProductTypeSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+    }
+
 })();

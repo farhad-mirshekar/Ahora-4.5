@@ -45,7 +45,8 @@
             {
                 name: 'product', title: 'مدیریت محصولات', icon: 'fa-angle-down', hasShow: () => { return toolsService.checkPermission('mnuproduct') }
                 , subMenus: [
-                    { route: '#/product-cartable', title: 'کارتابل محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-cartable') }, icon:'fa-folder-open-o' },
+                    { route: '#/product-cartable', title: 'کارتابل محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-cartable') }, icon: 'fa-folder-open-o' },
+                    { route: '#/product-type/cartable', title: 'مشخصات محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-cartable') }, icon: 'fa-folder-open-o' },
                     { route: '#/attribute/cartable', title: 'ویژگی های محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-attribute') }, icon: 'fa-diamond' },
                     { route: '#/category/cartable', title: 'دسته بندی محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-category') }, icon: 'fa-archive' },
                     { route: '#/discount/cartable', title: 'کارتابل تخفیفات', hasShow: () => { return toolsService.checkPermission('pgdiscount') }, icon:'fa-dollar'},

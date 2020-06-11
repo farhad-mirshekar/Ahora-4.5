@@ -66,6 +66,7 @@
     <Compile Include="DataSources\App\ProductAttributeDataSource.cs" />
     <Compile Include="DataSources\App\ProductDataSource.cs" />
     <Compile Include="DataSources\App\ProductMapAttributeDataSource.cs" />
+    <Compile Include="DataSources\App\ProductTypeDataSource.cs" />
     <Compile Include="DataSources\App\ProductVariantAttributeDataSource.cs" />
     <Compile Include="DataSources\App\ShoppingCartItemDataSource.cs" />
     <Compile Include="DataSources\DataSource.cs" />
@@ -144,6 +145,10 @@
     <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spGetProductMapAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spGetsProductMapAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spModifyProductMapAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductType\app.spGetProductType.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductType\app.spGetsProductType.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductType\app.spModifyProductType.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductType\app.spDeleteProductType.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spDeleteProductVariantAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spGetProductVariantAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spGetsProductVariantAttribute.sql" />
