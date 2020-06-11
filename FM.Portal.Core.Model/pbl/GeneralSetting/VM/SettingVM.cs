@@ -21,5 +21,7 @@
         public string CountShowNews { get; set; }
         public string CountShowProduct { get; set; }
         public string CountShowEvents { get; set; }
+        public string ShoppingCartRate { get; set; }
+        public string ShippingCosts { get; set; }
     }
 }

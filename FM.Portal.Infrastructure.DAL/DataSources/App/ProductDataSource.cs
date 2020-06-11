@@ -23,7 +23,7 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[25];
+                    SqlParameter[] param = new SqlParameter[26];
                     param[0] = new SqlParameter("@ID", model.ID);
 
                     param[1] = new SqlParameter("@Name", model.Name);
@@ -52,6 +52,8 @@ namespace FM.Portal.Infrastructure.DAL
                     param[22] = new SqlParameter("@DiscountType", (byte)model.DiscountType);
                     param[23] = new SqlParameter("@HasDiscount", model.HasDiscount);
                     param[24] = new SqlParameter("@IsDownload", model.IsDownload);
+                    param[25] = new SqlParameter("@ProductType", SqlDbType.UniqueIdentifier);
+                    param[25].Value = model.ProductType.HasValue && model.ProductType.Value != Guid.Empty ? model.ProductType.Value : (object)DBNull.Value;
 
                     SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyProduct", param);
 
@@ -119,6 +121,8 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.DiscountTypes = (DiscountType)SQLHelper.CheckByteNull(dr["DiscountTypes"]);
                             obj.HasDiscount = SQLHelper.CheckBoolNull(dr["HasDiscount"]);
                             obj.IsDownload = SQLHelper.CheckBoolNull(dr["IsDownload"]);
+                            obj.ProductType = SQLHelper.CheckGuidNull(dr["ProductType"]);
+                            obj.ProductTypeName = SQLHelper.CheckStringNull(dr["ProductTypeName"]);
                         }
                     }
 

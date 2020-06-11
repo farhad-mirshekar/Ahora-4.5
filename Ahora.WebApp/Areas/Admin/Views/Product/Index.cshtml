@@ -161,6 +161,14 @@
                                 <input type="text" class="form-control" ng-model="Model.Discount" />
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="form-group col-xs-12 col-sm-3 weight">
+                                <label>نوع محصول</label>
+                                <select class="form-control" ng-model="Model.ProductType">
+                                    <option ng-repeat="row in productType" ng-value="row.Model">{{row.Name}}</option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </uib-tab>
                 <uib-tab heading="بررسی تخصصی محصول">

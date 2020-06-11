@@ -59,6 +59,9 @@ namespace FM.Portal.Domain
 
                 setting.TwitterUrl = result.FirstOrDefault(x => x.Name.Equals("TwitterUrl")).Value;
                 setting.WhatsAppUrl = result.FirstOrDefault(x => x.Name.Equals("WhatsAppUrl")).Value;
+
+                setting.ShoppingCartRate = result.FirstOrDefault(x => x.Name.Equals("ShoppingCartRate")).Value;
+                setting.ShippingCosts = result.FirstOrDefault(x => x.Name.Equals("ShippingCosts")).Value;
                 return Result<SettingVM>.Successful(data: setting);
             }
             return Result<SettingVM>.Failure();

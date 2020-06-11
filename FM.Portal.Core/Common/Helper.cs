@@ -184,6 +184,25 @@ namespace FM.Portal.Core.Common
                 return result.WhatsAppUrl;
             }
         }
+        public static decimal ShoppingCartRate
+        {
+            get
+            {
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+                var result = CacheManager.CacheRead<SettingVM>(httpContext, "SiteSettings");
+                return SQLHelper.CheckDecimalNull(result.ShoppingCartRate);
+            }
+        }
+
+        public static decimal ShippingCosts
+        {
+            get
+            {
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+                var result = CacheManager.CacheRead<SettingVM>(httpContext, "SiteSettings");
+                return SQLHelper.CheckDecimalNull(result.ShippingCosts);
+            }
+        }
         public static int GetPersianDay(DateTime date)
         {
             return new PersianCalendar().GetDayOfMonth(date);

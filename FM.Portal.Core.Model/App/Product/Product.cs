@@ -36,6 +36,7 @@ namespace FM.Portal.Core.Model
         public int StockQuantity { get; set; }
         public bool HasDiscount { get; set; }
         public bool IsDownload { get; set; }
+        public Guid? ProductType { get; set; }
 
         //only show
         public string DiscountName { get; set; }
@@ -44,5 +45,6 @@ namespace FM.Portal.Core.Model
         public bool HasDiscountsApplied { get; set; }
         public int CountSelect { get; set; }
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
+        public string ProductTypeName { get; set; }
     }
 }

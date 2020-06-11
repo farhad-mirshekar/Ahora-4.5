@@ -1,4 +1,8 @@
 ﻿@model List<ShoppingItemVM>
+@using FM.Portal.Core.Common;
+@{
+    decimal amountBasket = 0;
+}
 @if (Model != null && Model.Count > 0)
 {
     <div class="card" id="cart">
@@ -102,9 +106,12 @@
                                                             <label>@item.Quantity</label>
                                                             <i class="fa fa-minus" data-href="@Url.Action("QuantityMinus", "ShoppingCart", new { ProductID = item.ProductID })" style="color:#ff0000;padding:10px"></i>
                                                         </div>
+                                                        @{
+                                                            amountBasket += attributePrice + (item.ProductPrice - (temp1 + temp2)) * item.Quantity;
+                                                        }
                                                         <div class="col-md-12">
                                                             <label>مبلغ :</label>
-                                                            <label>@string.Format("{0:C0} تومان", (attributePrice+(item.ProductPrice - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
+                                                            <label>@string.Format("{0:C0} تومان", (attributePrice + (item.ProductPrice - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
                                                         </div>
                                                     </div>
                                                     <button type="button" class="btn btn-danger delete" data-href="@Url.Action("Delete", "ShoppingCart", new { ProductID = @item.ProductID, ShoppingID = @item.ShoppingID })">حذف</button>
@@ -116,8 +123,27 @@
                             </div>
                         </div>
                     </div>
-                                                                }
+                }
             </section>
+            @{
+                if (amountBasket < Helper.ShoppingCartRate)
+                {
+                    <section class="mt-4">
+                        <div class="container">
+                            <div class="row pull-left">
+                                <div class="col-md-12">
+                                    <label class="label label-default">هزینه ارسال محصول : </label>
+                                    <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts).Replace("$", "")</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="label label-default">قیمت نهایی :</label>
+                                    <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts + amountBasket).Replace("$", "")</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                }
+            }
         </div>
         <div id="load"></div>
         <div class="card-footer">
@@ -131,7 +157,7 @@
 }
 else
 {
-    {Html.RenderAction("CartEmpty","ShoppingCart");}
+    { Html.RenderAction("CartEmpty", "ShoppingCart"); }
 }
 
 <script src="~/scripts/custom/Quantity.js"></script>

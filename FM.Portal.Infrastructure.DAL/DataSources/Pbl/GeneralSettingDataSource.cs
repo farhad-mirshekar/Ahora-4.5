@@ -63,6 +63,9 @@ namespace FM.Portal.Infrastructure.DAL
 
                 setting.TwitterUrl = result.FirstOrDefault(x => x.Name.Equals("TwitterUrl")).Value;
                 setting.WhatsAppUrl = result.FirstOrDefault(x => x.Name.Equals("WhatsAppUrl")).Value;
+
+                setting.ShoppingCartRate = result.FirstOrDefault(x => x.Name.Equals("ShoppingCartRate")).Value;
+                setting.ShippingCosts = result.FirstOrDefault(x => x.Name.Equals("ShippingCosts")).Value;
             }
 
 
@@ -197,6 +200,22 @@ namespace FM.Portal.Infrastructure.DAL
                 SqlParameter[] param = new SqlParameter[2];
                 param[0] = new SqlParameter("@Name", "CountShowEvents");
                 param[1] = new SqlParameter("@Value", model.CountShowEvents);
+                commands.Add(SQLHelper.CreateCommand("pbl.spModifyGeneralSetting", CommandType.StoredProcedure, param));
+            }
+
+            if (setting.ShoppingCartRate != model.ShoppingCartRate)
+            {
+                SqlParameter[] param = new SqlParameter[2];
+                param[0] = new SqlParameter("@Name", "ShoppingCartRate");
+                param[1] = new SqlParameter("@Value", model.ShoppingCartRate);
+                commands.Add(SQLHelper.CreateCommand("pbl.spModifyGeneralSetting", CommandType.StoredProcedure, param));
+            }
+
+            if (setting.ShippingCosts != model.ShippingCosts)
+            {
+                SqlParameter[] param = new SqlParameter[2];
+                param[0] = new SqlParameter("@Name", "ShippingCosts");
+                param[1] = new SqlParameter("@Value", model.ShippingCosts);
                 commands.Add(SQLHelper.CreateCommand("pbl.spModifyGeneralSetting", CommandType.StoredProcedure, param));
             }
             return commands;

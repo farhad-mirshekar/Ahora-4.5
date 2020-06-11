@@ -15,7 +15,8 @@ BEGIN
 		disc.[Name] AS DiscountName,
 		disc.DiscountAmount,
 		disc.DiscountType AS DiscountTypes,
-		category.HasDiscountsApplied
+		category.HasDiscountsApplied,
+		ProductType.Name AS ProductTypeName
 	FROM	
 		[app].[Product] product
 	INNER JOIN
@@ -24,6 +25,8 @@ BEGIN
 		[app].[Category_Discount_Mapping] catMapdisc ON category.ID = catMapdisc.CategoryID
 	LEFT JOIN
 		[app].[Discount] disc ON catMapdisc.DiscountID =disc.ID
+	LEFT JOIN
+		[app].[ProductType] ProductType ON product.ProductType = ProductType.ID
 	WHERE 
 		(@ID IS NULL OR product.ID = @ID) AND
 		(@TrackingCode IS NULL OR product.TrackingCode = @TrackingCode)

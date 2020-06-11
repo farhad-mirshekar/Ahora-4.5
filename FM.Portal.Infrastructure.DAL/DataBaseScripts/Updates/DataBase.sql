@@ -689,6 +689,9 @@ GO
 ALTER TABLE [app].[ProductType] ADD FOREIGN KEY ([UserID])
 REFERENCES org.[User] (ID)
 GO
+ALTER TABLE app.Product
+ADD ProductType UNIQUEIDENTIFIER
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO
@@ -796,6 +799,11 @@ INSERT INTO pbl.GeneralSetting
 VALUES('SiteDescription','')
 INSERT INTO pbl.GeneralSetting (Name,Value)
 VALUES('CountShowEvents','')
+INSERT INTO pbl.GeneralSetting
+VALUES('ShoppingCartRate','')
+
+INSERT INTO pbl.GeneralSetting
+VALUES('ShippingCosts','')
 Go
 CREATE TABLE [pbl].[Tags](
 	[ID] [uniqueidentifier]  NOT NULL,

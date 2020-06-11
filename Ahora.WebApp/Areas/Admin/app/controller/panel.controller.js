@@ -621,8 +621,8 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('productController', productController);
-    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'discountService', 'toolsService', 'enumService', 'froalaOption'];
-    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, discountService, toolsService, enumService, froalaOption) {
+    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'productTypeService', 'toolsService', 'enumService', 'froalaOption'];
+    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, productTypeService, toolsService, enumService, froalaOption) {
         var product = $scope;
         product.Model = {};
         product.Attribute = {};
@@ -762,6 +762,8 @@
                 return listAttribute();
             }).then(() => {
                 product.Attribute.grid.getlist();
+            }).then(() => {
+                return listProductType();
             }).then(() => {
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
@@ -924,6 +926,20 @@
             product.ProductVariant.Model = item;
             $('#attribute-modal').modal('show');
             loadingService.hide();
+        }
+        function listProductType() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                //retuen list product type enabled
+                return productTypeService.list({ Enabled: 1 });
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    product.productType = [];
+                    for (var i = 0; i < result.length; i++) {
+                        product.productType.push({ Model: result[i].ID, Name: `${result[i].Name} - ${result[i].Price}` });
+                    }
+                }
+            }).finally(loadingService.hide);
         }
 
     }
