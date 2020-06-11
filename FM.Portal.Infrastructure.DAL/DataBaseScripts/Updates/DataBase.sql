@@ -695,7 +695,26 @@ ADD ShippingCostID UNIQUEIDENTIFIER
 ALTER TABLE app.ShippingCost
 ADD [Priority] INT 
 GO
-
+CREATE TABLE [app].[DeliveryDate](
+	[ID] uniqueidentifier NOT NULL,
+	[Name] NVARCHAR(1000) NOT NULL,
+	[Description] NVARCHAR(1000) NOT NULL,
+	[Enabled] [Tinyint] NULL,
+	[UserID] uniqueidentifier NOT NULL,
+	[CreationDate] [SMALLDATETIME] NOT NULL,
+	[Priority] [INT] NULL,
+ CONSTRAINT [PK_DeliveryDate] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [app].[DeliveryDate] ADD FOREIGN KEY ([UserID])
+REFERENCES org.[User] (ID)
+GO
+ALTER TABLE app.Product
+ADD DeliveryDateID UNIQUEIDENTIFIER
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO

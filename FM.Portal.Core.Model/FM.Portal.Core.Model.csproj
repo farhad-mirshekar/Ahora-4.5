@@ -70,6 +70,8 @@
     <Compile Include="App\Comment\VM\CommentForProductAdminListVM.cs" />
     <Compile Include="App\Comment\VM\CommentListVM.cs" />
     <Compile Include="App\Comment_Map_User\CommentMapUser.cs" />
+    <Compile Include="App\DeliveryDate\DeliveryDate.cs" />
+    <Compile Include="App\DeliveryDate\VM\DeliveryDateListVM.cs" />
     <Compile Include="App\Discount\Discount.cs" />
     <Compile Include="App\FAQGroup\FAQGroup.cs" />
     <Compile Include="App\FAQGroup\VM\FaqGroupListVM.cs" />

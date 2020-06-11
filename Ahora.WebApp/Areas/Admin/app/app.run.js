@@ -51,6 +51,7 @@
                     { route: '#/category/cartable', title: 'دسته بندی محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-category') }, icon: 'fa-archive' },
                     { route: '#/discount/cartable', title: 'کارتابل تخفیفات', hasShow: () => { return toolsService.checkPermission('pgdiscount') }, icon:'fa-dollar'},
                     { route: '#/comment/cartable', title: 'کارتابل نظرات', hasShow: () => { return toolsService.checkPermission('pgproduct-comment') }, icon: 'fa-comments-o' },
+                    { route: '#/delivery-date/cartable', title: 'زمان ارسال محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-cartable') }, icon: 'fa-folder-open-o' },
                 ]
             },
              {

@@ -30,7 +30,8 @@ CREATE PROCEDURE app.spModifyProduct
 @DiscountType tinyint,
 @HasDiscount bit,
 @IsDownload bit,
-@ShippingCostID UNIQUEIDENTIFIER
+@ShippingCostID UNIQUEIDENTIFIER,
+@DeliveryDateID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -71,7 +72,8 @@ BEGIN
 				[DiscountType],
 				[HasDiscount],
 				[IsDownload],
-				[ShippingCostID])
+				[ShippingCostID],
+				[DeliveryDateID])
 			VALUES
 				(@ID,
 				@Name,
@@ -104,7 +106,8 @@ BEGIN
 				@DiscountType,
 				@HasDiscount,
 				@IsDownload,
-				@ShippingCostID)
+				@ShippingCostID,
+				@DeliveryDateID)
 		END
 	ELSE -- update
 		BEGIN
@@ -134,7 +137,8 @@ BEGIN
 				[DiscountType] = @DiscountType,
 				[HasDiscount] = @HasDiscount,
 				[IsDownload] = @IsDownload,
-				[ShippingCostID] = @ShippingCostID
+				[ShippingCostID] = @ShippingCostID,
+				[DeliveryDateID] = @DeliveryDateID
 			WHERE
 				[ID] = @ID
 		END

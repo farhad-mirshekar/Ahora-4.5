@@ -57,6 +57,7 @@
     <Compile Include="DataSources\App\CategoryMapDiscountDataSource.cs" />
     <Compile Include="DataSources\App\CommentDataSource.cs" />
     <Compile Include="DataSources\App\CommentMapUserDataSource.cs" />
+    <Compile Include="DataSources\App\DeliveryDateDataSource.cs" />
     <Compile Include="DataSources\App\DiscountDataSource.cs" />
     <Compile Include="DataSources\App\FaqDataSource.cs" />
     <Compile Include="DataSources\App\FaqGroupDataSource.cs" />
@@ -145,6 +146,10 @@
     <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spGetProductMapAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spGetsProductMapAttribute.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductMapAttribute\app.spModifyProductMapAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\DeliveryDate\app.spDeleteDeliveryDate.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\DeliveryDate\app.spGetDeliveryDate.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\DeliveryDate\app.spGetsDeliveryDate.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\DeliveryDate\app.spModifyDeliveryDate.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShippingCost\app.spGetShippingCost.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShippingCost\app.spGetsShippingCost.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShippingCost\app.spModifyShippingCost.sql" />

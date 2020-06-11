@@ -37,6 +37,7 @@ namespace FM.Portal.Core.Model
         public bool HasDiscount { get; set; }
         public bool IsDownload { get; set; }
         public Guid? ShippingCostID { get; set; }
+        public Guid? DeliveryDateID { get; set; }
 
         //only show
         public string DiscountName { get; set; }
@@ -46,5 +47,6 @@ namespace FM.Portal.Core.Model
         public int CountSelect { get; set; }
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public string ShippingCostName { get; set; }
+        public string DeliveryDateName { get; set; }
     }
 }

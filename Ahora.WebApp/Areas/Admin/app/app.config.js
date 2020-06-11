@@ -41,7 +41,8 @@
                 .when("/static-page/:state/:id?", { templateUrl: "/Admin/StaticPage/index", controller: 'staticPageController', reloadOnUrl: false })
                 .when("/banner/:state/:id?", { templateUrl: "/Admin/banner/index", controller: 'bannerController', reloadOnUrl: false })
                 .when("/gallery/:state/:id?", { templateUrl: "/Admin/gallery/index", controller: 'galleryController', reloadOnUrl: false })
-                .when("/shipping-cost/:state/:id?", { templateUrl: "/Admin/ShippingCost/index", controller: 'shippingCostController', reloadOnUrl: false })// add;
+                .when("/shipping-cost/:state/:id?", { templateUrl: "/Admin/ShippingCost/index", controller: 'shippingCostController', reloadOnUrl: false })
+                .when("/delivery-date/:state/:id?", { templateUrl: "/Admin/DeliveryDate/index", controller: 'deliveryDateController', reloadOnUrl: false })// add;
 
 
                 .otherwise({

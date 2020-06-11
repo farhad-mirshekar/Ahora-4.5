@@ -52,6 +52,7 @@
     <Compile Include="App\ICategoryMapDiscountDataSource.cs" />
     <Compile Include="App\ICommentDataSource.cs" />
     <Compile Include="App\ICommentMapUserDataSource.cs" />
+    <Compile Include="App\IDeliveryDateDataSource.cs" />
     <Compile Include="App\IDiscountDataSource.cs" />
     <Compile Include="App\IFaqDataSource.cs" />
     <Compile Include="App\IFaqGroupDataSource.cs" />

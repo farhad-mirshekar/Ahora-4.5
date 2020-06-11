@@ -168,6 +168,12 @@
                                     <option ng-repeat="row in shippingCost" ng-value="row.Model">{{row.Name}}</option>
                                 </select>
                             </div>
+                            <div class="form-group col-xs-12 col-sm-3 weight">
+                                <label>زمان بندی ارسال محصول</label>
+                                <select class="form-control" ng-model="Model.DeliveryDateID">
+                                    <option ng-repeat="row in deliveryDate" ng-value="row.Model">{{row.Name}}</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </uib-tab>

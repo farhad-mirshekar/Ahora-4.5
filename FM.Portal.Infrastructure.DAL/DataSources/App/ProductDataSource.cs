@@ -23,7 +23,7 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[26];
+                    SqlParameter[] param = new SqlParameter[27];
                     param[0] = new SqlParameter("@ID", model.ID);
 
                     param[1] = new SqlParameter("@Name", model.Name);
@@ -54,10 +54,13 @@ namespace FM.Portal.Infrastructure.DAL
                     param[24] = new SqlParameter("@IsDownload", model.IsDownload);
                     param[25] = new SqlParameter("@ShippingCostID", SqlDbType.UniqueIdentifier);
                     param[25].Value = model.ShippingCostID.HasValue && model.ShippingCostID.Value != Guid.Empty ? model.ShippingCostID.Value : (object)DBNull.Value;
-
-                    SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyProduct", param);
-
-                    return Get(model.ID,null);
+                    param[26] = new SqlParameter("@DeliveryDateID", SqlDbType.UniqueIdentifier);
+                    param[26].Value = model.DeliveryDateID.HasValue && model.DeliveryDateID.Value != Guid.Empty ? model.DeliveryDateID.Value : (object)DBNull.Value;
+                    
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyProduct", param);
+                    if(result > 0)
+                        return Get(model.ID,null);
+                    return Result<Product>.Failure(message: "خطا در درج یا ویرایش");
                 }
             }
             catch (Exception e) { throw; }
@@ -123,6 +126,8 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.IsDownload = SQLHelper.CheckBoolNull(dr["IsDownload"]);
                             obj.ShippingCostID = SQLHelper.CheckGuidNull(dr["ShippingCostID"]);
                             obj.ShippingCostName = SQLHelper.CheckStringNull(dr["ShippingCostName"]);
+                            obj.DeliveryDateID = SQLHelper.CheckGuidNull(dr["DeliveryDateID"]);
+                            obj.DeliveryDateName = SQLHelper.CheckStringNull(dr["DeliveryDateName"]);
                         }
                     }
 

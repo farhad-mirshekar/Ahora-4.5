@@ -621,8 +621,8 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('productController', productController);
-    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'shippingCostService', 'toolsService', 'enumService', 'froalaOption'];
-    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, shippingCostService, toolsService, enumService, froalaOption) {
+    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'shippingCostService', 'toolsService', 'enumService', 'froalaOption','deliveryDateService'];
+    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, shippingCostService, toolsService, enumService, froalaOption, deliveryDateService) {
         var product = $scope;
         product.Model = {};
         product.Attribute = {};
@@ -748,10 +748,17 @@
         }
         function add() {
             loadingService.show();
-            product.state = 'add';
-            categoryType();
-            $location.path('/product/add');
-            loadingService.hide();
+            return $q.resolve().then(() => {
+                return categoryType();
+            }).then(() => {
+                return listShippingCost();
+            }).then(() => {
+                return listDeliveryDate();
+            }).then(() => {
+                product.state = 'add';
+                $location.path('/product/add');
+                loadingService.hide();
+            })
         }
         function edit(model) {
             product.Model = model;
@@ -764,6 +771,8 @@
                 product.Attribute.grid.getlist();
             }).then(() => {
                 return listShippingCost();
+            }).then(() => {
+                return listDeliveryDate();
             }).then(() => {
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
@@ -938,6 +947,20 @@
                     product.shippingCost.push({ Model: '-1', Name: `ساده` });
                     for (var i = 0; i < result.length; i++) {
                         product.shippingCost.push({ Model: result[i].ID, Name: `${result[i].Name} - ${result[i].Price}` });
+                    }
+                }
+            }).finally(loadingService.hide);
+        }
+        function listDeliveryDate() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                //retuen list delivery date enabled
+                return deliveryDateService.list({ Enabled: 1 });
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    product.deliveryDate = [];
+                    for (var i = 0; i < result.length; i++) {
+                        product.deliveryDate.push({ Model: result[i].ID, Name: result[i].Name });
                     }
                 }
             }).finally(loadingService.hide);
@@ -4317,6 +4340,134 @@
                     shipping.Model.Errors = [].concat(listError);
                     $('#content > div').animate({
                         scrollTop: $('#ShippingCostSection').offset().top - $('#ShippingCostSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+    }
+    //--------------------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('deliveryDateController', deliveryDateController);
+    deliveryDateController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'deliveryDateService', '$location', 'toaster', 'toolsService', 'enumService'];
+    function deliveryDateController($scope, $q, loadingService, $routeParams, deliveryDateService, $location, toaster, toolsService, enumService) {
+        let delivery = $scope;
+        delivery.Model = {};
+        delivery.main = {};
+        delivery.main.changeState = {
+            cartable: cartable,
+            edit: edit,
+            add: add
+        };
+        delivery.Errors = [];
+        delivery.state = '';
+        delivery.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
+
+        delivery.addDeliveryDate = addDeliveryDate;
+        delivery.editDeliveryDate = editDeliveryDate;
+        delivery.grid = {
+            bindingObject: delivery
+            , columns: [{ name: 'Name', displayName: 'نام' },
+                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            , listService: deliveryDateService.list
+            , onEdit: delivery.main.changeState.edit
+            , globalSearch: true
+            , initLoad: true
+        };
+        init();
+
+
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'add':
+                        add();
+                        break;
+                    case 'edit':
+                        deliveryDateService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+
+        }
+
+        function cartable() {
+            loadingService.show();
+            delivery.Model = {};
+            delivery.state = 'cartable';
+            $location.path('/delivery-date/cartable');
+            loadingService.hide();
+        }
+        function add() {
+            loadingService.show();
+            delivery.Model = {};
+            delivery.state = 'add';
+            $location.path('/delivery-date/add');
+            loadingService.hide();
+
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                delivery.state = 'edit';
+                delivery.Model = model;
+                $location.path(`/delivery-date/edit/${delivery.Model.ID}`);
+            }).finally(loadingService.hide);
+
+        }
+
+        function addDeliveryDate() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return deliveryDateService.add(delivery.Model)
+            }).then((result) => {
+                delivery.grid.getlist(false);
+                toaster.pop('success', '', 'با موفقیت اضافه گردید');
+                loadingService.hide();
+                delivery.main.changeState.cartable();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#DeliveryDateSection').offset().top - $('#DeliveryDateSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    delivery.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#DeliveryDateSection').offset().top - $('#DeliveryDateSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+        function editDeliveryDate() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return deliveryDateService.edit(delivery.Model)
+            }).then((result) => {
+                delivery.grid.getlist(false);
+                toaster.pop('success', '', 'با موفقیت ویرایش گردید');
+                loadingService.hide();
+                delivery.main.changeState.cartable();
+            }).catch((error) => {
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#DeliveryDateSection').offset().top - $('#DeliveryDateSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    delivery.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#DeliveryDateSection').offset().top - $('#DeliveryDateSection').offsetParent().offset().top
                     }, 'slow');
                 }
 
