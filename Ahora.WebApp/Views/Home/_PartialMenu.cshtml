@@ -77,8 +77,7 @@
                     {
                         var parameters = routeParams(item.Parameters);
                         <li class='nav-item'>
-                            <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
-                            @ChildRender(item.Children, item.ID)
+                            <a class='nav-link' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
                         </li>
                     }
                     else

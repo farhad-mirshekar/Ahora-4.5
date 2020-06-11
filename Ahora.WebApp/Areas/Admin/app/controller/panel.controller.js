@@ -1573,6 +1573,10 @@
         article.pic.list = [];
         article.pic.listUploaded = [];
 
+        article.video = { type: '7', allowMultiple: false, validTypes: 'video/mp4' };
+        article.video.list = [];
+        article.video.listUploaded = [];
+
         article.state = '';
         article.addArticle = addArticle;
         article.editArticle = editArticle;
@@ -1648,26 +1652,22 @@
                         $('.js-example-tags').append(newOption).trigger('change');
                     }, 0);
                 }
-                if (article.Model.IsShow) {
-                    article.Model.IsShow = 1;
-                }
-                else {
-                    article.Model.IsShow = 0;
-                }
-                if (article.Model.CommentStatus) {
-                    article.Model.CommentStatus = 1;
-                }
-                else {
-                    article.Model.CommentStatus = 0;
-                }
                 return true;
             }).then(() => {
                 return fillDropCategory();
             }).then(() => {
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
-                if (result && result.length > 0)
-                    article.pic.listUploaded = [].concat(result);
+                article.pic.listUploaded = [];
+                article.video.listUploaded = [];
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 8)
+                            article.pic.listUploaded = [].concat(result[i]);
+                        if (result[i].PathType === 7)
+                            article.video.listUploaded = [].concat(result[i]);
+                    }
+                }
                 article.state = 'edit';
                 $location.path(`/article/edit/${model.ID}`);
             }).finally(loadingService.hide);
@@ -1688,18 +1688,32 @@
                 }
                 return true;
             }).then(() => {
+                if (article.video.list.length) {
+                    article.videos = [];
+                    if (article.video.listUploaded.length === 0) {
+                        article.videos.push({ ParentID: article.Model.ID, Type: 2, FileName: article.video.list[0], PathType: article.video.type });
+                        return attachmentService.add(article.videos);
+                    }
+                }
+            }).then(() => { 
+                article.videos = [];
                 article.pics = [];
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
-                if (result && result.length > 0)
-                    article.pic.listUploaded = [].concat(result);
                 article.pic.reset();
+                article.video.reset();
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 8)
+                            article.pic.listUploaded = [].concat(result[i]);
+                        if (result[i].PathType === 7)
+                            article.video.listUploaded = [].concat(result[i]);
+                    }
+                }
                 article.grid.getlist(false);
                 toaster.pop('success', '', 'مقاله جدید با موفقیت اضافه گردید');
                 loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 1000);//return cartable
+                article.main.changeState.cartable();
             }).catch((error) => {
                 if (!error) {
                     $('#content > div').animate({
@@ -1719,30 +1733,44 @@
         function editArticle() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return articleService.edit(article.Model);
+                return articleService.add(article.Model);
             }).then((result) => {
                 article.Model = result;
                 if (article.pic.list.length) {
                     article.pics = [];
-                    if (article.pic.listUploaded.length === 0) {
+                    if (article.pic.listUploaded === 0) {
                         article.pics.push({ ParentID: article.Model.ID, Type: 2, FileName: article.pic.list[0], PathType: article.pic.type });
                     }
                     return attachmentService.add(article.pics);
                 }
                 return true;
             }).then(() => {
+                if (article.video.list.length) {
+                    article.videos = [];
+                    if (article.video.listUploaded.length === 0) {
+                        article.videos.push({ ParentID: article.Model.ID, Type: 2, FileName: article.video.list[0], PathType: article.video.type });
+                        return attachmentService.add(article.videos);
+                    }
+                }
+            }).then(() => {
+                article.videos = [];
                 article.pics = [];
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
-                if (result && result.length > 0)
-                    article.pic.listUploaded = [].concat(result);
                 article.pic.reset();
+                article.video.reset();
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 8)
+                            article.pic.listUploaded = [].concat(result[i]);
+                        if (result[i].PathType === 7)
+                            article.video.listUploaded = [].concat(result[i]);
+                    }
+                }
                 article.grid.getlist(false);
-                toaster.pop('success', '', 'مقاله با موفقیت ویرایش گردید');
+                toaster.pop('success', '', 'مقاله جدید با موفقیت اضافه گردید');
                 loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 1000);//return cartable
+                article.main.changeState.cartable();
             }).catch((error) => {
                 if (!error) {
                     $('#content > div').animate({
