@@ -136,8 +136,8 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IGalleryDataSource, GalleryDataSource>();
             _container.RegisterType<IGalleryService, GalleryService>();
 
-            _container.RegisterType<IProductTypeDataSource, ProductTypeDataSource>();
-            _container.RegisterType<IProductTypeService, ProductTypeService>();
+            _container.RegisterType<IShippingCostDataSource, ShippingCostDataSource>();
+            _container.RegisterType<IShippingCostService, ShippingCostService>();
 
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>

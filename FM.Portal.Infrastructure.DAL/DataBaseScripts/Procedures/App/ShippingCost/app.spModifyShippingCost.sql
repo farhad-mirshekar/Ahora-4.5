@@ -1,10 +1,10 @@
 USE [Ahora]
 GO
-IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('app.spModifyProductType'))
-	DROP PROCEDURE app.spModifyProductType
+IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('app.spModifyShippingCost'))
+	DROP PROCEDURE app.spModifyShippingCost
 GO
 
-CREATE PROCEDURE app.spModifyProductType
+CREATE PROCEDURE app.spModifyShippingCost
 @ID UNIQUEIDENTIFIER,
 @Name NVARCHAR(1000),
 @Description NVARCHAR(1000),
@@ -17,14 +17,14 @@ AS
 BEGIN
 	IF @IsNewRecord = 1 --insert
 		BEGIN
-			INSERT INTO [app].[ProductType]
+			INSERT INTO [app].[ShippingCost]
 				(ID,[Name],[Description],[Enabled]  , [Price],[UserID], CreationDate)
 			VALUES
 				(@ID, @Name , @Description , @Enabled , @Price , @UserID , GETDATE())
 		END
 	ELSE -- update
 		BEGIN
-			UPDATE [app].[ProductType]
+			UPDATE [app].[ShippingCost]
 			SET
 				[Name] = @Name,
 				[Description] = @Description,

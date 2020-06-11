@@ -4,7 +4,7 @@ using System;
 
 namespace FM.Portal.Core.Model
 {
-    public class ProductType : Entity
+    public class ShippingCost : Entity
     {
         public string Name { get; set; }
         public string Description { get; set; }

@@ -9,10 +9,10 @@ using System.Data.SqlClient;
 
 namespace FM.Portal.Infrastructure.DAL
 {
-    public class ProductTypeDataSource : IProductTypeDataSource
+    public class ShippingCostDataSource : IShippingCostDataSource
     {
         private readonly IRequestInfo _requestInfo;
-        public ProductTypeDataSource(IRequestInfo requestInfo)
+        public ShippingCostDataSource(IRequestInfo requestInfo)
         {
             _requestInfo = requestInfo;
         }
@@ -24,7 +24,7 @@ namespace FM.Portal.Infrastructure.DAL
                 param[0] = new SqlParameter("@ID", ID);
                 using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    int i = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spDeleteProductType", param);
+                    int i = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spDeleteShippingCost", param);
                     if (i > 0)
                         return Result.Successful();
                     else
@@ -35,17 +35,17 @@ namespace FM.Portal.Infrastructure.DAL
             catch (Exception e) { throw; }
         }
 
-        public Result<ProductType> Get(Guid ID)
+        public Result<ShippingCost> Get(Guid ID)
         {
             try
             {
                 var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
-                var obj = new ProductType();
+                var obj = new ShippingCost();
                 using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetProductType", param))
+                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetShippingCost", param))
                     {
                         while (dr.Read())
                         {
@@ -60,18 +60,18 @@ namespace FM.Portal.Infrastructure.DAL
                     }
 
                 }
-                return Result<ProductType>.Successful(data: obj);
+                return Result<ShippingCost>.Successful(data: obj);
             }
             catch
             {
-                return Result<ProductType>.Failure();
+                return Result<ShippingCost>.Failure();
             }
         }
 
-        public Result<ProductType> Insert(ProductType model)
+        public Result<ShippingCost> Insert(ShippingCost model)
         => Modify(true, model);
 
-        public DataTable List(ProductTypeListVM listVM)
+        public DataTable List(ShippingCostListVM listVM)
         {
             try
             {
@@ -79,15 +79,15 @@ namespace FM.Portal.Infrastructure.DAL
                 param[0] = new SqlParameter("@Enabled", SqlDbType.TinyInt);
                 param[0].Value = listVM.Enabled != EnableMenuType.نامشخص ? listVM.Enabled : (object)DBNull.Value;
 
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsProductType", param);
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsShippingCost", param);
             }
             catch (Exception e) { throw; }
         }
 
-        public Result<ProductType> Update(ProductType model)
+        public Result<ShippingCost> Update(ShippingCost model)
         => Modify(false, model);
 
-        private Result<ProductType> Modify(bool IsNewRecord, ProductType model)
+        private Result<ShippingCost> Modify(bool IsNewRecord, ShippingCost model)
         {
             try
             {
@@ -103,10 +103,10 @@ namespace FM.Portal.Infrastructure.DAL
                     param[5] = new SqlParameter("@Price", model.Price);
                     param[6] = new SqlParameter("@Name", model.Name);
 
-                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyProductType", param);
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyShippingCost", param);
                     if (result > 0)
                         return Get(model.ID);
-                    return Result<ProductType>.Failure(message: "خطا در درج / ویرایش");
+                    return Result<ShippingCost>.Failure(message: "خطا در درج / ویرایش");
                 }
             }
             catch (Exception e) { throw; }

@@ -6,14 +6,14 @@ using System.Web.Http;
 
 namespace Ahora.WebApp.Areas.ApiClient.Controllers
 {
-    [RoutePrefix("api/v1/ProductType")]
-    public class ProductTypeController : BaseApiController<IProductTypeService>
+    [RoutePrefix("api/v1/ShippingCost")]
+    public class ShippingCostController : BaseApiController<IShippingCostService>
     {
-        public ProductTypeController(IProductTypeService service) : base(service)
+        public ShippingCostController(IShippingCostService service) : base(service)
         {
         }
         [HttpPost, Route("Add")]
-        public IHttpActionResult Add(ProductType model)
+        public IHttpActionResult Add(ShippingCost model)
         {
             try
             {
@@ -27,7 +27,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         }
 
         [HttpPost, Route("Edit")]
-        public IHttpActionResult Edit(ProductType model)
+        public IHttpActionResult Edit(ShippingCost model)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         }
 
         [HttpPost, Route("List")]
-        public IHttpActionResult List(ProductTypeListVM listVM)
+        public IHttpActionResult List(ShippingCostListVM listVM)
         {
             try
             {

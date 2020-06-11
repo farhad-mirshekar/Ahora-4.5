@@ -2989,10 +2989,10 @@
         }
     }
 
-    app.factory('productTypeService', productTypeService);
-    productTypeService.$inject = ['$http', 'callbackService', '$q'];
-    function productTypeService($http, callbackService, $q) {
-        var url = '/api/v1/ProductType/'
+    app.factory('shippingCostService', shippingCostService);
+    shippingCostService.$inject = ['$http', 'callbackService', '$q'];
+    function shippingCostService($http, callbackService, $q) {
+        var url = '/api/v1/ShippingCost/'
         var service = {
             add: add,
             edit: edit,

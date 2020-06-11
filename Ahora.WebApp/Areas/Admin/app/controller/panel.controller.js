@@ -621,8 +621,8 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('productController', productController);
-    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'productTypeService', 'toolsService', 'enumService', 'froalaOption'];
-    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, productTypeService, toolsService, enumService, froalaOption) {
+    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'shippingCostService', 'toolsService', 'enumService', 'froalaOption'];
+    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, shippingCostService, toolsService, enumService, froalaOption) {
         var product = $scope;
         product.Model = {};
         product.Attribute = {};
@@ -763,7 +763,7 @@
             }).then(() => {
                 product.Attribute.grid.getlist();
             }).then(() => {
-                return listProductType();
+                return listShippingCost();
             }).then(() => {
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
@@ -927,16 +927,16 @@
             $('#attribute-modal').modal('show');
             loadingService.hide();
         }
-        function listProductType() {
+        function listShippingCost() {
             loadingService.show();
             return $q.resolve().then(() => {
                 //retuen list product type enabled
-                return productTypeService.list({ Enabled: 1 });
+                return shippingCostService.list({ Enabled: 1 });
             }).then((result) => {
                 if (result && result.length > 0) {
-                    product.productType = [];
+                    product.shippingCost = [];
                     for (var i = 0; i < result.length; i++) {
-                        product.productType.push({ Model: result[i].ID, Name: `${result[i].Name} - ${result[i].Price}` });
+                        product.shippingCost.push({ Model: result[i].ID, Name: `${result[i].Name} - ${result[i].Price}` });
                     }
                 }
             }).finally(loadingService.hide);
@@ -4198,29 +4198,29 @@
         }
     }
     //------------------------------------------------------------------------------------------------------------------------------------
-    app.controller('productTypeController', productTypeController);
-    productTypeController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'productTypeService', '$location', 'toaster', 'toolsService', 'enumService'];
-    function productTypeController($scope, $q, loadingService, $routeParams, productTypeService, $location, toaster, toolsService, enumService) {
-        let productType = $scope;
-        productType.Model = {};
-        productType.main = {};
-        productType.main.changeState = {
+    app.controller('shippingCostController', shippingCostController);
+    shippingCostController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'shippingCostService', '$location', 'toaster', 'toolsService', 'enumService'];
+    function shippingCostController($scope, $q, loadingService, $routeParams, shippingCostService, $location, toaster, toolsService, enumService) {
+        let shipping = $scope;
+        shipping.Model = {};
+        shipping.main = {};
+        shipping.main.changeState = {
             cartable: cartable,
             edit: edit,
             add: add
         };
-        productType.Errors = [];
-        productType.state = '';
-        productType.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
+        shipping.Errors = [];
+        shipping.state = '';
+        shipping.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
 
-        productType.addProductType = addProductType;
-        productType.editProductType = editProductType;
-        productType.grid = {
-            bindingObject: productType
+        shipping.addShippingCost = addShippingCost;
+        shipping.editShippingCost = editShippingCost;
+        shipping.grid = {
+            bindingObject: shipping
             , columns: [{ name: 'Name', displayName: 'نام' },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
-            , listService: productTypeService.list
-            , onEdit: productType.main.changeState.edit
+            , listService: shippingCostService.list
+            , onEdit: shipping.main.changeState.edit
             , globalSearch: true
             , initLoad: true
         };
@@ -4238,7 +4238,7 @@
                         add();
                         break;
                     case 'edit':
-                        productTypeService.get($routeParams.id).then((result) => {
+                        shippingCostService.get($routeParams.id).then((result) => {
                             edit(result);
                         })
                         break;
@@ -4249,47 +4249,47 @@
 
         function cartable() {
             loadingService.show();
-            productType.Model = {};
-            productType.state = 'cartable';
-            $location.path('/product-type/cartable');
+            shipping.Model = {};
+            shipping.state = 'cartable';
+            $location.path('/shipping-cost/cartable');
             loadingService.hide();
         }
         function add() {
             loadingService.show();
-            productType.state = 'add';
-            $location.path('/product-type/add');
+            shipping.state = 'add';
+            $location.path('/shipping-cost/add');
             loadingService.hide();
 
         }
         function edit(model) {
             loadingService.show();
             return $q.resolve().then(() => {
-                productType.state = 'edit';
-                productType.Model = model;
-                $location.path(`/product-type/edit/${productType.Model.ID}`);
+                shipping.state = 'edit';
+                shipping.Model = model;
+                $location.path(`/shipping-cost/edit/${shipping.Model.ID}`);
             }).finally(loadingService.hide);
 
         }
 
-        function addProductType() {
+        function addShippingCost() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return productTypeService.add(productType.Model)
+                return shippingCostService.add(shipping.Model)
             }).then((result) => {
-                productType.grid.getlist(false);
+                shipping.grid.getlist(false);
                 toaster.pop('success', '', 'با موفقیت اضافه گردید');
                 loadingService.hide();
-                productType.main.changeState.cartable();
+                shipping.main.changeState.cartable();
             }).catch((error) => {
                 if (!error) {
                     $('#content > div').animate({
-                        scrollTop: $('#ProductTypeSection').offset().top - $('#ProductTypeSection').offsetParent().offset().top
+                        scrollTop: $('#ShippingCostSection').offset().top - $('#ShippingCostSection').offsetParent().offset().top
                     }, 'slow');
                 } else {
                     var listError = error.split('&&');
-                    productType.Model.Errors = [].concat(listError);
+                    shipping.Model.Errors = [].concat(listError);
                     $('#content > div').animate({
-                        scrollTop: $('#ProductTypeSection').offset().top - $('#ProductTypeSection').offsetParent().offset().top
+                        scrollTop: $('#ShippingCostSection').offset().top - $('#ShippingCostSection').offsetParent().offset().top
                     }, 'slow');
                 }
 
@@ -4297,25 +4297,25 @@
                 loadingService.hide();
             }).finally(loadingService.hide);
         }
-        function editProductType() {
+        function editShippingCost() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return productTypeService.edit(productType.Model)
+                return shippingCostService.edit(shipping.Model)
             }).then((result) => {
-                productType.grid.getlist(false);
+                shipping.grid.getlist(false);
                 toaster.pop('success', '', 'با موفقیت ویرایش گردید');
                 loadingService.hide();
-                productType.main.changeState.cartable();
+                shipping.main.changeState.cartable();
             }).catch((error) => {
                 if (!error) {
                     $('#content > div').animate({
-                        scrollTop: $('#ProductTypeSection').offset().top - $('#ProductTypeSection').offsetParent().offset().top
+                        scrollTop: $('#ShippingCostSection').offset().top - $('#ShippingCostSection').offsetParent().offset().top
                     }, 'slow');
                 } else {
                     var listError = error.split('&&');
-                    productType.Model.Errors = [].concat(listError);
+                    shipping.Model.Errors = [].concat(listError);
                     $('#content > div').animate({
-                        scrollTop: $('#ProductTypeSection').offset().top - $('#ProductTypeSection').offsetParent().offset().top
+                        scrollTop: $('#ShippingCostSection').offset().top - $('#ShippingCostSection').offsetParent().offset().top
                     }, 'slow');
                 }
 

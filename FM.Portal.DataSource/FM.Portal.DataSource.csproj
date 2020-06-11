@@ -61,7 +61,7 @@
     <Compile Include="App\IProductAttributeDataSource.cs" />
     <Compile Include="App\IProductDataSource.cs" />
     <Compile Include="App\IProductMapAttributeDataSource.cs" />
-    <Compile Include="App\IProductTypeDataSource.cs" />
+    <Compile Include="App\IShippingCostDataSource.cs" />
     <Compile Include="App\IProductVariantAttributeDataSource.cs" />
     <Compile Include="App\IShoppingCartItemDataSource.cs" />
     <Compile Include="IDataSource.cs" />

@@ -123,8 +123,8 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IGalleryDataSource, GalleryDataSource>();
             container.RegisterType<IGalleryService, GalleryService>();
 
-            container.RegisterType<IProductTypeDataSource, ProductTypeDataSource>();
-            container.RegisterType<IProductTypeService, ProductTypeService>();
+            container.RegisterType<IShippingCostDataSource, ShippingCostDataSource>();
+            container.RegisterType<IShippingCostService, ShippingCostService>();
 
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
