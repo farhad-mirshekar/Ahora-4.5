@@ -146,16 +146,67 @@ namespace Ahora.WebApp.Controllers
                     var product = _productService.Get(item.ProductID);
                     if (product.Success)
                     {
-                        amount += product.Data.Price * item.Quantity;
+                        decimal temp1 = 0;
+                        decimal temp2 = 0;
+                        decimal attributePrice = 0;
+                        var price = product.Data.Price;
+                        if (item.HasDiscount)
+                        {
+                            if (item.SelfProductDiscountType != DiscountType.نامشخص)
+                            {
+                                switch (item.SelfProductDiscountType)
+                                {
+                                    case DiscountType.درصدی:
+                                        temp1 = (product.Data.Price * item.SelfProductDiscountAmount) / 100;
+                                        break;
+                                    case DiscountType.مبلغی:
+                                        temp1 = item.SelfProductDiscountAmount;
+                                        break;
+                                }
+                            }
+                        }
+
+                        if (item.HasDiscountsApplied)
+                        {
+                            switch (item.DiscountType)
+                            {
+                                case DiscountType.درصدی:
+                                    temp2 = (product.Data.Price * item.DiscountAmount) / 100;
+                                    break;
+                                case DiscountType.مبلغی:
+                                    temp2 = item.DiscountAmount;
+                                    break;
+                            }
+                        }
 
                         if (item.AttributeJson != "" && item.AttributeJson != null)
+                        {
                             listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
+                            var attribute = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
+                            if (attribute.Price > 0)
+                                attributePrice = attribute.Price;
+                        }
                         product.Data.CountSelect = item.Quantity;
+
+                        amount += attributePrice + (price - (temp1 + temp2)) * item.Quantity;
                         productList.Add(product.Data);
                     }
                 }
                 attributeJson = JsonConvert.SerializeObject(listAttribute);
                 productJson = JsonConvert.SerializeObject(productList);
+
+                var shippingCost = shoppingCartItem.OrderByDescending(x => x.ShippingCostPriority).Select(x => x).FirstOrDefault();
+                if (shippingCost != null && shippingCost.ShippingCostPrice > 0)
+                {
+                    amount += shippingCost.ShippingCostPrice;
+                }
+                else
+                {
+                    if (amount < Helper.ShoppingCartRate)
+                    {
+                        amount += Helper.ShoppingCartRate;
+                    }
+                }
                 if (model.ID == Guid.Empty)
                 {
                     _addressService.Add(model);
@@ -170,7 +221,7 @@ namespace Ahora.WebApp.Controllers
                 orderDetail.ProductJson = productJson;
                 orderDetail.AttributeJson = attributeJson;
                 orderDetail.ShoppingCartJson = JsonConvert.SerializeObject(shoppingCartItem);
-                orderDetail.Quantity =shoppingCartItem.Count;
+                orderDetail.Quantity = shoppingCartItem.Count;
                 orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name)).Data);
 
                 payment.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
@@ -259,9 +310,12 @@ namespace Ahora.WebApp.Controllers
                             DiscountAmount = item.DiscountAmount,
                             DiscountName = item.DiscountName,
                             DiscountType = item.DiscountType,
-                            HasDiscount=item.HasDiscount,
+                            HasDiscount = item.HasDiscount,
                             SelfProductDiscountAmount = item.SelfProductDiscountAmount,
-                            SelfProductDiscountType = item.SelfProductDiscountType
+                            SelfProductDiscountType = item.SelfProductDiscountType,
+                            ShippingCostPrice = item.ShippingCostPrice,
+                            ShippingCostName = item.ShippingCostName,
+                            ShippingCostPriority = item.ShippingCostPriority
                         });
                     }
 

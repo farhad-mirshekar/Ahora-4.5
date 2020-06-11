@@ -2,6 +2,7 @@
 @using FM.Portal.Core.Common;
 @{
     decimal amountBasket = 0;
+    var shippingCost = Model.OrderByDescending(x=>x.ShippingCostPriority).Select(x=>x).FirstOrDefault();
 }
 @if (Model != null && Model.Count > 0)
 {
@@ -126,22 +127,38 @@
                 }
             </section>
             @{
-                if (amountBasket < Helper.ShoppingCartRate)
+                if (shippingCost != null && shippingCost.ShippingCostPrice > 0)
                 {
                     <section class="mt-4">
                         <div class="container">
                             <div class="row pull-left">
                                 <div class="col-md-12">
-                                    <label class="label label-default">هزینه ارسال محصول : </label>
-                                    <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts).Replace("$", "")</label>
-                                </div>
-                                <div class="col-md-12">
-                                    <label class="label label-default">قیمت نهایی :</label>
-                                    <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts + amountBasket).Replace("$", "")</label>
+                                    <label class="label label-default">هزینه ارسال محصول (@shippingCost.ShippingCostName) : </label>
+                                    <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.ShippingCostPrice).Replace("$", "")</label>
                                 </div>
                             </div>
                         </div>
                     </section>
+                }
+                else
+                {
+                    if (amountBasket < Helper.ShoppingCartRate)
+                    {
+                        <section class="mt-4">
+                            <div class="container">
+                                <div class="row pull-left">
+                                    <div class="col-md-12">
+                                        <label class="label label-default">هزینه ارسال محصول : </label>
+                                        <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts).Replace("$", "")</label>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label class="label label-default">قیمت نهایی :</label>
+                                        <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts + amountBasket).Replace("$", "")</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    }
                 }
             }
         </div>

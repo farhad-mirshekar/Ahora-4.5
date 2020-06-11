@@ -935,6 +935,7 @@
             }).then((result) => {
                 if (result && result.length > 0) {
                     product.shippingCost = [];
+                    product.shippingCost.push({ Model: '-1', Name: `ساده` });
                     for (var i = 0; i < result.length; i++) {
                         product.shippingCost.push({ Model: result[i].ID, Name: `${result[i].Name} - ${result[i].Price}` });
                     }

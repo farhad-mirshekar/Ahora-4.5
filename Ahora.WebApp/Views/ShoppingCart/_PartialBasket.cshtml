@@ -1,4 +1,9 @@
 ﻿@model List<ShoppingItemVM>
+@using FM.Portal.Core.Common;
+@{
+    decimal amountBasket = 0;
+    var shippingCost = Model.OrderByDescending(x => x.ShippingCostPriority).Select(x => x).FirstOrDefault();
+}
 <div class="card">
     <div class="card-header">
         <label class="card-title">اطلاعات محصول</label>
@@ -92,11 +97,20 @@
                                                         }
 
                                                     </div>
+                                                    <div class="col-md-6 quantity">
+                                                        <i class="fa fa-plus" data-href="@Url.Action("QuantityPlus", "ShoppingCart", new { ProductID = item.ProductID })" style="color:blue;padding:10px"></i>
+                                                        <label>@item.Quantity</label>
+                                                        <i class="fa fa-minus" data-href="@Url.Action("QuantityMinus", "ShoppingCart", new { ProductID = item.ProductID })" style="color:#ff0000;padding:10px"></i>
+                                                    </div>
+                                                    @{
+                                                        amountBasket += attributePrice + (item.ProductPrice - (temp1 + temp2)) * item.Quantity;
+                                                    }
                                                     <div class="col-md-12">
                                                         <label>مبلغ :</label>
                                                         <label>@string.Format("{0:C0} تومان", (attributePrice + (item.ProductPrice - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
                                                     </div>
                                                 </div>
+                                                <button type="button" class="btn btn-danger delete" data-href="@Url.Action("Delete", "ShoppingCart", new { ProductID = @item.ProductID, ShoppingID = @item.ShoppingID })">حذف</button>
                                             </div>
                                         </div>
                                     </div>
@@ -107,6 +121,41 @@
                 </div>
             }
         </section>
+        @{
+            if (shippingCost != null && shippingCost.ShippingCostPrice > 0)
+            {
+                <section class="mt-4">
+                    <div class="container">
+                        <div class="row pull-left">
+                            <div class="col-md-12">
+                                <label class="label label-default">هزینه ارسال محصول (@shippingCost.ShippingCostName) : </label>
+                                <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.ShippingCostPrice).Replace("$", "")</label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            }
+            else
+            {
+                if (amountBasket < Helper.ShoppingCartRate)
+                {
+                    <section class="mt-4">
+                        <div class="container">
+                            <div class="row pull-left">
+                                <div class="col-md-12">
+                                    <label class="label label-default">هزینه ارسال محصول : </label>
+                                    <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts).Replace("$", "")</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <label class="label label-default">قیمت نهایی :</label>
+                                    <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts + amountBasket).Replace("$", "")</label>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                }
+            }
+        }
     </div>
 </div>
 

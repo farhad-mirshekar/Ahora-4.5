@@ -56,6 +56,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.Name = SQLHelper.CheckStringNull(dr["Name"]);
                             obj.Price = SQLHelper.CheckDecimalNull(dr["Price"]);
                             obj.Enabled = (Core.Model.EnableMenuType)SQLHelper.CheckByteNull(dr["Enabled"]);
+                            obj.Priority = SQLHelper.CheckIntNull(dr["Priority"]);
                         }
                     }
 
@@ -93,7 +94,7 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    var param = new SqlParameter[7];
+                    var param = new SqlParameter[8];
                     param[0] = new SqlParameter("@ID", model.ID);
 
                     param[1] = new SqlParameter("@Description", model.Description);
@@ -102,6 +103,7 @@ namespace FM.Portal.Infrastructure.DAL
                     param[4] = new SqlParameter("@Enabled", (byte)model.Enabled);
                     param[5] = new SqlParameter("@Price", model.Price);
                     param[6] = new SqlParameter("@Name", model.Name);
+                    param[7] = new SqlParameter("@Priority", model.Priority);
 
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyShippingCost", param);
                     if (result > 0)

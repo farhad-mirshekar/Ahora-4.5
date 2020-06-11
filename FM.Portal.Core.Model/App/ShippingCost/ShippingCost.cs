@@ -11,6 +11,7 @@ namespace FM.Portal.Core.Model
         public decimal Price { get; set; }
         public EnableMenuType Enabled { get; set; }
         public Guid UserID { get; set; }
+        public int Priority { get; set; }
 
         //only show
         public string CreationDatePersian

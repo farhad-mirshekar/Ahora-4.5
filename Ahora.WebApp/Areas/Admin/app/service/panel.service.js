@@ -892,6 +892,8 @@
                 model.Errors.push('بررسی تخصصی محصول را وارد نمایید');
             if (!model.Price || model.Price === 0)
                 model.Errors.push('مبلغ را وارد نمایید');
+            if (model.ShippingCostID === '-1')
+                model.ShippingCostID = null;
             //if (model.HasDiscount === true) {
             //    if (!model.DiscountType)
             //        model.Errors.push('نوع تخفیف را مشخص نمایید');

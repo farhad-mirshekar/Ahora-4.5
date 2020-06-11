@@ -141,6 +141,8 @@ namespace FM.Portal.Domain
                         break;
                 }
             }
+            if (model.ShippingCostID != null && model.ShippingCostID.Value.ToString() == "-1")
+                model.ShippingCostID = null;
 
             if (Errors.Any())
                 return Result.Failure(message: string.Join("&&", Errors));

@@ -691,6 +691,9 @@ REFERENCES org.[User] (ID)
 GO
 ALTER TABLE app.Product
 ADD ShippingCostID UNIQUEIDENTIFIER
+
+ALTER TABLE app.ShippingCost
+ADD [Priority] INT 
 GO
 
 ----------------------------------------------------------------------------------
