@@ -22,5 +22,7 @@ namespace FM.Portal.Core.Model
         public decimal ShippingCostPrice { get; set; }
         public string ShippingCostName { get; set; }
         public int ShippingCostPriority { get; set; }
+        public string DeliveryDateName { get; set; }
+        public int DeliveryDatePriority { get; set; }
     }
 }

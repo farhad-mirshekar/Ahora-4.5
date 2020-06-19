@@ -2210,6 +2210,7 @@
     <Content Include="Views\Gallery\Image.cshtml" />
     <Content Include="Views\Gallery\ImageDetail.cshtml" />
     <Content Include="Views\Shared\_PartialCarousel.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial\_PartialDeliveryDateAndShippingCost.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

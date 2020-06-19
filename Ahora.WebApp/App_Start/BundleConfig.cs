@@ -13,12 +13,15 @@ namespace Ahora.WebApp
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery/jquery.validate*"));
+
             bundles.Add(new StyleBundle("~/bundles/bootstrap4").Include(
                 "~/Content/bootstrap4-rtl/bootstrap4-rtl.css"));
+
             bundles.Add(new StyleBundle("~/bundles/main").Include(
                "~/Content/main/main.css",
                "~/Content/fontawesome/font-awesome.css",
                "~/Content/main/PagedList.css"));
+
             bundles.Add(new StyleBundle("~/bundles/fancyboxcss").Include(
              "~/Content/fancybox/jquery.fancybox.css",
              "~/Content/fancybox/jquery.fancybox-buttons.css",

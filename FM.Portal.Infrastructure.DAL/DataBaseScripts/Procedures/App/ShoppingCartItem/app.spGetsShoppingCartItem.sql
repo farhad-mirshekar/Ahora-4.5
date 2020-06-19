@@ -36,7 +36,9 @@ BEGIN
 		product.DiscountType AS SelfProductDiscountType,
 		ShippingCost.Price AS ShippingCostPrice,
 		ShippingCost.Name AS ShippingCostName,
-		ShippingCost.[Priority] AS ShippingCostPriority
+		ShippingCost.[Priority] AS ShippingCostPriority,
+		DeliveryDate.[Name] AS DeliveryDateName,
+		DeliveryDate.[Priority] AS DeliveryDatePriority
 	FROM 
 		[app].[ShoppingCartItem] cart
 	INNER JOIN	
@@ -45,6 +47,8 @@ BEGIN
 		Discount disc ON product.CategoryID = disc.ID
 	LEFT JOIN
 		[app].[ShippingCost] ShippingCost ON product.ShippingCostID = ShippingCost.ID
+	LEFT JOIN
+		[app].[DeliveryDate] DeliveryDate ON product.DeliveryDateID = DeliveryDate.ID
 	WHERE 
-		[ShoppingID]=@ShoppingID
+		[ShoppingID] = @ShoppingID
 END

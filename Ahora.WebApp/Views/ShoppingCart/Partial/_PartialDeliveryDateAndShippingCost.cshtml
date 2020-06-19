@@ -1,0 +1,69 @@
+﻿@model List<ShoppingItemVM>
+@using FM.Portal.Core.Common;
+@{
+    var amountBasket = (decimal)ViewBag.amountBasket;
+    var shippingCost = Model.OrderByDescending(x => x.ShippingCostPriority).Select(x => x).FirstOrDefault();
+    var deliveryDate = Model.OrderByDescending(x => x.DeliveryDatePriority).Select(x => x).FirstOrDefault();
+}
+<section class="mt-4">
+    <div class="container">
+        <div class="row">
+            @{
+                if (Model != null && shippingCost.ShippingCostPrice > 0)
+                {
+                    <div class="col-md-4">
+                        <label class="label label-default">هزینه ارسال محصول (@shippingCost.ShippingCostName) : </label>
+                        <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.ShippingCostPrice).Replace("$", "")</label>
+                    </div>
+                }
+                else
+                {
+                    if (amountBasket < Helper.ShoppingCartRate)
+                    {
+
+                        <div class="col-md-4">
+                            <label class="label label-default">هزینه ارسال محصول : </label>
+                            <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts).Replace("$", "")</label>
+                        </div>
+                    }
+                }
+                if (Model != null && (shippingCost.ShippingCostPrice > 0 || amountBasket < Helper.ShoppingCartRate || amountBasket > Helper.ShoppingCartRate))
+                {
+                    if (shippingCost.ShippingCostPrice > 0)
+                    {
+                        <div class="col-md-4">
+                            <label class="label label-default">قیمت نهایی :</label>
+                            <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.ShippingCostPrice + amountBasket).Replace("$", "")</label>
+                        </div>
+                    }
+                    else if (amountBasket < Helper.ShoppingCartRate)
+                    {
+                        <div class="col-md-4">
+                            <label class="label label-default">قیمت نهایی :</label>
+                            <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts + amountBasket).Replace("$", "")</label>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-md-4">
+                            <label class="label label-default">قیمت نهایی :</label>
+                            <label class="label text-danger">@string.Format("{0:C0} تومان", amountBasket).Replace("$", "")</label>
+                        </div>
+                    }
+                }
+                if (Model != null)
+                {
+                    <div class="col-md-4">
+                        <label class="label label-default">
+                            <i class="fa fa-calendar text-success"></i>
+                            زمان ارسال محصول :
+                        </label>
+                        <label class="label text-danger">@deliveryDate.DeliveryDateName</label>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+</section>
+

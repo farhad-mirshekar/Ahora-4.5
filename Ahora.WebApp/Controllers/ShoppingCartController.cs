@@ -315,7 +315,9 @@ namespace Ahora.WebApp.Controllers
                             SelfProductDiscountType = item.SelfProductDiscountType,
                             ShippingCostPrice = item.ShippingCostPrice,
                             ShippingCostName = item.ShippingCostName,
-                            ShippingCostPriority = item.ShippingCostPriority
+                            ShippingCostPriority = item.ShippingCostPriority,
+                            DeliveryDateName = item.DeliveryDateName,
+                            DeliveryDatePriority = item.DeliveryDatePriority
                         });
                     }
 
