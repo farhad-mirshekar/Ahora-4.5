@@ -885,7 +885,7 @@
                 }).finally(loadingService.hide);
         }
         function categoryType() {
-            return categoryService.list().then((result) => {
+            return categoryService.list('dropdown').then((result) => {
                 product.categoryType = [];
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].ParentNode !== '/')
@@ -1160,7 +1160,7 @@
         function cartable() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return categoryService.list();
+                return categoryService.list('cartable');
             }).then((result) => {
                 setTreeObject(result);
             }).then(() => {
@@ -1520,7 +1520,7 @@
         } // end init
 
         function cartable() {
-            categoryPortalService.list().then((result) => {
+            categoryPortalService.list('cartable').then((result) => {
                 setTreeObject(result);
             });
             $location.path('category-portal/cartable');
@@ -1773,7 +1773,7 @@
         function editArticle() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return articleService.add(article.Model);
+                return articleService.edit(article.Model);
             }).then((result) => {
                 article.Model = result;
                 if (article.pic.list.length) {
@@ -1808,7 +1808,7 @@
                     }
                 }
                 article.grid.getlist(false);
-                toaster.pop('success', '', 'مقاله جدید با موفقیت اضافه گردید');
+                toaster.pop('success', '', 'مقاله موفقیت ویرایش گردید');
                 loadingService.hide();
                 article.main.changeState.cartable();
             }).catch((error) => {
@@ -1829,7 +1829,7 @@
         }
 
         function fillDropCategory() {
-            categoryPortalService.list().then((result) => {
+            categoryPortalService.list('dropdown').then((result) => {
                 article.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].ParentNode !== '/') {
@@ -2047,7 +2047,7 @@
             }).finally(loadingService.hide);
         }
         function fillDropCategory() {
-            categoryPortalService.list().then((result) => {
+            categoryPortalService.list('dropdown').then((result) => {
                 news.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].ParentNode !== '/') {
@@ -2808,7 +2808,7 @@
         }
 
         function fillDropCategory() {
-            return categoryPortalService.list().then((result) => {
+            return categoryPortalService.list('dropdown').then((result) => {
                 events.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].ParentNode !== '/') {

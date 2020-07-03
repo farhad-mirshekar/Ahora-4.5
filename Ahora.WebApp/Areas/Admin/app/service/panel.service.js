@@ -734,16 +734,16 @@
                     return callbackService.onError({ result: result });
                 })
         }
-        function list() {
+        function list(state) {
             return $http({
                 method: 'post',
-                url: url + 'list',
+                url: url + 'list/' + state,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + localStorage.access_token
                 }
             }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'List' });
+                return callbackService.onSuccess({ result: result, request: url + 'List/' + state });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
@@ -1290,16 +1290,16 @@
                     return callbackService.onError({ result: result });
                 })
         }
-        function list() {
+        function list(state) {
             return $http({
                 method: 'post',
-                url: url + 'list',
+                url: url + 'list/'+state,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + localStorage.access_token
                 }
             }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'List' });
+                return callbackService.onSuccess({ result: result, request: url + 'List/'+state });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })

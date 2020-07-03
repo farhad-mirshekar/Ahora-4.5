@@ -11,6 +11,9 @@ namespace FM.Portal.Core.Extention.Category
             ICategoryService categoryService,
             string separator = ">>")
         {
+            var categories = categoryService.Get(category.ID);
+            category = categories.Data;
+
             if (category == null)
                 throw new ArgumentNullException("category");
 
