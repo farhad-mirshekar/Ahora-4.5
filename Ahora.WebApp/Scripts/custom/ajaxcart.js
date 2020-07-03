@@ -18,7 +18,7 @@ var AjaxCart = {
 
     success_process: function (response) {
         if (response.success) {
-            var noty = window.noty({ text: response.message, type: 'success', timeout: 2500 });
+            var noty = window.noty({ text: response.message, type: 'success', timeout: 1500 });
             setTimeout(function () {
                 if (response.redirect) {
                     location.href = response.redirect;
@@ -27,7 +27,7 @@ var AjaxCart = {
             }, 4000);
         }
         else {
-            var noty = window.noty({ text: response.message, type: 'warning', timeout: 2500 });
+            var noty = window.noty({ text: response.message, type: 'warning', timeout: 1500 });
             return false;
         }
         return false;

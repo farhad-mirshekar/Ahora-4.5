@@ -294,8 +294,8 @@ namespace Ahora.WebApp.Controllers
                         var attribute = new List<AttributeJsonVM>();
                         if (item.AttributeJson != "" && item.AttributeJson != null)
                         {
-                            var json = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
-                            attribute.Add(json);
+                            var json = JsonConvert.DeserializeObject<List<AttributeJsonVM>>(item.AttributeJson);
+                            attribute = json;
                         }
                         cart.Add(new ShoppingItemVM
                         {

@@ -38,7 +38,7 @@ namespace Ahora.WebApp.Controllers
             var attribute = _service.SelectAttributeForCustomer(result.Data.ID);
             if (attribute.Success && attribute.Data.Count > 0)
                 ViewBag.attribute = attribute.Data;
-            ViewBag.pic = resultPic.Data.Where(p=>p.PathType == model.PathType.product).ToList();
+            ViewBag.pic = resultPic.Data.Where(p => p.PathType == model.PathType.product).ToList();
             SetCookie("ShoppingID");
             return View(result.Data);
         }
@@ -47,7 +47,7 @@ namespace Ahora.WebApp.Controllers
         [ValidateInput(false)]
         public ActionResult AddToCart(Guid ProductID, FormCollection form)
         {
-            
+
 
             var product = _service.Get(ProductID);
             if (!product.Success)
@@ -70,94 +70,161 @@ namespace Ahora.WebApp.Controllers
                     success = false,
                     message = "ابتدا باید وارد شوید"
                 });
-            JsonResult result = decode(product.Data, form);
+            JsonResult result = _AddToCart(product.Data, form);
             return result;
         }
-        
-        private JsonResult decode(model.Product product, FormCollection form)
+
+        private JsonResult _AddToCart(model.Product product, FormCollection form)
         {
-            var attributes = _service.SelectAttributeForCustomer(product.ID);
-            if (!attributes.Success)
+            try
+            {
+                var attributes = _service.SelectAttributeForCustomer(product.ID);
+                if (!attributes.Success)
+                    return Json(new
+                    {
+                        success = false,
+                        message = "خطایی اتفاق افتاده است. دوباره امتحان کنید"
+                    });
+
+                var attribute = attributes.Data;
+                if (attribute.Count > 0)
+                {
+                    return _AddToCartWithAttribute(product, form, attribute);
+                }
+                else
+                    return _AddToCartWithOutAttribute(product);
+
+            }
+            catch (Exception e)
+            {
                 return Json(new
                 {
                     success = false,
                     message = "خطایی اتفاق افتاده است. دوباره امتحان کنید"
                 });
+            }
+        }
 
-            var attribute = attributes.Data;
-            if (attribute.Count > 0)
+        private void SetCookie(string param)
+        {
+            if (HttpContext.Request.Cookies[param] == null)
             {
-                foreach (var item in attribute)
-                {
-                    string controlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", item.ProductID, item.AttributeID, item.ID,item.TextPrompt);
+                HttpContext.Response.Cookies.Remove(param);
+                HttpContext.Response.Cookies[param].Value = Guid.NewGuid().ToString();
+                HttpContext.Response.Cookies[param].Expires = DateTime.Now.AddYears(50);
+            }
+            if (HttpContext.Request.Cookies[param].Value == null ||
+                HttpContext.Request.Cookies[param].Value == string.Empty)
+            {
+                HttpContext.Response.Cookies.Remove(param);
+                HttpContext.Response.Cookies[param].Value = Guid.NewGuid().ToString();
+                HttpContext.Response.Cookies[param].Expires = DateTime.Now.AddYears(50);
 
-                    switch (item.AttributeControlType)
+            }
+        }
+        private JsonResult _AddToCartWithAttribute(model.Product product, FormCollection form, List<model.ListAttributeForSelectCustomerVM> attributes)
+        {
+            try
+            {
+                var attributeChosen = new List<model.AttributeJsonVM>();
+                if (attributes.Count > 0)
+                {
+                    foreach (var item in attributes)
                     {
-                        case model.AttributeControlType.کشویی:
-                            {
-                                var ctrlAttributes = form[controlId];
-                                if(ctrlAttributes == "-1")
+                        string controlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", item.ProductID, item.AttributeID, item.ID, item.TextPrompt);
+
+                        switch (item.AttributeControlType)
+                        {
+                            case model.AttributeControlType.کشویی:
                                 {
-                                    return Json(new
+                                    var ctrlAttributes = form[controlId];
+                                    if (ctrlAttributes == "-1")
                                     {
-                                        success = false,
-                                        message = $"{item.TextPrompt} را انتخاب نمایید"
-                                    });
-                                }
-                                if (!String.IsNullOrEmpty(ctrlAttributes))
-                                {
-                                    Guid selectedAttributeId = SQLHelper.CheckGuidNull(ctrlAttributes);
-                                    var attributeMain = _productMapattributeService.Get(item.ID);
-                                    var attributeDetail = _productVariantAttributeService.Get(selectedAttributeId);
-                                    if (!attributeMain.Success || !attributeDetail.Success || attributeDetail.Data.ID == Guid.Empty)
                                         return Json(new
                                         {
                                             success = false,
                                             message = $"{item.TextPrompt} را انتخاب نمایید"
                                         });
-
-                                    var json = new model.AttributeJsonVM();
-                                    json.AttributeName = attributeMain.Data.TextPrompt;
-                                    json.ID = selectedAttributeId;
-                                    json.Name = attributeDetail.Data.Name;
-                                    json.ProductVariantAttributeID = attributeMain.Data.ID;
-                                    json.Price = attributeDetail.Data.Price;
-
-                                    var cart = new model.ShoppingCartItem();
-                                    cart.ProductID = product.ID;
-                                    cart.UserID = SQLHelper.CheckGuidNull(User.Identity.Name);
-                                    cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);
-                                    cart.AttributeJson = JsonConvert.SerializeObject(json);
-                                    var shopResult = _shoppingCartService.Get(cart.ShoppingID, cart.ProductID);
-                                    if (shopResult.Data.ID != Guid.Empty)
+                                    }
+                                    if (!String.IsNullOrEmpty(ctrlAttributes))
                                     {
-                                        cart.Quantity = shopResult.Data.Quantity + 1;
-                                        var result = _shoppingCartService.Edit(cart);
-                                        if (!result.Success)
+                                        var selectedAttributeId = SQLHelper.CheckGuidNull(ctrlAttributes);
+                                        var attributeMain = _productMapattributeService.Get(item.ID);
+                                        var attributeDetail = _productVariantAttributeService.Get(selectedAttributeId);
+                                        if (!attributeMain.Success || !attributeDetail.Success || attributeDetail.Data.ID == Guid.Empty || attributeDetail.Data == null)
                                             return Json(new
                                             {
                                                 success = false,
-                                                message = result.Message
+                                                message = $"{item.TextPrompt} را انتخاب نمایید"
                                             });
-                                    }
-                                    else
-                                    {
-                                        cart.Quantity = 1;
-                                        var result = _shoppingCartService.Add(cart);
-                                        if (!result.Success)
-                                            return Json(new
-                                            {
-                                                success = false,
-                                                message = result.Message
-                                            });
-                                    }
 
+                                        attributeChosen.Add(new model.AttributeJsonVM() 
+                                        { 
+                                            AttributeName = attributeMain.Data.TextPrompt,
+                                            ID = selectedAttributeId,
+                                            Name = attributeDetail.Data.Name,
+                                            Price = attributeDetail.Data.Price,
+                                            ProductVariantAttributeID = attributeMain.Data.ID
+                                        });
+                                    }
+                                    break;
                                 }
-                                break;
-                            }
+                        }
+                    }
+
+                    var cart = new model.ShoppingCartItem();
+                    cart.ProductID = product.ID;
+                    cart.UserID = SQLHelper.CheckGuidNull(User.Identity.Name);
+                    cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);
+                    if(attributeChosen.Count > 0)
+                        cart.AttributeJson = JsonConvert.SerializeObject(attributeChosen);
+                    else
+                        cart.AttributeJson = null;
+
+                    var shopResult = _shoppingCartService.Get(cart.ShoppingID, cart.ProductID);
+                    if (shopResult.Data != null && shopResult.Data.ID != Guid.Empty)
+                    {
+                        cart.Quantity = shopResult.Data.Quantity + 1;
+                        var result = _shoppingCartService.Edit(cart);
+                        if (!result.Success)
+                            return Json(new
+                            {
+                                success = false,
+                                message = result.Message
+                            });
+                    }
+                    else
+                    {
+                        cart.Quantity = 1;
+                        var result = _shoppingCartService.Add(cart);
+                        if (!result.Success)
+                            return Json(new
+                            {
+                                success = false,
+                                message = result.Message
+                            });
                     }
                 }
-            }else
+
+                return Json(new
+                {
+                    success = true,
+                    message = "محصول با موفقیت درج گردید",
+                    redirect = Url.RouteUrl("Cart")
+                });
+            }
+            catch (Exception e)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "خطایی اتفاق افتاده است. دوباره امتحان کنید"
+                });
+            }
+        }
+        private JsonResult _AddToCartWithOutAttribute(model.Product product)
+        {
+            try
             {
                 var cart = new model.ShoppingCartItem();
                 cart.ProductID = product.ID;
@@ -165,7 +232,8 @@ namespace Ahora.WebApp.Controllers
                 cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);
                 cart.AttributeJson = null;
                 var shopResult = _shoppingCartService.Get(cart.ShoppingID, cart.ProductID);
-                if (shopResult.Data.ID != Guid.Empty)
+
+                if (shopResult.Data != null && shopResult.Data.ID != Guid.Empty)
                 {
                     cart.Quantity = shopResult.Data.Quantity + 1;
                     var result = _shoppingCartService.Edit(cart);
@@ -187,30 +255,20 @@ namespace Ahora.WebApp.Controllers
                             message = result.Message
                         });
                 }
+                return Json(new
+                {
+                    success = true,
+                    message = "محصول با موفقیت درج گردید",
+                    redirect = Url.RouteUrl("Cart")
+                });
             }
-            return Json(new
+            catch (Exception e)
             {
-                success = true,
-                message = "محصول با موفقیت درج گردید",
-                redirect = Url.RouteUrl("Cart")
-            });
-        }
-
-        private void SetCookie(string param)
-        {
-            if (HttpContext.Request.Cookies[param] == null)
-            {
-                HttpContext.Response.Cookies.Remove(param);
-                HttpContext.Response.Cookies[param].Value = Guid.NewGuid().ToString();
-                HttpContext.Response.Cookies[param].Expires = DateTime.Now.AddYears(50);
-            }
-            if (HttpContext.Request.Cookies[param].Value == null ||
-                HttpContext.Request.Cookies[param].Value == string.Empty)
-            {
-                HttpContext.Response.Cookies.Remove(param);
-                HttpContext.Response.Cookies[param].Value = Guid.NewGuid().ToString();
-                HttpContext.Response.Cookies[param].Expires = DateTime.Now.AddYears(50);
-
+                return Json(new
+                {
+                    success = false,
+                    message = "خطایی اتفاق افتاده است. دوباره امتحان کنید"
+                });
             }
         }
     }
