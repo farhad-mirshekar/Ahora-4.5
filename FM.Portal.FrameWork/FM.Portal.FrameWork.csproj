@@ -109,6 +109,7 @@
     <Compile Include="Caching\CacheService.cs" />
     <Compile Include="Caching\ICacheService.cs" />
     <Compile Include="MVC\Controller\BaseController.cs" />
+    <Compile Include="MVC\Helpers\AutoComplate\AutoCompleteSearchViewModel.cs" />
     <Compile Include="MVC\Helpers\File\FileHelper.cs" />
     <Compile Include="MVC\Helpers\Select\DropDownList.cs" />
     <Compile Include="MVC\Helpers\Select\ToSelectList.cs" />

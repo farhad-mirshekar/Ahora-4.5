@@ -13,6 +13,7 @@
     @Scripts.Render("~/bundles/bootstrap4js")
     <script src="~/scripts/noty/packaged/jquery.noty.packaged.min.js"></script>
     <script src="~/scripts/custom/ajaxcart.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     @RenderSection("Head", false)
 </head>
 
@@ -23,10 +24,10 @@
         </header>
         @RenderSection("BannerSection", false)
 
-    <main role="main">
-        @RenderSection("BodySection", false)
-        @RenderBody()
-    </main>
+        <main role="main">
+            @RenderSection("BodySection", false)
+            @RenderBody()
+        </main>
     </div>
     @Html.Partial("_PartialFooter")
 
@@ -44,6 +45,7 @@
         });
     </script>
     @RenderSection("scripts", required: false)
+
 </body>
 
 </html>

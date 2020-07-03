@@ -1,3 +1,4 @@
+using Ahora.WebApp.WebTasks;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Domain;
@@ -28,6 +29,8 @@ namespace Ahora.WebApp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             UnityConfig.RegisterComponents();
             siteOption();
+
+            ScheduledTasksRegistry.Init();
         }
         private void siteOption()
         {
