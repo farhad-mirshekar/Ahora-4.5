@@ -13,7 +13,12 @@
     @Scripts.Render("~/bundles/bootstrap4js")
     <script src="~/scripts/noty/packaged/jquery.noty.packaged.min.js"></script>
     <script src="~/scripts/custom/ajaxcart.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link href="~/Content/themes/base/base.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/selectable.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/selectmenu.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/theme.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/draggable.css" rel="stylesheet" />
+    <link href="~/Content/themes/base/autocomplete.css" rel="stylesheet" />
     @RenderSection("Head", false)
 </head>
 
@@ -21,6 +26,21 @@
     <div class="container-fluid">
         <header class="sticky-top py-1">
             @{Html.RenderAction("RenderMenu", "Home"); }
+            <div class="container mt-2 mb-4">
+                <div class="row">
+                    <div id="frmSearch" class="col-lg-12 col-md-12 col-md-offset-1">
+                        @using (Html.BeginForm("AutoCompleteSearch", "Search", FormMethod.Post))
+                        {
+                            <div class="input-group">
+                                <input id="searchInput" dir="rtl" type="search" class="form-control" placeholder="دنبال چیزی می گردید؟!" autocomplete="off">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
         </header>
         @RenderSection("BannerSection", false)
 
@@ -43,6 +63,45 @@
             });
             return false;
         });
+    </script>
+    <script>
+        $("#searchInput").autocomplete({
+            delay: 300,
+            source: function (request, response) {
+                $.ajax({
+                    url: '/search/AutoCompleteSearch?term=' + request.term,
+                    dataType: "json",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.Label, value: item.Label };
+                        }))
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            },
+            minLength: 2,
+            dir: 'rtl', minChars: 2,
+            mustMatch: false, max: 20, autoFill: false,
+            matchContains: false, scroll: false, width: 300,
+            select: function (event, ui) {
+                window.location = 'http://google.com';
+            },
+            position: { my: "right top", at: "right bottom", collision: "none" }
+        })
+
+            //.data("ui-autocomplete")._renderItem = function (ul, item) {
+            //    var div = "<div>";
+            //    ul.removeClass('ui-menu ui-widget ui-widget-content ui-autocomplete ui-front');
+            //    var url = "http://yourdomain/yourpath?name=" + item.value;
+            //    $("<li>").append("<a href='" + url + "' >" + item.label + "</a>").appendTo(ul);
+            //};
     </script>
     @RenderSection("scripts", required: false)
 

@@ -30,7 +30,7 @@ namespace Ahora.WebApp
             UnityConfig.RegisterComponents();
             siteOption();
 
-            ScheduledTasksRegistry.Init();
+            //ScheduledTasksRegistry.Init();
         }
         private void siteOption()
         {

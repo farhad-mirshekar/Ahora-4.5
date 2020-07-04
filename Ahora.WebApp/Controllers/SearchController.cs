@@ -27,7 +27,7 @@ namespace Ahora.WebApp.Controllers
 
             var productList = items.Select(item => new AutoCompleteSearchViewModel
             {
-                Name = item.Name,
+                Label = item.Name,
                 Url = "",
                 Category = item.DeliveryDateName,
                 Image = null,

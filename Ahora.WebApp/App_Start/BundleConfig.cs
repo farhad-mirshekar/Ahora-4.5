@@ -9,7 +9,8 @@ namespace Ahora.WebApp
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery/jquery-{version}.js"));
+                        "~/Scripts/jquery/jquery-{version}.js",
+                        "~/Scripts/jquery/jquery-ui-{version}.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery/jquery.validate*"));
@@ -20,7 +21,8 @@ namespace Ahora.WebApp
             bundles.Add(new StyleBundle("~/bundles/main").Include(
                "~/Content/main/main.css",
                "~/Content/fontawesome/font-awesome.css",
-               "~/Content/main/PagedList.css"));
+               "~/Content/main/PagedList.css",
+               "~/Content/themes/base/jquery-ui.css"));
 
             bundles.Add(new StyleBundle("~/bundles/fancyboxcss").Include(
              "~/Content/fancybox/jquery.fancybox.css",
