@@ -1,4 +1,3 @@
-using Ahora.WebApp.WebTasks;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Domain;
@@ -6,8 +5,6 @@ using FM.Portal.FrameWork.Caching;
 using FM.Portal.FrameWork.Unity;
 using FM.Portal.Infrastructure.DAL;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
