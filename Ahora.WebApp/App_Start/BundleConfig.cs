@@ -35,7 +35,8 @@ namespace Ahora.WebApp
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap4js").Include(
                 "~/scripts/bootstrap4/popper.min.js",
-                "~/scripts/bootstrap4/auto-complate.js",
+                "~/scripts/bootstrap4/bootstrap.min.js",
+                "~/scripts/custom/auto-complate.js",
                 "~/scripts/noty/packaged/jquery.noty.packaged.min.js",
                 "~/scripts/custom/ajaxcart.js"
                 ));

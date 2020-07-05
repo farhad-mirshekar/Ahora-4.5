@@ -112,6 +112,11 @@ namespace Ahora.WebApp.Controllers
             var result = _eventsService.List(Helper.CountShowEvents);
             return PartialView("~/Views/Shared/_PartialSideEvents.cshtml", result.Data);
         }
+        [ChildActionOnly]
+        public ActionResult AutoComplateSearch()
+        {
+            return PartialView("~/Views/Shared/_PartialAutoComplateSearch.cshtml");
+        }
         #endregion
     }
 }
