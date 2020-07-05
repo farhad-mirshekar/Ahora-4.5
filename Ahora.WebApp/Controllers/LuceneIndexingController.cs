@@ -22,7 +22,9 @@ namespace Ahora.WebApp.Controllers
                 LucenceProductIndexSearch.AddUpdateLuceneIndex(new Product
                 {
                     ID=product.ID,
-                    Name=product.Name
+                    Name=product.Name,
+                    TrackingCode = product.TrackingCode,
+                    CategoryName = product.CategoryName
                     
                 });
             }

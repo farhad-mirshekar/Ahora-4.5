@@ -128,6 +128,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.ShippingCostName = SQLHelper.CheckStringNull(dr["ShippingCostName"]);
                             obj.DeliveryDateID = SQLHelper.CheckGuidNull(dr["DeliveryDateID"]);
                             obj.DeliveryDateName = SQLHelper.CheckStringNull(dr["DeliveryDateName"]);
+                            obj.CategoryName = SQLHelper.CheckStringNull(dr["CategoryName"]);
                         }
                     }
 

@@ -16,6 +16,7 @@ BEGIN
 		disc.DiscountAmount,
 		disc.DiscountType AS DiscountTypes,
 		category.HasDiscountsApplied,
+		category.Title AS CategoryName,
 		ShippingCost.Name AS ShippingCostName,
 		DeliveryDate.Name AS DeliveryDateName
 	FROM	

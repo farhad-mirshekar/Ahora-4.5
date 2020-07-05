@@ -8,12 +8,10 @@ CREATE PROCEDURE app.spGetsProduct
 --WITH ENCRYPTION
 AS
 BEGIN
-	;WITH main AS(
-	SELECT *
-	FROM app.Product
-	)
-
-	SELECT * 
-	FROM main
-	ORDER BY [CreationDate]
+	SELECT 
+		product.*,
+		category.Title AS CategoryName
+	FROM app.Product product
+	INNER JOIN app.Category category ON product.CategoryID = category.ID
+	ORDER BY product.CreationDate DESC
 END

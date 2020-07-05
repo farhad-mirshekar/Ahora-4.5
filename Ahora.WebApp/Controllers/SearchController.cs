@@ -1,4 +1,5 @@
-﻿using FM.Portal.Core.LucenceSearch.Product;
+﻿using FM.Portal.Core.Extention.ReadingTime;
+using FM.Portal.Core.LucenceSearch.Product;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
 using FM.Portal.FrameWork.MVC.Helpers.AutoComplate;
@@ -28,8 +29,8 @@ namespace Ahora.WebApp.Controllers
             var productList = items.Select(item => new AutoCompleteSearchViewModel
             {
                 Label = item.Name,
-                Url = "",
-                Category = item.DeliveryDateName,
+                Url = Url.RouteUrl("Product",new {TrackingCode = item.TrackingCode , Title = CalculateWordsCount.CleanSeoUrl(item.Name) }),
+                Category = item.CategoryName,
                 Image = null,
             }).ToList();
 

@@ -11,8 +11,8 @@
 	font-style: normal;
 	font-weight: bold;
 	font-display: auto;
-	src: url('../fonts/eot/IRANSansWeb_Bold.eot');
-	src: url('../fonts/eot/IRANSansWeb_Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb_Bold.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb_Bold.woff') format('woff'), url('../fonts/ttf/IRANSansWeb_Bold.ttf') format('truetype');
+	src: url('../../fonts/eot/IRANSansWeb_Bold.eot');
+	src: url('../../fonts/eot/IRANSansWeb_Bold.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb_Bold.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb_Bold.woff') format('woff'), url('../fonts/ttf/IRANSansWeb_Bold.ttf') format('truetype');
 }
 
 
@@ -21,8 +21,8 @@
 	font-style: normal;
 	font-weight: 500;
 	font-display: auto;
-	src: url('../fontseot/IRANSansWeb_Medium.eot');
-	src: url('../fontseot/IRANSansWeb_Medium.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb_Medium.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb_Medium.woff') format('woff'), url('../fonts/ttf/IRANSansWeb_Medium.ttf') format('truetype');
+	src: url('../../fonts/eot/IRANSansWeb_Medium.eot');
+	src: url('../../fonts/eot/IRANSansWeb_Medium.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb_Medium.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb_Medium.woff') format('woff'), url('../fonts/ttf/IRANSansWeb_Medium.ttf') format('truetype');
 }
 
 @font-face {
@@ -30,8 +30,8 @@
 	font-style: normal;
 	font-weight: 300;
 	font-display: auto;
-	src: url('../fonts/eot/IRANSansWeb_Light.eot');
-	src: url('../fonts/eot/IRANSansWeb_Light.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb_Light.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb_Light.woff') format('woff'), url('../fonts/ttf/IRANSansWeb_Light.ttf') format('truetype');
+	src: url('../../fonts/eot/IRANSansWeb_Light.eot');
+	src: url('../../fonts/eot/IRANSansWeb_Light.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb_Light.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb_Light.woff') format('woff'), url('../fonts/ttf/IRANSansWeb_Light.ttf') format('truetype');
 }
 
 @font-face {
@@ -39,8 +39,8 @@
 	font-style: normal;
 	font-weight: 200;
 	font-display: auto;
-	src: url('../fonts/eot/IRANSansWeb_UltraLight.eot');
-	src: url('../fonts/eot/IRANSansWeb_UltraLight.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb_UltraLight.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb_UltraLight.woff') format('woff'), url('../fonts/ttf/IRANSansWeb_UltraLight.ttf') format('truetype');
+	src: url('../../fonts/eot/IRANSansWeb_UltraLight.eot');
+	src: url('../../fonts/eot/IRANSansWeb_UltraLight.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb_UltraLight.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb_UltraLight.woff') format('woff'), url('../fonts/ttf/IRANSansWeb_UltraLight.ttf') format('truetype');
 }
 
 @font-face {
@@ -48,13 +48,13 @@
 	font-style: normal;
 	font-weight: normal;
 	font-display: auto;
-	src: url('../fonts/eot/IRANSansWeb.eot');
-	src: url('../fonts/eot/IRANSansWeb.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb.woff') format('woff'), url('../fonts/ttf/IRANSansWeb.ttf') format('truetype');
+	src: url('../../fonts/eot/IRANSansWeb.eot');
+	src: url('../../fonts/eot/IRANSansWeb.eot?#iefix') format('embedded-opentype'), url('../fonts/woff2/IRANSansWeb.woff2') format('woff2'), url('../fonts/woff/IRANSansWeb.woff') format('woff'), url('../fonts/ttf/IRANSansWeb.ttf') format('truetype');
 }
 
 @font-face {
 	font-family: 'yekannumbers';
-	src: url('../fonts/numbers/yekannumbers-regular.ttf') format('truetype');
+	src: url('../../fonts/numbers/yekannumbers-regular.ttf') format('truetype');
 }
 
 .ui-helper-hidden {
@@ -1068,7 +1068,7 @@ body .ui-tooltip {
 /* Component containers
 ----------------------------------*/
 .ui-widget {
-	font-family: Verdana,Arial,sans-serif;
+	font-family: yekannumbers, IRANSans !important;
 	font-size: 1.1em;
 }
 
@@ -1080,7 +1080,7 @@ body .ui-tooltip {
 	.ui-widget select,
 	.ui-widget textarea,
 	.ui-widget button {
-		font-family: Verdana,Arial,sans-serif;
+		font-family: yekannumbers, IRANSans !important;
 		font-size: 1em;
 	}
 
@@ -2048,4 +2048,12 @@ a.ui-button:active,
 .ui-widget-shadow {
 	-webkit-box-shadow: -8px -8px 8px #aaaaaa;
 	box-shadow: -8px -8px 8px #aaaaaa;
+}
+.ui-autocomplete-category {
+	font-weight: bold;
+	padding: .2em .4em;
+	margin: .8em 0 .2em;
+	line-height: 1.5;
+	font-family: yekannumbers, IRANSans !important;
+	color:red;
 }

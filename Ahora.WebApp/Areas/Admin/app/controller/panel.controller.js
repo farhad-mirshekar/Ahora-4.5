@@ -975,6 +975,7 @@
         product.grid = {
             bindingObject: product
             , columns: [{ name: 'Name', displayName: 'عنوان آگهی' },
+                { name: 'CategoryName', displayName: 'دسته بندی' },
             { name: 'TrackingCode', displayName: 'کدپیگیری' },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: productService.list

@@ -25,7 +25,8 @@ namespace FM.Portal.Core.LucenceSearch.Product
             var document = new Document();
             document.Add(new Field("ID", model.ID.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("Name", model.Name.ToString(), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-
+            document.Add(new Field("TrackingCode", model.TrackingCode.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("CategoryName", model.CategoryName.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             // add entry to index
             writer.AddDocument(document);
         }
@@ -54,7 +55,7 @@ namespace FM.Portal.Core.LucenceSearch.Product
         {
             // init lucene
             var analyzer = new StandardAnalyzer(_version);
-            using (var writer = new IndexWriter(_directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
+            using (var writer = new IndexWriter(_directory, analyzer,false, IndexWriter.MaxFieldLength.UNLIMITED))
             {
                 var searchQuery = new TermQuery(new Term(StronglyTyped.PropertyName<Model.Product>(x => x.ID), ProductID.ToString()));
 
@@ -75,7 +76,7 @@ namespace FM.Portal.Core.LucenceSearch.Product
         {
             // init lucene
             var analyzer = new StandardAnalyzer(_version);
-            using (var writer = new IndexWriter(_directory, analyzer, IndexWriter.MaxFieldLength.UNLIMITED))
+            using (var writer = new IndexWriter(_directory, analyzer, false,IndexWriter.MaxFieldLength.UNLIMITED))
             {
                 // add data to lucene search index (replaces older entry if any)
                 foreach (var data in modelData)
@@ -183,6 +184,8 @@ namespace FM.Portal.Core.LucenceSearch.Product
             {
                 ID = SQLHelper.CheckGuidNull(doc.Get(StronglyTyped.PropertyName<Model.Product>(x => x.ID))),
                 Name = SQLHelper.CheckStringNull(doc.Get(StronglyTyped.PropertyName<Model.Product>(x => x.Name))),
+                TrackingCode = SQLHelper.CheckStringNull(doc.Get(StronglyTyped.PropertyName<Model.Product>(x => x.TrackingCode))),
+                CategoryName = SQLHelper.CheckStringNull(doc.Get(StronglyTyped.PropertyName<Model.Product>(x => x.CategoryName))),
             };
         }
     }

@@ -48,5 +48,6 @@ namespace FM.Portal.Core.Model
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public string ShippingCostName { get; set; }
         public string DeliveryDateName { get; set; }
+        public string CategoryName { get; set; }
     }
 }
