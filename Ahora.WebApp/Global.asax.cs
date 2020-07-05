@@ -29,8 +29,6 @@ namespace Ahora.WebApp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             UnityConfig.RegisterComponents();
             siteOption();
-
-            //ScheduledTasksRegistry.Init();
         }
         private void siteOption()
         {
