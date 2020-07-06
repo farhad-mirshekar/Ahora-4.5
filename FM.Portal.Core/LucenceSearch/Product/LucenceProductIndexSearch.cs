@@ -14,7 +14,7 @@ using System.Web;
 using Version = Lucene.Net.Util.Version;
 namespace FM.Portal.Core.LucenceSearch.Product
 {
-   public class LucenceProductIndexSearch
+   public static class LucenceProductIndexSearch
     {
         private const Version _version = Version.LUCENE_30;
 

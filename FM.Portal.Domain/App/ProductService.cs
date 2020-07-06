@@ -6,6 +6,7 @@ using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using System.Linq;
 using FM.Portal.Core.Common;
+using FM.Portal.Core.LucenceSearch.Product;
 
 namespace FM.Portal.Domain
 {
@@ -22,7 +23,10 @@ namespace FM.Portal.Domain
             if (!validate.Success)
                 return Result<Product>.Failure(message: validate.Message);
 
-            return _dataSource.Insert(model);
+            var result = _dataSource.Insert(model);
+            if (result.Success)
+                LucenceSearch();
+            return result;
         }
 
         public Result<Product> Edit(Product model)
@@ -31,16 +35,19 @@ namespace FM.Portal.Domain
             if (!validate.Success)
                 return Result<Product>.Failure(message: validate.Message);
 
-            return _dataSource.Update(model);
+            var result = _dataSource.Update(model);
+            if (result.Success)
+                LucenceSearch();
+            return result;
         }
 
         public Result<Product> Get(Guid ID)
         {
-            return _dataSource.Get(ID,null);
+            return _dataSource.Get(ID, null);
         }
         public Result<Product> Get(string TrackingCode)
         {
-            return _dataSource.Get(null,TrackingCode);
+            return _dataSource.Get(null, TrackingCode);
         }
         public Result<List<Product>> List()
         {
@@ -70,7 +77,7 @@ namespace FM.Portal.Domain
         {
             var attribute = ConvertDataTableToList.BindList<ListAttributeForSelectCustomerVM>(_dataSource.ListAttributeForProduct(ProductID));
 
-           if(attribute.Count > 0)
+            if (attribute.Count > 0)
             {
                 for (int i = 0; i < attribute.Count; i++)
                 {
@@ -80,7 +87,7 @@ namespace FM.Portal.Domain
                 }
             }
 
-           if(attribute.Count > 0 || attribute.Count == 0)
+            if (attribute.Count > 0 || attribute.Count == 0)
                 return Result<List<ListAttributeForSelectCustomerVM>>.Successful(data: attribute);
             return Result<List<ListAttributeForSelectCustomerVM>>.Failure();
         }
@@ -127,7 +134,7 @@ namespace FM.Portal.Domain
                     Errors.Add("نوع تخفیف را مشخص نمایید");
                 }
             }
-            if(model.DiscountType > 0)
+            if (model.DiscountType > 0)
             {
                 switch (model.DiscountType)
                 {
@@ -148,6 +155,28 @@ namespace FM.Portal.Domain
                 return Result.Failure(message: string.Join("&&", Errors));
 
             return Result.Successful();
+        }
+        private bool LucenceSearch()
+        {
+            try
+            {
+                LucenceProductIndexSearch.ClearLuceneIndex();
+
+                foreach (var product in List().Data)
+                {
+                    LucenceProductIndexSearch.ClearLuceneIndexRecord(product.ID);
+                    LucenceProductIndexSearch.AddUpdateLuceneIndex(new Product
+                    {
+                        ID = product.ID,
+                        Name = product.Name,
+                        TrackingCode = product.TrackingCode,
+                        CategoryName = product.CategoryName
+
+                    });
+                }
+                return true;
+            }
+            catch(Exception e) { return false; }
         }
     }
 }

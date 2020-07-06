@@ -1892,7 +1892,6 @@
     <Compile Include="Controllers\FaqGroupController.cs" />
     <Compile Include="Controllers\GalleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\LuceneIndexingController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\RedirectController.cs" />
@@ -1952,7 +1951,6 @@
     <Folder Include="Content\TemporaryFiles\video\" />
     <Folder Include="Files\Report-Excel\" />
     <Folder Include="Views\Download\" />
-    <Folder Include="Views\LuceneIndexing\" />
     <Folder Include="Views\Search\" />
   </ItemGroup>
   <ItemGroup>
