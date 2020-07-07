@@ -27,6 +27,7 @@ BEGIN
 )
 	SELECT
 		Top (@Count)
+		product.ID,
 		product.TrackingCode,
 		product.DiscountType AS SelfProductDiscountType,
 		product.Discount AS SelfProductDiscount,

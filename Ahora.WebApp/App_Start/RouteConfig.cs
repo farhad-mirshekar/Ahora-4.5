@@ -12,6 +12,17 @@ namespace Ahora.WebApp
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            routes.MapRoute(
+              "CompareProducts",
+              "CompareProducts",
+              new { controller = "Product", action = "CompareProducts"},
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
+            routes.MapRoute(
+              "AddProductToCompareList",
+              "ComparingProduct/{ProductID}",
+              new { controller = "Product", action = "AddProductToCompareList", ProductID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
             routes.MapRoute(
               "GalleryImageDetail",
               "Photo/{TrackingCode}/{Seo}",

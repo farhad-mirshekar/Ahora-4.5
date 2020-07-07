@@ -73,6 +73,7 @@
     <Compile Include="Org\IUserAddressService.cs" />
     <Compile Include="Org\IUserService.cs" />
     <Compile Include="Pbl\IAttachmentService.cs" />
+    <Compile Include="App\ICompareProductService.cs" />
     <Compile Include="Pbl\IContactService.cs" />
     <Compile Include="Pbl\IDownloadService.cs" />
     <Compile Include="Ptl\IGalleryService.cs" />

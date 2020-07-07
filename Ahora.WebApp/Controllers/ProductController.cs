@@ -8,6 +8,8 @@ using FM.Portal.Core.Common;
 using System.Linq;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Ahora.WebApp.Models;
+using FM.Portal.Core.Model;
 
 namespace Ahora.WebApp.Controllers
 {
@@ -17,18 +19,22 @@ namespace Ahora.WebApp.Controllers
         private readonly IShoppingCartItemService _shoppingCartService;
         private readonly IProductMapAttributeService _productMapattributeService;
         private readonly IProductVariantAttributeService _productVariantAttributeService;
+        private readonly ICompareProductService _compareProductService;
         public ProductController(IProductService service
                                  , IAttachmentService attachmentService
                                  , IShoppingCartItemService shoppingCartService
                                  , IProductMapAttributeService productMapattributeService
-                                 , IProductVariantAttributeService productVariantAttributeService) : base(service)
+                                 , IProductVariantAttributeService productVariantAttributeService
+                                 , ICompareProductService compareProductService) : base(service)
         {
             _attachmentService = attachmentService;
             _shoppingCartService = shoppingCartService;
             _productMapattributeService = productMapattributeService;
             _productVariantAttributeService = productVariantAttributeService;
+            _compareProductService = compareProductService;
         }
 
+        #region Product
         // GET: Product
         public ActionResult Index(string TrackingCode, String Title)
         {
@@ -158,8 +164,8 @@ namespace Ahora.WebApp.Controllers
                                                 message = $"{item.TextPrompt} را انتخاب نمایید"
                                             });
 
-                                        attributeChosen.Add(new model.AttributeJsonVM() 
-                                        { 
+                                        attributeChosen.Add(new model.AttributeJsonVM()
+                                        {
                                             AttributeName = attributeMain.Data.TextPrompt,
                                             ID = selectedAttributeId,
                                             Name = attributeDetail.Data.Name,
@@ -176,7 +182,7 @@ namespace Ahora.WebApp.Controllers
                     cart.ProductID = product.ID;
                     cart.UserID = SQLHelper.CheckGuidNull(User.Identity.Name);
                     cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);
-                    if(attributeChosen.Count > 0)
+                    if (attributeChosen.Count > 0)
                         cart.AttributeJson = JsonConvert.SerializeObject(attributeChosen);
                     else
                         cart.AttributeJson = null;
@@ -271,5 +277,42 @@ namespace Ahora.WebApp.Controllers
                 });
             }
         }
+        #endregion
+
+        #region Product-Compare
+        public ActionResult AddProductToCompareList(Guid ProductID)
+        {
+            var productResult = _service.Get(ProductID);
+            if (!productResult.Success)
+                return Json(new
+                {
+                    success = false,
+                    message = "محصولی پبدا نشد"
+                });
+            _compareProductService.AddProductToCompareList(ProductID);
+            return Json(new
+            {
+                success = true,
+                message = "محصول با موفقیت به لیست مقایسه اضافه گردید"
+            });
+        }
+        [Route("CompareProducts")]
+        public ActionResult CompareProducts()
+        {
+            var compareProductsResult = _compareProductService.GetComparedProducts();
+            if (!compareProductsResult.Success)
+                return View("Error", new Error {ClassCss="alert alert-danger" , ErorrDescription="خطا در بازیابی داده" });
+
+            var compareProducts = compareProductsResult.Data;
+            foreach (var item in compareProducts)
+            {
+                var attachmentResult = _attachmentService.List(item.ID);
+                if (attachmentResult.Data.Count > 0)
+                item.PicUrl = $"{attachmentResult.Data.Select(x => x.Path).First()}/{attachmentResult.Data.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
+
+            }
+            return View(compareProducts);
+        }
+        #endregion
     }
 }

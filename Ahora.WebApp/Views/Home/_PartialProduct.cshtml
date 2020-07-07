@@ -89,6 +89,10 @@
                                 <div class="card-footer">
                                     <div class="btn-group-justified" style="float:left">
                                         <a href="@Url.RouteUrl("product",new { TrackingCode=item.TrackingCode,Title=item.Name.Replace(' ','_').Replace('/','_')})" class="btn btn-outline-primary">مشاهده</a>
+                                        <button type="button" class="btn btn-outline-info" onclick="AjaxCart.addproducttocomparelist('@Url.RouteUrl("AddProductToCompareList", new { productId = item.ID })');return false;" value="افزودن به لیست مقایسه" title="مقایسه">
+                                            <i class="fa fa-crop"></i>
+                                        </button>
+
                                     </div>
                                 </div>
                             </div>

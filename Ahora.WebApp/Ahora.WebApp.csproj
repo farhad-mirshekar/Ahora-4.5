@@ -1932,6 +1932,7 @@
     <Content Include="Views\Shared\_PartialCarousel.cshtml" />
     <Content Include="Views\ShoppingCart\Partial\_PartialDeliveryDateAndShippingCost.cshtml" />
     <Content Include="Views\Shared\_PartialAutoComplateSearch.cshtml" />
+    <Content Include="Views\Product\CompareProducts.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

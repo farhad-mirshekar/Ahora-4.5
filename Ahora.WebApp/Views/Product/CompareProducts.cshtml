@@ -1,0 +1,107 @@
+﻿@model List<FM.Portal.Core.Model.Product>
+@{
+    var columnWidth = "";
+    if (Model.Count > 0)
+    {
+        columnWidth = Math.Round((decimal)(90M / Model.Count), 0).ToString() + "%";
+    }
+}
+
+@section BodySection{
+    <div class="row">
+        <div class="col-md-12 mt-2">
+            @if (Model.Count > 0)
+            {
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">مقایسه محصولات</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table text-center">
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        @foreach (var item in Model)
+                                        {
+                                            <td style="width: @columnWidth;">
+                                                <button class="btn btn-outline-danger">
+                                                    <i class="fa fa-times"></i>
+                                                    حذف
+                                                </button>
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>&nbsp;</td>
+                                        @foreach (var item in Model)
+                                        {
+                                            <td>
+                                                <img src="~/Content/TemporaryFiles/@item.PicUrl" alt="@item.Name" class="img-box-product" />
+                                            </td>
+                                        }
+
+                                    </tr>
+                                    <tr>
+                                        <td>نام محصول</td>
+                                        @foreach (var item in Model)
+                                        {
+                                            <td style="width: @columnWidth;">
+                                                <span>@item.Name</span>
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td class="text-danger">دسته بندی</td>
+                                        @foreach (var item in Model)
+                                        {
+                                            <td style="width: @columnWidth;">
+                                                <span class="text-danger">@item.CategoryName</span>
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>وزن محصول</td>
+                                        @foreach (var item in Model)
+                                        {
+                                            <td style="width: @columnWidth;">
+                                                <span>@Math.Round(item.Weight, 2) گرم</span>
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>طول محصول</td>
+                                        @foreach (var item in Model)
+                                        {
+                                            <td style="width: @columnWidth;">
+                                                <span>@Math.Round(item.Length, 2) سانتی متر</span>
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>عرض محصول</td>
+                                        @foreach (var item in Model)
+                                        {
+                                            <td style="width: @columnWidth;">
+                                                <span>@Math.Round(item.Width, 2) سانتی متر</span>
+                                            </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td>ارتفاع محصول</td>
+                                        @foreach (var item in Model)
+                                        {
+                                            <td style="width: @columnWidth;">
+                                                <span>@Math.Round(item.Height, 2) سانتی متر</span>
+                                            </td>
+                                        }
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

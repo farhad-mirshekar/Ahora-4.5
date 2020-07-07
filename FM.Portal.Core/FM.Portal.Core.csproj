@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Common\AppSetting\AppSetting.cs" />
     <Compile Include="Common\ConvertDataTableToList.cs" />
+    <Compile Include="Common\CookieDefaults.cs" />
     <Compile Include="Common\EnumExtensions.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\AppSetting\IAppSetting.cs" />

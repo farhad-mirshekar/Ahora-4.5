@@ -49,5 +49,6 @@ namespace FM.Portal.Core.Model
         public string ShippingCostName { get; set; }
         public string DeliveryDateName { get; set; }
         public string CategoryName { get; set; }
+        public string PicUrl { get; set; }
     }
 }

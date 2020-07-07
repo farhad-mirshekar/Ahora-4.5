@@ -74,6 +74,7 @@
     <Compile Include="App\CategoryService.cs" />
     <Compile Include="App\CommentMapUserService.cs" />
     <Compile Include="App\CommentService.cs" />
+    <Compile Include="App\CompareProductService.cs" />
     <Compile Include="App\DeliveryDateService.cs" />
     <Compile Include="App\DiscountService.cs" />
     <Compile Include="App\FaqGroupService.cs" />

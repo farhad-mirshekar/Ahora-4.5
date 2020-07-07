@@ -1,4 +1,6 @@
-﻿namespace FM.Portal.Core.Model
+﻿using System;
+
+namespace FM.Portal.Core.Model
 {
    public class ListProductShowOnHomePageVM
     {
@@ -14,5 +16,6 @@
         public decimal SelfProductDiscount { get; set; }
         public decimal Price { get; set; }
         public bool CallForPrice { get; set; }
+        public Guid ID { get; set; }
     }
 }
