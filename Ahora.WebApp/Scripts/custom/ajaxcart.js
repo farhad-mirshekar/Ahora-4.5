@@ -42,3 +42,7 @@
         alert('Failed to add the product to the cart. Please refresh the page and try one more time.');
     }
 };
+
+function setLocation(url) {
+    window.location.href = url;
+}

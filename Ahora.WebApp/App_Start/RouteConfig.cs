@@ -14,6 +14,16 @@ namespace Ahora.WebApp
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+              "ClearCompareProducts",
+              "ClearCompareProducts",
+              new { controller = "Product", action = "ClearCompareProducts"},
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
+            routes.MapRoute(
+              "RemoveProductFromCompareList",
+              "RemoveProductFromCompareList/{ProductID}",
+              new { controller = "Product", action = "RemoveProductFromCompareList" , ProductID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
+            routes.MapRoute(
               "CompareProducts",
               "CompareProducts",
               new { controller = "Product", action = "CompareProducts"},

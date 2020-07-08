@@ -43,10 +43,14 @@ namespace FM.Portal.Domain
         {
             try
             {
-                if (_httpContext?.Response == null)
+                if (_httpContext?.Request == null)
                     return;
                 var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.ComparedProductsCookie}";
-                _httpContext.Response.Cookies.Remove(cookieName);
+                var myCookie = new HttpCookie(cookieName, null);
+                myCookie.Expires = DateTime.Now.AddYears(-1);
+                _httpContext.Response.Cookies.Add(myCookie);
+
+                
             }
             catch(Exception e) { throw; }
         }

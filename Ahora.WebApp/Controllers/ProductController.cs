@@ -293,25 +293,58 @@ namespace Ahora.WebApp.Controllers
             return Json(new
             {
                 success = true,
-                message = "محصول با موفقیت به لیست مقایسه اضافه گردید"
+                message = $"محصول با موفقیت به لیست مقایسه اضافه گردید - <a href='{Url.RouteUrl("CompareProducts")}'>مشاهده</a>"
             });
         }
-        [Route("CompareProducts")]
         public ActionResult CompareProducts()
         {
             var compareProductsResult = _compareProductService.GetComparedProducts();
             if (!compareProductsResult.Success)
-                return View("Error", new Error {ClassCss="alert alert-danger" , ErorrDescription="خطا در بازیابی داده" });
+                return View("Error", new Error { ClassCss = "alert alert-danger", ErorrDescription = "خطا در بازیابی داده" });
 
             var compareProducts = compareProductsResult.Data;
             foreach (var item in compareProducts)
             {
                 var attachmentResult = _attachmentService.List(item.ID);
                 if (attachmentResult.Data.Count > 0)
-                item.PicUrl = $"{attachmentResult.Data.Select(x => x.Path).First()}/{attachmentResult.Data.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
+                    item.PicUrl = $"{attachmentResult.Data.Select(x => x.Path).First()}/{attachmentResult.Data.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
 
             }
-            return View(compareProducts);
+            var attributeLists = new List<ListAttributeForSelectCustomerVM>();
+            if (compareProducts.Count > 0)
+            {
+                foreach (var product in compareProducts)
+                {
+                    var attributesResult = _service.SelectAttributeForCustomer(product.ID);
+                    if (!attributesResult.Success)
+                        break;
+                    var attributes = attributesResult.Data;
+                    if (attributes.Count > 0)
+                    {
+                        attributeLists.AddRange(attributes);
+                    }
+
+                }
+                ViewBag.attributeLists = attributeLists;
+                return View(compareProducts);
+            }
+
+            else
+                return RedirectToRoute("Home");
+        }
+        public ActionResult RemoveProductFromCompareList(Guid ProductID)
+        {
+            var productResult = _service.Get(ProductID);
+            if (!productResult.Success)
+                return RedirectToRoute("Home");
+
+            _compareProductService.RemoveProductFromCompareList(ProductID);
+            return RedirectToRoute("CompareProducts");
+        }
+        public ActionResult ClearCompareProducts()
+        {
+            _compareProductService.ClearCompareProducts();
+            return RedirectToRoute("Home");
         }
         #endregion
     }

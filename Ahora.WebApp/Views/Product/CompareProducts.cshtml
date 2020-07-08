@@ -5,6 +5,7 @@
     {
         columnWidth = Math.Round((decimal)(90M / Model.Count), 0).ToString() + "%";
     }
+    var attributesList = (List<ListAttributeForSelectCustomerVM>)ViewBag.attributeLists;
 }
 
 @section BodySection{
@@ -15,6 +16,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="card-title">مقایسه محصولات</span>
+                        <a href="#" onclick="setLocation('@Url.RouteUrl("ClearCompareProducts")')" class="btn btn-outline-danger pull-left">حذف همه</a>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -25,10 +27,9 @@
                                         @foreach (var item in Model)
                                         {
                                             <td style="width: @columnWidth;">
-                                                <button class="btn btn-outline-danger">
+                                                <a href="#" class="text-danger" title="حذف" value="حذف" onclick="setLocation('@Url.RouteUrl("RemoveProductFromCompareList",new {ProductID = item.ID })')">
                                                     <i class="fa fa-times"></i>
-                                                    حذف
-                                                </button>
+                                                </a>
                                             </td>
                                         }
                                     </tr>
@@ -96,6 +97,64 @@
                                             </td>
                                         }
                                     </tr>
+                                    @foreach (var item in attributesList)
+                                    {
+                                        <tr>
+                                            <td><span>@item.TextPrompt</span></td>
+                                            @foreach (var product in Model)
+                                            {
+                                                if (item.ProductID == product.ID)
+                                                {
+                                                    <td class="@columnWidth">
+                                                        @if (item.ProductVariantAttributeValue.Count > 1)
+                                                        {
+                                                            <ul class="list-group">
+                                                                @foreach (var attribute in item.ProductVariantAttributeValue)
+                                                                {
+                                                                    <li class="list-group-item">
+                                                                        @{
+                                                                            if (attribute.Price > 0)
+                                                                            {
+                                                                                <span>@string.Format("{0} - {1:C0} تومان", attribute.Name, attribute.Price).Replace("$", "")</span>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <span>@string.Format("{0}", attribute.Name)</span>
+                                                                            }
+
+                                                                        }
+                                                                    </li>
+                                                                }
+                                                            </ul>
+
+                                                        }
+                                                        else
+                                                        {
+                                                    <span>
+                                                        @{
+                                                            var oneAttribute = item.ProductVariantAttributeValue.FirstOrDefault();
+                                                            if (oneAttribute.Price > 0)
+                                                            {
+                                                                <span>@string.Format("{0} - {1:C0} تومان", oneAttribute.Name, oneAttribute.Price).Replace("$", "")</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span>@string.Format("{0}", oneAttribute.Name)</span>
+                                                            }
+                                                        }
+                                                    </span>
+                                                        }
+                                                    </td>
+                                                }
+                                                else
+                                                {
+                                                    <td class="@columnWidth">
+                                                        <span>-----</span>
+                                                    </td>
+                                                }
+                                            }
+                                        </tr>
+                                    }
                                 </table>
                             </div>
                         </div>
@@ -105,3 +164,4 @@
         </div>
     </div>
 }
+
