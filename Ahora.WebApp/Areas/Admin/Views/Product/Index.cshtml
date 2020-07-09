@@ -206,6 +206,14 @@
                                 <input type="text" class="form-control" required ng-model="Model.MetaDescription" />
                             </div>
                         </div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button class="btn btn-outline-info" ng-click="relatedProductModal();">افزودن محصولات مرتبط</button>
+                                    <portal-grid obj="relatedProduct.relatedProductGrid"></portal-grid>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </uib-tab>
                 <uib-tab heading="افزودن فیلدهای عمومی" ng-show="state === 'edit'">
@@ -318,6 +326,28 @@
             </div>
             <div class="modal-footer pull-left">
                 <button type="button" class="btn btn-success" ng-click="addProductVarient()">ثبت</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--related product modal-->
+<div class="modal fade" dir="rtl"
+     id="related-product-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h2 class="main-title">لیست محصولات</h2>
+            </div>
+            <div class="modal-body">
+                <portal-grid obj="relatedProduct.listProductGrid"></portal-grid>
+            </div>
+            <div class="modal-footer pull-left">
+                <button class="btn btn-success" ng-click="addRelatedProduct();">افزودن</button>
                 <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
             </div>
         </div>

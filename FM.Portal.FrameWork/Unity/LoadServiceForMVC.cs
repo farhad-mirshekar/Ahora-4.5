@@ -129,6 +129,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IDeliveryDateDataSource, DeliveryDateDataSource>();
             container.RegisterType<IDeliveryDateService, DeliveryDateService>();
 
+            container.RegisterType<IRelatedProductDataSource, RelatedProductDataSource>();
+            container.RegisterType<IRelatedProductService, RelatedProductService>();
+
             container.RegisterType<ICompareProductService, CompareProductService>();
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>

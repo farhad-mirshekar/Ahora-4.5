@@ -142,6 +142,9 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IDeliveryDateDataSource, DeliveryDateDataSource>();
             _container.RegisterType<IDeliveryDateService, DeliveryDateService>();
 
+            _container.RegisterType<IRelatedProductDataSource, RelatedProductDataSource>();
+            _container.RegisterType<IRelatedProductService, RelatedProductService>();
+
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

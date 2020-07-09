@@ -715,6 +715,24 @@ GO
 ALTER TABLE app.Product
 ADD DeliveryDateID UNIQUEIDENTIFIER
 GO
+CREATE TABLE [app].[RelatedProduct](
+	[ID] uniqueidentifier NOT NULL,
+	[ProductID1] uniqueidentifier NOT NULL,
+	[ProductID2] uniqueidentifier NOT NULL,
+	[CreationDate] [SMALLDATETIME] NOT NULL,
+	[Priority] [INT] DEFAULT 1 NULL,
+ CONSTRAINT [PK_RelatedProduct] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [app].[RelatedProduct] ADD FOREIGN KEY ([ProductID1])
+REFERENCES app.[Product] (ID)
+
+ALTER TABLE [app].[RelatedProduct] ADD FOREIGN KEY ([ProductID2])
+REFERENCES app.[Product] (ID)
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO

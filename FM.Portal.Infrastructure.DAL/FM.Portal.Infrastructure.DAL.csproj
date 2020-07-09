@@ -67,6 +67,7 @@
     <Compile Include="DataSources\App\ProductAttributeDataSource.cs" />
     <Compile Include="DataSources\App\ProductDataSource.cs" />
     <Compile Include="DataSources\App\ProductMapAttributeDataSource.cs" />
+    <Compile Include="DataSources\App\RelatedProductDataSource.cs" />
     <Compile Include="DataSources\App\ShippingCostDataSource.cs" />
     <Compile Include="DataSources\App\ProductVariantAttributeDataSource.cs" />
     <Compile Include="DataSources\App\ShoppingCartItemDataSource.cs" />
@@ -150,6 +151,10 @@
     <Content Include="DataBaseScripts\Procedures\App\DeliveryDate\app.spGetDeliveryDate.sql" />
     <Content Include="DataBaseScripts\Procedures\App\DeliveryDate\app.spGetsDeliveryDate.sql" />
     <Content Include="DataBaseScripts\Procedures\App\DeliveryDate\app.spModifyDeliveryDate.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\RelatedProduct\app.spDeleteRelatedProduct.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\RelatedProduct\app.spGetRelatedProduct.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\RelatedProduct\app.spGetsRelatedProduct.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\RelatedProduct\app.spModifyRelatedProduct.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShippingCost\app.spGetShippingCost.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShippingCost\app.spGetsShippingCost.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShippingCost\app.spModifyShippingCost.sql" />

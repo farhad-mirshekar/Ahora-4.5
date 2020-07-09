@@ -84,6 +84,7 @@
     <Compile Include="App\ProductAttributeService.cs" />
     <Compile Include="App\ProductMapAttributeService.cs" />
     <Compile Include="App\ProductService.cs" />
+    <Compile Include="App\RelatedProductService.cs" />
     <Compile Include="App\ShippingCostService.cs" />
     <Compile Include="App\ProductVariantAttributeService.cs" />
     <Compile Include="App\ShoppingCartItemService.cs" />

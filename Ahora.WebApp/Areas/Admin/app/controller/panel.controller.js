@@ -621,8 +621,8 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('productController', productController);
-    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'shippingCostService', 'toolsService', 'enumService', 'froalaOption','deliveryDateService'];
-    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, shippingCostService, toolsService, enumService, froalaOption, deliveryDateService) {
+    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'shippingCostService', 'toolsService', 'enumService', 'froalaOption', 'deliveryDateService', 'relatedProductService'];
+    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, shippingCostService, toolsService, enumService, froalaOption, deliveryDateService, relatedProductService) {
         var product = $scope;
         product.Model = {};
         product.Attribute = {};
@@ -640,6 +640,9 @@
         product.file.list = [];
         product.file.listUploaded = [];
 
+        product.relatedProduct = {};
+        product.relatedProduct.selectProduct = [];
+
         product.froalaOption = angular.copy(froalaOption.main);
         product.froalaOptions = angular.copy(froalaOption.main);
 
@@ -651,6 +654,8 @@
         product.listProductVarient = listProductVarient;
         product.editProduct = editProduct;
         product.showAttributeModal = showAttributeModal;
+        product.relatedProductModal = relatedProductModal;
+        product.addRelatedProduct = addRelatedProduct;
         product.selectDiscountType = toolsService.arrayEnum(enumService.DiscountType);
         product.Attribute.grid = {
             bindingObject: product.Attribute
@@ -728,6 +733,46 @@
             }
             ]
         };
+        product.relatedProduct.listProductGrid = {
+            bindingObject: product.relatedProduct
+            , columns: [{ name: 'Name', displayName: 'عنوان آگهی' },
+            { name: 'CategoryName', displayName: 'دسته بندی' },]
+            , listService: productService.list
+            , actions: [{
+                class: 'fa fa-pencil text-info mr-2 cursor-grid operation-icon'
+                , name: 'edit'
+                , title: 'مشاهده'
+                , onclick: (selected) => {
+                    loadingService.show();
+                    product.relatedProduct.selectProduct.push({ ProductID1: $routeParams.id, ProductID2: selected.ID });
+                    loadingService.hide();
+                }
+            }]
+            , globalSearch: true
+        }
+        product.relatedProduct.relatedProductGrid = {
+            bindingObject: product.relatedProduct
+            , columns: [{ name: 'ProductName2', displayName: 'نام محصول مرتبط' },
+            { name: 'Priority', displayName: 'اولویت' }]
+            , options: () => {
+                return { ProductID1: $routeParams.id }
+            }
+            , listService: relatedProductService.list
+            , actions: [{
+                class: 'fa fa-times'
+                , name: 'remove'
+                , title: 'حذف'
+                , onclick: (selected) => {
+                    loadingService.show();
+                    relatedProductService.remove(selected.ID).then(() => {
+                        product.relatedProduct.relatedProductGrid.getlist();
+                        loadingService.hide();
+                    })
+                }
+            }]
+            , globalSearch: true
+            , initLoad: true
+        }
         init();
 
         function init() {
@@ -966,6 +1011,28 @@
             }).finally(loadingService.hide);
         }
 
+        function relatedProductModal() {
+            loadingService.show();
+            return product.relatedProduct.listProductGrid.getlist().then(() => {
+                $('#related-product-modal').modal('show');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+
+        }
+        function addRelatedProduct() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                relatedProductService.add(product.relatedProduct.selectProduct);
+            }).then(() => {
+                product.relatedProduct.selectProduct = [];
+                return product.relatedProduct.relatedProductGrid.getlist();
+
+            }).then(() => {
+                $('#related-product-modal').modal('hide');
+            })
+                .finally(loadingService.hide);
+        }
+
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('ProductCartableController', ProductCartableController);
@@ -975,7 +1042,7 @@
         product.grid = {
             bindingObject: product
             , columns: [{ name: 'Name', displayName: 'عنوان آگهی' },
-                { name: 'CategoryName', displayName: 'دسته بندی' },
+            { name: 'CategoryName', displayName: 'دسته بندی' },
             { name: 'TrackingCode', displayName: 'کدپیگیری' },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: productService.list
@@ -4370,7 +4437,7 @@
         delivery.grid = {
             bindingObject: delivery
             , columns: [{ name: 'Name', displayName: 'نام' },
-                { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: deliveryDateService.list
             , onEdit: delivery.main.changeState.edit
             , globalSearch: true

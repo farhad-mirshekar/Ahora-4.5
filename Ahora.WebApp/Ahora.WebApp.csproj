@@ -1853,6 +1853,7 @@
     <Compile Include="Areas\ApiClient\Controllers\app\ProductAttributeController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductMapAttributeController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\app\RelatedProductController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ShippingCostController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductVariantAttributeController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\CommandController.cs" />
