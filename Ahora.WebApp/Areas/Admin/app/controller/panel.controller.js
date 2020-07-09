@@ -1011,6 +1011,7 @@
             }).finally(loadingService.hide);
         }
 
+        //related product
         function relatedProductModal() {
             loadingService.show();
             return product.relatedProduct.listProductGrid.getlist().then(() => {
