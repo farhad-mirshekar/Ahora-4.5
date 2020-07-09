@@ -1,0 +1,22 @@
+﻿@model List<FM.Portal.Core.Model.RelatedProduct>
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">محصولات مرتبط</span>
+    </div>
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-lg-4 col-md-6 col-sm-6 d-flex align-items-stretch">
+                        <div class="card">
+                            <div class="img-box-product">
+                                <img src="~/Content/TemporaryFiles/@Enum.GetName(typeof(PathType), item.Attachments.Where(x=>x.PathType == PathType.product).Select(x=>x.PathType).FirstOrDefault())/@item.Attachments.Where(x=>x.PathType == PathType.product).Select(x=>x.FileName).FirstOrDefault()" alt="@item.Attachments.Where(x=>x.PathType == PathType.product).Select(x=>x.FileName).FirstOrDefault()" class="card-img-top img-rounded" />
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

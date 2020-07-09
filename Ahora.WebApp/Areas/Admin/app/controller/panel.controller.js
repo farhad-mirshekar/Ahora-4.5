@@ -641,6 +641,7 @@
         product.file.listUploaded = [];
 
         product.relatedProduct = {};
+        product.relatedProduct.Model = {};
         product.relatedProduct.selectProduct = [];
 
         product.froalaOption = angular.copy(froalaOption.main);
@@ -656,6 +657,7 @@
         product.showAttributeModal = showAttributeModal;
         product.relatedProductModal = relatedProductModal;
         product.addRelatedProduct = addRelatedProduct;
+        product.editRelatedProduct = editRelatedProduct;
         product.selectDiscountType = toolsService.arrayEnum(enumService.DiscountType);
         product.Attribute.grid = {
             bindingObject: product.Attribute
@@ -758,18 +760,32 @@
                 return { ProductID1: $routeParams.id }
             }
             , listService: relatedProductService.list
-            , actions: [{
-                class: 'fa fa-times'
-                , name: 'remove'
-                , title: 'حذف'
-                , onclick: (selected) => {
-                    loadingService.show();
-                    relatedProductService.remove(selected.ID).then(() => {
-                        product.relatedProduct.relatedProductGrid.getlist();
+            , actions: [
+                {
+                    class: 'fa fa-pencil text-info mr-2 cursor-grid operation-icon'
+                    , name: 'edit'
+                    , title: 'ویرایش'
+                    , onclick: (selected) => {
+                        loadingService.show();
+                        product.relatedProduct.Model = selected;
+                        $('#related-product-modal').modal('show');
                         loadingService.hide();
-                    })
+                    }
                 }
-            }]
+                ,
+                {
+                    class: 'fa fa-times text-danger mr-2 cursor-grid operation-icon'
+                    , name: 'remove'
+                    , title: 'حذف'
+                    , onclick: (selected) => {
+                        loadingService.show();
+                        relatedProductService.remove(selected.ID).then(() => {
+                            product.relatedProduct.relatedProductGrid.getlist();
+                            loadingService.hide();
+                        })
+                    }
+                }
+            ]
             , globalSearch: true
             , initLoad: true
         }
@@ -953,7 +969,7 @@
             product.Attribute.Model.IsRequired = 1;
             loadingService.show();
             return productMapattributeService.add(product.Attribute.Model).then((result) => {
-                product.Attribute.grid.getlist();
+                return product.Attribute.grid.getlist();
             }).catch((error) => {
                 loadingService.hide();
             }).finally(loadingService.hide)
@@ -1015,7 +1031,7 @@
         function relatedProductModal() {
             loadingService.show();
             return product.relatedProduct.listProductGrid.getlist().then(() => {
-                $('#related-product-modal').modal('show');
+                $('#related-product-select-modal').modal('show');
                 loadingService.hide();
             }).finally(loadingService.hide);
 
@@ -1023,15 +1039,23 @@
         function addRelatedProduct() {
             loadingService.show();
             return $q.resolve().then(() => {
-                relatedProductService.add(product.relatedProduct.selectProduct);
+                return relatedProductService.add(product.relatedProduct.selectProduct);
             }).then(() => {
                 product.relatedProduct.selectProduct = [];
                 return product.relatedProduct.relatedProductGrid.getlist();
-
+            }).then(() => {
+                $('#related-product-select-modal').modal('hide');
+            }) .finally(loadingService.hide);
+        }
+        function editRelatedProduct() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return relatedProductService.edit(product.relatedProduct.Model);
+            }).then(() => {
+                return product.relatedProduct.relatedProductGrid.getlist();
             }).then(() => {
                 $('#related-product-modal').modal('hide');
-            })
-                .finally(loadingService.hide);
+            }).finally(loadingService.hide);
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿using FM.Portal.BaseModel;
 using System;
+using System.Collections.Generic;
 
 namespace FM.Portal.Core.Model
 {
@@ -10,6 +11,7 @@ namespace FM.Portal.Core.Model
         public int Priority { get; set; }
 
         //only show
+        public List<Attachment> Attachments { get; set; }
         public string ProductName1 { get; set; }
         public string ProductName2 { get; set; }
     }

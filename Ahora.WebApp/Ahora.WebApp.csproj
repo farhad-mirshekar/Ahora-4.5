@@ -1934,6 +1934,7 @@
     <Content Include="Views\ShoppingCart\Partial\_PartialDeliveryDateAndShippingCost.cshtml" />
     <Content Include="Views\Shared\_PartialAutoComplateSearch.cshtml" />
     <Content Include="Views\Product\CompareProducts.cshtml" />
+    <Content Include="Views\Product\_PartialRelatedProduct.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

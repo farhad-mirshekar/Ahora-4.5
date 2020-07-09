@@ -1,6 +1,7 @@
 ﻿using FM.Portal.BaseModel;
 using FM.Portal.Core.Common;
 using System;
+using System.Collections.Generic;
 
 namespace FM.Portal.Core.Model
 {
@@ -50,5 +51,6 @@ namespace FM.Portal.Core.Model
         public string DeliveryDateName { get; set; }
         public string CategoryName { get; set; }
         public string PicUrl { get; set; }
+        public List<RelatedProduct> RelatedProducts { get; set; }
     }
 }

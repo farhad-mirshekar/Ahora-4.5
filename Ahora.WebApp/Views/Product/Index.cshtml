@@ -46,6 +46,15 @@
                 <div class="row">
                     @Html.Partial("_PartialMain", Model)
                 </div>
+                @if (Model.RelatedProducts.Count > 0)
+                {
+                    <div class="row">
+                        <div class="col-md-12">
+                            @Html.Partial("_PartialRelatedProduct",Model.RelatedProducts)
+                        </div>
+                    </div>
+                }
+
             </div>
         </div>
     </div>

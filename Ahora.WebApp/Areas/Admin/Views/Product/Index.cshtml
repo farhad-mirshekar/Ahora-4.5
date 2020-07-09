@@ -332,9 +332,9 @@
     </div>
 </div>
 
-<!--related product modal-->
+<!--related product select modal-->
 <div class="modal fade" dir="rtl"
-     id="related-product-modal"
+     id="related-product-select-modal"
      tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -348,6 +348,41 @@
             </div>
             <div class="modal-footer pull-left">
                 <button class="btn btn-success" ng-click="addRelatedProduct();">افزودن</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--related product modal-->
+<div class="modal fade" dir="rtl"
+     id="related-product-modal"
+     tabindex="-1"
+     role="dialog"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h2 class="main-title">ویرایش محصول مرتبط</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="CategorySub" class="control-label">نام محصول</label>
+                        <div class="col-md-10">
+                            <label class="control-label">{{relatedProduct.Model.ProductName2}}</label> 
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="CategorySub" class="control-label">اولویت</label>
+                        <div class="col-md-10">
+                            <input type="number" class="form-control" ng-model="relatedProduct.Model.Priority" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer pull-left">
+                <button class="btn btn-primary" ng-click="editRelatedProduct();">ویرایش</button>
                 <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
             </div>
         </div>

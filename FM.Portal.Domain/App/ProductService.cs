@@ -13,9 +13,12 @@ namespace FM.Portal.Domain
     public class ProductService : IProductService
     {
         private readonly IProductDataSource _dataSource;
-        public ProductService(IProductDataSource dataSource)
+        private readonly IRelatedProductService _relatedProductService;
+        public ProductService(IProductDataSource dataSource
+                              , IRelatedProductService relatedProductService)
         {
             _dataSource = dataSource;
+            _relatedProductService = relatedProductService;
         }
         public Result<Product> Add(Product model)
         {
@@ -43,11 +46,23 @@ namespace FM.Portal.Domain
 
         public Result<Product> Get(Guid ID)
         {
-            return _dataSource.Get(ID, null);
+            var result = _dataSource.Get(ID, null);
+            if (!result.Success)
+                return result;
+            var relatedProducts = _relatedProductService.List(new RelatedProductListVM {ProductID1 = result.Data.ID });
+            result.Data.RelatedProducts = relatedProducts.Data;
+
+            return result;
         }
         public Result<Product> Get(string TrackingCode)
         {
-            return _dataSource.Get(null, TrackingCode);
+            var result = _dataSource.Get(null, TrackingCode);
+            if (!result.Success)
+                return result;
+            var relatedProducts = _relatedProductService.List(new RelatedProductListVM { ProductID1 = result.Data.ID });
+            result.Data.RelatedProducts = relatedProducts.Data;
+
+            return result;
         }
         public Result<List<Product>> List()
         {

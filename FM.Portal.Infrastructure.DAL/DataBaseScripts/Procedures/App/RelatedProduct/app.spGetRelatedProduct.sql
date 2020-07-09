@@ -10,9 +10,12 @@ CREATE PROCEDURE app.spGetRelatedProduct
 AS
 BEGIN
 	SELECT 
-		RelatedProduct.*
+		RelatedProduct.*,
+		p2.Name AS ProductName2
 	FROM	
 		[app].[RelatedProduct] RelatedProduct
+	INNER JOIN 
+		app.Product p2 ON RelatedProduct.ProductID2 = p2.ID
 	WHERE 
 		RelatedProduct.ID = @ID
 END
