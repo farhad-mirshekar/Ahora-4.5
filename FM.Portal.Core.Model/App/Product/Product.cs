@@ -52,5 +52,7 @@ namespace FM.Portal.Core.Model
         public string CategoryName { get; set; }
         public string PicUrl { get; set; }
         public List<RelatedProduct> RelatedProducts { get; set; }
+        public ShippingCost ShippingCost { get; set; }
+        public DeliveryDate DeliveryDate { get; set; }
     }
 }

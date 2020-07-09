@@ -14,11 +14,17 @@ namespace FM.Portal.Domain
     {
         private readonly IProductDataSource _dataSource;
         private readonly IRelatedProductService _relatedProductService;
+        private readonly IShippingCostService _shippingCostService;
+        private readonly IDeliveryDateService _deliveryDateService;
         public ProductService(IProductDataSource dataSource
-                              , IRelatedProductService relatedProductService)
+                              , IRelatedProductService relatedProductService
+                              , IShippingCostService shippingCostService
+                              , IDeliveryDateService deliveryDateService)
         {
             _dataSource = dataSource;
             _relatedProductService = relatedProductService;
+            _deliveryDateService = deliveryDateService;
+            _shippingCostService = shippingCostService;
         }
         public Result<Product> Add(Product model)
         {
@@ -50,8 +56,31 @@ namespace FM.Portal.Domain
             if (!result.Success)
                 return result;
             var relatedProducts = _relatedProductService.List(new RelatedProductListVM {ProductID1 = result.Data.ID });
-            result.Data.RelatedProducts = relatedProducts.Data;
+            if (!relatedProducts.Success)
+                return Result<Product>.Failure(message:"خطا در بازیابی محصولات مرتبط");
 
+            result.Data.RelatedProducts = relatedProducts.Data;
+            if (result.Data.DeliveryDateID != null)
+            {
+                if (result.Data.DeliveryDateID.Value != Guid.Empty)
+                {
+                    var deliveryDateResult = _deliveryDateService.Get(result.Data.DeliveryDateID.Value);
+                    if (!deliveryDateResult.Success)
+                        return Result<Product>.Failure(message: "خطا در بازیابی زمان ارسال محصول");
+                    result.Data.DeliveryDate = deliveryDateResult.Data;
+                }
+            }
+
+            if (result.Data.ShippingCostID != null)
+            {
+                if (result.Data.ShippingCostID.Value != Guid.Empty)
+                {
+                    var shippingCostResult = _shippingCostService.Get(result.Data.ShippingCostID.Value);
+                    if (!shippingCostResult.Success)
+                        return Result<Product>.Failure(message: "خطا در بازیابی هزینه ارسال محصول");
+                    result.Data.ShippingCost = shippingCostResult.Data;
+                }
+            }
             return result;
         }
         public Result<Product> Get(string TrackingCode)
@@ -60,8 +89,31 @@ namespace FM.Portal.Domain
             if (!result.Success)
                 return result;
             var relatedProducts = _relatedProductService.List(new RelatedProductListVM { ProductID1 = result.Data.ID });
-            result.Data.RelatedProducts = relatedProducts.Data;
+            if (!relatedProducts.Success)
+                return Result<Product>.Failure(message: "خطا در بازیابی محصولات مرتبط");
 
+            result.Data.RelatedProducts = relatedProducts.Data;
+            if (result.Data.DeliveryDateID != null)
+            {
+                if(result.Data.DeliveryDateID.Value != Guid.Empty)
+                {
+                    var deliveryDateResult = _deliveryDateService.Get(result.Data.DeliveryDateID.Value);
+                    if (!deliveryDateResult.Success)
+                        return Result<Product>.Failure(message: "خطا در بازیابی زمان ارسال محصول");
+                    result.Data.DeliveryDate = deliveryDateResult.Data;
+                }
+            }
+
+            if (result.Data.ShippingCostID != null)
+            {
+                if(result.Data.ShippingCostID.Value != Guid.Empty)
+                {
+                    var shippingCostResult = _shippingCostService.Get(result.Data.ShippingCostID.Value);
+                    if (!shippingCostResult.Success)
+                        return Result<Product>.Failure(message: "خطا در بازیابی هزینه ارسال محصول");
+                    result.Data.ShippingCost = shippingCostResult.Data;
+                }
+            }
             return result;
         }
         public Result<List<Product>> List()
