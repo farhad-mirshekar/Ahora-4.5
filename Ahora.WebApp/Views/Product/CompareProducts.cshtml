@@ -6,6 +6,18 @@
         columnWidth = Math.Round((decimal)(90M / Model.Count), 0).ToString() + "%";
     }
     var attributesList = (List<ListAttributeForSelectCustomerVM>)ViewBag.attributeLists;
+    var attributeSelectCustomer = new List<ListAttributeForSelectCustomerVM>();
+    foreach (var product in Model)
+    {
+        foreach (var listAttribute in attributesList)
+        {
+            if (attributeSelectCustomer.FirstOrDefault(a => a.AttributeID == listAttribute.AttributeID) == null)
+            {
+                attributeSelectCustomer.Add(listAttribute);
+            }
+        }
+
+    }
 }
 
 @section BodySection{
@@ -97,19 +109,21 @@
                                             </td>
                                         }
                                     </tr>
-                                    @foreach (var item in attributesList)
+                                    @foreach (var listAttributeForSelectCustomer in attributeSelectCustomer)
                                     {
                                         <tr>
-                                            <td><span>@item.TextPrompt</span></td>
+                                            <td><span>@listAttributeForSelectCustomer.TextPrompt</span></td>
                                             @foreach (var product in Model)
                                             {
-                                                if (item.ProductID == product.ID)
+                                                var attributesForProduct = attributesList.Where(x => x.ProductID == product.ID).ToList();
+                                                var attributes = attributesForProduct.FirstOrDefault(a => a.AttributeID == listAttributeForSelectCustomer.AttributeID);
+                                                if (attributes != null)
                                                 {
                                                     <td class="@columnWidth">
-                                                        @if (item.ProductVariantAttributeValue.Count > 1)
+                                                        @if (attributes.ProductVariantAttributeValue.Count > 1)
                                                         {
                                                             <ul class="list-group">
-                                                                @foreach (var attribute in item.ProductVariantAttributeValue)
+                                                                @foreach (var attribute in attributes.ProductVariantAttributeValue)
                                                                 {
                                                                     <li class="list-group-item">
                                                                         @{
@@ -130,19 +144,19 @@
                                                         }
                                                         else
                                                         {
-                                                    <span>
-                                                        @{
-                                                            var oneAttribute = item.ProductVariantAttributeValue.FirstOrDefault();
-                                                            if (oneAttribute.Price > 0)
-                                                            {
-                                                                <span>@string.Format("{0} - {1:C0} تومان", oneAttribute.Name, oneAttribute.Price).Replace("$", "")</span>
-                                                            }
-                                                            else
-                                                            {
-                                                                <span>@string.Format("{0}", oneAttribute.Name)</span>
-                                                            }
-                                                        }
-                                                    </span>
+                                                            <span>
+                                                                @{
+                                                                    var oneAttribute = attributes.ProductVariantAttributeValue.FirstOrDefault();
+                                                                    if (oneAttribute.Price > 0)
+                                                                    {
+                                                                        <span>@string.Format("{0} - {1:C0} تومان", oneAttribute.Name, oneAttribute.Price).Replace("$", "")</span>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <span>@string.Format("{0}", oneAttribute.Name)</span>
+                                                                    }
+                                                                }
+                                                            </span>
                                                         }
                                                     </td>
                                                 }
@@ -152,6 +166,9 @@
                                                         <span>-----</span>
                                                     </td>
                                                 }
+
+                                            }
+
                                             }
                                         </tr>
                                     }
