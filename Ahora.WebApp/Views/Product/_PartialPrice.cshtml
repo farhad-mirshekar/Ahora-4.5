@@ -1,6 +1,5 @@
 ﻿@model FM.Portal.Core.Model.Product
 @{
-    List<FM.Portal.Core.Model.ListAttributeForSelectCustomerVM> attribute = ViewBag.attribute;
     decimal temp1 = 0;
     decimal temp2 = 0;
 }
@@ -15,7 +14,7 @@
                 <label class="text-info">قیمت محصول : </label>
                 <label class="text-danger">@string.Format("{0:C0} تومان", Model.Price).Replace("$", "")</label>
                 @{
-                    if (Model.HasDiscountsApplied)
+                    if (Model.Category.HasDiscountsApplied)
                     {
                         if (Model.DiscountTypes == DiscountType.درصدی)
                         {
@@ -67,10 +66,10 @@
                 <label class="text-info">مبلغ نهایی : </label>
                 <label class="text-danger">@string.Format("{0:C0} تومان", (Model.Price - (temp1 + temp2))).Replace("$", "")</label>
             </div>
-            if (attribute.Count > 0)
+            if (Model.Attributes.Count > 0)
             {
                 <div class="col-md-12">
-                    @foreach (var item in attribute)
+                    @foreach (var item in Model.Attributes)
                     {
                         string controlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", item.ProductID, item.AttributeID, item.ID, item.TextPrompt);
                         string TextPrompt = !string.IsNullOrEmpty(item.TextPrompt) ? item.TextPrompt : item.TextPrompt;

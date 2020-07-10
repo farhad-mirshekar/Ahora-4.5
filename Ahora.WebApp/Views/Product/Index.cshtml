@@ -1,7 +1,6 @@
 ﻿@model FM.Portal.Core.Model.Product
 @{
     ViewBag.Title = Model.Name;
-    List<FM.Portal.Core.Model.Attachment> pic = ViewBag.pic;
 }
 @section Head{
     <meta itemprop="name" name="twitter:title" property="dc.title" content="@Model.Name">
@@ -25,7 +24,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        @Html.Partial("~/Views/product/_PartialCarousel.cshtml", pic)
+                        @Html.Partial("~/Views/product/_PartialCarousel.cshtml", Model.Attachments)
                     </div>
                     <div class="col-md-6 col-sm-7 col-xs-12">
                         <section>

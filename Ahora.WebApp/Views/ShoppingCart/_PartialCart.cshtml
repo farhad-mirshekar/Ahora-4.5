@@ -2,8 +2,7 @@
 @using FM.Portal.Core.Common;
 @{
     decimal amountBasket = 0;
-    var shippingCost = Model.OrderByDescending(x => x.ShippingCostPriority).ThenByDescending(x => x.DeliveryDatePriority).Select(x => x).FirstOrDefault();
-}
+ }
 @if (Model != null && Model.Count > 0)
 {
     <div class="card" id="cart">
@@ -30,7 +29,7 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="pull-right">
-                                                <h6>@item.ProductName</h6>
+                                                <h6>@item.Product.Name</h6>
                                                 @if (item.Attribute.Count > 0)
                                                 {
                                                     foreach (var attribute in item.Attribute)
@@ -51,36 +50,36 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <label>قیمت واحد:</label>
-                                                            <label>@string.Format("{0:C0} تومان", item.ProductPrice).Replace("$", "")</label>
+                                                            <label>@string.Format("{0:C0} تومان", item.Product.Price).Replace("$", "")</label>
                                                             @{
-                                                                if (item.HasDiscount)
+                                                                if (item.Product.HasDiscount)
                                                                 {
-                                                                    if (item.SelfProductDiscountType == DiscountType.درصدی)
+                                                                    if (item.Product.DiscountType == DiscountType.درصدی)
                                                                     {
-                                                                        temp1 = (item.ProductPrice * item.SelfProductDiscountAmount) / 100;
+                                                                        temp1 = (item.Product.Price * item.Product.Discount) / 100;
                                                                         <label class="control-label">
                                                                             تخفیف :
                                                                         </label>
                                                                         <label class="control-label text-danger">
-                                                                            @string.Format("{0:C0} درصد", item.SelfProductDiscountAmount).Replace("$", "")
+                                                                            @string.Format("{0:C0} درصد", item.Product.Discount).Replace("$", "")
                                                                         </label>
                                                                     }
                                                                     else
                                                                     {
-                                                                        temp1 = item.SelfProductDiscountAmount;
+                                                                        temp1 = item.Product.Discount;
                                                                         <label class="control-label">
                                                                             تخفیف :
                                                                         </label>
                                                                         <label class="control-label text-danger">
-                                                                            @string.Format("{0:C0} تومان", item.SelfProductDiscountAmount).Replace("$", "")
+                                                                            @string.Format("{0:C0} تومان", item.Product.Discount).Replace("$", "")
                                                                         </label>
                                                                     }
                                                                 }
-                                                                if (item.HasDiscountsApplied)
+                                                                if (item.Product.Category.HasDiscountsApplied)
                                                                 {
                                                                     if (item.DiscountType == DiscountType.درصدی)
                                                                     {
-                                                                        temp2 = (item.ProductPrice * item.DiscountAmount) / 100;
+                                                                        temp2 = (item.Product.Price * item.DiscountAmount) / 100;
                                                                         <label class="control-label">
                                                                             تخفیف » @item.DiscountName :
                                                                         </label>
@@ -103,19 +102,19 @@
 
                                                         </div>
                                                         <div class="col-md-6 quantity">
-                                                            <i class="fa fa-plus" data-href="@Url.Action("QuantityPlus", "ShoppingCart", new { ProductID = item.ProductID })" style="color:blue;padding:10px"></i>
+                                                            <i class="fa fa-plus" data-href="@Url.Action("QuantityPlus", "ShoppingCart", new { ProductID = item.Product.ID })" style="color:blue;padding:10px"></i>
                                                             <label>@item.Quantity</label>
-                                                            <i class="fa fa-minus" data-href="@Url.Action("QuantityMinus", "ShoppingCart", new { ProductID = item.ProductID })" style="color:#ff0000;padding:10px"></i>
+                                                            <i class="fa fa-minus" data-href="@Url.Action("QuantityMinus", "ShoppingCart", new { ProductID = item.Product.ID })" style="color:#ff0000;padding:10px"></i>
                                                         </div>
                                                         @{
-                                                            amountBasket += attributePrice + (item.ProductPrice - (temp1 + temp2)) * item.Quantity;
+                                                            amountBasket += attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity;
                                                         }
                                                         <div class="col-md-12">
                                                             <label>مبلغ :</label>
-                                                            <label>@string.Format("{0:C0} تومان", (attributePrice + (item.ProductPrice - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
+                                                            <label>@string.Format("{0:C0} تومان", (attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
                                                         </div>
                                                     </div>
-                                                    <button type="button" class="btn btn-danger delete" data-href="@Url.Action("Delete", "ShoppingCart", new { ProductID = @item.ProductID, ShoppingID = @item.ShoppingID })">حذف</button>
+                                                    <button type="button" class="btn btn-danger delete" data-href="@Url.Action("Delete", "ShoppingCart", new { ProductID = @item.Product.ID, ShoppingID = @item.ShoppingID })">حذف</button>
                                                 </div>
                                             </div>
                                         </div>

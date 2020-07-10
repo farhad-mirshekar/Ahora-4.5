@@ -3,11 +3,18 @@
     ViewBag.Title = "سبد خرید";
 }
 @section bodySection{
-    @Html.Partial("_PartialBasket", Model)
+    @if (Model != null && Model.Count > 0)
+    {
+        @Html.Partial("_PartialBasket", Model)
 
-    @Html.Partial("_PartialUserAddress")
+        @Html.Partial("_PartialUserAddress")
+    }
+    else
+    {
+        { Html.RenderAction("CartEmpty", "ShoppingCart"); }
+    }
 }
 
-@section scripts{
-    <script src="~/scripts/custom/Quantity.js"></script>
-}
+    @section scripts{
+        <script src="~/scripts/custom/Quantity.js"></script>
+    }

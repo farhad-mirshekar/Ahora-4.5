@@ -11,9 +11,12 @@ namespace FM.Portal.Domain
     public class ShoppingCartItemService : IShoppingCartItemService
     {
         private readonly IShoppingCartItemDataSource _dataSource;
-        public ShoppingCartItemService(IShoppingCartItemDataSource dataSource)
+        private readonly IProductService _productService;
+        public ShoppingCartItemService(IShoppingCartItemDataSource dataSource
+                                     , IProductService productService)
         {
             _dataSource = dataSource;
+            _productService = productService;
         }
         public Result<List<ShoppingCartItem>> Add(ShoppingCartItem model)
         {
@@ -49,6 +52,15 @@ namespace FM.Portal.Domain
         {
             var table = ConvertDataTableToList.BindList<ShoppingCartItem>(_dataSource.List(ShoppingID));
             if (table.Count > 0 || table.Count == 0)
+            {
+                foreach (var item in table)
+                {
+                    var productResult = _productService.Get(item.ProductID);
+                    if (!productResult.Success)
+                        return Result<List<ShoppingCartItem>>.Failure(message:"خطا در بازیابی محصول");
+                    item.Product = productResult.Data;
+                }
+            }
                 return Result<List<ShoppingCartItem>>.Successful(data: table);
             return Result<List<ShoppingCartItem>>.Failure();
         }

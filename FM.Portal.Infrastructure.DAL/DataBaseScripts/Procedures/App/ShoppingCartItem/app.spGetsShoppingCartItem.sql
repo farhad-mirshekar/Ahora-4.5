@@ -30,15 +30,7 @@ BEGIN
 		disc.HasDiscountsApplied,
 		disc.DiscountName,
 		disc.DiscountAmount,
-		disc.DiscountType,
-		product.HasDiscount,
-		product.Discount AS SelfProductDiscountAmount,
-		product.DiscountType AS SelfProductDiscountType,
-		ShippingCost.Price AS ShippingCostPrice,
-		ShippingCost.Name AS ShippingCostName,
-		ShippingCost.[Priority] AS ShippingCostPriority,
-		DeliveryDate.[Name] AS DeliveryDateName,
-		DeliveryDate.[Priority] AS DeliveryDatePriority
+		disc.DiscountType
 	FROM 
 		[app].[ShoppingCartItem] cart
 	INNER JOIN	

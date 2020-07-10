@@ -39,12 +39,9 @@ namespace Ahora.WebApp.Controllers
         public ActionResult Index(string TrackingCode, String Title)
         {
             var result = _service.Get(TrackingCode);
-            ViewBag.attribute = new List<model.ListAttributeForSelectCustomerVM>();
-            var resultPic = _attachmentService.List(result.Data.ID);
-            var attribute = _service.SelectAttributeForCustomer(result.Data.ID);
-            if (attribute.Success && attribute.Data.Count > 0)
-                ViewBag.attribute = attribute.Data;
-            ViewBag.pic = resultPic.Data.Where(p => p.PathType == model.PathType.product).ToList();
+            if (!result.Success)
+                RedirectToRoute("Home");
+
             SetCookie("ShoppingID");
             return View(result.Data);
         }
@@ -84,18 +81,10 @@ namespace Ahora.WebApp.Controllers
         {
             try
             {
-                var attributes = _service.SelectAttributeForCustomer(product.ID);
-                if (!attributes.Success)
-                    return Json(new
-                    {
-                        success = false,
-                        message = "خطایی اتفاق افتاده است. دوباره امتحان کنید"
-                    });
-
-                var attribute = attributes.Data;
+                var attribute = product.Attributes;
                 if (attribute.Count > 0)
                 {
-                    return _AddToCartWithAttribute(product, form, attribute);
+                    return _AddToCartWithAttribute(product, form);
                 }
                 else
                     return _AddToCartWithOutAttribute(product);
@@ -128,14 +117,14 @@ namespace Ahora.WebApp.Controllers
 
             }
         }
-        private JsonResult _AddToCartWithAttribute(model.Product product, FormCollection form, List<model.ListAttributeForSelectCustomerVM> attributes)
+        private JsonResult _AddToCartWithAttribute(model.Product product, FormCollection form)
         {
             try
             {
                 var attributeChosen = new List<model.AttributeJsonVM>();
-                if (attributes.Count > 0)
+                if (product.Attributes.Count > 0)
                 {
-                    foreach (var item in attributes)
+                    foreach (var item in product.Attributes)
                     {
                         string controlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", item.ProductID, item.AttributeID, item.ID, item.TextPrompt);
 
@@ -303,34 +292,10 @@ namespace Ahora.WebApp.Controllers
                 return View("Error", new Error { ClassCss = "alert alert-danger", ErorrDescription = "خطا در بازیابی داده" });
 
             var compareProducts = compareProductsResult.Data;
-            foreach (var item in compareProducts)
-            {
-                var attachmentResult = _attachmentService.List(item.ID);
-                if (attachmentResult.Data.Count > 0)
-                    item.PicUrl = $"{attachmentResult.Data.Select(x => x.Path).First()}/{attachmentResult.Data.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
-
-            }
-            var attributeLists = new List<ListAttributeForSelectCustomerVM>();
             if (compareProducts.Count > 0)
-            {
-                foreach (var product in compareProducts)
-                {
-                    var attributesResult = _service.SelectAttributeForCustomer(product.ID);
-                    if (!attributesResult.Success)
-                        break;
-                    var attributes = attributesResult.Data;
-                    if (attributes.Count > 0)
-                    {
-                        attributeLists.AddRange(attributes);
-                    }
-
-                }
-                ViewBag.attributeLists = attributeLists;
                 return View(compareProducts);
-            }
 
-            else
-                return RedirectToRoute("Home");
+            return RedirectToRoute("Home");
         }
         public ActionResult RemoveProductFromCompareList(Guid ProductID)
         {

@@ -2,18 +2,18 @@
 @using FM.Portal.Core.Common;
 @{
     var amountBasket = (decimal)ViewBag.amountBasket;
-    var shippingCost = Model.OrderByDescending(x => x.ShippingCostPriority).Select(x => x).FirstOrDefault();
-    var deliveryDate = Model.OrderByDescending(x => x.DeliveryDatePriority).Select(x => x).FirstOrDefault();
+    var shippingCost = Model.Where(x => x.Product.ShippingCost != null).Select(x => x.Product.ShippingCost).OrderByDescending(x=>x.Priority).FirstOrDefault();
+    var deliveryDate = Model.Where(x => x.Product.DeliveryDate != null).Select(x => x.Product.DeliveryDate).OrderByDescending(x => x.Priority).FirstOrDefault();
 }
 <section class="mt-4">
     <div class="container">
         <div class="row">
             @{
-                if (Model != null && shippingCost.ShippingCostPrice > 0)
+                if (shippingCost != null && shippingCost.Price > 0)
                 {
                     <div class="col-md-4">
-                        <label class="label label-default">هزینه ارسال محصول (@shippingCost.ShippingCostName) : </label>
-                        <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.ShippingCostPrice).Replace("$", "")</label>
+                        <label class="label label-default">هزینه ارسال محصول (@shippingCost.Name) : </label>
+                        <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.Price).Replace("$", "")</label>
                     </div>
                 }
                 else
@@ -27,13 +27,13 @@
                         </div>
                     }
                 }
-                if (Model != null && (shippingCost.ShippingCostPrice > 0 || amountBasket < Helper.ShoppingCartRate || amountBasket > Helper.ShoppingCartRate))
+                if (shippingCost != null && (shippingCost.Price > 0 || amountBasket < Helper.ShoppingCartRate || amountBasket > Helper.ShoppingCartRate))
                 {
-                    if (shippingCost.ShippingCostPrice > 0)
+                    if (shippingCost.Price > 0)
                     {
                         <div class="col-md-4">
                             <label class="label label-default">قیمت نهایی :</label>
-                            <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.ShippingCostPrice + amountBasket).Replace("$", "")</label>
+                            <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.Price + amountBasket).Replace("$", "")</label>
                         </div>
                     }
                     else if (amountBasket < Helper.ShoppingCartRate)
@@ -51,14 +51,14 @@
                         </div>
                     }
                 }
-                if (Model != null)
+                if (Model != null && deliveryDate != null)
                 {
                     <div class="col-md-4">
                         <label class="label label-default">
                             <i class="fa fa-calendar text-success"></i>
                             زمان ارسال محصول :
                         </label>
-                        <label class="label text-danger">@deliveryDate.DeliveryDateName</label>
+                        <label class="label text-danger">@deliveryDate.Name</label>
                     </div>
                 }
             }

@@ -119,15 +119,15 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.StockQuantity = SQLHelper.CheckIntNull(dr["StockQuantity"]);
                             obj.DiscountName = SQLHelper.CheckStringNull(dr["DiscountName"]);
                             obj.DiscountAmount = SQLHelper.CheckDecimalNull(dr["DiscountAmount"]);
-                            obj.HasDiscountsApplied = SQLHelper.CheckBoolNull(dr["HasDiscountsApplied"]);
+                            //obj.HasDiscountsApplied = SQLHelper.CheckBoolNull(dr["HasDiscountsApplied"]);
                             obj.DiscountType =(DiscountType) SQLHelper.CheckByteNull(dr["DiscountType"]);
                             obj.DiscountTypes = (DiscountType)SQLHelper.CheckByteNull(dr["DiscountTypes"]);
                             obj.HasDiscount = SQLHelper.CheckBoolNull(dr["HasDiscount"]);
                             obj.IsDownload = SQLHelper.CheckBoolNull(dr["IsDownload"]);
                             obj.ShippingCostID = SQLHelper.CheckGuidNull(dr["ShippingCostID"]);
-                            obj.ShippingCostName = SQLHelper.CheckStringNull(dr["ShippingCostName"]);
+                            //obj.ShippingCostName = SQLHelper.CheckStringNull(dr["ShippingCostName"]);
                             obj.DeliveryDateID = SQLHelper.CheckGuidNull(dr["DeliveryDateID"]);
-                            obj.DeliveryDateName = SQLHelper.CheckStringNull(dr["DeliveryDateName"]);
+                            //obj.DeliveryDateName = SQLHelper.CheckStringNull(dr["DeliveryDateName"]);
                             obj.CategoryName = SQLHelper.CheckStringNull(dr["CategoryName"]);
                         }
                     }

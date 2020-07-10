@@ -44,15 +44,17 @@ namespace FM.Portal.Core.Model
         public string DiscountName { get; set; }
         public DiscountType DiscountTypes { get; set; }
         public decimal DiscountAmount { get; set; }
-        public bool HasDiscountsApplied { get; set; }
         public int CountSelect { get; set; }
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
-        public string ShippingCostName { get; set; }
-        public string DeliveryDateName { get; set; }
+        //public string ShippingCostName { get; set; }
+        //public string DeliveryDateName { get; set; }
         public string CategoryName { get; set; }
-        public string PicUrl { get; set; }
+        //public string PicUrl { get; set; }
         public List<RelatedProduct> RelatedProducts { get; set; }
         public ShippingCost ShippingCost { get; set; }
         public DeliveryDate DeliveryDate { get; set; }
+        public Category Category { get; set; }
+        public List<Attachment> Attachments { get; set; }
+        public List<ListAttributeForSelectCustomerVM> Attributes { get; set; }
     }
 }

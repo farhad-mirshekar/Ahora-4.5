@@ -16,15 +16,21 @@ namespace FM.Portal.Domain
         private readonly IRelatedProductService _relatedProductService;
         private readonly IShippingCostService _shippingCostService;
         private readonly IDeliveryDateService _deliveryDateService;
+        private readonly ICategoryService _categoryService;
+        private readonly IAttachmentService _attachmentService;
         public ProductService(IProductDataSource dataSource
                               , IRelatedProductService relatedProductService
                               , IShippingCostService shippingCostService
-                              , IDeliveryDateService deliveryDateService)
+                              , IDeliveryDateService deliveryDateService
+                              , ICategoryService categoryService
+                              , IAttachmentService attachmentService)
         {
             _dataSource = dataSource;
             _relatedProductService = relatedProductService;
             _deliveryDateService = deliveryDateService;
             _shippingCostService = shippingCostService;
+            _categoryService = categoryService;
+            _attachmentService = attachmentService;
         }
         public Result<Product> Add(Product model)
         {
@@ -81,6 +87,23 @@ namespace FM.Portal.Domain
                     result.Data.ShippingCost = shippingCostResult.Data;
                 }
             }
+            var categoryResult = _categoryService.Get(result.Data.CategoryID);
+            if(!categoryResult.Success)
+                return Result<Product>.Failure(message: "خطا در بازیابی دسته بندی محصول");
+
+            result.Data.Category = categoryResult.Data;
+
+            var attachmentResult = _attachmentService.List(result.Data.ID);
+            if(!attachmentResult.Success)
+                return Result<Product>.Failure(message: "خطا در بازیابی تصاویر محصول");
+            result.Data.Attachments = attachmentResult.Data;
+
+            var attributesResult = SelectAttributeForCustomer(result.Data.ID);
+            if (!attachmentResult.Success)
+                return Result<Product>.Failure(message: "خطا در بازیابی فیلدهای عمومی محصول");
+            result.Data.Attributes = attributesResult.Data;
+
+
             return result;
         }
         public Result<Product> Get(string TrackingCode)
@@ -114,6 +137,23 @@ namespace FM.Portal.Domain
                     result.Data.ShippingCost = shippingCostResult.Data;
                 }
             }
+
+            var categoryResult = _categoryService.Get(result.Data.CategoryID);
+            if (!categoryResult.Success)
+                return Result<Product>.Failure(message: "خطا در بازیابی دسته بندی محصول");
+
+            result.Data.Category = categoryResult.Data;
+
+            var attachmentResult = _attachmentService.List(result.Data.ID);
+            if (!attachmentResult.Success)
+                return Result<Product>.Failure(message: "خطا در بازیابی تصاویر محصول");
+            result.Data.Attachments = attachmentResult.Data;
+
+            var attributesResult = SelectAttributeForCustomer(result.Data.ID);
+            if(!attachmentResult.Success)
+                return Result<Product>.Failure(message: "خطا در بازیابی فیلدهای عمومی محصول");
+            result.Data.Attributes = attributesResult.Data;
+
             return result;
         }
         public Result<List<Product>> List()

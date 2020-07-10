@@ -1785,7 +1785,6 @@
     <Content Include="Views\Home\_PartialProduct.cshtml" />
     <Content Include="Views\News\Detail.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
-    <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\_PartialCarousel.cshtml" />
     <Content Include="Views\Product\_PartialPrice.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
@@ -1794,7 +1793,7 @@
     <Content Include="Views\Shared\_PartialFooter.cshtml" />
     <Content Include="Views\Shared\_PartialSideArticle.cshtml" />
     <Content Include="Views\Shared\_PartialSideNews.cshtml" />
-    <Content Include="Views\ShoppingCart\_PartialCartEmpty.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial\_PartialCartEmpty.cshtml" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\ShoppingCart\Shopping.cshtml" />
     <Content Include="Views\ShoppingCart\_PartialBasket.cshtml" />
@@ -1935,6 +1934,7 @@
     <Content Include="Views\Shared\_PartialAutoComplateSearch.cshtml" />
     <Content Include="Views\Product\CompareProducts.cshtml" />
     <Content Include="Views\Product\_PartialRelatedProduct.cshtml" />
+    <Content Include="Views\ShoppingCart\CartEmpty.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

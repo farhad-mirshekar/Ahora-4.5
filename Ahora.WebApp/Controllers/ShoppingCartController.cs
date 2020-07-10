@@ -58,6 +58,10 @@ namespace Ahora.WebApp.Controllers
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
                 var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
                 var address = _addressService.List(SQLHelper.CheckGuidNull(User.Identity.Name));
+
+                if (!result.Success || result.Data.Count == 0)
+                    return RedirectToAction("CartEmpty");
+
                 ViewBag.StateAddress = false;
                 if (address.Success)
                 {
@@ -65,44 +69,28 @@ namespace Ahora.WebApp.Controllers
                     ViewBag.drpAddress = address.Data;
                 }
 
-                if (result.Data == null)
-                    return View("~/Views/ShoppingCart/_PartialCartEmpty.cshtml");
-                if (!result.Success)
-                    return View("error");
-
                 var cart = new List<ShoppingItemVM>();
                 foreach (var item in result.Data)
                 {
-                    var product = _productService.Get(item.ProductID);
-                    if (product.Success)
+                    var product = item.Product;
+                    var picUrl = $"{product.Attachments.Select(x => x.Path).First()}/{product.Attachments.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
+                    var attribute = new List<AttributeJsonVM>();
+                    if (item.AttributeJson != "" && item.AttributeJson != null)
                     {
-                        var attachmentResult = _attachmentService.List(product.Data.ID);
-                        var attachment = attachmentResult.Data;
-                        var picUrl = $"{attachment.Select(x => x.Path).First()}/{attachment.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
-                        var attribute = new List<AttributeJsonVM>();
-                        if (item.AttributeJson != "" && item.AttributeJson != null)
-                        {
-                            var json = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
-                            attribute.Add(json);
-                        }
-                        cart.Add(new ShoppingItemVM
-                        {
-                            ProductID = product.Data.ID,
-                            ProductName = product.Data.Name,
-                            ProductPrice = product.Data.Price,
-                            ShoppingID = SQLHelper.CheckGuidNull(shoppingID),
-                            ImageUrl = picUrl,
-                            Attribute = attribute,
-                            Quantity = item.Quantity,
-                            HasDiscountsApplied = item.HasDiscountsApplied,
-                            DiscountAmount = item.DiscountAmount,
-                            DiscountName = item.DiscountName,
-                            DiscountType = item.DiscountType,
-                            HasDiscount = item.HasDiscount,
-                            SelfProductDiscountAmount = item.SelfProductDiscountAmount,
-                            SelfProductDiscountType = item.SelfProductDiscountType
-                        });
+                        var json = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
+                        attribute.Add(json);
                     }
+                    cart.Add(new ShoppingItemVM
+                    {
+                        Product = product,
+                        ShoppingID = SQLHelper.CheckGuidNull(shoppingID),
+                        ImageUrl = picUrl,
+                        Attribute = attribute,
+                        Quantity = item.Quantity,
+                        DiscountAmount = item.DiscountAmount,
+                        DiscountName = item.DiscountName,
+                        DiscountType = item.DiscountType
+                    });
 
                 }
                 return View(cart);
@@ -143,62 +131,60 @@ namespace Ahora.WebApp.Controllers
                 var productList = new List<Product>();
                 foreach (var item in shoppingCartItem)
                 {
-                    var product = _productService.Get(item.ProductID);
-                    if (product.Success)
+                    decimal temp1 = 0;
+                    decimal temp2 = 0;
+                    decimal attributePrice = 0;
+                    var product = item.Product;
+                    var price = product.Price;
+                    if (product.HasDiscount)
                     {
-                        decimal temp1 = 0;
-                        decimal temp2 = 0;
-                        decimal attributePrice = 0;
-                        var price = product.Data.Price;
-                        if (item.HasDiscount)
+                        if (product.DiscountType != DiscountType.نامشخص)
                         {
-                            if (item.SelfProductDiscountType != DiscountType.نامشخص)
-                            {
-                                switch (item.SelfProductDiscountType)
-                                {
-                                    case DiscountType.درصدی:
-                                        temp1 = (product.Data.Price * item.SelfProductDiscountAmount) / 100;
-                                        break;
-                                    case DiscountType.مبلغی:
-                                        temp1 = item.SelfProductDiscountAmount;
-                                        break;
-                                }
-                            }
-                        }
-
-                        if (item.HasDiscountsApplied)
-                        {
-                            switch (item.DiscountType)
+                            switch (product.DiscountType)
                             {
                                 case DiscountType.درصدی:
-                                    temp2 = (product.Data.Price * item.DiscountAmount) / 100;
+                                    temp1 = (product.Price * product.Discount) / 100;
                                     break;
                                 case DiscountType.مبلغی:
-                                    temp2 = item.DiscountAmount;
+                                    temp1 = product.Discount;
                                     break;
                             }
                         }
-
-                        if (item.AttributeJson != "" && item.AttributeJson != null)
-                        {
-                            listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
-                            var attribute = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
-                            if (attribute.Price > 0)
-                                attributePrice = attribute.Price;
-                        }
-                        product.Data.CountSelect = item.Quantity;
-
-                        amount += attributePrice + (price - (temp1 + temp2)) * item.Quantity;
-                        productList.Add(product.Data);
                     }
+
+                    if (product.Category.HasDiscountsApplied)
+                    {
+                        switch (item.DiscountType)
+                        {
+                            case DiscountType.درصدی:
+                                temp2 = (product.Price * item.DiscountAmount) / 100;
+                                break;
+                            case DiscountType.مبلغی:
+                                temp2 = item.DiscountAmount;
+                                break;
+                        }
+                    }
+
+                    if (item.AttributeJson != "" && item.AttributeJson != null)
+                    {
+                        listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
+                        var attribute = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
+                        if (attribute.Price > 0)
+                            attributePrice = attribute.Price;
+                    }
+                    product.CountSelect = item.Quantity;
+
+                    amount += attributePrice + (price - (temp1 + temp2)) * item.Quantity;
+                    productList.Add(product);
+
                 }
                 attributeJson = JsonConvert.SerializeObject(listAttribute);
                 productJson = JsonConvert.SerializeObject(productList);
 
-                var shippingCost = shoppingCartItem.OrderByDescending(x => x.ShippingCostPriority).Select(x => x).FirstOrDefault();
-                if (shippingCost != null && shippingCost.ShippingCostPrice > 0)
+                var shippingCost = shoppingCartItem.Where(x => x.Product.ShippingCost != null).OrderByDescending(x => x.Product.ShippingCost.Priority).Select(x => x.Product.ShippingCost).FirstOrDefault();
+                if (shippingCost != null && shippingCost.Price > 0)
                 {
-                    amount += shippingCost.ShippingCostPrice;
+                    amount += shippingCost.Price;
                 }
                 else
                 {
@@ -277,49 +263,32 @@ namespace Ahora.WebApp.Controllers
             {
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
                 var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
-                if (result.Data == null)
-                    return View("~/Views/ShoppingCart/_PartialCartEmpty.cshtml");
-                if (!result.Success)
-                    return View("error");
+
+                if (!result.Success || result.Data.Count == 0)
+                        return View("~/Views/ShoppingCart/Partial/_PartialCartEmpty.cshtml");
 
                 var cart = new List<ShoppingItemVM>();
                 foreach (var item in result.Data)
                 {
-                    var product = _productService.Get(item.ProductID);
-                    if (product.Success)
+                    var product = item.Product;
+                    var picUrl = $"{product.Attachments.Select(x => x.Path).First()}/{product.Attachments.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
+                    var attribute = new List<AttributeJsonVM>();
+                    if (item.AttributeJson != "" && item.AttributeJson != null)
                     {
-                        var attachmentResult = _attachmentService.List(product.Data.ID);
-                        var attachment = attachmentResult.Data;
-                        var picUrl = $"{attachment.Select(x => x.Path).First()}/{attachment.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()}";
-                        var attribute = new List<AttributeJsonVM>();
-                        if (item.AttributeJson != "" && item.AttributeJson != null)
-                        {
-                            var json = JsonConvert.DeserializeObject<List<AttributeJsonVM>>(item.AttributeJson);
-                            attribute = json;
-                        }
-                        cart.Add(new ShoppingItemVM
-                        {
-                            ProductID = product.Data.ID,
-                            ProductName = product.Data.Name,
-                            ProductPrice = product.Data.Price,
-                            ShoppingID = SQLHelper.CheckGuidNull(shoppingID),
-                            ImageUrl = picUrl,
-                            Attribute = attribute,
-                            Quantity = item.Quantity,
-                            HasDiscountsApplied = item.HasDiscountsApplied,
-                            DiscountAmount = item.DiscountAmount,
-                            DiscountName = item.DiscountName,
-                            DiscountType = item.DiscountType,
-                            HasDiscount = item.HasDiscount,
-                            SelfProductDiscountAmount = item.SelfProductDiscountAmount,
-                            SelfProductDiscountType = item.SelfProductDiscountType,
-                            ShippingCostPrice = item.ShippingCostPrice,
-                            ShippingCostName = item.ShippingCostName,
-                            ShippingCostPriority = item.ShippingCostPriority,
-                            DeliveryDateName = item.DeliveryDateName,
-                            DeliveryDatePriority = item.DeliveryDatePriority
-                        });
+                        var json = JsonConvert.DeserializeObject<List<AttributeJsonVM>>(item.AttributeJson);
+                        attribute = json;
                     }
+                    cart.Add(new ShoppingItemVM
+                    {
+                        Product = product,
+                        ShoppingID = SQLHelper.CheckGuidNull(shoppingID),
+                        ImageUrl = picUrl,
+                        Attribute = attribute,
+                        Quantity = item.Quantity,
+                        DiscountAmount = item.DiscountAmount,
+                        DiscountName = item.DiscountName,
+                        DiscountType = item.DiscountType,
+                    });
 
                 }
                 return PartialView("_PartialCart", cart);
@@ -353,7 +322,7 @@ namespace Ahora.WebApp.Controllers
         }
         public ActionResult CartEmpty()
         {
-            return View("~/Views/ShoppingCart/_PartialCartEmpty.cshtml");
+            return View();
         }
         #endregion
 

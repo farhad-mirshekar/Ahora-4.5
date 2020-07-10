@@ -132,6 +132,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IRelatedProductDataSource, RelatedProductDataSource>();
             container.RegisterType<IRelatedProductService, RelatedProductService>();
 
+            container.RegisterType<ICategoryDataSource, CategoryDataSource>();
+            container.RegisterType<ICategoryService, CategoryService>();
+
             container.RegisterType<ICompareProductService, CompareProductService>();
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>

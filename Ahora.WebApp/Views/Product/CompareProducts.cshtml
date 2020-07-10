@@ -5,11 +5,10 @@
     {
         columnWidth = Math.Round((decimal)(90M / Model.Count), 0).ToString() + "%";
     }
-    var attributesList = (List<ListAttributeForSelectCustomerVM>)ViewBag.attributeLists;
     var attributeSelectCustomer = new List<ListAttributeForSelectCustomerVM>();
     foreach (var product in Model)
     {
-        foreach (var listAttribute in attributesList)
+        foreach (var listAttribute in product.Attributes)
         {
             if (attributeSelectCustomer.FirstOrDefault(a => a.AttributeID == listAttribute.AttributeID) == null)
             {
@@ -50,7 +49,7 @@
                                         @foreach (var item in Model)
                                         {
                                             <td>
-                                                <img src="~/Content/TemporaryFiles/@item.PicUrl" alt="@item.Name" class="img-box-product" />
+                                                <img src="~/Content/TemporaryFiles/@item.Attachments.Select(x => x.Path).First()/@item.Attachments.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()" alt="@item.Name" class="img-box-product" />
                                             </td>
                                         }
 
@@ -115,7 +114,7 @@
                                             <td><span>@listAttributeForSelectCustomer.TextPrompt</span></td>
                                             @foreach (var product in Model)
                                             {
-                                                var attributesForProduct = attributesList.Where(x => x.ProductID == product.ID).ToList();
+                                                var attributesForProduct = product.Attributes.Where(x => x.ProductID == product.ID).ToList();
                                                 var attributes = attributesForProduct.FirstOrDefault(a => a.AttributeID == listAttributeForSelectCustomer.AttributeID);
                                                 if (attributes != null)
                                                 {

@@ -14,15 +14,7 @@ namespace FM.Portal.Core.Model
         // only show
         public string DiscountName { get; set; }
         public decimal DiscountAmount { get; set; }
-        public bool HasDiscountsApplied { get; set; }
         public DiscountType DiscountType { get; set; }
-        public DiscountType SelfProductDiscountType { get; set; }
-        public decimal SelfProductDiscountAmount { get; set; }
-        public bool HasDiscount { get; set; }
-        public decimal ShippingCostPrice { get; set; }
-        public string ShippingCostName { get; set; }
-        public int ShippingCostPriority { get; set; }
-        public string DeliveryDateName { get; set; }
-        public int DeliveryDatePriority { get; set; }
+        public Product Product { get; set; }
     }
 }
