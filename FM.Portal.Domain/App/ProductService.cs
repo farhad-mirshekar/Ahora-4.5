@@ -39,8 +39,8 @@ namespace FM.Portal.Domain
                 return Result<Product>.Failure(message: validate.Message);
 
             var result = _dataSource.Insert(model);
-            if (result.Success)
-                LucenceSearch();
+            //if (result.Success)
+            //    LucenceSearch();
             return result;
         }
 
@@ -51,8 +51,8 @@ namespace FM.Portal.Domain
                 return Result<Product>.Failure(message: validate.Message);
 
             var result = _dataSource.Update(model);
-            if (result.Success)
-                LucenceSearch();
+            //if (result.Success)
+            //    LucenceSearch();
             return result;
         }
 
