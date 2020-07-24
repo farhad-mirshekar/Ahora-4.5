@@ -17,16 +17,19 @@ namespace Ahora.WebApp.Controllers
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IDownloadService _downloadService;
         private readonly IAttachmentService _attachmentService;
+        private readonly IProductService _productService;
         public RedirectController(IPaymentService service
                                  , IOrderService orderService
                                  , IShoppingCartItemService shoppingCartItemService
                                  , IDownloadService downloadService
-                                 , IAttachmentService attachmentService) : base(service)
+                                 , IAttachmentService attachmentService
+                                 , IProductService productService) : base(service)
         {
             _orderService = orderService;
             _shoppingCartItemService = shoppingCartItemService;
             _downloadService = downloadService;
             _attachmentService = attachmentService;
+            _productService = productService;
         }
 
         // GET: Redirect
@@ -57,6 +60,13 @@ namespace Ahora.WebApp.Controllers
                                 var DownloadResult = await CreateDownload(detailResult.Data.Products, payment.ID);
                                 if (DownloadResult != null && DownloadResult.Count > 0)
                                     ViewBag.Download = DownloadResult;
+                                var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
+                                var shoppingCartItem = _shoppingCartItemService.List(SQLHelper.CheckGuidNull(shoppingID));
+                                foreach (var item in shoppingCartItem.Data)
+                                {
+                                    item.Product.StockQuantity -= item.Quantity;
+                                    _productService.Edit(item.Product);
+                                }
                                 break;
                             }
                         case ResCodeVerify.مهلت_ارسال_تراکنش_به_پایان_رسیده_است:

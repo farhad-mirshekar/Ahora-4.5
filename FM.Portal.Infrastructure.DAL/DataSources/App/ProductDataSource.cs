@@ -29,7 +29,8 @@ namespace FM.Portal.Infrastructure.DAL
                     param[1] = new SqlParameter("@Name", model.Name);
                     param[2] = new SqlParameter("@ShortDescription", model.ShortDescription);
                     param[3] = new SqlParameter("@FullDescription", model.FullDescription);
-                    param[4] = new SqlParameter("@UserID", _requestInfo.UserId);
+                    param[4] = new SqlParameter("@UserID", SqlDbType.UniqueIdentifier);
+                    param[4].Value = _requestInfo.UserId != null ? _requestInfo.UserId : model.UserID;
                     param[5] = new SqlParameter("@isNewRecord", isNewRecord);
                     param[6] = new SqlParameter("@CallForPrice", model.CallForPrice);
 

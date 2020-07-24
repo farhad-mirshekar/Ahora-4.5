@@ -15,6 +15,7 @@ namespace Ahora.WebApp.Controllers
 {
     public class ShoppingCartController : BaseController<IShoppingCartItemService>
     {
+        private readonly object lockShopping = new object();
         private readonly IProductService _productService;
         private readonly IAttachmentService _attachmentService;
         private readonly IProductVariantAttributeService _attributeService;
@@ -131,53 +132,61 @@ namespace Ahora.WebApp.Controllers
                 var productList = new List<Product>();
                 foreach (var item in shoppingCartItem)
                 {
-                    decimal temp1 = 0;
-                    decimal temp2 = 0;
-                    decimal attributePrice = 0;
-                    var product = item.Product;
-                    var price = product.Price;
-                    if (product.HasDiscount)
+                    if (CheckQuantity(item))
                     {
-                        if (product.DiscountType != DiscountType.نامشخص)
+                        decimal temp1 = 0;
+                        decimal temp2 = 0;
+                        decimal attributePrice = 0;
+                        var product = item.Product;
+                        var price = product.Price;
+                        if (product.StockQuantity > 0 && product.StockQuantity >= item.Quantity)
                         {
-                            switch (product.DiscountType)
+                            if (product.HasDiscount)
                             {
-                                case DiscountType.درصدی:
-                                    temp1 = (product.Price * product.Discount) / 100;
-                                    break;
-                                case DiscountType.مبلغی:
-                                    temp1 = product.Discount;
-                                    break;
+                                if (product.DiscountType != DiscountType.نامشخص)
+                                {
+                                    switch (product.DiscountType)
+                                    {
+                                        case DiscountType.درصدی:
+                                            temp1 = (product.Price * product.Discount) / 100;
+                                            break;
+                                        case DiscountType.مبلغی:
+                                            temp1 = product.Discount;
+                                            break;
+                                    }
+                                }
                             }
+
+                            if (product.Category.HasDiscountsApplied)
+                            {
+                                switch (item.DiscountType)
+                                {
+                                    case DiscountType.درصدی:
+                                        temp2 = (product.Price * item.DiscountAmount) / 100;
+                                        break;
+                                    case DiscountType.مبلغی:
+                                        temp2 = item.DiscountAmount;
+                                        break;
+                                }
+                            }
+
+                            if (item.AttributeJson != "" && item.AttributeJson != null)
+                            {
+                                listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
+                                var attribute = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
+                                if (attribute.Price > 0)
+                                    attributePrice = attribute.Price;
+                            }
+                            product.CountSelect = item.Quantity;
+
+                            amount += attributePrice + (price - (temp1 + temp2)) * item.Quantity;
+                            productList.Add(product);
                         }
                     }
-
-                    if (product.Category.HasDiscountsApplied)
-                    {
-                        switch (item.DiscountType)
-                        {
-                            case DiscountType.درصدی:
-                                temp2 = (product.Price * item.DiscountAmount) / 100;
-                                break;
-                            case DiscountType.مبلغی:
-                                temp2 = item.DiscountAmount;
-                                break;
-                        }
-                    }
-
-                    if (item.AttributeJson != "" && item.AttributeJson != null)
-                    {
-                        listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
-                        var attribute = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
-                        if (attribute.Price > 0)
-                            attributePrice = attribute.Price;
-                    }
-                    product.CountSelect = item.Quantity;
-
-                    amount += attributePrice + (price - (temp1 + temp2)) * item.Quantity;
-                    productList.Add(product);
-
+                    else
+                        return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
                 }
+
                 attributeJson = JsonConvert.SerializeObject(listAttribute);
                 productJson = JsonConvert.SerializeObject(productList);
 
@@ -265,7 +274,7 @@ namespace Ahora.WebApp.Controllers
                 var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
 
                 if (!result.Success || result.Data.Count == 0)
-                        return View("~/Views/ShoppingCart/Partial/_PartialCartEmpty.cshtml");
+                    return View("~/Views/ShoppingCart/Partial/_PartialCartEmpty.cshtml");
 
                 var cart = new List<ShoppingItemVM>();
                 foreach (var item in result.Data)
@@ -359,6 +368,18 @@ namespace Ahora.WebApp.Controllers
         {
             var _bankMelli = new BankMelli();
             return _bankMelli.PaymentPurchase(Token);
+        }
+        #endregion
+
+        #region Shopping
+        private bool CheckQuantity(ShoppingCartItem shoppingCartItem)
+        {
+            lock (lockShopping)
+            {
+                if (shoppingCartItem.Product.StockQuantity > 0 && shoppingCartItem.Product.StockQuantity >= shoppingCartItem.Quantity)
+                    return true;
+                return false;
+            }
         }
         #endregion
     }
