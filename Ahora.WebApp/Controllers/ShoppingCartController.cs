@@ -138,49 +138,46 @@ namespace Ahora.WebApp.Controllers
                         decimal attributePrice = 0;
                         var product = item.Product;
                         var price = product.Price;
-                        if (product.StockQuantity > 0 && product.StockQuantity >= item.Quantity)
+                        if (product.HasDiscount)
                         {
-                            if (product.HasDiscount)
+                            if (product.DiscountType != DiscountType.نامشخص)
                             {
-                                if (product.DiscountType != DiscountType.نامشخص)
-                                {
-                                    switch (product.DiscountType)
-                                    {
-                                        case DiscountType.درصدی:
-                                            temp1 = (product.Price * product.Discount) / 100;
-                                            break;
-                                        case DiscountType.مبلغی:
-                                            temp1 = product.Discount;
-                                            break;
-                                    }
-                                }
-                            }
-
-                            if (product.Category.HasDiscountsApplied)
-                            {
-                                switch (item.DiscountType)
+                                switch (product.DiscountType)
                                 {
                                     case DiscountType.درصدی:
-                                        temp2 = (product.Price * item.DiscountAmount) / 100;
+                                        temp1 = (product.Price * product.Discount) / 100;
                                         break;
                                     case DiscountType.مبلغی:
-                                        temp2 = item.DiscountAmount;
+                                        temp1 = product.Discount;
                                         break;
                                 }
                             }
-
-                            if (item.AttributeJson != "" && item.AttributeJson != null)
-                            {
-                                listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
-                                var attribute = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
-                                if (attribute.Price > 0)
-                                    attributePrice = attribute.Price;
-                            }
-                            product.CountSelect = item.Quantity;
-
-                            amount += attributePrice + (price - (temp1 + temp2)) * item.Quantity;
-                            productList.Add(product);
                         }
+
+                        if (product.Category.HasDiscountsApplied)
+                        {
+                            switch (item.DiscountType)
+                            {
+                                case DiscountType.درصدی:
+                                    temp2 = (product.Price * item.DiscountAmount) / 100;
+                                    break;
+                                case DiscountType.مبلغی:
+                                    temp2 = item.DiscountAmount;
+                                    break;
+                            }
+                        }
+
+                        if (item.AttributeJson != "" && item.AttributeJson != null)
+                        {
+                            listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
+                            var attribute = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
+                            if (attribute.Price > 0)
+                                attributePrice = attribute.Price;
+                        }
+                        product.CountSelect = item.Quantity;
+
+                        amount += attributePrice + (price - (temp1 + temp2)) * item.Quantity;
+                        productList.Add(product);
                     }
                     else
                         return Json(new { status = false, type = 1, message = "خطا" });
