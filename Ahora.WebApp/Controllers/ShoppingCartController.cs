@@ -15,7 +15,6 @@ namespace Ahora.WebApp.Controllers
 {
     public class ShoppingCartController : BaseController<IShoppingCartItemService>
     {
-        private readonly object lockShopping = new object();
         private readonly IProductService _productService;
         private readonly IAttachmentService _attachmentService;
         private readonly IProductVariantAttributeService _attributeService;
@@ -184,7 +183,7 @@ namespace Ahora.WebApp.Controllers
                         }
                     }
                     else
-                        return Json(new { status = false, type = 1, url = Url.RouteUrl("Error") });
+                        return Json(new { status = false, type = 1, message = "خطا" });
                 }
 
                 attributeJson = JsonConvert.SerializeObject(listAttribute);
@@ -374,12 +373,9 @@ namespace Ahora.WebApp.Controllers
         #region Shopping
         private bool CheckQuantity(ShoppingCartItem shoppingCartItem)
         {
-            lock (lockShopping)
-            {
-                if (shoppingCartItem.Product.StockQuantity > 0 && shoppingCartItem.Product.StockQuantity >= shoppingCartItem.Quantity)
-                    return true;
-                return false;
-            }
+            if (shoppingCartItem.Product.StockQuantity > 0 && shoppingCartItem.Product.StockQuantity >= shoppingCartItem.Quantity)
+                return true;
+            return false;
         }
         #endregion
     }
