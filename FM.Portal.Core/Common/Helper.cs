@@ -255,5 +255,7 @@ namespace FM.Portal.Core.Common
         {
             return GetPersianYear(date).ToString() + "/" + (GetPersianMonth(date).ToString().Length == 1 ? "0" + GetPersianMonth(date).ToString() : GetPersianMonth(date).ToString()) + "/" + (GetPersianDay(date).ToString().Length == 1 ? "0" + GetPersianDay(date).ToString() : GetPersianDay(date).ToString());
         }
+        public static string GetIP()
+        =>(HttpContext.Current != null ? HttpContext.Current.Request.UserHostAddress : "0.0.0.0");
     }
 }

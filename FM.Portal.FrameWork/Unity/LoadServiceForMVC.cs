@@ -10,6 +10,7 @@ using FM.Portal.FrameWork.Caching;
 using System.Web;
 using Unity.Injection;
 using FM.Portal.Core.Common;
+using FM.Portal.FrameWork.Email;
 
 namespace FM.Portal.FrameWork.Unity
 {
@@ -138,6 +139,7 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IEmailLogsDataSource, EmailLogsDataSource>();
             container.RegisterType<IEmailLogsService, EmailLogsService>();
 
+            container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ICompareProductService, CompareProductService>();
             container.RegisterType<ICacheService, CacheService>();
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>

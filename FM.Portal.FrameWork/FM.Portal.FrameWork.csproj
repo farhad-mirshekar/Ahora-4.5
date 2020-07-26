@@ -108,6 +108,9 @@
     <Compile Include="Caching\CacheManager.cs" />
     <Compile Include="Caching\CacheService.cs" />
     <Compile Include="Caching\ICacheService.cs" />
+    <Compile Include="Email\EmailService.cs" />
+    <Compile Include="Email\IEmailService.cs" />
+    <Compile Include="Email\Model\ViewEmail.cs" />
     <Compile Include="MVC\Controller\BaseController.cs" />
     <Compile Include="MVC\Helpers\AutoComplate\AutoCompleteSearchViewModel.cs" />
     <Compile Include="MVC\Helpers\File\FileHelper.cs" />
