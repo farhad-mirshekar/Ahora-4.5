@@ -82,6 +82,7 @@
     <Compile Include="DataSources\Pbl\AttachmentDataSource.cs" />
     <Compile Include="DataSources\Pbl\ContactDataSource.cs" />
     <Compile Include="DataSources\Pbl\DownloadDataSource.cs" />
+    <Compile Include="DataSources\Pbl\EmailLogsDataSource.cs" />
     <Compile Include="DataSources\Pbl\GeneralSettingDataSource.cs" />
     <Compile Include="DataSources\Pbl\LinkDataSource.cs" />
     <Compile Include="DataSources\Pbl\MenuDataSource.cs" />
@@ -218,6 +219,9 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Download\spGetDownload.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Download\spGetDownloads.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Download\spModifyDownload.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Email-Log\pbl.GetEmailLogs.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Email-Log\pbl.GetsEmailLogs.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Email-Log\pbl.spModifyEmailLogs.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.GetsGeneralSetting.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.spModifyGeneralSetting.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetChildMenu.sql" />

@@ -10,17 +10,17 @@
     public enum PathType : byte
     {
         unknown = 0,
-        pages=1,
+        pages = 1,
         banner = 2,
         product = 6,
         article = 4,
         news = 3,
         slider = 5,
-        video=7,
-        events=8,
-        editor=9,
-        file=10,
-        gallery=11
+        video = 7,
+        events = 8,
+        editor = 9,
+        file = 10,
+        gallery = 11
     }
     public enum UserType : byte
     {
@@ -116,6 +116,14 @@
         نامشخص = 0,
         تبلیغات = 1,
         صفحات = 2
+    }
+
+    public enum EmailStatusType : byte
+    {
+        unknown = 0,
+        تحویل_داده_شده = 1,
+        ناموفق = 2,
+        تحویل_داده_نشده = 2
     }
 
 }

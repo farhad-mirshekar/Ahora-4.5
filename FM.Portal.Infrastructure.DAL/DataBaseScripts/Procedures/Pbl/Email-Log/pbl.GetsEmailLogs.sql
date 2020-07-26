@@ -1,0 +1,18 @@
+﻿USE [Ahora]
+GO
+
+IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('pbl.spGetEmailLogs'))
+	DROP PROCEDURE pbl.spGetEmailLogs
+GO
+
+CREATE PROCEDURE pbl.spGetEmailLogs
+@ID UNIQUEIDENTIFIER
+--WITH ENCRYPTION
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT 
+		*
+	FROM pbl.EmailLogs
+	WHERE ID = @ID
+END

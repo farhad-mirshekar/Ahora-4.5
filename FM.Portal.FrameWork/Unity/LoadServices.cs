@@ -145,6 +145,9 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IRelatedProductDataSource, RelatedProductDataSource>();
             _container.RegisterType<IRelatedProductService, RelatedProductService>();
 
+            _container.RegisterType<IEmailLogsDataSource, EmailLogsDataSource>();
+            _container.RegisterType<IEmailLogsService, EmailLogsService>();
+
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));

@@ -939,6 +939,24 @@ GO
 ALTER TABLE [pbl].[Link] WITH CHECK ADD FOREIGN KEY ([UserID])
 REFERENCES [org].[User] ([ID])
 GO
+CREATE TABLE [pbl].[EmailLogs](
+	[ID] [uniqueidentifier] NOT NULL,
+	[From] [Nvarchar](1000) NOT NULL,
+	[To] [Nvarchar](1000) NOT NULL,
+	[Message] [NVARCHAR](MAX) NULL,
+	[IP] [NVARCHAR](15) NULL,
+	[UserID] [Uniqueidentifier] NOT NULL,
+	[EmailStatusType] [TINYINT] NOT NULL,
+	[CreationDate] [SmalldateTime] NOT NULL,
+ CONSTRAINT [PK_EmailLogs] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [pbl].[EmailLogs] WITH CHECK ADD FOREIGN KEY ([UserID])
+REFERENCES [org].[User] ([ID])
+GO
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
 GO

@@ -77,6 +77,7 @@
     <Compile Include="App\ICompareProductService.cs" />
     <Compile Include="Pbl\IContactService.cs" />
     <Compile Include="Pbl\IDownloadService.cs" />
+    <Compile Include="Pbl\IEmailLogsService.cs" />
     <Compile Include="Ptl\IGalleryService.cs" />
     <Compile Include="Pbl\IGeneralSettingService.cs" />
     <Compile Include="Pbl\IMenuService .cs" />

@@ -98,6 +98,7 @@
     <Compile Include="Pbl\AttachmentService.cs" />
     <Compile Include="Pbl\ContactService.cs" />
     <Compile Include="Pbl\DownloadService.cs" />
+    <Compile Include="Pbl\EmailLogsService.cs" />
     <Compile Include="Pbl\GeneralSettingService.cs" />
     <Compile Include="Pbl\LinkService.cs" />
     <Compile Include="Pbl\MenuService.cs" />

@@ -125,6 +125,7 @@
     <Compile Include="Pbl\Contact\Contact.cs" />
     <Compile Include="Pbl\Contact\VM\ContactVM.cs" />
     <Compile Include="Pbl\Download\Download.cs" />
+    <Compile Include="Pbl\Email-Log\EmailLogs.cs" />
     <Compile Include="Pbl\GeneralSetting\GeneralSetting.cs" />
     <Compile Include="Pbl\GeneralSetting\VM\SettingVM.cs" />
     <Compile Include="Pbl\Link\Link.cs" />

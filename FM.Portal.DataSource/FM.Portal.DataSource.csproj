@@ -77,6 +77,7 @@
     <Compile Include="Pbl\IAttachmentDataSource.cs" />
     <Compile Include="Pbl\IContactDataSource.cs" />
     <Compile Include="Pbl\IDownloadDataSource.cs" />
+    <Compile Include="Pbl\IEmailLogsDataSource.cs" />
     <Compile Include="Pbl\IGeneralSettingDataSource.cs" />
     <Compile Include="Pbl\IMenuDataSource.cs" />
     <Compile Include="Pbl\INotificationDataSource.cs" />
