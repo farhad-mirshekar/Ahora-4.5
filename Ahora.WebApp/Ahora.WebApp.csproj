@@ -1758,6 +1758,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="Templates\Email.html" />
     <Content Include="Web.config" />
     <Content Include="Scripts\version.json" />
     <Content Include="Scripts\umd\popper.min.js.map" />

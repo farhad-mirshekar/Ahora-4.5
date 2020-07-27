@@ -3,8 +3,11 @@ using FM.Portal.Core.Model;
 using FM.Portal.Core.Result;
 using FM.Portal.Core.Service;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
+using System.Reflection;
+using System.Web;
 
 namespace FM.Portal.FrameWork.Email
 {
@@ -35,7 +38,7 @@ namespace FM.Portal.FrameWork.Email
                 From.Title = "فروشگاه اینترنتی";
             }
 
-            //string body = renderEmailBody(textMessage);
+            string body = RenderEmailBody(TextMessage);
             var status = EmailStatusType.تحویل_داده_شده;
 
             try
@@ -45,7 +48,7 @@ namespace FM.Portal.FrameWork.Email
                 message.From = new MailAddress(From.EmailAddress, From.Title, System.Text.UTF8Encoding.UTF8);
                 message.To.Add(new MailAddress(To));
                 message.Subject = Subject;
-                message.Body = TextMessage;
+                message.Body = body;
                 message.IsBodyHtml = true;
 
                 using (var smtp = new SmtpClient())
@@ -56,11 +59,10 @@ namespace FM.Portal.FrameWork.Email
                         Password = From.Password.Trim()
                     };
 
-                    smtp.Credentials = new NetworkCredential(From.EmailAddress.Trim(), From.Password.Trim());
+                    smtp.Credentials = credential;
                     smtp.Host = "smtp.gmail.com";
                     smtp.Port = 587;
-                    smtp.UseDefaultCredentials = false;
-                    smtp.EnableSsl = false;
+                    smtp.EnableSsl = true;
                     smtp.Send(message);
                 }
             }
@@ -82,6 +84,23 @@ namespace FM.Portal.FrameWork.Email
             //_logsService.Add(log);
 
             return Result<EmailStatusType>.Successful(data: status);
+        }
+        private string RenderEmailBody(string TextMessage)
+        {
+            if (!TextMessage.Contains("<!DOCTYPE html>"))
+            {
+                TextMessage = TextMessage.Replace("\r\n", "<br/>");
+            }
+
+            TextMessage = HttpUtility.HtmlDecode(TextMessage);
+            var tmp = File.ReadAllText(HttpContext.Current.Server.MapPath("~/Templates/Email.html"));
+            string body = tmp.Replace("{{Body}}", TextMessage)
+                            .Replace("{{SiteName}}", Helper.SiteName)
+                            .Replace("{{Address}}", Helper.Address)
+                            .Replace("{{Phone}}", Helper.Phone)
+                            .Replace("{{Fax}}", Helper.Fax);
+
+            return body;
         }
     }
 }
