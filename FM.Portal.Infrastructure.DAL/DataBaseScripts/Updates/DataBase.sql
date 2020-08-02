@@ -233,6 +233,9 @@ GO
 
 ALTER TABLE [org].[RefreshToken] CHECK CONSTRAINT [FK_RefreshToken_User]
 GO
+ALTER TABLE org.Department
+ADD [Type] TINYINT 
+GO
 -------------------------------------------------------------------------------------------------------------------------
 Create Schema app
 CREATE TABLE [app].[FAQGroup](
@@ -956,6 +959,47 @@ CREATE TABLE [pbl].[EmailLogs](
 
 ALTER TABLE [pbl].[EmailLogs] WITH CHECK ADD FOREIGN KEY ([UserID])
 REFERENCES [org].[User] ([ID])
+GO
+CREATE TABLE [pbl].[BaseDocument](
+	[ID] [uniqueidentifier] NOT NULL,
+	[Type] [tinyint] NOT NULL,
+	[PaymentID] [uniqueidentifier] NOT NULL,
+	[CreationDate] [smalldatetime] NOT NULL,
+	[RemoverID] [uniqueidentifier] NULL,
+	[RemoveDate] [smalldatetime] NULL,
+ CONSTRAINT [PK_BaseDocument] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+CREATE TABLE [pbl].[DocumentFlow](
+	[ID] [uniqueidentifier] NOT NULL,
+	[DocumentID] [uniqueidentifier] NOT NULL,
+	[Date] [datetime] NULL,
+	[FromPositionID] [uniqueidentifier] NOT NULL,
+	[FromUserID] [uniqueidentifier] NOT NULL,
+	[FromDocState] [smallint] NOT NULL,
+	[ToPositionID] [uniqueidentifier] NOT NULL,
+	[ToDocState] [tinyint] NOT NULL,
+	[SendType] [tinyint] NOT NULL,
+	[Comment] [nvarchar](4000) NULL,
+	[ReadDate] [datetime] NULL,
+	[ActionDate] [datetime] NULL,
+ CONSTRAINT [PK_DocumentFlow] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+
+ALTER TABLE [pbl].[DocumentFlow]  WITH CHECK ADD  CONSTRAINT [FK_DocumentFlow_BaseDocument] FOREIGN KEY([DocumentID])
+REFERENCES [pbl].[BaseDocument] ([ID])
+GO
+
+ALTER TABLE [pbl].[DocumentFlow] CHECK CONSTRAINT [FK_DocumentFlow_BaseDocument]
 GO
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl

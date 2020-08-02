@@ -4,7 +4,6 @@ using FM.Portal.Domain;
 using FM.Portal.Infrastructure.DAL;
 using Unity;
 using System.Web.Mvc;
-using Unity;
 using FM.Portal.Core.Owin;
 using FM.Portal.FrameWork.Caching;
 using System.Web;
@@ -138,6 +137,12 @@ namespace FM.Portal.FrameWork.Unity
 
             container.RegisterType<IEmailLogsDataSource, EmailLogsDataSource>();
             container.RegisterType<IEmailLogsService, EmailLogsService>();
+
+            container.RegisterType<IBaseDocumentDataSource, BaseDocumentDataSource>();
+            container.RegisterType<IBaseDocumentService, BaseDocumentService>();
+
+            container.RegisterType<IDocumentFlowDataSource, DocumentFlowDataSource>();
+            container.RegisterType<IDocumentFlowService, DocumentFlowService>();
 
             container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ICompareProductService, CompareProductService>();

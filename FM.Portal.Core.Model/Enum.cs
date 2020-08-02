@@ -51,6 +51,8 @@
     public enum PositionType : byte
     {
         Unknown = 0,
+        رییس_امور = 5,
+        کارشناس_امور = 10,
         راهبر = 100
     }
     public enum CommentType : byte
@@ -126,4 +128,31 @@
         تحویل_داده_نشده = 2
     }
 
+    public enum DocumentType : byte
+    {
+        unknown = 0,
+        محصولات = 1
+    }
+    public enum DocState : byte
+    {
+        نامشخص = 0,
+        ثبت_درخواست = 5,
+        بررسی_و_ارجاع_به_واحد_مالی = 10,
+        بررسی_و_ارجاع_به_واحد_انبار = 15,
+        آماده_بسته_بندی = 20,
+        ارسال_محصول = 25
+
+    }
+    public enum SendDocumentType : byte
+    {
+        نامشخص = 0,
+        تایید_ارسال = 1
+    }
+    public enum DepartmentType : byte
+    {
+        نامشخص = 0,
+        سامانه_اصلی = 1,
+        واحد_فروش = 2,
+        واحد_مالی = 3
+    }
 }

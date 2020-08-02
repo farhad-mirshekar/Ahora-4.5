@@ -124,6 +124,8 @@
     <Compile Include="Pbl\Attachment\VM\DeleteAttachmentVM.cs" />
     <Compile Include="Pbl\Contact\Contact.cs" />
     <Compile Include="Pbl\Contact\VM\ContactVM.cs" />
+    <Compile Include="Pbl\Document\BaseDocument\BaseDocument.cs" />
+    <Compile Include="Pbl\Document\Flow\ِDocumentFlow.cs" />
     <Compile Include="Pbl\Download\Download.cs" />
     <Compile Include="Pbl\Email-Log\EmailLogs.cs" />
     <Compile Include="Pbl\GeneralSetting\GeneralSetting.cs" />

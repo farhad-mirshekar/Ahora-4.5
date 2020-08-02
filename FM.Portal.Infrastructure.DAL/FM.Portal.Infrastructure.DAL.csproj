@@ -80,7 +80,9 @@
     <Compile Include="DataSources\Org\UserAddressDataSource.cs" />
     <Compile Include="DataSources\Org\UserDataSource.cs" />
     <Compile Include="DataSources\Pbl\AttachmentDataSource.cs" />
+    <Compile Include="DataSources\Pbl\BaseDocumentDataSource.cs" />
     <Compile Include="DataSources\Pbl\ContactDataSource.cs" />
+    <Compile Include="DataSources\Pbl\DocumentFlowDataSource.cs" />
     <Compile Include="DataSources\Pbl\DownloadDataSource.cs" />
     <Compile Include="DataSources\Pbl\EmailLogsDataSource.cs" />
     <Compile Include="DataSources\Pbl\GeneralSettingDataSource.cs" />
@@ -212,10 +214,13 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachmentByParentIDs.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spGetAttachments.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spModifyAttachment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\BaseDocument\pbl.GetBaseDocument.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\BaseDocument\pbl.spModifyBaseDocument.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Contact\pbl.DeleteContact.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Contact\pbl.GetContact.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Contact\pbl.GetsContact.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Contact\pbl.spModifyContact.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\DocumentFlow\spInsertDocumentFlow.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Download\spGetDownload.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Download\spGetDownloads.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Download\spModifyDownload.sql" />

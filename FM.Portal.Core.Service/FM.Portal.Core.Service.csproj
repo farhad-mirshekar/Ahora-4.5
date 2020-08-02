@@ -75,7 +75,9 @@
     <Compile Include="Org\IUserService.cs" />
     <Compile Include="Pbl\IAttachmentService.cs" />
     <Compile Include="App\ICompareProductService.cs" />
+    <Compile Include="Pbl\IBaseDocumentService.cs" />
     <Compile Include="Pbl\IContactService.cs" />
+    <Compile Include="Pbl\IDocumentFlowService.cs" />
     <Compile Include="Pbl\IDownloadService.cs" />
     <Compile Include="Pbl\IEmailLogsService.cs" />
     <Compile Include="Ptl\IGalleryService.cs" />
