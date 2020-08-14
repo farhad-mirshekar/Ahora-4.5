@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FM.Portal.Core.Model;
+using System;
 using System.Web;
 
 namespace FM.Portal.Core.Owin
@@ -56,6 +57,15 @@ namespace FM.Portal.Core.Owin
                 if (string.IsNullOrWhiteSpace(val))
                     return null;
                 return val;
+            }
+        }
+
+        public PositionType PositionType
+        {
+            get
+            {
+                byte.TryParse(GetValueFromToken(Claims.PositionType), out byte val);
+                return (PositionType)val;
             }
         }
 

@@ -17,7 +17,8 @@ BEGIN
 		users.ID,
 		positions.ID AS PositionID,
 		positions.DepartmentID,
-		positions.ApplicationID
+		positions.ApplicationID,
+		positions.[Type]
 	FROM 
 		[org].[User] users
 	INNER JOIN

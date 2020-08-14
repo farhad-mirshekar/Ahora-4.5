@@ -125,6 +125,8 @@
     <Compile Include="Pbl\Contact\Contact.cs" />
     <Compile Include="Pbl\Contact\VM\ContactVM.cs" />
     <Compile Include="Pbl\Document\BaseDocument\BaseDocument.cs" />
+    <Compile Include="Pbl\Document\Flow\VM\DocumentFlowListVM.cs" />
+    <Compile Include="Pbl\Document\Flow\VM\FlowConfirmVM.cs" />
     <Compile Include="Pbl\Document\Flow\ِDocumentFlow.cs" />
     <Compile Include="Pbl\Download\Download.cs" />
     <Compile Include="Pbl\Email-Log\EmailLogs.cs" />
@@ -168,6 +170,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "$(SolutionDir)\Ahora.WebApp\libs"</PostBuildEvent>

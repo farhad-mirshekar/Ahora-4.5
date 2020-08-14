@@ -9,5 +9,6 @@ namespace FM.Portal.Core.Owin
         public static string PositionId => "PositionId";
         public static string UserId => "UserId";
         public static string UserName => "UserName";
+        public static string PositionType => "PositionType";
     }
 }

@@ -40,5 +40,17 @@ namespace FM.Portal.Infrastructure.DAL
             }
             catch (Exception e) { throw; }
         }
+
+        public DataTable List(DocumentFlowListVM listVM)
+        {
+            try
+            {
+                var param = new SqlParameter[1];
+                param[0] = new SqlParameter("@DocumentID",listVM.DocumentID);
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsDocumentFlow", param);
+            }
+            catch(Exception e) { throw; }
+        }
     }
 }

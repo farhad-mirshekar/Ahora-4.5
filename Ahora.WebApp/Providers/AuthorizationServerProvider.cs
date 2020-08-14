@@ -58,6 +58,7 @@ namespace FM.Portal.WebApp.Providers
                 new Claim(type: Claims.PositionId, value:position.PositionID.ToString()),
                 new Claim(type: Claims.UserId, value: position.UserID.ToString()),
                 new Claim(type: Claims.UserName, value: position.UserName.ToString()),
+                new Claim(type: Claims.PositionType, value: position.PositionType.ToString()),
             };
 
                 var identity = new ClaimsIdentity(claims, context.Options.AuthenticationType);
@@ -120,7 +121,7 @@ namespace FM.Portal.WebApp.Providers
             ReplaceClaim(newIdentity, Claims.PositionId, positionDefault.PositionID.ToString());
             ReplaceClaim(newIdentity, Claims.UserId, positionDefault.UserID.ToString());
             ReplaceClaim(newIdentity, Claims.UserName, positionDefault.UserName.ToString());
-
+            ReplaceClaim(newIdentity, Claims.PositionType, positionDefault.PositionType.ToString());
             var newTicket = new AuthenticationTicket(newIdentity, context.Ticket.Properties);
             context.Validated(newTicket);
             return Task.FromResult(0);

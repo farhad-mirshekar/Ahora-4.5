@@ -1863,6 +1863,7 @@
     <Compile Include="Areas\ApiClient\Controllers\org\UserController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\AttachmentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\ContactController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\pbl\DocumentFlowController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\GeneralSettingController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\LinkController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\pbl\MenuController.cs" />

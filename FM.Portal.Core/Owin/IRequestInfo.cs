@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FM.Portal.Core.Model;
+using System;
 
 namespace FM.Portal.Core.Owin
 {
@@ -9,5 +10,6 @@ namespace FM.Portal.Core.Owin
         Guid? ApplicationId { get; }
         Guid? PositionId { get; }
         Guid? DepartmentId { get; }
+        PositionType PositionType { get; }
     }
 }

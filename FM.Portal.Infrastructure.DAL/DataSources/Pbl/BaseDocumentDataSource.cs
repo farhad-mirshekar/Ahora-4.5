@@ -27,7 +27,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.PaymentID = SQLHelper.CheckGuidNull(dr["PaymentID"]);
-                            obj.RemoverDate = SQLHelper.CheckDateTimeNull(dr["RemoverDate"]);
+                            obj.RemoverDate = SQLHelper.CheckDateTimeNull(dr["RemoveDate"]);
                             obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
                             obj.Type = (DocumentType)SQLHelper.CheckByteNull(dr["Type"]);
                         }

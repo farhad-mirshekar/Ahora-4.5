@@ -3010,8 +3010,8 @@
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('paymentController', paymentController);
-    paymentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'paymentService', '$location', 'toaster', '$timeout'];
-    function paymentController($scope, $q, loadingService, $routeParams, paymentService, $location, toaster, $timeout) {
+    paymentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'paymentService', '$location', 'toaster', '$timeout','documentFlowService'];
+    function paymentController($scope, $q, loadingService, $routeParams, paymentService, $location, toaster, $timeout, documentFlowService) {
         let payment = $scope;
         payment.Model = {};
         payment.Search = {};
@@ -3022,6 +3022,7 @@
             view: view
         }
         payment.print = print;
+        payment.confirm = confirm;
         payment.getExcel = getExcel;
         payment.grid = {
             bindingObject: payment
@@ -3107,6 +3108,18 @@
                 toaster.pop('error', '', 'خطا در دریافت اطلاعات');
                 loadingService.hide();
             }).finally(loadingService.hide);
+        }
+        function confirm() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return documentFlowService.confirm({ DocumentID: $routeParams.id });
+            }).then(() => {
+                toaster.pop('success', '', 'با موفقیت ارسال گردید');
+                payment.grid.getlist();
+                payment.main.changeState.cartable();
+            })
+
+                .finally(loadingService.hide)
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------------------

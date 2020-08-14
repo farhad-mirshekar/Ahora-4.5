@@ -3270,6 +3270,33 @@
         }
     }
 
+    app.factory('documentFlowService', documentFlowService);
+    documentFlowService.$inject = ['$http', 'callbackService', '$q'];
+    function documentFlowService($http, callbackService, $q) {
+        var url = '/api/v1/DocumentFlow/'
+        var service = {
+            confirm:confirm
+        }
+        return service;
+
+        function confirm(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'confirm',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'add' });
+            })
+                .catch(function (result) {
+                    callbackService.onError({ result: result });
+                })
+        }
+    }
+
     app.factory('callbackService', callbackService);
     callbackService.$inject = ['$q', '$http', 'authenticationService'];
     function callbackService($q, $http, authenticationService) {

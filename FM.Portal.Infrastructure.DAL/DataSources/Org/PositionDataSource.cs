@@ -57,6 +57,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.UserID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.UserName = SQLHelper.CheckStringNull(dr["UserName"]);
                             obj.PositionID = SQLHelper.CheckGuidNull(dr["PositionID"]);
+                            obj.PositionType = (PositionType)SQLHelper.CheckByteNull(dr["Type"]);
 
                         }
                     }
