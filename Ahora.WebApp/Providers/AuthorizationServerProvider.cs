@@ -58,7 +58,7 @@ namespace FM.Portal.WebApp.Providers
                 new Claim(type: Claims.PositionId, value:position.PositionID.ToString()),
                 new Claim(type: Claims.UserId, value: position.UserID.ToString()),
                 new Claim(type: Claims.UserName, value: position.UserName.ToString()),
-                new Claim(type: Claims.PositionType, value: position.PositionType.ToString()),
+                new Claim(type: Claims.PositionType, value: position.PositionType.ToString("d")),
             };
 
                 var identity = new ClaimsIdentity(claims, context.Options.AuthenticationType);

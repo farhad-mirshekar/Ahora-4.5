@@ -1,4 +1,5 @@
-﻿using FM.Portal.Core.Model;
+﻿using FM.Portal.Core.Common;
+using FM.Portal.Core.Model;
 using System;
 using System.Web;
 
@@ -64,7 +65,8 @@ namespace FM.Portal.Core.Owin
         {
             get
             {
-                byte.TryParse(GetValueFromToken(Claims.PositionType), out byte val);
+                byte val = 0;
+                byte.TryParse(GetValueFromToken(Claims.PositionType), out val);
                 return (PositionType)val;
             }
         }
