@@ -27,7 +27,6 @@ namespace FM.Portal.Domain
         {
             try
             {
-                confirmVM.DocumentID = SQLHelper.CheckGuidNull("7C02B460-03BC-4DFB-A4AA-627B51405555");
                 var listFlowResult = List(new DocumentFlowListVM {DocumentID = confirmVM.DocumentID });
                 if (!listFlowResult.Success)
                     return Result.Failure(message: listFlowResult.Message);
