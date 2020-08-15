@@ -75,7 +75,6 @@
     <Compile Include="Org\IUserAddressDataSource.cs" />
     <Compile Include="Org\IUserDataSource.cs" />
     <Compile Include="Pbl\IAttachmentDataSource.cs" />
-    <Compile Include="Pbl\IBaseDocumentDataSource.cs" />
     <Compile Include="Pbl\IContactDataSource.cs" />
     <Compile Include="Pbl\IDocumentFlowDataSource.cs" />
     <Compile Include="Pbl\IDownloadDataSource.cs" />

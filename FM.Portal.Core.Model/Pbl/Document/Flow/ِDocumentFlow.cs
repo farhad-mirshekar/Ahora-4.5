@@ -7,7 +7,7 @@ namespace FM.Portal.Core.Model
     {
 
     }
-   public class DocumentFlow<TDocState>:Entity
+    public class DocumentFlow<TDocState> : Entity
     {
         public Guid DocumentID { get; set; }
         public TDocState FromDocState { get; set; }

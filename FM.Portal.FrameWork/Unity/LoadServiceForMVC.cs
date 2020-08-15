@@ -138,9 +138,6 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IEmailLogsDataSource, EmailLogsDataSource>();
             container.RegisterType<IEmailLogsService, EmailLogsService>();
 
-            container.RegisterType<IBaseDocumentDataSource, BaseDocumentDataSource>();
-            container.RegisterType<IBaseDocumentService, BaseDocumentService>();
-
             container.RegisterType<IDocumentFlowDataSource, DocumentFlowDataSource>();
             container.RegisterType<IDocumentFlowService, DocumentFlowService>();
 

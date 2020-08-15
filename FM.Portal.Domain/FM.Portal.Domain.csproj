@@ -96,7 +96,6 @@
     <Compile Include="Org\UserAddressService.cs" />
     <Compile Include="Org\UserService.cs" />
     <Compile Include="Pbl\AttachmentService.cs" />
-    <Compile Include="Pbl\BaseDocumentService.cs" />
     <Compile Include="Pbl\ContactService.cs" />
     <Compile Include="Pbl\DocumentFlowService.cs" />
     <Compile Include="Pbl\DownloadService.cs" />

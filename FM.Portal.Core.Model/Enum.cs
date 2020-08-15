@@ -133,7 +133,12 @@
         unknown = 0,
         محصولات = 1
     }
-    public enum DocState : byte
+    public enum DocState:byte
+    {
+        نامشخص = 0,
+        تایید_نهایی =100
+    }
+    public enum SalesDocState : byte
     {
         نامشخص = 0,
         ثبت_درخواست = 1,

@@ -80,7 +80,6 @@
     <Compile Include="DataSources\Org\UserAddressDataSource.cs" />
     <Compile Include="DataSources\Org\UserDataSource.cs" />
     <Compile Include="DataSources\Pbl\AttachmentDataSource.cs" />
-    <Compile Include="DataSources\Pbl\BaseDocumentDataSource.cs" />
     <Compile Include="DataSources\Pbl\ContactDataSource.cs" />
     <Compile Include="DataSources\Pbl\DocumentFlowDataSource.cs" />
     <Compile Include="DataSources\Pbl\DownloadDataSource.cs" />

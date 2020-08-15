@@ -18,21 +18,18 @@ namespace Ahora.WebApp.Controllers
         private readonly IDownloadService _downloadService;
         private readonly IAttachmentService _attachmentService;
         private readonly IProductService _productService;
-        private readonly IBaseDocumentService _baseDocumentService;
         public RedirectController(IPaymentService service
                                  , IOrderService orderService
                                  , IShoppingCartItemService shoppingCartItemService
                                  , IDownloadService downloadService
                                  , IAttachmentService attachmentService
-                                 , IProductService productService
-                                 , IBaseDocumentService baseDocumentService) : base(service)
+                                 , IProductService productService) : base(service)
         {
             _orderService = orderService;
             _shoppingCartItemService = shoppingCartItemService;
             _downloadService = downloadService;
             _attachmentService = attachmentService;
             _productService = productService;
-            _baseDocumentService = baseDocumentService;
         }
 
         // GET: Redirect
@@ -291,9 +288,6 @@ namespace Ahora.WebApp.Controllers
 
         private bool AddBaseDocument(Guid PaymentID)
         {
-           var baseDocumentResult = _baseDocumentService.Add(new BaseDocument() {PaymentID = PaymentID , Type = DocumentType.محصولات });
-            if (!baseDocumentResult.Success)
-                return false;
             return true;
         }
         #region Test
