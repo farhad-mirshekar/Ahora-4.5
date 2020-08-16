@@ -1,0 +1,16 @@
+USE [Ahora]
+GO
+IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('app.spGetsSales'))
+	DROP PROCEDURE app.spGetsSales
+GO
+
+CREATE PROCEDURE app.spGetsSales
+@UserPositionID UNIQUEIDENTIFIER,
+@ActionState TINYINT
+--WITH ENCRYPTION
+AS
+BEGIN
+	SELECT 
+		*
+	FROM app.Sales
+END

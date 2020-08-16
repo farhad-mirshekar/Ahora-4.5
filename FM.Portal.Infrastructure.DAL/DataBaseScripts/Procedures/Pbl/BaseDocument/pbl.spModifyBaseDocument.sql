@@ -7,9 +7,7 @@ GO
 
 CREATE PROCEDURE pbl.spModifyBaseDocument
 	@IsNewRecord BIT,
-	@ID UNIQUEIDENTIFIER,
-	@Type TINYINT,
-	@PaymentID UNIQUEIDENTIFIER
+	@ID UNIQUEIDENTIFIER
 
 --WITH ENCRYPTION
 AS
@@ -29,9 +27,9 @@ BEGIN
 			(SELECT ID FROM org.Department WHERE [Type] = 3) )
 
 		INSERT INTO pbl.BaseDocument
-			(ID,PaymentID,[Type],RemoverID , RemoveDate , CreationDate)
+			(ID,RemoverID , RemoveDate , CreationDate)
 		VALUES
-			(@ID,@PaymentID,@Type,NULL,NULL,GETDATE())
+			(@ID,NULL,NULL,GETDATE())
 
 		INSERT INTO pbl.DocumentFlow
 			(ID, DocumentID, [Date], FromPositionID, FromUserID, FromDocState, ToPositionID, ToDocState, SendType, Comment)

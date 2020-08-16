@@ -141,6 +141,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IDocumentFlowDataSource, DocumentFlowDataSource>();
             container.RegisterType<IDocumentFlowService, DocumentFlowService>();
 
+            container.RegisterType<ISalesDataSource, SalesDataSource>();
+            container.RegisterType<ISalesService, SalesService>();
+
             container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ICompareProductService, CompareProductService>();
             container.RegisterType<ICacheService, CacheService>();

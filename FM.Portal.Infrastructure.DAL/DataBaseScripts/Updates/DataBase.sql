@@ -736,6 +736,26 @@ REFERENCES app.[Product] (ID)
 ALTER TABLE [app].[RelatedProduct] ADD FOREIGN KEY ([ProductID2])
 REFERENCES app.[Product] (ID)
 GO
+CREATE TABLE [app].[Sales](
+	[ID] [uniqueidentifier] NOT NULL,
+	[PaymentID] [UNIQUEIDENTIFIER] NOT NULL,
+	[Type] [TINYINT] NULL,
+	[CreationDate] [SMALLDATETIME] NOT NULL,
+ CONSTRAINT [PK_Sales] PRIMARY KEY CLUSTERED 
+(
+	[ID] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+GO
+ALTER TABLE [app].[Sales]  WITH CHECK ADD FOREIGN KEY([PaymentID])
+REFERENCES [app].[Payment] ([ID])
+
+ALTER TABLE [app].[Sales]  WITH CHECK ADD CONSTRAINT [FK_BaseDocument_Sales] FOREIGN KEY([ID])
+REFERENCES [pbl].[BaseDocument] ([ID])
+GO
+
+GO
 ----------------------------------------------------------------------------------
 Create Schema pbl
 GO
@@ -962,8 +982,6 @@ REFERENCES [org].[User] ([ID])
 GO
 CREATE TABLE [pbl].[BaseDocument](
 	[ID] [uniqueidentifier] NOT NULL,
-	[Type] [tinyint] NOT NULL,
-	[PaymentID] [uniqueidentifier] NOT NULL,
 	[CreationDate] [smalldatetime] NOT NULL,
 	[RemoverID] [uniqueidentifier] NULL,
 	[RemoveDate] [smalldatetime] NULL,

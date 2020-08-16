@@ -2,7 +2,7 @@
 
 namespace FM.Portal.Core.Model
 {
-   public class SalesVM
+   public class SalesListVM
     {
         public Guid? ToPositionID { get; set; }
         public ActionState ActionState { get; set; }

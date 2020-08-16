@@ -151,6 +151,9 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IDocumentFlowDataSource, DocumentFlowDataSource>();
             _container.RegisterType<IDocumentFlowService, DocumentFlowService>();
 
+            _container.RegisterType<ISalesDataSource, SalesDataSource>();
+            _container.RegisterType<ISalesService, SalesService>();
+
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));
