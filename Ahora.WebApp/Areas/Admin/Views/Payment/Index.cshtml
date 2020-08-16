@@ -110,32 +110,9 @@
     </div>
     <div class="card-footer">
         <div class="btn-group-justified pull-left">
-            <button type="button" class="btn btn-success" data-target="#payment-modal" data-toggle="modal">تایید و ارسال</button>
             <button type="button" class="btn btn-primary" ng-click="print('factor');">چاپ فاکتور</button>
             <button type="button" class="btn btn-cancel" ng-click="main.changeState.cartable();">بازگشت</button>
         </div>
     </div>
 </section>
 <toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
-
-<div class="modal fade" id="payment-modal" role="dialog" aria-labelledby="payment-modal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2 class="main-title" id="payment-modal">تایید درخواست</h2>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-md-12 form-group">
-                        <label>توضیحات</label>
-                        <textarea class="form-control" rows="4" ng-model="Model.Comment"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer btn-container">
-                <button type="button" class="btn btn-success btn-min-width" ng-click="confirm()">تایید</button>
-                <button type="button" class="btn btn-default btn-min-width" data-dismiss="modal">انصراف</button>
-            </div>
-        </div>
-    </div>
-</div>

@@ -18,18 +18,21 @@ namespace Ahora.WebApp.Controllers
         private readonly IDownloadService _downloadService;
         private readonly IAttachmentService _attachmentService;
         private readonly IProductService _productService;
+        private readonly ISalesService _salesService;
         public RedirectController(IPaymentService service
                                  , IOrderService orderService
                                  , IShoppingCartItemService shoppingCartItemService
                                  , IDownloadService downloadService
                                  , IAttachmentService attachmentService
-                                 , IProductService productService) : base(service)
+                                 , IProductService productService
+                                 , ISalesService salesService) : base(service)
         {
             _orderService = orderService;
             _shoppingCartItemService = shoppingCartItemService;
             _downloadService = downloadService;
             _attachmentService = attachmentService;
             _productService = productService;
+            _salesService = salesService;
         }
 
         // GET: Redirect
@@ -37,7 +40,7 @@ namespace Ahora.WebApp.Controllers
         {
             try
             {
-                AddBaseDocument(SQLHelper.CheckGuidNull("D9E242B7-4140-4E08-8450-167FFAF7F7F9"));
+                AddSales(SQLHelper.CheckGuidNull("D9E242B7-4140-4E08-8450-167FFAF7F7F9"));
                 return null;
                 //var paymentResult = _service.GetByToken(SQLHelper.CheckStringNull(purchaseResult.Token), BankName.بانک_ملی);
                 //var payment = paymentResult.Data;
@@ -286,8 +289,11 @@ namespace Ahora.WebApp.Controllers
             catch (Exception e) { return null; }
         }
 
-        private bool AddBaseDocument(Guid PaymentID)
+        private bool AddSales(Guid PaymentID)
         {
+            var salesResult = _salesService.Add(new Sales() {PaymentID = PaymentID , Type = DocumentType.محصولات });
+            if (!salesResult.OK)
+                return false;
             return true;
         }
         #region Test

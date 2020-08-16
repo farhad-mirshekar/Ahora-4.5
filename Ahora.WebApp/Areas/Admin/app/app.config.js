@@ -43,6 +43,7 @@
                 .when("/gallery/:state/:id?", { templateUrl: "/Admin/gallery/index", controller: 'galleryController', reloadOnUrl: false })
                 .when("/shipping-cost/:state/:id?", { templateUrl: "/Admin/ShippingCost/index", controller: 'shippingCostController', reloadOnUrl: false })
                 .when("/delivery-date/:state/:id?", { templateUrl: "/Admin/DeliveryDate/index", controller: 'deliveryDateController', reloadOnUrl: false })// add;
+                .when("/sales/:state/:id?", { templateUrl: "/Admin/Sales/index", controller: 'salesController', reloadOnUrl: false })// add;
 
 
                 .otherwise({

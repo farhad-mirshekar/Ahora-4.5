@@ -77,6 +77,13 @@
                 ]
 
             }
+            , {
+                name: 'sales', title: 'سفارشات - جدید', icon: 'fa-angle-down', hasShow: () => { return true; }
+                , subMenus: [
+                    { route: '#/sales/cartable', title: 'پیگیری سفارشات', hasShow: () => { return true; }, icon: 'fa fa-credit-card' },
+                ]
+
+            }
         ]
 
         function signOut() {

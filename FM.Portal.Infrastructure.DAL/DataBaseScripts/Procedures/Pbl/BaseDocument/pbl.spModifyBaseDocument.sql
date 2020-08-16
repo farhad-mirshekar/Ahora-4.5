@@ -32,11 +32,11 @@ BEGIN
 			(@ID,NULL,NULL,GETDATE())
 
 		INSERT INTO pbl.DocumentFlow
-			(ID, DocumentID, [Date], FromPositionID, FromUserID, FromDocState, ToPositionID, ToDocState, SendType, Comment)
+			(ID, DocumentID, [Date], FromPositionID, FromUserID, FromDocState, ToPositionID, ToDocState, SendType, Comment,ReadDate,ActionDate)
 		VALUES
-			(NEWID(), @ID, GETDATE(), @CurrentPositionID, @UserID, 1, @CurrentPositionID, 1, 1, N'ثبت اولیه')
+			(NEWID(), @ID, GETDATE(), @CurrentPositionID, @UserID, 1, @CurrentPositionID, 1, 1, N'ثبت اولیه',GETDATE(),GETDATE())
 
-		IF @ToPositionID <> NULL
+		IF @ToPositionID IS NOT NULL
 		BEGIN
 		INSERT INTO pbl.DocumentFlow
 			(ID, DocumentID, [Date], FromPositionID, FromUserID, FromDocState, ToPositionID, ToDocState, SendType, Comment)

@@ -1045,7 +1045,7 @@
                 return product.relatedProduct.relatedProductGrid.getlist();
             }).then(() => {
                 $('#related-product-select-modal').modal('hide');
-            }) .finally(loadingService.hide);
+            }).finally(loadingService.hide);
         }
         function editRelatedProduct() {
             loadingService.show();
@@ -3010,8 +3010,8 @@
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('paymentController', paymentController);
-    paymentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'paymentService', '$location', 'toaster', '$timeout','documentFlowService'];
-    function paymentController($scope, $q, loadingService, $routeParams, paymentService, $location, toaster, $timeout, documentFlowService) {
+    paymentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'paymentService', '$location', 'toaster', '$timeout'];
+    function paymentController($scope, $q, loadingService, $routeParams, paymentService, $location, toaster, $timeout) {
         let payment = $scope;
         payment.Model = {};
         payment.Search = {};
@@ -3022,7 +3022,6 @@
             view: view
         }
         payment.print = print;
-        payment.confirm = confirm;
         payment.getExcel = getExcel;
         payment.grid = {
             bindingObject: payment
@@ -3108,18 +3107,6 @@
                 toaster.pop('error', '', 'خطا در دریافت اطلاعات');
                 loadingService.hide();
             }).finally(loadingService.hide);
-        }
-        function confirm() {
-            loadingService.show();
-            return $q.resolve().then(() => {
-                return documentFlowService.confirm({ DocumentID: $routeParams.id });
-            }).then(() => {
-                toaster.pop('success', '', 'با موفقیت ارسال گردید');
-                payment.grid.getlist();
-                payment.main.changeState.cartable();
-            })
-
-                .finally(loadingService.hide)
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------------------
@@ -4580,6 +4567,52 @@
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                 loadingService.hide();
             }).finally(loadingService.hide);
+        }
+    }
+    //--------------------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('salesController', salesController);
+    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster'];
+    function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster) {
+        let sales = $scope;
+        sales.Model = {};
+        sales.main = {};
+        sales.Search = {};
+        sales.Search.Model = {};
+        sales.Search.Model.ActionState = 1;
+        sales.main.state = '';
+        sales.main.changeState = {
+            cartable: cartable
+        }
+        sales.grid = {
+            bindingObject: sales
+            , columns: [{ name: 'BuyerInfo', displayName: 'نام و نام خانوادگی خریدار' },
+            { name: 'BuyerPhone', displayName: 'اطلاعات تماس' },
+            { name: 'Price', displayName: 'مبلغ' },
+            ]
+            , listService: salesService.list
+            , globalSearch: true
+            , initLoad: true
+            , options: () => { return sales.Search.Model }
+        };
+        init();
+
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        sales.main.changeState.cartable();
+                        break;
+                }
+            }).finally(loadingService.hide);
+        }
+
+        function cartable() {
+            loadingService.show();
+            sales.main.state = 'cartable';
+            console.log(sales.main.state);
+            $location.path('/sales/cartable');
+            loadingService.hide();
         }
     }
 

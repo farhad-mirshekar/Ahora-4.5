@@ -10,7 +10,26 @@ CREATE PROCEDURE app.spGetsSales
 --WITH ENCRYPTION
 AS
 BEGIN
+	;WITH Flow AS
+	(
+		SELECT 
+			DISTINCT
+			DocumentID
+		FROM
+			pbl.DocumentFlow 
+		WHERE
+			ToPositionID = @UserPositionID 
+	)
 	SELECT 
-		*
-	FROM app.Sales
+		Sales.*,
+		lastFromUser.FirstName + ' ' + lastFromUser.LastName LastFromUserName,
+		lastToUser.FirstName + ' ' + lastToUser.LastName LastToUserName,
+		lastToPosition.[Type] LastToPositionType,
+		lastFromPosition.[Type] LastFromPositionType
+	FROM app.vwSales Sales
+	LEFT JOIN org.[User] lastFromUser ON lastFromUser.ID = Sales.lastFromUserID
+	LEFT JOIN org.Position lastToPosition ON lastToPosition.ID = Sales.LastToPositionID
+	LEFT JOIN org.[User] lastToUser ON lastToUser.ID = lastToPosition.UserID
+	LEFT JOIN org.Position lastFromPosition ON lastFromPosition.ID = Sales.LastFromPositionID
+	INNER JOIN Flow flow ON flow.DocumentID = Sales.ID
 END

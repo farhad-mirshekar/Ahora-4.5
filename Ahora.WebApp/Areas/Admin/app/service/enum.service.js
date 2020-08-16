@@ -41,6 +41,8 @@
 				'2': 'باز'
 			},
 			enumService.PositionType = {
+				'5': 'رییس امور',
+				'10': 'کارشناس امور',
 				'100': 'راهبر'
 			},
 			enumService.CommentType = {
@@ -86,6 +88,35 @@
 			enumService.BannerType = {
 				'1': 'تبلیغات',
 				'2': 'صفحات'
+			},
+			enumService.EmailStatusType = {
+				'1': 'تحویل داده شده',
+				'2': 'ناموفق',
+				'2': 'ناموفق'
+			},
+			enumService.DocumentType = {
+				'1': 'محصولات'
+			},
+			enumService.DocState = {
+				'100': 'تایید نهایی'
+			},
+			enumService.SalesDocState = {
+				'1': 'ثبت درخواست',
+				'10': 'بررسی و ارجاع به واحد مالی',
+				'15': 'بررسی و ارجاع به واحد انبار',
+				'20': 'آماده بسته بندی',
+				'25': 'ارسال محصول'
+			},
+			enumService.SendDocumentType = {
+				'1': 'تایید ارسال'
+			},
+			enumService.DepartmentType = {
+				'1': 'سامانه اصلی',
+				'2': 'واحد فروش',
+				'3': 'واحد مالی'
+			},
+			enumService.ActionState = {
+				'1': 'موارد در دست اقدام'
 			}
 
 		return enumService;

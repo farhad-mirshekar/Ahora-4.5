@@ -69,17 +69,19 @@ namespace FM.Portal.Infrastructure.DAL
             try
             {
                 var commands = new List<SqlCommand>();
+                
+                var baseDocumentParam = new SqlParameter[2];
+                baseDocumentParam[0] = new SqlParameter("@ID", model.ID);
+                baseDocumentParam[1] = new SqlParameter("@IsNewRecord", IsNewRecord);
+                commands.Add(SQLHelper.CreateCommand("pbl.spModifyBaseDocument", CommandType.StoredProcedure, baseDocumentParam));
+
                 var salesParam = new SqlParameter[4];
                 salesParam[0] = new SqlParameter("@ID", model.ID);
                 salesParam[1] = new SqlParameter("@PaymentID", model.PaymentID);
                 salesParam[2] = new SqlParameter("@IsNewRecord", IsNewRecord);
-                salesParam[4] = new SqlParameter("@Type", (byte)model.Type);
+                salesParam[3] = new SqlParameter("@Type", (byte)model.Type);
 
                 commands.Add(SQLHelper.CreateCommand("app.spModifySales", CommandType.StoredProcedure, salesParam));
-
-                var baseDocumentParam = new SqlParameter[1];
-                baseDocumentParam[0] = new SqlParameter("@ID", model.ID);
-                commands.Add(SQLHelper.CreateCommand("app.spModifyBaseDocument", CommandType.StoredProcedure, baseDocumentParam));
 
                 SQLHelper.BatchExcute(commands.ToArray());
                 return Get(model.ID);
