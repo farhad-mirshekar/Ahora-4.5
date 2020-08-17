@@ -59,5 +59,8 @@ namespace FM.Portal.Domain
                 return Result<List<DocumentFlow>>.Successful(data: table);
             return Result<List<DocumentFlow>>.Failure();
         }
+
+        public Result SetFlowRead(Guid DocumentID)
+        => _dataSource.SetAsRead(DocumentID);
     }
 }

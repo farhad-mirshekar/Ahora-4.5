@@ -3275,7 +3275,8 @@
     function documentFlowService($http, callbackService, $q) {
         var url = '/api/v1/DocumentFlow/'
         var service = {
-            confirm:confirm
+            confirm: confirm,
+            setAsRead:setAsRead
         }
         return service;
 
@@ -3290,6 +3291,22 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
+            })
+                .catch(function (result) {
+                    callbackService.onError({ result: result });
+                })
+        }
+        function setAsRead(model) {
+            return $http({
+                method: 'POST',
+                url: url + `SetAsRead/${model}`,
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + localStorage.access_token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'setAsRead' });
             })
                 .catch(function (result) {
                     callbackService.onError({ result: result });

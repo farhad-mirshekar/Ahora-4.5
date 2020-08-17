@@ -224,6 +224,7 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Contact\pbl.GetsContact.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Contact\pbl.spModifyContact.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\DocumentFlow\pbl.spGetsDocumentFlow.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\DocumentFlow\pbl.spSetFlowReadState.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\DocumentFlow\spInsertDocumentFlow.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Download\spGetDownload.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Download\spGetDownloads.sql" />

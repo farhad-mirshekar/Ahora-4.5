@@ -4571,8 +4571,8 @@
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('salesController', salesController);
-    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster'];
-    function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster) {
+    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster','documentFlowService'];
+    function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster, documentFlowService) {
         let sales = $scope;
         sales.Model = {};
         sales.main = {};
@@ -4581,7 +4581,8 @@
         sales.Search.Model.ActionState = 1;
         sales.main.state = '';
         sales.main.changeState = {
-            cartable: cartable
+            cartable: cartable,
+            view:view
         }
         sales.grid = {
             bindingObject: sales
@@ -4593,6 +4594,20 @@
             , globalSearch: true
             , initLoad: true
             , options: () => { return sales.Search.Model }
+            , actions:
+                [
+                    {
+                        class: 'fa fa-pencil text-info mr-2 cursor-grid operation-icon'
+                        , name: 'edit'
+                        , title: 'مشاهده'
+                        , onclick: (selected) => {
+                            debugger
+                            return documentFlowService.setAsRead(selected.ID).then(() => {
+                                $location.path(`/sales/view/${selected.ID}`);
+                            })
+                        }
+                    }
+                ]
         };
         init();
 
@@ -4603,6 +4618,9 @@
                     case 'cartable':
                         sales.main.changeState.cartable();
                         break;
+                    case 'view':
+                        sales.main.changeState.view();
+                        break;
                 }
             }).finally(loadingService.hide);
         }
@@ -4610,9 +4628,11 @@
         function cartable() {
             loadingService.show();
             sales.main.state = 'cartable';
-            console.log(sales.main.state);
             $location.path('/sales/cartable');
             loadingService.hide();
+        }
+        function view() {
+
         }
     }
 

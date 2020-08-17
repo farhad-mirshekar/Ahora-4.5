@@ -1,5 +1,6 @@
 ﻿using FM.Portal.Core.Model;
 using FM.Portal.Core.Result;
+using System;
 using System.Data;
 
 namespace FM.Portal.DataSource
@@ -8,5 +9,6 @@ namespace FM.Portal.DataSource
     {
         Result Insert(DocumentFlow flow);
         DataTable List(DocumentFlowListVM listVM);
+        Result SetAsRead(Guid DocumentID);
     }
 }

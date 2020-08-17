@@ -52,5 +52,26 @@ namespace FM.Portal.Infrastructure.DAL
             }
             catch(Exception e) { throw; }
         }
+
+        public Result SetAsRead(Guid DocumentID)
+        {
+            try
+            {
+                var param = new SqlParameter[3];
+                param[0] = new SqlParameter("@DocumentID", DocumentID);
+                param[1] = new SqlParameter("@UserPositionID", _requestInfo.PositionId);
+                param[2] = new SqlParameter("@IsRead", true);
+
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "pbl.spSetFlowReadState", param);
+                    if (result > 0)
+                        return Result.Successful();
+                    else
+                        return Result.Failure();
+                }
+            }
+            catch(Exception e) { throw; }
+        }
     }
 }

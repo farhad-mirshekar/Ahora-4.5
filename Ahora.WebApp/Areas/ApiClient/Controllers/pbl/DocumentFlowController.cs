@@ -24,5 +24,15 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             }
             catch(Exception e) { return NotFound(); }
         }
+        [HttpPost, Route("SetAsRead/{DocumentID:guid}")]
+        public IHttpActionResult SetAsRead(Guid DocumentID)
+        {
+            try
+            {
+                var result = _service.SetFlowRead(DocumentID);
+                return Ok(result);
+            }
+            catch (Exception e) { return NotFound(); }
+        }
     }
 }

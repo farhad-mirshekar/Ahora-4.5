@@ -1,6 +1,4 @@
-﻿(function () {
-    'use strict';
-
+﻿(() => {
     angular.module('portal', [
         // Angular modules 
         'ngRoute',
