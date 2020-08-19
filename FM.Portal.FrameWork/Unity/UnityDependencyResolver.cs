@@ -21,7 +21,7 @@ namespace FM.Portal.FrameWork.Unity
         {
             if (typeof(IController).IsAssignableFrom(serviceType))
             {
-                return ChildContainer.Resolve(serviceType);
+              return ChildContainer.Resolve(serviceType);
             }
 
             return IsRegistered(serviceType) ? ChildContainer.Resolve(serviceType) : null;

@@ -17,5 +17,7 @@ namespace FM.Portal.Core.Model
 
         //only show
         public string UserInfo { get; set; }
+        public string TypePersian => Type.ToString().Replace("_"," ");
+        public string DepartmentName { get; set; }
     }
 }

@@ -12,5 +12,6 @@ namespace FM.Portal.Core.Service
         Result<Position> Edit(Position model);
         Result<Position> Get(Guid ID);
         Result<List<Position>> List(PositionListVM model);
+        Result<List<Position>> ListByUser(PositionListVM model);
     }
 }

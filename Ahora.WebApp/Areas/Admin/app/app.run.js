@@ -3,8 +3,11 @@
     .module('portal')
     .run(run);
 
-    run.$inject = ['$rootScope', 'toolsService'];
-    function run($rootScope, toolsService) {
+    run.$inject = ['$rootScope', 'toolsService','authenticationService'];
+    function run($rootScope, toolsService, authenticationService) {
+        $rootScope.currentUserPosition = authenticationService.get('currentUserPosition');
+        $rootScope.currentUserPositions = authenticationService.get('currentUserPositions');
+
         toolsService.getPermission();
         var hasuser = toolsService.hasuser();
         $rootScope.signOut = signOut;

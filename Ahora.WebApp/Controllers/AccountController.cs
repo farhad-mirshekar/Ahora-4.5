@@ -13,16 +13,21 @@ using System.Security.Claims;
 using FM.Portal.Core.Owin;
 using System.Web.Security;
 using System.Web;
+using System.Linq;
+using Newtonsoft.Json;
 
 namespace Ahora.WebApp.Controllers
 {
     public class AccountController : BaseController<IUserService>
     {
         private readonly IRequestInfo _requestInfo;
+        private readonly IPositionService _positionService;
         public AccountController(IUserService service
-                                 , IRequestInfo requestInfo) : base(service)
+                                 , IRequestInfo requestInfo
+                                 , IPositionService positionService) : base(service)
         {
             _requestInfo = requestInfo;
+            _positionService = positionService;
         }
 
         // GET: Account
@@ -118,11 +123,15 @@ namespace Ahora.WebApp.Controllers
                             {
                                 case System.Net.HttpStatusCode.OK:
                                     {
+                                        var positionsResult = _positionService.ListByUser(new PositionListVM() { UserID = user.Data.ID});
+                                        if(!positionsResult.Success)
+                                            return Json(new { status = 0, token = "" });
+
                                         Session.RemoveAll();
                                         SetAuthCookie(user.Data.ID.ToString(), "Admin", false);
                                         Session.Add("login", true);
                                         Session.Timeout = 30;
-                                        return Json(new { status = 1, token = tokenvm, userid = user.Data.ID, type = user.Data.Type, authorizationData = tokenvm });
+                                        return Json(new { status = 1, token = tokenvm, userid = user.Data.ID, type = user.Data.Type, authorizationData = tokenvm, currentUserPositions =JsonConvert.SerializeObject(positionsResult.Data) , currentUserPosition = JsonConvert.SerializeObject(positionsResult.Data.First()) });
                                     }
                                 default:
                                     return Json(new { status = 0, token = "" });

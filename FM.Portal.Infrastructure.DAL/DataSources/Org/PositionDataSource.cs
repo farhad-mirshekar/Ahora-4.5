@@ -32,9 +32,12 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[1];
+                SqlParameter[] param = new SqlParameter[2];
                 param[0] = new SqlParameter("@DepartmentID",SqlDbType.UniqueIdentifier);
-                param[0].Value = (object)listVM.DepartmentID ?? DBNull.Value;
+                param[0].Value = listVM.DepartmentID != null ? listVM.DepartmentID :(object) DBNull.Value;
+
+                param[1] = new SqlParameter("@UserID", SqlDbType.UniqueIdentifier);
+                param[1].Value = (object)listVM.UserID ?? DBNull.Value;
 
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "org.spGetsPosition", param);
             }
