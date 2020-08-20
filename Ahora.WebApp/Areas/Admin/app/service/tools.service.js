@@ -5,7 +5,6 @@
     toolsService.$inject = ['commandService', '$window', 'profileService', '$q', 'loadingService','authenticationService'];
     function toolsService(commandService, $window, profileService, $q, loadingService, authenticationService) {
         let service = {
-            hasuser:hasuser,
             userID:userID,
             getPermission: getPermission,
             checkPermission: checkPermission,
@@ -14,17 +13,6 @@
             arrayEnum: arrayEnum
         };
         return service;
-        function hasuser() {
-            var data = localStorage.access_token;
-            var type = localStorage.type;
-            if (type === "1") {
-                if (data) {
-                    return true;
-                }
-            }
-
-            return false;
-        }
         function userID() {
             var data = localStorage.userid;
             if (data)
@@ -32,7 +20,7 @@
             return "";
         }
         function getPermission() {
-            var userID = localStorage.userid;
+            var userID = authenticationService.get('authorizationData').UserID;
             if (!userID) {
             } else {
                 return commandService.getPermission().then((result) => {

@@ -65,11 +65,20 @@
                         </div>
                     </div>
                     <div class="col-md-9">
-                        
                         <div class="d-inline-block header-icon">
-                            <select style="width:300px;" ng-if="currentUserPositions.length > 1">
-                                <option ng-repeat="row in currentUserPositions">{{row.UserInfo}} - {{row.TypePersian}} - {{row.DepartmentName}}</option>
-                            </select>
+                            <div class="d-inline-flex">
+                                <div class="dropdown" ng-if="currentUserPositions.length > 1">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        انتخاب جایگاه
+                                    </button>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                        <a class="dropdown-item" ng-repeat="row in currentUserPositions" href="#" ng-click="changePosition(row)">
+                                            <i ng-if="row.ID == currentUserPosition.ID" class="fa fa-check-square-o"></i>
+                                            {{row.UserInfo}} - {{row.TypePersian}} - {{row.DepartmentName}}
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
                             <a href="#">
                                 <i class="fa fa-home home-icon"></i>
                             </a>

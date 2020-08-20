@@ -3,8 +3,8 @@
         .module('portal');
 
     app.factory('faqGroupService', faqGroupService);
-    faqGroupService.$inject = ['$http', 'callbackService'];
-    function faqGroupService($http, callbackService) {
+    faqGroupService.$inject = ['$http', 'callbackService','authenticationService'];
+    function faqGroupService($http, callbackService, authenticationService) {
         var url = '/api/v1/faqgroup/';
         var service = {
             list: list,
@@ -20,7 +20,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'list' });
@@ -36,7 +36,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -51,7 +51,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'edit' });
@@ -65,7 +65,7 @@
                 url: url + `get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
@@ -76,8 +76,8 @@
     }
 
     app.factory('faqService', faqService);
-    faqService.$inject = ['$http', 'callbackService'];
-    function faqService($http, callbackService) {
+    faqService.$inject = ['$http', 'callbackService','authenticationService'];
+    function faqService($http, callbackService, authenticationService) {
         var url = '/api/v1/faq/';
         var service = {
             add: add,
@@ -92,7 +92,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -107,7 +107,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'edit' });
@@ -121,7 +121,7 @@
                 url: url + `list/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `list/${model}` });
@@ -132,8 +132,8 @@
     }
 
     app.factory('uploadService', uploadService);
-    uploadService.$inject = ['$http', '$q', 'callbackService'];
-    function uploadService($http, $q, callbackService) {
+    uploadService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    function uploadService($http, $q, callbackService, authenticationService) {
         var url = '/attachment'
         var service = {
             upload: upload
@@ -159,8 +159,8 @@
     }
 
     app.factory('attachmentService', attachmentService);
-    attachmentService.$inject = ['$http', 'callbackService'];
-    function attachmentService($http, callbackService) {
+    attachmentService.$inject = ['$http', 'callbackService', 'authenticationService'];
+    function attachmentService($http, callbackService, authenticationService) {
         var url = '/attachment/';
         var service = {
             add: add,
@@ -176,7 +176,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -191,7 +191,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'list' });
@@ -206,7 +206,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Remove` });
@@ -217,8 +217,8 @@
     }
 
     app.factory('profileService', profileService);
-    profileService.$inject = ['$http', '$q', 'callbackService'];
-    function profileService($http, $q, callbackService) {
+    profileService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    function profileService($http, $q, callbackService, authenticationService) {
         var url = '/api/v1/user/'
         var service = {
             save: save,
@@ -240,7 +240,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
@@ -270,7 +270,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 callbackService.onSuccess({ result: result, url: url + 'setpassword' })
@@ -294,7 +294,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, url: url + 'searchByNationalCode' });
@@ -316,8 +316,8 @@
     }
 
     app.factory('commandService', commandService);
-    commandService.$inject = ['$http', 'callbackService'];
-    function commandService($http, callbackService) {
+    commandService.$inject = ['$http', 'callbackService','authenticationService'];
+    function commandService($http, callbackService, authenticationService) {
         var url = '/api/v1/command/'
         var service = {
             list: list,
@@ -338,7 +338,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'list' });
@@ -353,7 +353,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'ListForRole' });
@@ -368,7 +368,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'ListByNode' });
@@ -382,7 +382,7 @@
                 url: url + 'CommandType',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'CommandType' });
@@ -396,7 +396,7 @@
                 url: url + `get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
@@ -411,7 +411,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -427,7 +427,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -442,7 +442,7 @@
                 url: url + 'GetPermission',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'GetPermission' });
@@ -457,7 +457,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -468,8 +468,8 @@
     }
 
     app.factory('roleService', roleService);
-    roleService.$inject = ['$http', 'callbackService'];
-    function roleService($http, callbackService) {
+    roleService.$inject = ['$http', 'callbackService','authenticationService'];
+    function roleService($http, callbackService, authenticationService) {
         var url = '/api/v1/role/'
         var service = {
             list: list,
@@ -485,7 +485,7 @@
                 url: url + 'List',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -500,7 +500,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -515,7 +515,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -529,7 +529,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -541,8 +541,8 @@
     }
 
     app.factory('attributeService', attributeService);
-    attributeService.$inject = ['$http', '$q', 'callbackService'];
-    function attributeService($http, $q, callbackService) {
+    attributeService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    function attributeService($http, $q, callbackService, authenticationService) {
         var url = '/api/v1/ProductAttribute/'
         var service = {
             add: add,
@@ -567,7 +567,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -583,7 +583,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return result;
@@ -598,7 +598,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Get' });
@@ -613,7 +613,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -624,12 +624,13 @@
     }
 
     app.factory('positionService', positionService);
-    positionService.$inject = ['$http', 'callbackService'];
-    function positionService($http, callbackService) {
+    positionService.$inject = ['$http', 'callbackService','authenticationService'];
+    function positionService($http, callbackService, authenticationService) {
         var url = '/api/v1/position/'
         var service = {
             add: add,
-            list: list
+            list: list,
+            setDefault: setDefault
         }
         return service;
 
@@ -640,7 +641,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -656,7 +657,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'list' });
@@ -665,11 +666,27 @@
                     return callbackService.onError({ result: result });
                 })
         }
+        function setDefault(model) {
+            return $http({
+                method: 'POST',
+                url: url + `setDefault/${model.PositionID}`,
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `setDefault/${model.PositionID}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
     }
 
     app.factory('categoryService', CategoryService);
-    CategoryService.$inject = ['$http', 'callbackService', '$q'];
-    function CategoryService($http, callbackService, $q) {
+    CategoryService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function CategoryService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/category/'
         var service = {
             add: add,
@@ -688,7 +705,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -711,7 +728,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -726,13 +743,13 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
             }).catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
+                return callbackService.onError({ result: result });
+            })
         }
         function list(state) {
             return $http({
@@ -740,7 +757,7 @@
                 url: url + 'list/' + state,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List/' + state });
@@ -754,19 +771,19 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
             }).catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
+                return callbackService.onError({ result: result });
+            })
         }
     }
 
     app.factory('discountService', discountService);
-    discountService.$inject = ['$http', 'callbackService'];
-    function discountService($http, callbackService) {
+    discountService.$inject = ['$http', 'callbackService','authenticationService'];
+    function discountService($http, callbackService, authenticationService) {
         var url = '/api/v1/discount/'
         var service = {
             add: add,
@@ -784,7 +801,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -800,7 +817,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -815,7 +832,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -830,7 +847,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -842,8 +859,8 @@
     }
 
     app.factory('productService', productService);
-    productService.$inject = ['$http', '$q', 'callbackService'];
-    function productService($http, $q, callbackService) {
+    productService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    function productService($http, $q, callbackService, authenticationService) {
         var url = '/api/v1/product/'
         var service = {
             add: add,
@@ -873,7 +890,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -919,7 +936,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -934,7 +951,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -949,7 +966,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -960,8 +977,8 @@
     }
 
     app.factory('productMapattributeService', productMapattributeService);
-    productMapattributeService.$inject = ['$http', 'callbackService'];
-    function productMapattributeService($http, callbackService) {
+    productMapattributeService.$inject = ['$http', 'callbackService','authenticationService'];
+    function productMapattributeService($http, callbackService, authenticationService) {
         var url = '/api/v1/productMapattribute/'
         var service = {
             add: add,
@@ -980,7 +997,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -996,7 +1013,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1011,7 +1028,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -1026,7 +1043,7 @@
                 url: url + `list/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -1040,7 +1057,7 @@
                 url: url + `delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `delete/${model}` });
@@ -1052,8 +1069,8 @@
     }
 
     app.factory('productVariantattributeService', productVariantattributeService);
-    productVariantattributeService.$inject = ['$http', 'callbackService'];
-    function productVariantattributeService($http, callbackService) {
+    productVariantattributeService.$inject = ['$http', 'callbackService','authenticationService'];
+    function productVariantattributeService($http, callbackService, authenticationService) {
         var url = '/api/v1/ProductVariantAttribute/'
         var service = {
             save: save,
@@ -1077,7 +1094,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -1093,7 +1110,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1108,7 +1125,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -1123,7 +1140,7 @@
                 url: url + `list/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -1137,7 +1154,7 @@
                 url: url + `delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `delete/${model}` });
@@ -1149,8 +1166,8 @@
     }
 
     app.factory('commentService', commentService);
-    commentService.$inject = ['$http', 'callbackService', '$q'];
-    function commentService($http, callbackService, $q) {
+    commentService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function commentService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/comment/'
         var service = {
             add: add,
@@ -1168,7 +1185,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -1189,7 +1206,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1204,7 +1221,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -1219,7 +1236,7 @@
                 url: url + `list/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `list/${model}` });
@@ -1230,8 +1247,8 @@
     }
 
     app.factory('categoryPortalService', categoryPortalService);
-    categoryPortalService.$inject = ['$http', 'callbackService'];
-    function categoryPortalService($http, callbackService) {
+    categoryPortalService.$inject = ['$http', 'callbackService','authenticationService'];
+    function categoryPortalService($http, callbackService, authenticationService) {
         var url = '/api/v1/categoryPortal/'
         var service = {
             add: add,
@@ -1250,7 +1267,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -1266,7 +1283,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1281,7 +1298,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -1293,13 +1310,13 @@
         function list(state) {
             return $http({
                 method: 'post',
-                url: url + 'list/'+state,
+                url: url + 'list/' + state,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'List/'+state });
+                return callbackService.onSuccess({ result: result, request: url + 'List/' + state });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
@@ -1310,7 +1327,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -1321,8 +1338,8 @@
     }
 
     app.factory('articleService', articleService);
-    articleService.$inject = ['$http', 'callbackService', '$q'];
-    function articleService($http, callbackService, $q) {
+    articleService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function articleService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/article/'
         var service = {
             add: add,
@@ -1357,7 +1374,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -1390,7 +1407,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1405,7 +1422,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -1420,7 +1437,7 @@
                 url: url + `remove/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `remove/${model}` });
@@ -1435,7 +1452,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -1446,8 +1463,8 @@
     }
 
     app.factory('categoryMapDiscountService', categoryMapDiscountService);
-    categoryMapDiscountService.$inject = ['$http', 'callbackService'];
-    function categoryMapDiscountService($http, callbackService) {
+    categoryMapDiscountService.$inject = ['$http', 'callbackService','authenticationService'];
+    function categoryMapDiscountService($http, callbackService, authenticationService) {
         var url = '/api/v1/categoryMapDiscount/'
         var service = {
             add: add,
@@ -1462,7 +1479,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -1474,8 +1491,8 @@
     }
 
     app.factory('newsService', newsService);
-    newsService.$inject = ['$http', 'callbackService', '$q'];
-    function newsService($http, callbackService, $q) {
+    newsService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function newsService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/news/'
         var service = {
             add: add,
@@ -1510,7 +1527,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -1543,7 +1560,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1558,7 +1575,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -1573,7 +1590,7 @@
                 url: url + `remove/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `remove/${model}` });
@@ -1588,7 +1605,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -1599,8 +1616,8 @@
     }
 
     app.factory('pagesService', pagesService);
-    pagesService.$inject = ['$http', 'callbackService'];
-    function pagesService($http, callbackService) {
+    pagesService.$inject = ['$http', 'callbackService','authenticationService'];
+    function pagesService($http, callbackService, authenticationService) {
         var url = '/api/v1/pages/'
         var service = {
             add: add,
@@ -1619,7 +1636,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -1635,7 +1652,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1650,7 +1667,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -1665,7 +1682,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -1679,7 +1696,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -1691,8 +1708,8 @@
     }
 
     app.factory('menuService', menuService);
-    menuService.$inject = ['$http', 'callbackService'];
-    function menuService($http, callbackService) {
+    menuService.$inject = ['$http', 'callbackService','authenticationService'];
+    function menuService($http, callbackService, authenticationService) {
         var url = '/api/v1/menu/'
         var service = {
             add: add,
@@ -1711,7 +1728,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -1727,7 +1744,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1742,7 +1759,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -1757,7 +1774,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -1771,7 +1788,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/ ${model}` });
@@ -1783,8 +1800,8 @@
     }
 
     app.factory('sliderService', sliderService);
-    sliderService.$inject = ['$http', 'callbackService', '$q'];
-    function sliderService($http, callbackService, $q) {
+    sliderService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function sliderService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/slider/'
         var service = {
             add: add,
@@ -1809,7 +1826,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -1832,7 +1849,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1847,7 +1864,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -1862,7 +1879,7 @@
                 url: url + `remove/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `remove/${model}` });
@@ -1877,7 +1894,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -1888,8 +1905,8 @@
     }
 
     app.factory('generalSettingService', generalSettingService);
-    generalSettingService.$inject = ['$http', 'callbackService', '$q'];
-    function generalSettingService($http, callbackService, $q) {
+    generalSettingService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function generalSettingService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/generalSetting/'
         var service = {
             getSetting: getSetting,
@@ -1904,7 +1921,7 @@
                 url: url + 'getSetting',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'getSetting' });
@@ -1920,7 +1937,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -1932,8 +1949,8 @@
     }
 
     app.factory('eventsService', eventsService);
-    eventsService.$inject = ['$http', 'callbackService', '$q'];
-    function eventsService($http, callbackService, $q) {
+    eventsService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function eventsService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/events/'
         var service = {
             add: add,
@@ -1968,7 +1985,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -2001,7 +2018,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -2016,7 +2033,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -2031,7 +2048,7 @@
                 url: url + `remove/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `remove/${model}` });
@@ -2046,7 +2063,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -2057,8 +2074,8 @@
     }
 
     app.factory('paymentService', paymentService);
-    paymentService.$inject = ['$http', 'callbackService', '$q'];
-    function paymentService($http, callbackService, $q) {
+    paymentService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function paymentService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/Payment/'
         var service = {
             get: get,
@@ -2074,7 +2091,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -2089,7 +2106,7 @@
                 url: url + `list`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `List` });
@@ -2103,7 +2120,7 @@
                 url: url + `GetDetail/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `GetDetail/${model}` });
@@ -2117,7 +2134,7 @@
                 url: url + `GetExcel`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `GetExcel` });
@@ -2128,8 +2145,8 @@
     }
 
     app.factory('notificationService', notificationService);
-    notificationService.$inject = ['$http', 'callbackService', '$q'];
-    function notificationService($http, callbackService, $q) {
+    notificationService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function notificationService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/notification/'
         var service = {
             list: list,
@@ -2144,7 +2161,7 @@
                 url: url + `list`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `List` });
@@ -2158,7 +2175,7 @@
                 url: url + `readNotification/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `readNotification/${model}` });
@@ -2172,7 +2189,7 @@
                 url: url + `get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
@@ -2186,7 +2203,7 @@
                 url: url + `getActiveNotification`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + `getActiveNotification}` });
@@ -2197,8 +2214,8 @@
     }
 
     app.factory('departmentService', departmentService);
-    departmentService.$inject = ['$http', 'callbackService'];
-    function departmentService($http, callbackService) {
+    departmentService.$inject = ['$http', 'callbackService','authenticationService'];
+    function departmentService($http, callbackService, authenticationService) {
         var url = '/api/v1/department/'
         var service = {
             list: list,
@@ -2217,7 +2234,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'ListByNode' });
@@ -2231,7 +2248,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'list' });
@@ -2245,7 +2262,7 @@
                 url: url + `get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
@@ -2260,7 +2277,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -2276,7 +2293,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -2291,7 +2308,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -2302,14 +2319,15 @@
     }
 
     app.factory('userService', userService);
-    userService.$inject = ['$http', '$q', 'callbackService'];
-    function userService($http, $q, callbackService) {
+    userService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    function userService($http, $q, callbackService, authenticationService) {
         var url = '/api/v1/user/'
         var service = {
             add: add,
             get: get,
             list: list,
-            resetPassword: resetPassword
+            resetPassword: resetPassword,
+            getRefreshToken: getRefreshToken
         };
         return service;
 
@@ -2320,7 +2338,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `add` });
@@ -2336,7 +2354,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
@@ -2351,7 +2369,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `list` });
@@ -2366,7 +2384,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `resetPassword/${model}` });
@@ -2374,11 +2392,22 @@
                 return callbackService.onError({ result: result });
             })
         }
+        function getRefreshToken(model) {
+            return $http({
+                method: 'POST'
+                , url: '/account/RefreshToken'
+                , data: { RefreshToken: model.RefreshToken }
+            }).then((result) => {
+                return result.data.authorizationData;
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            });
+        }
     }
 
     app.factory('pagesPortalService', pagesPortalService);
-    pagesPortalService.$inject = ['$http', 'callbackService'];
-    function pagesPortalService($http, callbackService) {
+    pagesPortalService.$inject = ['$http', 'callbackService','authenticationService'];
+    function pagesPortalService($http, callbackService, authenticationService) {
         var url = '/api/v1/pagesPortal/'
         var service = {
             add: add,
@@ -2397,7 +2426,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -2413,7 +2442,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -2428,7 +2457,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -2444,7 +2473,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -2458,7 +2487,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -2470,8 +2499,8 @@
     }
 
     app.factory('contactService', contactService);
-    contactService.$inject = ['$http', 'callbackService'];
-    function contactService($http, callbackService) {
+    contactService.$inject = ['$http', 'callbackService','authenticationService'];
+    function contactService($http, callbackService, authenticationService) {
         var url = '/api/v1/contact/'
         var service = {
             list: list,
@@ -2486,7 +2515,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'list' });
@@ -2500,7 +2529,7 @@
                 url: url + `get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `get/${model}` });
@@ -2514,7 +2543,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -2525,8 +2554,8 @@
     }
 
     app.factory('dynamicPageService', dynamicPageService);
-    dynamicPageService.$inject = ['$http', 'callbackService'];
-    function dynamicPageService($http, callbackService) {
+    dynamicPageService.$inject = ['$http', 'callbackService','authenticationService'];
+    function dynamicPageService($http, callbackService, authenticationService) {
         var url = '/api/v1/DynamicPage/'
         var service = {
             add: add,
@@ -2545,7 +2574,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -2561,7 +2590,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -2576,7 +2605,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -2592,7 +2621,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -2606,7 +2635,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -2618,8 +2647,8 @@
     }
 
     app.factory('linkService', linkService);
-    linkService.$inject = ['$http', 'callbackService','$q'];
-    function linkService($http, callbackService,$q) {
+    linkService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function linkService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/link/'
         var service = {
             add: add,
@@ -2648,7 +2677,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
@@ -2675,7 +2704,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -2690,7 +2719,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -2706,7 +2735,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -2720,7 +2749,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -2732,8 +2761,8 @@
     }
 
     app.factory('staticPageService', staticPageService);
-    staticPageService.$inject = ['$http', 'callbackService'];
-    function staticPageService($http, callbackService) {
+    staticPageService.$inject = ['$http', 'callbackService','authenticationService'];
+    function staticPageService($http, callbackService, authenticationService) {
         var url = '/api/v1/StaticPage/'
         var service = {
             edit: edit,
@@ -2751,7 +2780,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -2766,7 +2795,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -2781,7 +2810,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -2795,7 +2824,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -2807,11 +2836,11 @@
     }
 
     app.factory('bannerService', bannerService);
-    bannerService.$inject = ['$http', 'callbackService'];
-    function bannerService($http, callbackService) {
+    bannerService.$inject = ['$http', 'callbackService','authenticationService'];
+    function bannerService($http, callbackService, authenticationService) {
         var url = '/api/v1/Banner/'
         var service = {
-            add:add,
+            add: add,
             edit: edit,
             get: get,
             list: list,
@@ -2827,7 +2856,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -2843,7 +2872,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -2858,7 +2887,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -2871,10 +2900,10 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -2888,7 +2917,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -2900,8 +2929,8 @@
     }
 
     app.factory('galleryService', galleryService);
-    galleryService.$inject = ['$http', 'callbackService','$q'];
-    function galleryService($http, callbackService,$q) {
+    galleryService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function galleryService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/Gallery/'
         var service = {
             add: add,
@@ -2920,7 +2949,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -2936,7 +2965,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -2951,7 +2980,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -2966,7 +2995,7 @@
                 url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -2980,7 +3009,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -2992,8 +3021,8 @@
     }
 
     app.factory('shippingCostService', shippingCostService);
-    shippingCostService.$inject = ['$http', 'callbackService', '$q'];
-    function shippingCostService($http, callbackService, $q) {
+    shippingCostService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function shippingCostService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/ShippingCost/'
         var service = {
             add: add,
@@ -3012,7 +3041,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -3028,7 +3057,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -3043,7 +3072,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -3056,10 +3085,10 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -3073,7 +3102,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -3085,8 +3114,8 @@
     }
 
     app.factory('deliveryDateService', deliveryDateService);
-    deliveryDateService.$inject = ['$http', 'callbackService', '$q'];
-    function deliveryDateService($http, callbackService, $q) {
+    deliveryDateService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function deliveryDateService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/DeliveryDate/'
         var service = {
             add: add,
@@ -3105,7 +3134,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -3121,7 +3150,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -3136,7 +3165,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -3152,7 +3181,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -3166,7 +3195,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -3178,8 +3207,8 @@
     }
 
     app.factory('relatedProductService', relatedProductService);
-    relatedProductService.$inject = ['$http', 'callbackService', '$q'];
-    function relatedProductService($http, callbackService, $q) {
+    relatedProductService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function relatedProductService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/RelatedProduct/'
         var service = {
             add: add,
@@ -3198,7 +3227,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -3214,7 +3243,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -3229,7 +3258,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -3242,10 +3271,10 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });
@@ -3259,7 +3288,7 @@
                 url: url + `Delete/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
@@ -3271,12 +3300,12 @@
     }
 
     app.factory('documentFlowService', documentFlowService);
-    documentFlowService.$inject = ['$http', 'callbackService', '$q'];
-    function documentFlowService($http, callbackService, $q) {
+    documentFlowService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function documentFlowService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/DocumentFlow/'
         var service = {
             confirm: confirm,
-            setAsRead:setAsRead
+            setAsRead: setAsRead
         }
         return service;
 
@@ -3287,7 +3316,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -3303,7 +3332,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'setAsRead' });
@@ -3315,8 +3344,8 @@
     }
 
     app.factory('salesService', salesService);
-    salesService.$inject = ['$http', 'callbackService', '$q'];
-    function salesService($http, callbackService, $q) {
+    salesService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function salesService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/Sales/'
         var service = {
             add: add,
@@ -3334,7 +3363,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
@@ -3350,7 +3379,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
@@ -3365,7 +3394,7 @@
                 url: url + `Get/${model}`,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
@@ -3381,7 +3410,7 @@
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + localStorage.access_token
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
                 return callbackService.onSuccess({ result: result, request: url + 'List' });

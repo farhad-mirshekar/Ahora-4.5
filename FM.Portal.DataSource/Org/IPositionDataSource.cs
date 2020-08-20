@@ -12,5 +12,6 @@ namespace FM.Portal.DataSource
         Result<Position> Update(Position model);
         Result<Position> Get(Guid ID);
         DataTable List(PositionListVM listVM);
+        Result SetDefault(Guid ID);
     }
 }

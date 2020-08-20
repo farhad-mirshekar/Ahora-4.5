@@ -172,15 +172,14 @@
     }
     //-------------------------------------------------------------------------------------------------------
     app.controller('profileController', profileController);
-    profileController.$inject = ['$scope', 'profileService'];
-    function profileController($scope, profileService) {
+    profileController.$inject = ['$scope', 'profileService','authenticationService'];
+    function profileController($scope, profileService, authenticationService) {
         let profile = $scope;
 
         init();
 
         function init() {
-            var id = localStorage.userid;
-            return profileService.get(id).then((result) => {
+            return profileService.get(authenticationService.get('authorizationData').UserID).then((result) => {
                 profile.user = result;
             })
         }

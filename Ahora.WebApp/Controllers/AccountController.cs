@@ -123,15 +123,15 @@ namespace Ahora.WebApp.Controllers
                             {
                                 case System.Net.HttpStatusCode.OK:
                                     {
-                                        var positionsResult = _positionService.ListByUser(new PositionListVM() { UserID = user.Data.ID});
-                                        if(!positionsResult.Success)
+                                        var positionsResult = _positionService.ListByUser(new PositionListVM() { UserID = user.Data.ID });
+                                        if (!positionsResult.Success)
                                             return Json(new { status = 0, token = "" });
 
                                         Session.RemoveAll();
                                         SetAuthCookie(user.Data.ID.ToString(), "Admin", false);
                                         Session.Add("login", true);
                                         Session.Timeout = 30;
-                                        return Json(new { status = 1, token = tokenvm, userid = user.Data.ID, type = user.Data.Type, authorizationData = tokenvm, currentUserPositions =JsonConvert.SerializeObject(positionsResult.Data) , currentUserPosition = JsonConvert.SerializeObject(positionsResult.Data.First()) });
+                                        return Json(new { status = 1 , type = 1, authorizationData = JsonConvert.SerializeObject(tokenvm), currentUserPositions = JsonConvert.SerializeObject(positionsResult.Data), currentUserPosition = JsonConvert.SerializeObject(positionsResult.Data.Where(x => x.Default == true).First()) });
                                     }
                                 default:
                                     return Json(new { status = 0, token = "" });
@@ -159,7 +159,7 @@ namespace Ahora.WebApp.Controllers
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://localhost:61837/");
+                client.BaseAddress = new Uri($"{Request.Url.Scheme}://{Request.Url.Authority}");
                 client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 //setup login data
@@ -186,19 +186,19 @@ namespace Ahora.WebApp.Controllers
                             {
                                 if (user.Data.Type == UserType.کاربر_برون_سازمانی)
                                 {
-                                    return Json(new { status = 1, token = "", userid = "", type = user.Data.Type });
+                                    return Json(new { status = 1, authorizationData = "", userid = "", type = user.Data.Type });
                                 }
                                 else if (user.Data.Type == UserType.کاربر_درون_سازمانی)
                                 {
-                                    return Json(new { status = 1, token = tokenvm, userid = user.Data.ID, type = user.Data.Type });
+                                    return Json(new { status = 0 ,authorizationData = tokenvm });
                                 }
                                 return null;
                             }
                         default:
-                            return Json(new { status = 0, token = "" });
+                            return Json(new { status = 0, authorizationData = "" });
                     }
                 }
-                return Json(new { status = 0, token = "" });
+                return Json(new { status = 0, authorizationData = "" });
             }
 
         }

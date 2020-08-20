@@ -72,6 +72,24 @@ namespace FM.Portal.Infrastructure.DAL
             
         }
 
+        public Result SetDefault(Guid ID)
+        {
+            try
+            {
+                var param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ID", ID);
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "org.spSetDefaultPosition", param);
+                    if (result > 0)
+                        return Result.Successful();
+                    else
+                        return Result.Failure();
+                }
+            }
+            catch (Exception e) { throw; }
+        }
+
         public Result<Position> Update(Position model)
         {
             return Modify(false, model);

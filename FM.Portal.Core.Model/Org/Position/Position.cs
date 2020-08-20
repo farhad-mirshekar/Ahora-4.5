@@ -13,6 +13,8 @@ namespace FM.Portal.Core.Model
         public UserType UserType { get; set; }
         public Guid ParentID { get; set; }
         public Guid UserID { get; set; }
+        public bool Enabled { get; set; }
+        public bool Default { get; set; }
         public string Json { get; set; } //only for command but not exist in table role
 
         //only show

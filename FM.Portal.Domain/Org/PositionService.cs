@@ -7,6 +7,7 @@ using FM.Portal.Core.Result;
 using System.Collections.Generic;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Owin;
+using System.Linq;
 
 namespace FM.Portal.Domain
 {
@@ -52,7 +53,35 @@ namespace FM.Portal.Domain
             return Result<List<Position>>.Failure();
         }
 
-        public Result<PositionDefaultVM> PositionDefault(Guid userID)
-        => _dataSource.PositionDefault(userID);
+        public Result<Position> GetDefaultPosition(Guid userID)
+        {
+            try
+            {
+                var positionsResult = List(new PositionListVM() {UserID = userID });
+                if (!positionsResult.Success)
+                    return Result<Position>.Failure(message: "دریافت اطلاعات با خطا مواجه شده است");
+                var positions = positionsResult.Data.Where(x=>x.Enabled);
+                if(positions == null || !positions.Any())
+                    return Result<Position>.Failure(message: "شما مجوز دسترسی به سامانه را ندارید");
+
+                var defaultPositions = positions.Where(p => p.Default == true).ToList();
+                var defaultPosition = new Position();
+
+                if (defaultPositions.Count == 1)
+                    defaultPosition = defaultPositions.First();
+                else
+                    defaultPosition = defaultPositions.FirstOrDefault();
+
+                var setDefaultResult = SetDefault(defaultPosition.ID);
+                if (!setDefaultResult.Success)
+                    return Result<Position>.Failure(message: "عملیات با شکست مواجه شده است");
+
+                return Result<Position>.Successful(data: defaultPosition);
+            }
+            catch(Exception e) { throw; }
+        }
+
+        public Result SetDefault(Guid ID)
+        => _dataSource.SetDefault(ID);
     }
 }

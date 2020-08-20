@@ -12,27 +12,13 @@
         };
         return service;
         function setCredentials(model) {
-            if (model.status) {
-                localStorage.setItem('access_token', model.token.Access_Token);
-                localStorage.setItem('userid', model.userid);
-                localStorage.setItem('refresh_token', model.token.Refresh_Token);
-                localStorage.setItem('type',"1");
-            } else {
-                $window.localStorage.removeItem('access_token');
-                $window.localStorage.removeItem('userid');
-                $window.localStorage.removeItem('refresh_token');
-                $window.localStorage.removeItem('type');
-                $window.location.href = '/account/login';
-            }
+            set('authorizationData', model);
         }
         function isAuthenticated() {
             return (angular.element('input[name="__isAuthenticated"]').attr('value') === 'true');
         }
         function clearCredentials() {
-            $window.localStorage.removeItem('access_token');
-            $window.localStorage.removeItem('userid');
-            $window.localStorage.removeItem('refresh_token');
-            $window.localStorage.removeItem('type');
+            $window.localStorage.removeItem('authorizationData');
             $window.localStorage.removeItem('currentUserPositions');
             $window.localStorage.removeItem('currentUserPosition');
         }

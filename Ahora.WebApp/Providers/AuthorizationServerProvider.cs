@@ -47,7 +47,7 @@ namespace FM.Portal.WebApp.Providers
             var data = _service.Get(context.UserName, context.Password, null , UserType.Unknown);
             if (data.Data.ID != Guid.Empty)
             {
-                var positionDefault = _position.PositionDefault(data.Data.ID);
+                var positionDefault = _position.GetDefaultPosition(data.Data.ID);
                 var position = positionDefault.Data;
                 var claims = new List<Claim>
             {
@@ -55,10 +55,10 @@ namespace FM.Portal.WebApp.Providers
                 new Claim(type: ClaimTypes.NameIdentifier, value: data.Data.ID.ToString()),
                 new Claim(type: Claims.ApplicationId, value:applicationId.ToString()),
                 new Claim(type: Claims.DepartmentId, value:position.DepartmentID.ToString() ),
-                new Claim(type: Claims.PositionId, value:position.PositionID.ToString()),
+                new Claim(type: Claims.PositionId, value:position.ID.ToString()),
                 new Claim(type: Claims.UserId, value: position.UserID.ToString()),
-                new Claim(type: Claims.UserName, value: position.UserName.ToString()),
-                new Claim(type: Claims.PositionType, value: position.PositionType.ToString("d")),
+                new Claim(type: Claims.UserName, value: data.Data.Username.ToString()),
+                new Claim(type: Claims.PositionType, value: position.Type.ToString("d")),
             };
 
                 var identity = new ClaimsIdentity(claims, context.Options.AuthenticationType);
@@ -106,9 +106,21 @@ namespace FM.Portal.WebApp.Providers
             container.RegisterType<IRequestInfo, RequestInfo>();
             container.RegisterType<IPositionDataSource, PositionDataSource>();
             container.RegisterType<IPositionService, PositionService>();
+            container.RegisterType<IUserDataSource, UserDataSource>();
+            container.RegisterType<IUserService, UserService>();
+
+            IUserService _userservice = container.Resolve<IUserService>();
             IPositionService _positionService = container.Resolve<IPositionService>();
 
-            var getDefaultPositionResult = _positionService.PositionDefault(userId);
+            var userResult = _userservice.Get(userId);
+            if(!userResult.Success)
+            {
+                context.SetError("invalid_user", userResult.Message);
+                return Task.FromResult(0);
+            }
+            var user = userResult.Data;
+
+            var getDefaultPositionResult = _positionService.GetDefaultPosition(userId);
             if (!getDefaultPositionResult.Success)
             {
                 context.SetError("invalid_user", getDefaultPositionResult.Message);
@@ -118,10 +130,10 @@ namespace FM.Portal.WebApp.Providers
 
             ReplaceClaim(newIdentity, Claims.ApplicationId, positionDefault.ApplicationID.ToString());
             ReplaceClaim(newIdentity, Claims.DepartmentId, positionDefault.DepartmentID.ToString());
-            ReplaceClaim(newIdentity, Claims.PositionId, positionDefault.PositionID.ToString());
+            ReplaceClaim(newIdentity, Claims.PositionId, positionDefault.ID.ToString());
             ReplaceClaim(newIdentity, Claims.UserId, positionDefault.UserID.ToString());
-            ReplaceClaim(newIdentity, Claims.UserName, positionDefault.UserName.ToString());
-            ReplaceClaim(newIdentity, Claims.PositionType, positionDefault.PositionType.ToString());
+            ReplaceClaim(newIdentity, Claims.UserName, user.Username.ToString());
+            ReplaceClaim(newIdentity, Claims.PositionType, positionDefault.Type.ToString("d"));
             var newTicket = new AuthenticationTicket(newIdentity, context.Ticket.Properties);
             context.Validated(newTicket);
             return Task.FromResult(0);

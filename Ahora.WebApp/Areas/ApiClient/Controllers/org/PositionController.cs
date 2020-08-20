@@ -1,6 +1,7 @@
 ﻿using FM.Portal.Core.Model;
 using FM.Portal.Domain;
 using FM.Portal.FrameWork.Api.Controller;
+using System;
 using System.Web.Http;
 
 namespace Ahora.WebApp.Areas.ApiClient.Controllers
@@ -28,6 +29,16 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             try
             {
                 var result = _service.List(model);
+                return Ok(result);
+            }
+            catch { return NotFound(); }
+        }
+        [HttpPost, Route("SetDefault/{PositionID:guid}")]
+        public IHttpActionResult SetDefault(Guid PositionID)
+        {
+            try
+            {
+                var result = _service.SetDefault(PositionID);
                 return Ok(result);
             }
             catch { return NotFound(); }

@@ -3,16 +3,14 @@
     .module('portal')
     .run(run);
 
-    run.$inject = ['$rootScope', 'toolsService','authenticationService'];
-    function run($rootScope, toolsService, authenticationService) {
+    run.$inject = ['$rootScope', 'toolsService', 'authenticationService', '$window', 'positionService', 'userService','loadingService'];
+    function run($rootScope, toolsService, authenticationService, $window, positionService, userService, loadingService) {
         $rootScope.currentUserPosition = authenticationService.get('currentUserPosition');
         $rootScope.currentUserPositions = authenticationService.get('currentUserPositions');
-
-        toolsService.getPermission();
-        var hasuser = toolsService.hasuser();
+        $rootScope.changePosition = changePosition;
         $rootScope.signOut = signOut;
-        if (!hasuser)
-            window.location.href = '/account/login';
+        toolsService.getPermission();
+        console.log(authenticationService.get('authorizationData').Access_Token);
         $rootScope.Menus = [
             {
                 name: 'dashboard', title: 'داشبورد', icon: 'fa-home', hasShow: () => { return true; }
@@ -91,6 +89,20 @@
 
         function signOut() {
             toolsService.signOut();
+        }
+        function changePosition(position) {
+            if (position.ID !== authenticationService.get('currentUserPosition').ID) {
+                loadingService.show();
+                return positionService.setDefault({ PositionID: position.ID }).then(() => {
+                    authenticationService.set('currentUserPosition', position);
+                    return userService.getRefreshToken({
+                        RefreshToken: authenticationService.get('authorizationData').Refresh_Token
+                    });
+                }).then((result) => {
+                    authenticationService.setCredentials(result);
+                    $window.location.reload();
+                }).catch(loadingService.hide);
+            }
         }
     }
 })();
