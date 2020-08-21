@@ -11,5 +11,6 @@ namespace FM.Portal.Core.Service
         Result<Sales> Get(Guid ID);
         Result<Sales> Edit(Sales model);
         Result<List<Sales>> List(SalesListVM listVM);
+        Result.Result Confirm(FlowConfirmVM confirmVM);
     }
 }

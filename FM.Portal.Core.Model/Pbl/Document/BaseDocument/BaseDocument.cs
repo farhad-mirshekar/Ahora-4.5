@@ -8,7 +8,7 @@ namespace FM.Portal.Core.Model
         public Guid RemoverID { get; set; }
         public DateTime RemoverDate { get; set; }
 
-        public SendType LastSendType { get; set; }
+        public SendDocumentType LastSendType { get; set; }
 
         public T LastFromDocState { get; set; }
         public T LastDocState { get; set; }

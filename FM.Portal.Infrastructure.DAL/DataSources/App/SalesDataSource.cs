@@ -34,8 +34,21 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.PaymentID = SQLHelper.CheckGuidNull(dr["PaymentID"]);
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
-                            obj.RemoverDate = SQLHelper.CheckDateTimeNull(dr["RemoverDate"]);
+                            obj.RemoverDate = SQLHelper.CheckDateTimeNull(dr["RemoveDate"]);
                             obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
+                            obj.BuyerInfo = SQLHelper.CheckStringNull(dr["BuyerInfo"]);
+                            obj.BuyerPhone = SQLHelper.CheckStringNull(dr["BuyerPhone"]);
+                            obj.LastDocState =(SalesDocState) SQLHelper.CheckByteNull(dr["LastDocState"]);
+                            obj.LastFlowDate = SQLHelper.CheckDateTimeNull(dr["LastFlowDate"]);
+                            obj.LastFromDocState = (SalesDocState)SQLHelper.CheckByteNull(dr["LastFromDocState"]);
+                            obj.LastFromPositionID = SQLHelper.CheckGuidNull(dr["LastFromPositionID"]);
+                            obj.LastFromUserID = SQLHelper.CheckGuidNull(dr["LastFromUserID"]);
+                            //obj.LastFromUserName = SQLHelper.CheckStringNull(dr["LastFromUserName"]);
+                            obj.LastReadDate = SQLHelper.CheckDateTimeNull(dr["LastReadDate"]);
+                            obj.LastSendType =(SendDocumentType) SQLHelper.CheckByteNull(dr["LastSendType"]);
+                            obj.LastToPositionID = SQLHelper.CheckGuidNull(dr["LastToPositionID"]);
+                            obj.Price = SQLHelper.CheckDecimalNull(dr["Price"]);
+                            obj.TransactionStatusMessage = SQLHelper.CheckStringNull(dr["TransactionStatusMessage"]);
                         }
                     }
 

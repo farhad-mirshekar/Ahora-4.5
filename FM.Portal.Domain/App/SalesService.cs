@@ -21,6 +21,37 @@ namespace FM.Portal.Domain
             return _dataSource.Insert(model);
         }
 
+        public Result Confirm(FlowConfirmVM confirmVM)
+        {
+            try
+            {
+                var salesResult = Get(confirmVM.DocumentID);
+                if (!salesResult.Success)
+                    return Result.Failure(message: "خطا در بازیابی اطلاعات");
+                var sales = salesResult.Data;
+
+                switch (sales.LastDocState)
+                {
+                    case SalesDocState.بررسی_و_ارجاع_به_واحد_مالی:
+
+                        break;
+                    case SalesDocState.بررسی_و_ارجاع_به_واحد_انبار:
+
+                        break;
+
+                    case SalesDocState.آماده_بسته_بندی:
+                        break;
+
+                    case SalesDocState.ارسال_محصول:
+
+                        break;
+                }
+
+                return null;
+            }
+            catch(Exception e) { throw; }
+        }
+
         public Result<Sales> Edit(Sales model)
         => _dataSource.Update(model);
 

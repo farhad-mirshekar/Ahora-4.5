@@ -1,3 +1,131 @@
 ﻿<section ng-show="main.state ==='cartable'">
     <portal-grid obj="grid"></portal-grid>
 </section>
+<section ng-show="main.state ==='view'">
+    <h2 class="main-title">مشاهده جزئیات خرید مشتری</h2>
+    <div class="card-body" id="factor">
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">اطلاعات مشتری</span>
+            </div>
+            <div class="card-body form-horizontal">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">نام و نام خانوادگی</label>
+                                <span class="text-success">{{Payment.Model.User.FirstName}} {{Payment.Model.User.LastName}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">تلفن همراه</label>
+                                <span class="text-success">{{Payment.Model.User.CellPhone}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">پست الکترونیکی</label>
+                                <span class="text-success">{{Payment.Model.User.Email === null ? '-' :Payment.Model.User.Email }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">آدرس</label>
+                                <span class="text-success">{{Payment.Model.UserAddress.Address}}</span>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">کد پستی</label>
+                                <span class="text-success">{{Payment.Model.UserAddress.PostalCode}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-title">اطلاعات محصول</span>
+            </div>
+            <div class="card-body form-horizontal">
+                <table class="table table-bordered text-center">
+                    <thead>
+                        <tr>
+                            <td>ردیف</td>
+                            <td>نام محصول</td>
+                            <td>قیمت</td>
+                            <td>نوع تخفیف</td>
+                            <td>مبلغ تخفیف</td>
+                            <td>تعداد</td>
+                            <td>قیمت نهایی</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="row in Payment.Model.Products">
+                            <td>{{$index + 1}}</td>
+                            <td>{{row.Name}}</td>
+                            <td>{{row.Price}}</td>
+                            <td>{{ row.DiscountName === "" ? '-' : row.DiscountName }}</td>
+                            <td>{{row.DiscountAmount}}</td>
+                            <td>{{row.CountSelect}}</td>
+                            <td>{{(row.Price - row.DiscountAmount) * row.CountSelect}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <span class="card-header">اطلاعات فروشنده</span>
+            </div>
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="form-group">
+                                <label class="control-label">آدرس</label>
+                                <span class="text-success">{{Payment.Model.UserAddress.Address}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="control-label">محل مهر فروشگاه</label><br />
+                            <label class="control-label">{{Payment.Model.Payment.CreationDatePersian}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="btn-group-justified pull-left mb-5">
+        <button class="btn btn-success" data-target="#sales-modal" data-toggle="modal">تایید و ارسال</button>
+        <button ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
+    </div>
+</section>
+
+<div class="modal fade" dir="rtl"
+     tabindex="-1"
+     role="dialog"
+     id="sales-modal"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" dir="rtl">
+            <div class="modal-header">
+                <h4 class="modal-title">تایید وارسال</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="CategorySub" class="control-label">نظر</label>
+                    <div class="col-md-12">
+                        <textarea class="form-control" ng-model="Flow.Model.Comment" cols="5" rows="5" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer pull-left">
+                <button type="button" class="btn btn-success" ng-click="Flow.confirm('confirm');">ثبت</button>
+                <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
+            </div>
+        </div>
+    </div>
+</div>

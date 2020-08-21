@@ -4570,12 +4570,16 @@
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('salesController', salesController);
-    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster','documentFlowService'];
-    function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster, documentFlowService) {
+    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster', 'documentFlowService','paymentService'];
+    function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster, documentFlowService, paymentService) {
         let sales = $scope;
         sales.Model = {};
         sales.main = {};
         sales.Search = {};
+        sales.Payment = [];
+        sales.Payment.Model = {};
+        sales.Flow = [];
+        sales.Flow.Model={ };
         sales.Search.Model = {};
         sales.Search.Model.ActionState = 1;
         sales.main.state = '';
@@ -4600,14 +4604,19 @@
                         , name: 'edit'
                         , title: 'مشاهده'
                         , onclick: (selected) => {
-                            debugger
-                            return documentFlowService.setAsRead(selected.ID).then(() => {
-                                $location.path(`/sales/view/${selected.ID}`);
-                            })
+                            loadingService.show();
+                            return $q.resolve().then(() => {
+                                return documentFlowService.setAsRead(selected.ID);
+                            }).then(() => {
+                                loadingService.hide();
+                               return sales.main.changeState.view(selected);
+                            }).finally(loadingService.hide);
                         }
                     }
                 ]
         };
+
+        sales.Flow.confirm = confirm;
         init();
 
         function init() {
@@ -4618,7 +4627,7 @@
                         sales.main.changeState.cartable();
                         break;
                     case 'view':
-                        sales.main.changeState.view();
+                        sales.main.changeState.view({ ID:$routeParams.id });
                         break;
                 }
             }).finally(loadingService.hide);
@@ -4630,8 +4639,40 @@
             $location.path('/sales/cartable');
             loadingService.hide();
         }
-        function view() {
+        function view(selected) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (selected && selected.ID)
+                    return salesService.get(selected.ID);
+            }).then((result) => {
+                sales.Model = angular.copy(result);
+                return paymentService.getDetail(result.PaymentID);
+            }).then((result) => {
+                sales.Payment.Model = angular.copy(result);
+            }).then(() => {
+                sales.main.state = 'view';
+                $location.path(`/sales/view/${sales.Model.ID}`)
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
 
+        function confirm(state) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                debugger
+                sales.Flow.Model.DocumentID = $routeParams.id;
+                switch (state) {
+                    case 'confirm':
+                        return salesService.confirm(sales.Flow.Model);
+                        break;
+                }
+            }).then(() => {
+                $('#sales-modal').modal('hide');
+                sales.grid.getlist();
+                sales.main.changeState.cartable();
+            })
+
+                .finally(loadingService.hide);
         }
     }
 

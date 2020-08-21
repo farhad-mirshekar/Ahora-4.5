@@ -3352,6 +3352,7 @@
             edit: edit,
             get: get,
             list: list,
+            confirm:confirm
 
         }
         return service;
@@ -3417,6 +3418,22 @@
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })
+        }
+        function confirm(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'confirm',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'confirm' });
+            })
+                .catch(function (result) {
+                    callbackService.onError({ result: result });
+                })
         }
     }
 

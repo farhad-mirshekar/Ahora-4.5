@@ -12,7 +12,7 @@ BEGIN
 	SELECT 
 		Sales.*
 	FROM	
-		[app].[Sales] Sales
+		[app].[vwSales] Sales
 	WHERE 
 		Sales.ID = @ID
 END

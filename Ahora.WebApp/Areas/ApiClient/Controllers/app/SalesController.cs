@@ -67,5 +67,20 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost, Route("Confirm")]
+        public IHttpActionResult Confirm(FlowConfirmVM confirmVM)
+        {
+            try
+            {
+                confirmVM.SendType = SendDocumentType.تایید_ارسال;
+                var result = _service.Confirm(confirmVM);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
+        }
     }
 }

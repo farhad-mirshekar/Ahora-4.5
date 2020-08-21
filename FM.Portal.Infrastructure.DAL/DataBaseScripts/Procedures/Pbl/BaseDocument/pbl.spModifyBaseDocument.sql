@@ -41,7 +41,7 @@ BEGIN
 		INSERT INTO pbl.DocumentFlow
 			(ID, DocumentID, [Date], FromPositionID, FromUserID, FromDocState, ToPositionID, ToDocState, SendType, Comment)
 		VALUES
-			(NEWID(), @ID, GETDATE(), @CurrentPositionID, @UserID, 1, @ToPositionID, 1, 10, N'ارجاع به واحد مالی')
+			(NEWID(), @ID, GETDATE(), @CurrentPositionID, @UserID, 1, @ToPositionID, 10, 1, N'ارجاع به واحد مالی')
 		END
 	COMMIT
 	END TRY

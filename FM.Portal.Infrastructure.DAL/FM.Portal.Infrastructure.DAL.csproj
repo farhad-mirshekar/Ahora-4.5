@@ -306,7 +306,7 @@
     <Content Include="DataBaseScripts\Synonyms\pbl.AttachmentExtra.sql" />
     <Content Include="DataBaseScripts\Updates\DataBase-Extra.sql" />
     <Content Include="DataBaseScripts\Updates\DataBase.sql" />
-    <Content Include="DataBaseScripts\Views\app.vwPayment.sql" />
+    <Content Include="DataBaseScripts\Views\app.vwSales.sql" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
