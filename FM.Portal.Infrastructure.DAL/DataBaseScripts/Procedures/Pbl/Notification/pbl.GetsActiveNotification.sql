@@ -6,6 +6,7 @@ IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('pbl.spGets
 GO
 
 CREATE PROCEDURE pbl.spGetsActiveNotification
+@PositionID UNIQUEIDENTIFIER,
 @UserID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
@@ -16,8 +17,9 @@ BEGIN
 	FROM 
 		pbl.[Notification]
 	WHERE
-		[UserID] = @UserID AND
-		[ReadDate] IS NULL
+		[PositionID] = @PositionID
+		AND [UserID] = @UserID
+		AND [ReadDate] IS NULL
 
 	RETURN @@ROWCOUNT
 END

@@ -10,6 +10,7 @@ namespace FM.Portal.Core.Model
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime ReadDate { get; set; }
+        public Guid PositionID { get; set; }
         //only show
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public string ReadDatePersian

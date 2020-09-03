@@ -1019,6 +1019,9 @@ GO
 
 ALTER TABLE [pbl].[DocumentFlow] CHECK CONSTRAINT [FK_DocumentFlow_BaseDocument]
 GO
+ALTER TABLE pbl.[Notification]
+ADD PositionID UNIQUEIDENTIFIER
+GO
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
 GO

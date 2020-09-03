@@ -37,6 +37,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.ReadDate = SQLHelper.CheckDateTimeNull(dr["ReadDate"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
                             obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                            obj.PositionID = SQLHelper.CheckGuidNull(dr["PositionID"]);
                         }
                     }
 
@@ -54,8 +55,9 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 try
                 {
-                    SqlParameter[] param = new SqlParameter[1];
-                    param[0] = new SqlParameter("@UserID", _requestInfo.UserId);
+                    SqlParameter[] param = new SqlParameter[2];
+                    param[0] = new SqlParameter("@PositionID", _requestInfo.PositionId);
+                    param[1] = new SqlParameter("@UserID", _requestInfo.UserId);
 
                     return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsActiveNotification", param);
                 }
