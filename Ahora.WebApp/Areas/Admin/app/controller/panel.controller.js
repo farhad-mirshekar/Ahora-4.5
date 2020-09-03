@@ -4572,8 +4572,8 @@
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('salesController', salesController);
-    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster', 'documentFlowService', 'paymentService', 'enumService'];
-    function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster, documentFlowService, paymentService, enumService) {
+    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster', 'documentFlowService', 'paymentService', 'enumService','paymentService'];
+    function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster, documentFlowService, paymentService, enumService, paymentService) {
         let sales = $scope;
         sales.Model = {};
         sales.main = {};
@@ -4638,6 +4638,7 @@
             }]
         }
         sales.Flow.confirm = confirm;
+        sales.getExcel = getExcel;
         init();
 
         function init() {
@@ -4694,6 +4695,18 @@
             })
 
                 .finally(loadingService.hide);
+        }
+        function getExcel() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return paymentService.getExcel();
+            }).then((result) => {
+                window.location = `${window.location.origin}${result.FilePath}`;
+                loadingService.hide();
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطا در دریافت اطلاعات');
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
     }
 

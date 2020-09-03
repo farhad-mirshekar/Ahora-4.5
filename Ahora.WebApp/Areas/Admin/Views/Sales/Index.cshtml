@@ -2,13 +2,21 @@
     <div class="card">
         <div class="card-body">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-10">
                     <strong>نوع درخواست:</strong>
                     <div class="d-inline">
                         <div class="d-inline-block p-1"><a ng-class="{ 'alert-link': Search.Model.ActionState == 1 }" ng-click="Search.Model.ActionState = 1;grid.getlist();">موارد در درست اقدام</a></div>
                         <div class="d-inline-block p-1"><a ng-class="{ 'alert-link': Search.Model.ActionState == 2 }" ng-click="Search.Model.ActionState = 2;grid.getlist();">موارد ارسال شده</a></div>
                         <div class="d-inline-block p-1"><a ng-class="{ 'alert-link': Search.Model.ActionState == 3 }" ng-click="Search.Model.ActionState = 3;grid.getlist();">موارد نهایی شده</a></div>
 
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="pull-right">
+                        <button class="btn btn-outline-primary" ng-click="getExcel();" title="خروجی اکسل">
+                            <i class="fa fa-file-excel-o text-info"></i>
+                            خروجی اکسل
+                        </button>
                     </div>
                 </div>
             </div>
@@ -167,3 +175,5 @@
         </div>
     </div>
 </div>
+
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>
