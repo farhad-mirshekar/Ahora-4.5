@@ -40,7 +40,7 @@ namespace Ahora.WebApp.Controllers
         {
             try
             {
-                AddSales(SQLHelper.CheckGuidNull("D9E242B7-4140-4E08-8450-167FFAF7F7F9"));
+                AddSales(SQLHelper.CheckGuidNull("946796E6-F98E-4E01-8E0D-E62D17DD7EB0"));
                 return null;
                 //var paymentResult = _service.GetByToken(SQLHelper.CheckStringNull(purchaseResult.Token), BankName.بانک_ملی);
                 //var payment = paymentResult.Data;
