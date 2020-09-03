@@ -20,7 +20,8 @@ BEGIN
 		department.[Address],
 		department.PostalCode,
 		department.Phone,
-		department.CodePhone
+		department.CodePhone,
+		department.[Type]
 	FROM org.Department department
 	ORDER BY [Name]
 

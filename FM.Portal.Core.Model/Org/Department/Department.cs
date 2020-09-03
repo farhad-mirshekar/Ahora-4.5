@@ -16,5 +16,6 @@ namespace FM.Portal.Core.Model
         public bool Enabled { get; set; }
         public Guid RemoverID { get; set; }
         public DateTime RemoverDate { get; set; }
+        public DepartmentType Type { get; set; }
     }
 }

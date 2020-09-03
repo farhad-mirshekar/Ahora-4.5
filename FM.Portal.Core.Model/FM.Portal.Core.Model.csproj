@@ -87,6 +87,7 @@
     <Compile Include="App\RelatedProduct\RelatedProduct.cs" />
     <Compile Include="App\RelatedProduct\VM\RelatedProductListVM.cs" />
     <Compile Include="App\Sales\Sales.cs" />
+    <Compile Include="App\Sales\SalesFlow.cs" />
     <Compile Include="App\Sales\VM\SalesListVM.cs" />
     <Compile Include="App\ShippingCost\ShippingCost.cs" />
     <Compile Include="App\ShippingCost\VM\ShippingCostListVM.cs" />

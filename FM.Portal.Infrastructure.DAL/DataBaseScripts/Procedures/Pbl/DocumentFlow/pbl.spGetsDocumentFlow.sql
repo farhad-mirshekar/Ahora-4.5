@@ -12,13 +12,11 @@ AS
 BEGIN
 	SET NOCOUNT ON;
 	SELECT
-		fromUser.FirstName FromUserFirstName,
-		fromUser.LastName FromUserLastName,
+		CONCAT(fromUser.FirstName , ' ' , fromUser.LastName) AS FromUserFullName,
+		CONCAT(ToUser.FirstName , ' ' , ToUser.LastName) AS ToUserFullName,
 		fromPosition.[Type] FromUserPositionType,
 		FromDepartment.[Name] FromDepartmentName,
 		toPosition.[Type] ToUserPositionType,
-		ToUser.FirstName ToUserFirstName,
-		ToUser.LastName ToUserLastName,
 		ToDepartment.ID ToDepartmentID,
 		ToDepartment.[Name] ToDepartmentName,
 		flow.ReadDate,
@@ -38,6 +36,6 @@ BEGIN
 	LEFT JOIN [org].Department ToDepartment ON ToDepartment.ID = ToPosition.DepartmentID
 	LEFT JOIN [org].[User] ToUser ON toPosition.UserID = ToUser.ID
 	WHERE flow.DocumentID = @DocumentID
-	ORDER BY [Date] 
+	ORDER BY [Date] , [ToDocState] ASC
 	RETURN @@ROWCOUNT
 END

@@ -10,5 +10,6 @@ namespace FM.Portal.DataSource
         Result Insert(DocumentFlow flow);
         DataTable List(DocumentFlowListVM listVM);
         Result SetAsRead(Guid DocumentID);
+        DataTable ListFlow(Guid ID);
     }
 }

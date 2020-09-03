@@ -172,7 +172,7 @@
     }
     //-------------------------------------------------------------------------------------------------------
     app.controller('profileController', profileController);
-    profileController.$inject = ['$scope', 'profileService','authenticationService'];
+    profileController.$inject = ['$scope', 'profileService', 'authenticationService'];
     function profileController($scope, profileService, authenticationService) {
         let profile = $scope;
 
@@ -457,8 +457,8 @@
 
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('positionController', positionController);
-    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService', 'userService'];
-    function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService, departmentService, userService) {
+    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService', 'userService', 'enumService', 'toolsService'];
+    function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService, departmentService, userService, enumService, toolsService) {
         let position = $scope;
         position.department = $scope;
         position.department.Model = {};
@@ -479,6 +479,7 @@
         position.addPosition = addPosition;
         position.resetPassword = resetPassword;
         position.departmentChange = departmentChange;
+        position.selectPositionType = toolsService.arrayEnum(enumService.PositionType);
         init();
 
         function init() {
@@ -589,6 +590,7 @@
             return $q.resolve().then(() => {
                 return positionService.list({ DepartmentID: position.department.Model.DepartmentID });
             }).then((result) => {
+                position.showlistPositions = true;
                 position.listPositions = [].concat(result);
             }).finally(loadingService.hide);
         }
@@ -4570,8 +4572,8 @@
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('salesController', salesController);
-    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster', 'documentFlowService','paymentService'];
-    function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster, documentFlowService, paymentService) {
+    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster', 'documentFlowService', 'paymentService', 'enumService'];
+    function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster, documentFlowService, paymentService, enumService) {
         let sales = $scope;
         sales.Model = {};
         sales.main = {};
@@ -4579,19 +4581,20 @@
         sales.Payment = [];
         sales.Payment.Model = {};
         sales.Flow = [];
-        sales.Flow.Model={ };
+        sales.Flow.Model = {};
         sales.Search.Model = {};
         sales.Search.Model.ActionState = 1;
         sales.main.state = '';
         sales.main.changeState = {
             cartable: cartable,
-            view:view
+            view: view
         }
         sales.grid = {
             bindingObject: sales
             , columns: [{ name: 'BuyerInfo', displayName: 'نام و نام خانوادگی خریدار' },
             { name: 'BuyerPhone', displayName: 'اطلاعات تماس' },
             { name: 'Price', displayName: 'مبلغ' },
+            { name: 'LastDocState', displayName: 'آخرین وضعیت', type: 'enum', source: enumService.SalesDocState },
             ]
             , listService: salesService.list
             , globalSearch: true
@@ -4609,13 +4612,31 @@
                                 return documentFlowService.setAsRead(selected.ID);
                             }).then(() => {
                                 loadingService.hide();
-                               return sales.main.changeState.view(selected);
+                                return sales.main.changeState.view(selected);
                             }).finally(loadingService.hide);
                         }
                     }
                 ]
         };
-
+        sales.Flow.grid = {
+            columns: [
+                { name: 'FromUserFullName', displayName: 'ارجاع دهنده' }
+                , { name: 'ToUserFullName', displayName: 'گیرنده' }
+                , { name: 'DatePersian', displayName: 'تاریخ' }
+                , { name: 'ActionDatePersian', displayName: 'تاریخ اقدام' }
+                , { name: 'ToDocState', displayName: 'آخرین وضعیت', type: 'enum', source: enumService.SalesDocState }
+                , { name: 'SendType', displayName: 'نوع ارجاع', type: 'enum', source: enumService.SendDocumentType }
+            ]
+            , listService: salesService.listFlow
+            , options: () => { return $routeParams.id }
+            , actions: [{
+                title: 'توضیحات', name: 'comment', class: 'fa fa-comment-o grid-action-blue', onclick: function (selected) {
+                    sales.Flow.comment = selected.Comment;
+                    sales.Flow.selectedID = selected.ID;
+                    $(`#flow-comment-modal-${sales.Flow.selectedID}`).modal('show');
+                }
+            }]
+        }
         sales.Flow.confirm = confirm;
         init();
 
@@ -4627,7 +4648,7 @@
                         sales.main.changeState.cartable();
                         break;
                     case 'view':
-                        sales.main.changeState.view({ ID:$routeParams.id });
+                        sales.main.changeState.view({ ID: $routeParams.id });
                         break;
                 }
             }).finally(loadingService.hide);
@@ -4646,12 +4667,13 @@
                     return salesService.get(selected.ID);
             }).then((result) => {
                 sales.Model = angular.copy(result);
+                $location.path(`/sales/view/${sales.Model.ID}`)
                 return paymentService.getDetail(result.PaymentID);
             }).then((result) => {
                 sales.Payment.Model = angular.copy(result);
+                return sales.Flow.grid.getlist();
             }).then(() => {
                 sales.main.state = 'view';
-                $location.path(`/sales/view/${sales.Model.ID}`)
                 loadingService.hide();
             }).finally(loadingService.hide);
         }
@@ -4659,7 +4681,6 @@
         function confirm(state) {
             loadingService.show();
             return $q.resolve().then(() => {
-                debugger
                 sales.Flow.Model.DocumentID = $routeParams.id;
                 switch (state) {
                     case 'confirm':

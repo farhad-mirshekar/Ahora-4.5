@@ -13,17 +13,6 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         {
         }
 
-        [HttpPost,Route("Confirm")]
-        public IHttpActionResult Confirm(FlowConfirmVM model)
-        {
-            try
-            {
-                model.SendType = SendDocumentType.تایید_ارسال;
-                var result = _service.Confirm(model);
-                return Ok(result);
-            }
-            catch(Exception e) { return NotFound(); }
-        }
         [HttpPost, Route("SetAsRead/{DocumentID:guid}")]
         public IHttpActionResult SetAsRead(Guid DocumentID)
         {

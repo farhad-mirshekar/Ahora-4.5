@@ -3304,27 +3304,9 @@
     function documentFlowService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/DocumentFlow/'
         var service = {
-            confirm: confirm,
             setAsRead: setAsRead
         }
         return service;
-
-        function confirm(model) {
-            return $http({
-                method: 'POST',
-                url: url + 'confirm',
-                data: model,
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
-                }
-            }).then(function (result) {
-                return callbackService.onSuccess({ result: result, request: url + 'add' });
-            })
-                .catch(function (result) {
-                    callbackService.onError({ result: result });
-                })
-        }
         function setAsRead(model) {
             return $http({
                 method: 'POST',
@@ -3352,7 +3334,8 @@
             edit: edit,
             get: get,
             list: list,
-            confirm:confirm
+            confirm: confirm,
+            listFlow: listFlow
 
         }
         return service;
@@ -3430,6 +3413,22 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'confirm' });
+            })
+                .catch(function (result) {
+                    callbackService.onError({ result: result });
+                })
+        }
+        function listFlow(model) {
+            return $http({
+                method: 'POST',
+                url: url + `listFlow/${model}`,
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `listFlow/${model}` });
             })
                 .catch(function (result) {
                     callbackService.onError({ result: result });

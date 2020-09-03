@@ -32,4 +32,9 @@ BEGIN
 	LEFT JOIN org.[User] lastToUser ON lastToUser.ID = lastToPosition.UserID
 	LEFT JOIN org.Position lastFromPosition ON lastFromPosition.ID = Sales.LastFromPositionID
 	INNER JOIN Flow flow ON flow.DocumentID = Sales.ID
+	WHERE
+		@ActionState IN (1,2,3)
+	AND (@ActionState <> 1 OR Sales.LastToPositionID = @UserPositionID)
+	AND (@ActionState <> 2 OR Sales.LastToPositionID <> @UserPositionID)
+	AND (@ActionState <> 3 OR Sales.LastDocState = 100)
 END

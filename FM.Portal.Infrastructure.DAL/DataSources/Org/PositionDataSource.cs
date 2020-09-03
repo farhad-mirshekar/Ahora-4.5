@@ -108,7 +108,7 @@ namespace FM.Portal.Infrastructure.DAL
                     param[2] = new SqlParameter("@ApplicationID", _requestInfo.ApplicationId);
                     param[3] = new SqlParameter("@Type",(byte) model.Type);
                     param[4] = new SqlParameter("@ParentID", model.ParentID);
-                    param[5] = new SqlParameter("@DepartmentID", _requestInfo.DepartmentId);
+                    param[5] = new SqlParameter("@DepartmentID", model.DepartmentID);
                     param[6] = new SqlParameter("@UserID", model.UserID);
                     param[7] = new SqlParameter("@RoleIDs", model.Json);
                     SQLHelper.ExecuteNonQuery(con, System.Data.CommandType.StoredProcedure, param, "org.spModifyPosition");

@@ -6,6 +6,7 @@ using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace FM.Portal.Domain
@@ -23,35 +24,6 @@ namespace FM.Portal.Domain
         public Result Add(DocumentFlow flow)
         => _dataSource.Insert(flow);
 
-        public Result Confirm(FlowConfirmVM confirmVM)
-        {
-            try
-            {
-                var listFlowResult = List(new DocumentFlowListVM {DocumentID = confirmVM.DocumentID });
-                if (!listFlowResult.Success)
-                    return Result.Failure(message: listFlowResult.Message);
-                var listFlows = listFlowResult.Data;
-
-                switch (confirmVM.SendType)
-                {
-                    case SendDocumentType.تایید_ارسال:
-                        {
-                            switch (_requestInfo.PositionType)
-                            {
-                                case PositionType.رییس_امور:
-                                    {
-                                        var lastFlow = listFlows.OrderByDescending(x => x.Date).Select(x => x)?.First();
-                                    }
-                                    break;
-                            }
-                        }
-                        break;
-                }
-                return null;
-            }
-            catch(Exception e) { throw; }
-        }
-
         public Result<List<DocumentFlow>> List(DocumentFlowListVM listVM)
         {
             var table = ConvertDataTableToList.BindList<DocumentFlow>(_dataSource.List(listVM));
@@ -59,6 +31,9 @@ namespace FM.Portal.Domain
                 return Result<List<DocumentFlow>>.Successful(data: table);
             return Result<List<DocumentFlow>>.Failure();
         }
+
+        public DataTable ListFlow(Guid ID)
+        => _dataSource.ListFlow(ID);
 
         public Result SetFlowRead(Guid DocumentID)
         => _dataSource.SetAsRead(DocumentID);
