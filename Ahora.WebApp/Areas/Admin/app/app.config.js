@@ -29,7 +29,6 @@
             .when("/events/:state/:id?", { templateUrl: "/Admin/events/index", controller: 'eventsController', reloadOnUrl: false })
             .when("/comment-portal/:state/:id?", { templateUrl: "/Admin/comment/listForportal", controller: 'commentPortalController', reloadOnUrl: false })
             .when("/pages/:state/:id?", { templateUrl: "/Admin/pages/index", controller: 'pagesController', reloadOnUrl: false })
-            .when("/payment/:state/:id?", { templateUrl: "/Admin/payment/index", controller: 'paymentController', reloadOnUrl: false })
             .when("/notification/:state/:id?", { templateUrl: "/Admin/notification/index", controller: 'notificationController', reloadOnUrl: false })// add;
             .when("/department/:state/:id?", { templateUrl: "/Admin/department/index", controller: 'departmentController', reloadOnUrl: false })// add;
             .when("/user/:state/:id?", { templateUrl: "/Admin/user/index", controller: 'userController', reloadOnUrl: false })

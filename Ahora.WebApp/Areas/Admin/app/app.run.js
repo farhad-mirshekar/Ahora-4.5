@@ -1,9 +1,9 @@
 ﻿(() => {
     angular
-    .module('portal')
-    .run(run);
+        .module('portal')
+        .run(run);
 
-    run.$inject = ['$rootScope', 'toolsService', 'authenticationService', '$window', 'positionService', 'userService','loadingService'];
+    run.$inject = ['$rootScope', 'toolsService', 'authenticationService', '$window', 'positionService', 'userService', 'loadingService'];
     function run($rootScope, toolsService, authenticationService, $window, positionService, userService, loadingService) {
         $rootScope.currentUserPosition = authenticationService.get('currentUserPosition');
         $rootScope.currentUserPositions = authenticationService.get('currentUserPositions');
@@ -21,8 +21,8 @@
                 name: 'settings', title: 'مدیریت سامانه', icon: 'fa-angle-down', hasShow: () => { return toolsService.checkPermission('mnusetting') }
                 , subMenus: [
 
-                    { route: '#/profile', title: 'پروفایل', hasShow: () => { return toolsService.checkPermission('pgprofile') },icon:'fa-user' },
-                    { route: '#/profile/change-password', title: 'تغییر رمز عبور', hasShow: () => { return toolsService.checkPermission('pgchange-password') }, icon: 'fa-low-vision'},
+                    { route: '#/profile', title: 'پروفایل', hasShow: () => { return toolsService.checkPermission('pgprofile') }, icon: 'fa-user' },
+                    { route: '#/profile/change-password', title: 'تغییر رمز عبور', hasShow: () => { return toolsService.checkPermission('pgchange-password') }, icon: 'fa-low-vision' },
                     { route: '#/role/cartable', title: 'نقش ها', hasShow: () => { return toolsService.checkPermission('pgrole') }, icon: 'fa-group' },
                     { route: '#/command/cartable', title: 'مجوزها', hasShow: () => { return toolsService.checkPermission('pgcommand') }, icon: ' fa-asl-interpreting' },
                     { route: '#/position/cartable', title: 'جایگاه های سازمانی', hasShow: () => { return toolsService.checkPermission('pgposition') }, icon: 'fa-anchor' },
@@ -50,19 +50,19 @@
                     { route: '#/shipping-cost/cartable', title: 'ارسال محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-cartable') }, icon: 'fa-folder-open-o' },
                     { route: '#/attribute/cartable', title: 'ویژگی های محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-attribute') }, icon: 'fa-diamond' },
                     { route: '#/category/cartable', title: 'دسته بندی محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-category') }, icon: 'fa-archive' },
-                    { route: '#/discount/cartable', title: 'کارتابل تخفیفات', hasShow: () => { return toolsService.checkPermission('pgdiscount') }, icon:'fa-dollar'},
+                    { route: '#/discount/cartable', title: 'کارتابل تخفیفات', hasShow: () => { return toolsService.checkPermission('pgdiscount') }, icon: 'fa-dollar' },
                     { route: '#/comment/cartable', title: 'کارتابل نظرات', hasShow: () => { return toolsService.checkPermission('pgproduct-comment') }, icon: 'fa-comments-o' },
                     { route: '#/delivery-date/cartable', title: 'زمان ارسال محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-cartable') }, icon: 'fa-folder-open-o' },
                 ]
             },
-             {
-                 name: 'portal', title: 'مدیریت پرتال', icon: 'fa-angle-down', hasShow: () => { return toolsService.checkPermission('mnuportal') }
+            {
+                name: 'portal', title: 'مدیریت پرتال', icon: 'fa-angle-down', hasShow: () => { return toolsService.checkPermission('mnuportal') }
                 , subMenus: [
                     { route: '#/category-portal/cartable', title: 'دسته بندی اخبار', hasShow: () => { return toolsService.checkPermission('pgportal-category') }, icon: 'fa-archive' },
                     { route: '#/article/cartable', title: 'کارتابل مقالات', hasShow: () => { return toolsService.checkPermission('pg-article') }, icon: 'fa-newspaper-o' },
                     { route: '#/news/cartable', title: 'کارتابل اخبار', hasShow: () => { return toolsService.checkPermission('pgnews') }, icon: 'fa-newspaper-o' },
                     { route: '#/events/cartable', title: 'کارتابل رویداد', hasShow: () => { return toolsService.checkPermission('pgevents') }, icon: 'fa-newspaper-o' },
-                    { route: '#/slider/cartable', title: 'کارتابل تصاویر کشویی', hasShow: () => { return toolsService.checkPermission('pgsliders')}, icon: 'fa-sliders' },
+                    { route: '#/slider/cartable', title: 'کارتابل تصاویر کشویی', hasShow: () => { return toolsService.checkPermission('pgsliders') }, icon: 'fa-sliders' },
                     { route: '#/comment-portal/cartable', title: 'کارتابل نظرات', hasShow: () => { return toolsService.checkPermission('pgcomment-portal'); }, icon: 'fa-comments-o' },
                     { route: '#/pages-portal/', title: 'ساخت صفحات', hasShow: () => { return toolsService.checkPermission('pgcreate-page'); }, icon: 'fa-window-restore' },
                     { route: '#/dynamic-page/cartable', title: 'کارتابل صفحات داینامیک', hasShow: () => { return toolsService.checkPermission('pgdynamic-page'); }, icon: 'fa-sticky-note-o' },
@@ -72,16 +72,9 @@
                 ]
             }
             , {
-                name: 'payment', title: 'سفارشات', icon: 'fa-angle-down', hasShow: () => { return true; }
+                name: 'sales', title: 'مدیریت سفارشات', icon: 'fa-angle-down', hasShow: () => { return toolsService.checkPermission('mnusales'); }
                 , subMenus: [
-                    { route: '#/payment/cartable', title: 'پیگیری سفارشات', hasShow: () => { return true; }, icon: 'fa fa-credit-card' },
-                ]
-
-            }
-            , {
-                name: 'sales', title: 'سفارشات - جدید', icon: 'fa-angle-down', hasShow: () => { return true; }
-                , subMenus: [
-                    { route: '#/sales/cartable', title: 'پیگیری سفارشات', hasShow: () => { return true; }, icon: 'fa fa-credit-card' },
+                    { route: '#/sales/cartable', title: 'کارتابل سفارشات', hasShow: () => { return toolsService.checkPermission('pgsales-cartable'); }, icon: 'fa fa-credit-card' },
                 ]
 
             }
