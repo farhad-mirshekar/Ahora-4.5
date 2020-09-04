@@ -10,8 +10,11 @@ namespace Ahora.WebApp.Areas.User.Controllers
     [UserAuthorizeAttribute(Roles ="User")]
     public class HomeController : BaseController<IPaymentService>
     {
-        public HomeController(IPaymentService service) : base(service)
+        private readonly ISalesService _salesService;
+        public HomeController(IPaymentService service
+                             , ISalesService salesService) : base(service)
         {
+            _salesService = salesService;
         }
 
         // GET: User/Home
@@ -31,8 +34,18 @@ namespace Ahora.WebApp.Areas.User.Controllers
         }
         public ActionResult OrderDetail(Guid PaymentID)
         {
-            var result = _service.GetDetail(PaymentID);
-            return View(result.Data);
+            var salesResult = _salesService.Get(null, PaymentID);
+            if (!salesResult.Success)
+                return View("Error");
+            var sales = salesResult.Data;
+            var listFlowsResult = _salesService.ListFlow(sales.ID);
+            if (!listFlowsResult.Success)
+                return View("Error");
+            var listFlows = listFlowsResult.Data;
+
+            var detailResult = _service.GetDetail(PaymentID);
+            detailResult.Data.SalesFlows = listFlows;
+            return View(detailResult.Data);
         }
         public ActionResult Address()
         {

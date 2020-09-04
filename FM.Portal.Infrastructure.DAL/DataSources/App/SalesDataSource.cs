@@ -17,13 +17,18 @@ namespace FM.Portal.Infrastructure.DAL
         {
             _requestInfo = requestInfo;
         }
-        public Result<Sales> Get(Guid ID)
+        public Result<Sales> Get(Guid? ID , Guid? PaymentID)
         {
             try
             {
                 var obj = new Sales();
-                var param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ID", ID);
+                var param = new SqlParameter[2];
+                param[0] = new SqlParameter("@ID", SqlDbType.UniqueIdentifier);
+                param[0].Value = ID.HasValue ? ID.Value : (object)DBNull.Value;
+
+                param[1] = new SqlParameter("@PaymentID", SqlDbType.UniqueIdentifier);
+                param[1].Value = PaymentID.HasValue ? PaymentID.Value : (object)DBNull.Value;
+
 
                 using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
@@ -97,7 +102,7 @@ namespace FM.Portal.Infrastructure.DAL
                 commands.Add(SQLHelper.CreateCommand("app.spModifySales", CommandType.StoredProcedure, salesParam));
 
                 SQLHelper.BatchExcute(commands.ToArray());
-                return Get(model.ID);
+                return Get(model.ID, null);
             }
             catch(Exception e) { throw; }
         }

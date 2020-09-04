@@ -59,7 +59,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         {
             try
             {
-                var result = _service.Get(ID);
+                var result = _service.Get(ID,null);
                 return Ok(result);
             }
             catch (Exception e)

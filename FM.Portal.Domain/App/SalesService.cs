@@ -39,7 +39,7 @@ namespace FM.Portal.Domain
         {
             try
             {
-                var salesResult = Get(confirmVM.DocumentID);
+                var salesResult = Get(confirmVM.DocumentID,null);
                 if (!salesResult.Success)
                     return Result.Failure(message: "خطا در بازیابی اطلاعات");
                 var sales = salesResult.Data;
@@ -84,8 +84,8 @@ namespace FM.Portal.Domain
         public Result<Sales> Edit(Sales model)
         => _dataSource.Update(model);
 
-        public Result<Sales> Get(Guid ID)
-        => _dataSource.Get(ID);
+        public Result<Sales> Get(Guid? ID , Guid? PaymentID)
+        => _dataSource.Get(ID,PaymentID);
 
         public Result<List<Sales>> List(SalesListVM listVM)
         {

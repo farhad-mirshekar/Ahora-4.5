@@ -11,6 +11,7 @@ namespace FM.Portal.Core.Model
         public List<AttributeJsonVM> Attributes { get; set; }
         public UserAddress UserAddress { get; set; }
         public Payment Payment { get; set; }
+        public List<SalesFlow> SalesFlows { get; set; }
 
     }
 }
