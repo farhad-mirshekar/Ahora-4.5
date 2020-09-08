@@ -9,7 +9,7 @@ namespace FM.Portal.Core.Service
     {
         Result<Product> Add(Product model);
         Result<Product> Edit(Product model);
-        Result<List<Product>> List();
+        Result<List<Product>> List(ProductListVM listVM);
         Result<List<ListProductByCategoryIDVM>> List(Guid CategoryID);
         Result<Product> Get(Guid ID);
         Result<Product> Get(string TrackingCode);

@@ -145,11 +145,24 @@ namespace FM.Portal.Infrastructure.DAL
             return Modify(true, model);
         }
 
-        public DataTable List()
+        public DataTable List(ProductListVM listVM)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsProduct", null);
+                var param = new SqlParameter[4];
+                param[0] = new SqlParameter("@CategoryID", SqlDbType.UniqueIdentifier);
+                param[0].Value = listVM?.CategoryID ?? (object)DBNull.Value;
+
+                param[1] = new SqlParameter("@HasDiscount", SqlDbType.Bit);
+                param[1].Value = listVM?.HasDiscount ?? (object)DBNull.Value;
+
+                param[2] = new SqlParameter("@ShowOnHomePage", SqlDbType.Bit);
+                param[2].Value = listVM?.ShowOnHomePage ?? (object)DBNull.Value;
+
+                param[3] = new SqlParameter("@SpecialOffer", SqlDbType.Bit);
+                param[3].Value = listVM?.SpecialOffer ?? (object)DBNull.Value;
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsProduct", param);
             }
             catch (Exception e) { throw; }
         }

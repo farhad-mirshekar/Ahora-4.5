@@ -61,9 +61,9 @@ namespace FM.Portal.Domain
             var result = _dataSource.Get(ID, null);
             if (!result.Success)
                 return result;
-            var relatedProducts = _relatedProductService.List(new RelatedProductListVM {ProductID1 = result.Data.ID });
+            var relatedProducts = _relatedProductService.List(new RelatedProductListVM { ProductID1 = result.Data.ID });
             if (!relatedProducts.Success)
-                return Result<Product>.Failure(message:"خطا در بازیابی محصولات مرتبط");
+                return Result<Product>.Failure(message: "خطا در بازیابی محصولات مرتبط");
 
             result.Data.RelatedProducts = relatedProducts.Data;
             if (result.Data.DeliveryDateID != null)
@@ -88,13 +88,13 @@ namespace FM.Portal.Domain
                 }
             }
             var categoryResult = _categoryService.Get(result.Data.CategoryID);
-            if(!categoryResult.Success)
+            if (!categoryResult.Success)
                 return Result<Product>.Failure(message: "خطا در بازیابی دسته بندی محصول");
 
             result.Data.Category = categoryResult.Data;
 
             var attachmentResult = _attachmentService.List(result.Data.ID);
-            if(!attachmentResult.Success)
+            if (!attachmentResult.Success)
                 return Result<Product>.Failure(message: "خطا در بازیابی تصاویر محصول");
             result.Data.Attachments = attachmentResult.Data;
 
@@ -118,7 +118,7 @@ namespace FM.Portal.Domain
             result.Data.RelatedProducts = relatedProducts.Data;
             if (result.Data.DeliveryDateID != null)
             {
-                if(result.Data.DeliveryDateID.Value != Guid.Empty)
+                if (result.Data.DeliveryDateID.Value != Guid.Empty)
                 {
                     var deliveryDateResult = _deliveryDateService.Get(result.Data.DeliveryDateID.Value);
                     if (!deliveryDateResult.Success)
@@ -129,7 +129,7 @@ namespace FM.Portal.Domain
 
             if (result.Data.ShippingCostID != null)
             {
-                if(result.Data.ShippingCostID.Value != Guid.Empty)
+                if (result.Data.ShippingCostID.Value != Guid.Empty)
                 {
                     var shippingCostResult = _shippingCostService.Get(result.Data.ShippingCostID.Value);
                     if (!shippingCostResult.Success)
@@ -150,17 +150,67 @@ namespace FM.Portal.Domain
             result.Data.Attachments = attachmentResult.Data;
 
             var attributesResult = SelectAttributeForCustomer(result.Data.ID);
-            if(!attachmentResult.Success)
+            if (!attachmentResult.Success)
                 return Result<Product>.Failure(message: "خطا در بازیابی فیلدهای عمومی محصول");
             result.Data.Attributes = attributesResult.Data;
 
             return result;
         }
-        public Result<List<Product>> List()
+        public Result<List<Product>> List(ProductListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<Product>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<Product>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
+            {
+                if (table.Count > 0)
+                {
+                    foreach (var result in table)
+                    {
+                        var relatedProducts = _relatedProductService.List(new RelatedProductListVM { ProductID1 = result.ID });
+                        if (!relatedProducts.Success)
+                            return Result<List<Product>>.Failure(message: "خطا در بازیابی محصولات مرتبط");
+
+                        result.RelatedProducts = relatedProducts.Data;
+                        if (result.DeliveryDateID != null)
+                        {
+                            if (result.DeliveryDateID.Value != Guid.Empty)
+                            {
+                                var deliveryDateResult = _deliveryDateService.Get(result.DeliveryDateID.Value);
+                                if (!deliveryDateResult.Success)
+                                    return Result<List<Product>>.Failure(message: "خطا در بازیابی زمان ارسال محصول");
+                                result.DeliveryDate = deliveryDateResult.Data;
+                            }
+                        }
+
+                        if (result.ShippingCostID != null)
+                        {
+                            if (result.ShippingCostID.Value != Guid.Empty)
+                            {
+                                var shippingCostResult = _shippingCostService.Get(result.ShippingCostID.Value);
+                                if (!shippingCostResult.Success)
+                                    return Result<List<Product>>.Failure(message: "خطا در بازیابی هزینه ارسال محصول");
+                                result.ShippingCost = shippingCostResult.Data;
+                            }
+                        }
+
+                        var categoryResult = _categoryService.Get(result.CategoryID);
+                        if (!categoryResult.Success)
+                            return Result<List<Product>>.Failure(message: "خطا در بازیابی دسته بندی محصول");
+
+                        result.Category = categoryResult.Data;
+
+                        var attachmentResult = _attachmentService.List(result.ID);
+                        if (!attachmentResult.Success)
+                            return Result<List<Product>>.Failure(message: "خطا در بازیابی تصاویر محصول");
+                        result.Attachments = attachmentResult.Data;
+
+                        var attributesResult = SelectAttributeForCustomer(result.ID);
+                        if (!attachmentResult.Success)
+                            return Result<List<Product>>.Failure(message: "خطا در بازیابی فیلدهای عمومی محصول");
+                        result.Attributes = attributesResult.Data;
+                    }
+                }
                 return Result<List<Product>>.Successful(data: table);
+            }
             return Result<List<Product>>.Failure();
         }
 
@@ -269,7 +319,7 @@ namespace FM.Portal.Domain
             {
                 LucenceProductIndexSearch.ClearLuceneIndex();
 
-                foreach (var product in List().Data)
+                foreach (var product in List(new ProductListVM() { }).Data)
                 {
                     LucenceProductIndexSearch.ClearLuceneIndexRecord(product.ID);
                     LucenceProductIndexSearch.AddUpdateLuceneIndex(new Product
@@ -283,7 +333,7 @@ namespace FM.Portal.Domain
                 }
                 return true;
             }
-            catch(Exception e) { return false; }
+            catch (Exception e) { return false; }
         }
     }
 }

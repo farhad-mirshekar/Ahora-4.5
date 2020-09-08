@@ -3,6 +3,7 @@ using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
@@ -72,14 +73,14 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public virtual ActionResult TrendingProduct()
         {
-            var result = _service.ListProductShowOnHomePage(Helper.CountShowProduct);
-            return PartialView("_PartialProduct", result.Data);
+            var result = _service.List(new ProductListVM() {SpecialOffer = true });
+            return PartialView("_PartialProduct", result.Data.Skip((1-1) * Helper.CountShowProduct).Take(Helper.CountShowProduct).ToList());
         }
         [ChildActionOnly]
         public virtual ActionResult SaleProduct()
         {
-            var result = _service.ListProductShowOnHomePage(Helper.CountShowProduct);
-            return PartialView("_PartialProduct", result.Data);
+            var result = _service.List(new ProductListVM() { HasDiscount = true });
+            return PartialView("_PartialProduct", result.Data.Skip((1 - 1) * Helper.CountShowProduct).Take(Helper.CountShowProduct).ToList());
         }
 
         [ChildActionOnly]

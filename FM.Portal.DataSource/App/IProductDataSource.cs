@@ -9,7 +9,7 @@ namespace FM.Portal.DataSource
     {
         Result<Product> Insert(Product model);
         Result<Product> Update(Product model);
-        DataTable List();
+        DataTable List(ProductListVM listVM);
         DataTable List(Guid CategoryID);
         Result<Product> Get(Guid? ID , string TrackingCode);
         DataTable ListAttributeForProduct(Guid ProductID);

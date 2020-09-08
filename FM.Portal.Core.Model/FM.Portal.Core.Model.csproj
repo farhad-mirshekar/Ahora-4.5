@@ -84,6 +84,7 @@
     <Compile Include="App\Payment\VM\PaymentListForUserVM.cs" />
     <Compile Include="App\Payment\VM\PaymentListVM.cs" />
     <Compile Include="App\ProductAttribute\ProductAttribute.cs" />
+    <Compile Include="App\Product\VM\ProductListVM.cs" />
     <Compile Include="App\RelatedProduct\RelatedProduct.cs" />
     <Compile Include="App\RelatedProduct\VM\RelatedProductListVM.cs" />
     <Compile Include="App\Sales\Sales.cs" />
