@@ -479,10 +479,11 @@
         };
         return service;
 
-        function list() {
+        function list(model) {
             return $http({
                 method: 'POST',
                 url: url + 'List',
+                data:model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -630,7 +631,8 @@
         var service = {
             add: add,
             list: list,
-            setDefault: setDefault
+            setDefault: setDefault,
+            get:get
         }
         return service;
 
@@ -677,6 +679,22 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `setDefault/${model.PositionID}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
             })
                 .catch(function (result) {
                     return callbackService.onError({ result: result });

@@ -43,5 +43,16 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             }
             catch { return NotFound(); }
         }
+
+        [HttpPost, Route("Get/{ID:guid}")]
+        public IHttpActionResult Get(Guid ID)
+        {
+            try
+            {
+                var result = _service.Get(ID);
+                return Ok(result);
+            }
+            catch { return NotFound(); }
+        }
     }
 }

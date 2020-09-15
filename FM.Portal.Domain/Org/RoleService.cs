@@ -31,9 +31,9 @@ namespace FM.Portal.Domain
             return _dataSource.Insert(model);
         }
 
-        public Result<List<Role>> List()
+        public Result<List<Role>> List(RoleListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<Role>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<Role>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<Role>>.Successful(data: table);
 

@@ -457,15 +457,16 @@
 
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('positionController', positionController);
-    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService', 'userService', 'enumService', 'toolsService'];
-    function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService, departmentService, userService, enumService, toolsService) {
+    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService', 'userService', 'enumService', 'toolsService','authenticationService'];
+    function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService, departmentService, userService, enumService, toolsService, authenticationService) {
         let position = $scope;
         position.department = $scope;
         position.department.Model = {};
         position.department.departmentDropDown = [];
         position.changeState = {
             cartable: cartable,
-            add: add
+            add: add,
+            edit:edit
         }
         position.Model = {};
         position.Model.Errors = [];
@@ -484,7 +485,7 @@
 
         function init() {
             loadingService.show();
-            $q.resolve().then(() => {
+            return $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
                         cartable();
@@ -492,6 +493,10 @@
                     case 'add':
                         add();
                         break;
+                    case 'edit':
+                        positionService.get($routeParams.id).then((result) => {
+                            position.changeState.edit(result);
+                        })
                 }
             }).finally(loadingService.hide);
         }
@@ -518,6 +523,24 @@
                 loadingService.hide();
             }).finally(loadingService.hide)
         }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (model && model.ID !== null)
+                    return positionService.get(model.ID);
+                else
+                return positionService.get($routeParams.id);
+            }).then((result) => {
+                position.Model = angular.copy(result);
+                return listRole();
+            }).then(() => {
+                position.state = 'edit';
+                $location.path(`/position/edit/${position.Model.ID}`);
+                loadingService.hide;
+            })
+
+                .finally(loadingService.hide);
+        }
         function searchNationalCode() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -535,7 +558,7 @@
 
         }
         function listRole() {
-            roleService.list().then((result) => {
+            return roleService.list().then((result) => {
                 position.listRole = [].concat(result);
             })
         }

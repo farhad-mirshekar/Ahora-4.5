@@ -1,5 +1,6 @@
 ﻿using FM.Portal.BaseModel;
 using System;
+using System.Collections.Generic;
 
 namespace FM.Portal.Core.Model
 {
@@ -21,5 +22,6 @@ namespace FM.Portal.Core.Model
         public string UserInfo { get; set; }
         public string TypePersian => Type.ToString().Replace("_"," ");
         public string DepartmentName { get; set; }
+        public List<Role> Roles { get; set; }
     }
 }

@@ -117,6 +117,7 @@
     <Compile Include="Org\Position\VM\PositionListVM.cs" />
     <Compile Include="Org\RefreshToken\RefreshToken.cs" />
     <Compile Include="Org\Role\Role.cs" />
+    <Compile Include="Org\Role\VM\RoleListVM.cs" />
     <Compile Include="Org\Token\Token.cs" />
     <Compile Include="Org\Token\VM\TokenVM.cs" />
     <Compile Include="Org\UserAddress\UserAddress.cs" />

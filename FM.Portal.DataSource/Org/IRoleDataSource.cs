@@ -10,7 +10,7 @@ namespace FM.Portal.DataSource
         Result<Role> Insert(Role model);
         Result<Role> Update(Role model);
         Result Delete(Guid ID);
-        DataTable List();
+        DataTable List(RoleListVM listVM);
         Result<Role> Get(Guid id);
 
     }

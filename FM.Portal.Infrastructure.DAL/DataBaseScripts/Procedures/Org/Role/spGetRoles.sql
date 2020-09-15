@@ -23,11 +23,11 @@ BEGIN
 		rol.[Name]
 	FROM org.[Role] rol
 		LEFT JOIN org.PositionRole pRole ON pRole.RoleID = rol.ID  AND @PositionID IS NOT NULL
-		--LEFT JOIN org.Position pos ON pos.ID = pRole.PositionID AND pos.Id = @PositionID
-		--LEFT JOIN org.[User] usr ON usr.ID = pos.UserID AND usr.ID = @UserID
+		LEFT JOIN org.Position pos ON pos.ID = pRole.PositionID AND pos.Id = @PositionID
+		LEFT JOIN org.[User] usr ON usr.ID = pos.UserID AND usr.ID = @UserID
 	WHERE rol.ApplicationID = @ApplicationID
-		--AND (@PositionID IS NULL OR pos.ID = @PositionID)
-		--AND (@UserID IS NULL OR usr.ID = @UserID)
+		AND (@PositionID IS NULL OR pos.ID = @PositionID)
+		AND (@UserID IS NULL OR usr.ID = @UserID)
 	)
 	SELECT * FROM MainSelect		 
 	ORDER BY [ID]

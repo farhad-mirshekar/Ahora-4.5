@@ -57,13 +57,12 @@ namespace FM.Portal.Infrastructure.DAL
             return Modify(true, model);
         }
 
-        public DataTable List()
+        public DataTable List(RoleListVM listVM)
         {
-            SqlParameter[] param = new SqlParameter[3];
-            var t = _requestInfo.UserName;
+            var param = new SqlParameter[3];
             param[0] = new SqlParameter("@ApplicationID", _requestInfo.ApplicationId);
-            param[1] = new SqlParameter("@PositionID", null);
-            param[2] = new SqlParameter("@UserID", null);
+            param[1] = new SqlParameter("@PositionID", listVM?.PositionID);
+            param[2] = new SqlParameter("@UserID", listVM?.UserID);
 
             return SQLHelper.GetDataTable(CommandType.StoredProcedure, "org.spGetRoles", param);
         }

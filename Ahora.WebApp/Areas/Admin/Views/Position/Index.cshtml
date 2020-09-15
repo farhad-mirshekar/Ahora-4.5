@@ -26,7 +26,7 @@
                         <th>{{$index + 1}}</th>
                         <th>{{row.UserInfo}}</th>
                         <th>
-                            <i class="fa fa-edit m-1" title="ویرایش"></i>
+                            <i class="fa fa-edit m-1" title="ویرایش" ng-click="changeState.edit(row);" style="cursor:pointer"></i>
                             <i class="fa fa-key m-1" title="تغییر رمز عبور" ng-click="resetPassword(row);" style="cursor:pointer"></i>
                             <i class="fa fa-trash-o m-1" title="حذف"></i>
                         </th>
@@ -102,12 +102,8 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div ng-repeat="row in listRole">
-                                            <div class="form-check">
-                                                <input type="checkbox" checklist-model="selectCommand.selected" class="form-check-input" checklist-value="row.ID">
-                                                <label class="form-check-label">{{row.Name}}</label>
-                                            </div>
-                                        </div>
+                                        <fm-checkboxes list="listRole"
+                                                       selected="Model.Roles"></fm-checkboxes>
                                     </div>
                                 </div>
                                 <div class="form-horizontal mt-4">

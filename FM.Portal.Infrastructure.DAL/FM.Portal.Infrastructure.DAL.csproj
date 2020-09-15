@@ -196,6 +196,7 @@
     <Content Include="DataBaseScripts\Procedures\Org\Position\org.spModifyPosition.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\Position\org.spSetDefaultPosition.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\Position\org.spPositionDefault.sql" />
+    <Content Include="DataBaseScripts\Procedures\Org\Position\spGetPosition.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\Position\spGetsPosition.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\RefreshToken\org.spCreateRefreshToken.sql" />
     <Content Include="DataBaseScripts\Procedures\Org\RefreshToken\org.spDeleteRefreshToken.sql" />

@@ -19,7 +19,39 @@ namespace FM.Portal.Infrastructure.DAL
         }
         public Result<Position> Get(Guid ID)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var obj = new Position();
+                var param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ID", ID);
+
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "org.spGetPosition", param))
+                    {
+                        while (dr.Read())
+                        {
+                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                            obj.ApplicationID = SQLHelper.CheckGuidNull(dr["ApplicationID"]);
+                            //obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
+                            obj.Default = SQLHelper.CheckBoolNull(dr["Default"]);
+                            obj.DepartmentID = SQLHelper.CheckGuidNull(dr["DepartmentID"]);
+                            obj.DepartmentName = SQLHelper.CheckStringNull(dr["DepartmentName"]);
+                            obj.Enabled = SQLHelper.CheckBoolNull(dr["Enabled"]);
+                            obj.Node = SQLHelper.CheckStringNull(dr["Node"]);
+                            obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
+                            obj.ParentNode = SQLHelper.CheckStringNull(dr["ParentNode"]);
+                            obj.Type = (PositionType)SQLHelper.CheckByteNull(dr["Type"]);
+                            obj.UserType = (UserType)SQLHelper.CheckByteNull(dr["UserType"]);
+                        }
+                    }
+
+                }
+                return Result<Position>.Successful(data: obj);
+
+            }
+            catch(Exception e) { throw; }
         }
 
         public Result<Position> Insert(Position model)

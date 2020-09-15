@@ -38,12 +38,13 @@ namespace FM.Portal.WebApp.Providers
             container.RegisterType<IRequestInfo, RequestInfo>();
             container.RegisterType<IUserDataSource, UserDataSource>();
             container.RegisterType<IUserService, UserService>();
-
+            container.RegisterType<IRoleDataSource, RoleDataSource>();
+            container.RegisterType<IRoleService, RoleService>();
             container.RegisterType<IPositionDataSource, PositionDataSource>();
             container.RegisterType<IPositionService, PositionService>();
 
-            IUserService _service = container.Resolve<IUserService>();
-            IPositionService _position = container.Resolve<IPositionService>();
+            var _service = container.Resolve<IUserService>();
+            var _position = container.Resolve<IPositionService>();
             var data = _service.Get(context.UserName, context.Password, null , UserType.Unknown);
             if (data.Data.ID != Guid.Empty)
             {

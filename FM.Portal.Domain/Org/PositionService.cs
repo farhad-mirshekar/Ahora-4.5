@@ -14,12 +14,12 @@ namespace FM.Portal.Domain
     public class PositionService : IPositionService
     {
         private readonly IPositionDataSource _dataSource;
-        private readonly IRequestInfo _requestInfo;
+        private readonly IRoleService _roleService;
         public PositionService(IPositionDataSource dataSource
-                               , IRequestInfo requestInfo)
+                               , IRoleService roleService)
         {
             _dataSource = dataSource;
-            _requestInfo = requestInfo;
+            _roleService = roleService;
         }
 
         public Result<Position> Add(Position model)
@@ -34,7 +34,17 @@ namespace FM.Portal.Domain
 
         public Result<Position> Get(Guid ID)
         {
-            return _dataSource.Get(ID);
+            var positionResult= _dataSource.Get(ID);
+            if (!positionResult.Success)
+                return Result<Position>.Failure(message: positionResult.Message);
+
+            var rolesResult = _roleService.List(new RoleListVM() {PositionID = ID });
+            if (!rolesResult.Success)
+                return Result<Position>.Failure(message: rolesResult.Message);
+            var roles = rolesResult.Data;
+
+            positionResult.Data.Roles = roles;
+            return positionResult;
         }
 
         public Result<List<Position>> List(PositionListVM model)

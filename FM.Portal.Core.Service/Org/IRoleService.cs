@@ -10,7 +10,7 @@ namespace FM.Portal.Core.Service
         Result<Role> Add(Role model);
         Result<Role> Edit(Role model);
         Result.Result Delete(Guid ID);
-        Result<List<Role>> List();
+        Result<List<Role>> List(RoleListVM listVM);
         Result<Role> Get(Guid id);
     }
 }

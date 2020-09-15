@@ -144,6 +144,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<ISalesDataSource, SalesDataSource>();
             container.RegisterType<ISalesService, SalesService>();
 
+            container.RegisterType<IRoleDataSource, RoleDataSource>();
+            container.RegisterType<IRoleService, RoleService>();
+
             container.RegisterType<IPositionDataSource, PositionDataSource>();
             container.RegisterType<IPositionService, PositionService>();
 
