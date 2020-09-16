@@ -1098,9 +1098,16 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('ProductCartableController', ProductCartableController);
-    ProductCartableController.$inject = ['$scope', 'productService', '$q', '$location'];
-    function ProductCartableController($scope, productService, $q, $location) {
+    ProductCartableController.$inject = ['$scope', 'productService', '$q', '$location', 'enumService','toolsService','loadingService'];
+    function ProductCartableController($scope, productService, $q, $location, enumService, toolsService, loadingService) {
         let product = $scope;
+        product.search = [];
+        product.search.Model = {};
+        product.search.selectYesOrNoType = toolsService.arrayEnum(enumService.YesOrNoType);
+        product.search.selectYesOrNoType.map((item) => {
+            if (item.Name === 'خیر')
+                item.Model = 0;
+        })
         product.grid = {
             bindingObject: product
             , columns: [{ name: 'Name', displayName: 'عنوان آگهی' },
@@ -1108,14 +1115,24 @@
             { name: 'TrackingCode', displayName: 'کدپیگیری' },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: productService.list
-            , onEdit: null
             , route: 'product'
             , globalSearch: true
             , initLoad: true
+            , options: () => {
+                return product.search.Model;
+            }
         };
         product.goToPageAdd = goToPageAdd;
+        product.search.clear = clear;
         function goToPageAdd() {
             $location.path('/product/add');
+        }
+        function clear() {
+            loadingService.show();
+            product.search.Model = {};
+            product.search.searchPanel = false;
+            product.grid.getlist();
+            loadingService.hide();
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------------------

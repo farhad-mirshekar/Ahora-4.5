@@ -1,4 +1,41 @@
 ﻿<section>
     <button class="btn btn-success btn-circle pull-left" ng-click="goToPageAdd();"><i class="fa fa-plus"></i></button>
+    <div class="card">
+        <div class="card-header">
+            <div class="pull-left" title="جست و جو" ng-click="search.searchPanel = !search.searchPanel"><i class="fa fa-search" aria-hidden="true"></i></div>
+        </div>
+        <div class="card-body" ng-show="search.searchPanel">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">نمایش در صفحه اصلی</label>
+                        <select class="form-control" ng-model="search.Model.ShowOnHomePage">
+                            <option ng-repeat="row in search.selectYesOrNoType" ng-value="row.Model">{{row.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">تخفیف دارد</label>
+                        <select class="form-control" ng-model="search.Model.HasDiscount">
+                            <option ng-repeat="row in search.selectYesOrNoType" ng-value="row.Model">{{row.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">جز محصول ویژه می باشد </label>
+                        <select class="form-control" ng-model="search.Model.SpecialOffer">
+                            <option ng-repeat="row in search.selectYesOrNoType" ng-value="row.Model">{{row.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button type="button" class="btn btn-primary" ng-click="grid.getlist();">جست و جو</button>
+                <button type="button" class="btn btn-cancel" ng-click="search.clear();">پاک کردن</button>
+            </div>
+        </div>
+    </div>
     <portal-grid obj="grid"></portal-grid>
 </section>
