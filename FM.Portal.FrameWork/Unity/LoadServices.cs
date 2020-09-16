@@ -1,4 +1,5 @@
 ﻿using FM.Portal.Core.Common;
+using FM.Portal.Core.Common.Serializer;
 using FM.Portal.Core.Owin;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
@@ -159,6 +160,7 @@ namespace FM.Portal.FrameWork.Unity
                 new HttpContextWrapper(HttpContext.Current)));
             _container.RegisterType<IRequestInfo, RequestInfo>();
             _container.RegisterType<IAppSetting, AppSetting>();
+            _container.RegisterType<IObjectSerializer, ObjectSerializer>();
             return _container;
         }
     }

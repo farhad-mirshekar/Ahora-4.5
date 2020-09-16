@@ -54,5 +54,15 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             }
             catch { return NotFound(); }
         }
+        [HttpPost, Route("Edit")]
+        public IHttpActionResult Edit(Position model)
+        {
+            try
+            {
+                var result = _service.Edit(model);
+                return Ok(result);
+            }
+            catch { return NotFound(); }
+        }
     }
 }

@@ -10,6 +10,7 @@ using System.Web;
 using Unity.Injection;
 using FM.Portal.Core.Common;
 using FM.Portal.FrameWork.Email;
+using FM.Portal.Core.Common.Serializer;
 
 namespace FM.Portal.FrameWork.Unity
 {
@@ -160,6 +161,7 @@ namespace FM.Portal.FrameWork.Unity
                 new HttpContextWrapper(HttpContext.Current)));
             container.RegisterType<IRequestInfo, RequestInfo>();
             container.RegisterType<IAppSetting, AppSetting>();
+            container.RegisterType<IObjectSerializer, ObjectSerializer>();
 
             DependencyResolver.SetResolver(new Unity.UnityDependencyResolver(container));
         }

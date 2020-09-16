@@ -76,6 +76,9 @@
     <Reference Include="Lucene.Net.Contrib.SpellChecker, Version=3.0.3.0, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.Contrib.3.0.3\lib\net40\Lucene.Net.Contrib.SpellChecker.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -94,6 +97,8 @@
     <Compile Include="Common\EnumExtensions.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\AppSetting\IAppSetting.cs" />
+    <Compile Include="Common\Serializer\IObjectSerializer.cs" />
+    <Compile Include="Common\Serializer\ObjectSerializer.cs" />
     <Compile Include="Common\SqlHelper.cs" />
     <Compile Include="Encryption\Authentication.cs" />
     <Compile Include="Encryption\cTripleDES.cs" />
@@ -117,6 +122,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "$(SolutionDir)\Ahora.WebApp\libs"</PostBuildEvent>

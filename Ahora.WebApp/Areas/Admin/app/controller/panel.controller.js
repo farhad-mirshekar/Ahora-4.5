@@ -457,7 +457,7 @@
 
     //------------------------------------------------------------------------------------------------------------------------------------
     app.controller('positionController', positionController);
-    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService', 'userService', 'enumService', 'toolsService','authenticationService'];
+    positionController.$inject = ['$scope', '$q', '$timeout', '$routeParams', '$location', 'toaster', '$timeout', 'loadingService', 'positionService', 'toaster', 'profileService', 'roleService', 'departmentService', 'userService', 'enumService', 'toolsService', 'authenticationService'];
     function positionController($scope, $q, $timeout, $routeParams, $location, toaster, $timeout, loadingService, positionService, toaster, profileService, roleService, departmentService, userService, enumService, toolsService, authenticationService) {
         let position = $scope;
         position.department = $scope;
@@ -466,7 +466,7 @@
         position.changeState = {
             cartable: cartable,
             add: add,
-            edit:edit
+            edit: edit
         }
         position.Model = {};
         position.Model.Errors = [];
@@ -478,6 +478,7 @@
         };
         position.searchNationalCode = searchNationalCode;
         position.addPosition = addPosition;
+        position.editPosition = editPosition;
         position.resetPassword = resetPassword;
         position.departmentChange = departmentChange;
         position.selectPositionType = toolsService.arrayEnum(enumService.PositionType);
@@ -529,7 +530,7 @@
                 if (model && model.ID !== null)
                     return positionService.get(model.ID);
                 else
-                return positionService.get($routeParams.id);
+                    return positionService.get($routeParams.id);
             }).then((result) => {
                 position.Model = angular.copy(result);
                 return listRole();
@@ -564,37 +565,49 @@
         }
         function addPosition() {
             loadingService.show();
-            $q.resolve().then(() => {
-                if (!position.ResultSearch.Enabled) {
-                    toaster.pop('error', '', 'کاربری را جست و جو نکردید');
-                    return false;
-                } else {
-                    position.Model.UserID = position.ResultSearch.ID;
-                    return true;
-                }
-            }).then((state) => {
-                if (state) {
-                    var json = '';
-                    if (position.selectCommand.selected.length === 0) {
-                        toaster.pop('error', '', 'نقشی انتخاب نکردید');
-                        return false;
-                    } else {
-                        for (var i = 0; i < position.selectCommand.selected.length; i++) {
-                            json += position.selectCommand.selected[i] + ',';
-                        }
-                        position.Model.Json = json;
-                        return true;
-                    }
-                }
-            }).then((state) => {
-                if (state) {
-                    positionService.add(position.Model).then((result) => {
-                        toaster.pop('success', '', 'با موفقیت ذخیره گردید');
-                    })
-                }
+            return $q.resolve().then(() => {
+                if (!position.ResultSearch.Enabled)
+                    return $q.reject('کاربری را جست و جو نکردید');
+                if (position.Model.Roles.length == 0)
+                    return $q.reject('نقشی انتخاب نکرده اید');
+
+                var json = '';
+                for (var i = 0; i < position.Model.Roles.length; i++)
+                    json += position.Model.Roles[i].ID + ',';
+                position.Model.Json = json;
+                position.Model.UserID = position.ResultSearch.ID;
+                return positionService.add(position.Model);
+            }).then(() => {
+                toaster.pop('success', '', 'جایگاه جدید با موفقیت افزوده شد');
+                loadingService.hide();
+                position.changeState.cartable();
+            }).catch((error) => {
+                loadingService.hide();
+                toaster.pop('error', '', error || 'خطای ناشناخته');
             }).finally(loadingService.hide);
         }
+        function editPosition() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (position.Model.Roles.length == 0)
+                    return $q.reject('نقشی را انتخاب نمایید');
 
+                var json = '';
+                for (var i = 0; i < position.Model.Roles.length; i++)
+                    json += position.Model.Roles[i].ID + ',';
+                position.Model.Json = json;
+
+                return positionService.edit(position.Model);
+            }).then(() => {
+                toaster.pop('success', '', 'جایگاه با موفقیت ویرایش گردید');
+                loadingService.hide();
+                position.changeState.cartable();
+            }).catch((error) => {
+                    loadingService.hide();
+                    toaster.pop('error', '', error || 'خطای نانشناخته');
+                })
+                .finally(loadingService.hide);
+        }
         function resetPassword(selected) {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -4595,7 +4608,7 @@
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('salesController', salesController);
-    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster', 'documentFlowService', 'paymentService', 'enumService','paymentService'];
+    salesController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'salesService', '$location', 'toaster', 'documentFlowService', 'paymentService', 'enumService', 'paymentService'];
     function salesController($scope, $q, loadingService, $routeParams, salesService, $location, toaster, documentFlowService, paymentService, enumService, paymentService) {
         let sales = $scope;
         sales.Model = {};

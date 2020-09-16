@@ -7,6 +7,8 @@ using FM.Portal.Core.Common;
 using System.Data;
 using FM.Portal.Core.Owin;
 using FM.Portal.Core.Result;
+using FM.Portal.Core.Common.Serializer;
+using System.Linq;
 
 namespace FM.Portal.Infrastructure.DAL
 {
@@ -145,7 +147,6 @@ namespace FM.Portal.Infrastructure.DAL
                     param[7] = new SqlParameter("@RoleIDs", model.Json);
                     SQLHelper.ExecuteNonQuery(con, System.Data.CommandType.StoredProcedure, param, "org.spModifyPosition");
                 }
-
                 return Get(model.ID);
             }
             catch (Exception e) { return Result<Position>.Failure(); }

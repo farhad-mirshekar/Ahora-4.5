@@ -632,7 +632,8 @@
             add: add,
             list: list,
             setDefault: setDefault,
-            get:get
+            get: get,
+            edit:edit
         }
         return service;
 
@@ -695,6 +696,22 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function edit(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'edit',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'edit' });
             })
                 .catch(function (result) {
                     return callbackService.onError({ result: result });
