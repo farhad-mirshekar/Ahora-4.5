@@ -53,5 +53,6 @@ namespace FM.Portal.Core.Model
         public Category Category { get; set; }
         public List<Attachment> Attachments { get; set; }
         public List<ListAttributeForSelectCustomerVM> Attributes { get; set; }
+        public int Total { get; set; }
     }
 }

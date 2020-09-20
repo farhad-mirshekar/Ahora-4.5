@@ -2,7 +2,7 @@
 
 namespace FM.Portal.Core.Model
 {
-   public class ProductListVM
+   public class ProductListVM: EntityPagination
     {
         public Guid? CategoryID { get; set; }
         public bool? ShowOnHomePage { get; set; }

@@ -149,7 +149,7 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var param = new SqlParameter[4];
+                var param = new SqlParameter[6];
                 param[0] = new SqlParameter("@CategoryID", SqlDbType.UniqueIdentifier);
                 param[0].Value = listVM?.CategoryID ?? (object)DBNull.Value;
 
@@ -161,6 +161,9 @@ namespace FM.Portal.Infrastructure.DAL
 
                 param[3] = new SqlParameter("@SpecialOffer", SqlDbType.Bit);
                 param[3].Value = listVM?.SpecialOffer ?? (object)DBNull.Value;
+
+                param[4] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[5] = new SqlParameter("@PageIndex", listVM.PageIndex);
 
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsProduct", param);
             }

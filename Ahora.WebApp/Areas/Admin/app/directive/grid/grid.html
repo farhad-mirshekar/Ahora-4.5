@@ -10,14 +10,6 @@
                                 <div class="row" ng-class="{'mb-2':obj.items.length < obj.columns.length + 2}">
                                     <div class="col-md-9">
                                         <i class="fa fa-refresh float-left mr-3 mt-2" ng-click="obj.getlist();" title="بارگذاری مجدد کارتابل"></i>
-                                        <div class="d-inline-block" st-pagination="" st-items-by-page="obj.pageSize" st-displayed-pages="5">
-                                        </div>
-                                        <label ng-show="obj.items.length > 5 && obj.items.length > obj.pageSize " for="pagination-num" class="float-left d-inline-block mr-2 mt-2">صفحه:</label>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <select class="pull-left custom-select w-27" ng-options="option for option in obj.pageSizeRange"
-                                                ng-model="obj.pageSize"></select>
-                                        <label for="option-num" class="float-right mr-2 mt-2">نمایش:</label>
                                     </div>
                                 </div>
                             </div>
@@ -42,7 +34,7 @@
                 </thead>
                 <tbody class="text-center">
                     <tr ng-repeat="item in displayedItems">
-                        <td>{{$index + 1}}</td>
+                        <td>{{ ((pageIndex === 0 ? 1 : pageIndex - 1) * obj.pageSize) + $index + 1 }}</td>
                         <td ng-repeat="col in obj.columns">{{cellValue(item,col)}}</td>
                         <td ng-if="obj.actions.length"
                             ng-style="{ 'width': obj.actions.length * 45 + 1 }"
@@ -58,7 +50,43 @@
                 </tbody>
 
             </table>
-
+        </div>
+        <div class="col-md-12">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-3">
+                        <span class="text-primary">
+                            تعداد کل: {{ obj.loadingTotal ? "..." : obj.total }}
+                        </span>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <a href="" ng-click="obj.previousPage()"><i class="fa fa-chevron-right mr-1" aria-hidden="true"></i>قبلی</a>
+                        | صفحه
+                        <select ng-options="option for option in obj.pageCount"
+                                ng-model="obj.pageIndex"
+                                ng-change="obj.getlist()"
+                                ng-if="obj.totalPageCount <= 100"></select>
+                        <input type="text"
+                               class="form-control pageindex-input"
+                               ng-model="obj.pageIndex"
+                               ng-keypress="obj.changePageIndex($event)"
+                               ng-if="obj.totalPageCount > 100" />
+                        از {{ obj.totalPageCount }} |
+                        <a href="" ng-click="obj.nextPage()">
+                            بعدی<i class="fa fa-chevron-left ml-1" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="pull-left">
+                            رکورد در صفحه:
+                            <select ng-options="option for option in obj.pageSizeRange"
+                                    ng-model="obj.pageSize"
+                                    ng-change="obj.pageSizeChange()"
+                                    ng-disabled="obj.loadingTotal"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
