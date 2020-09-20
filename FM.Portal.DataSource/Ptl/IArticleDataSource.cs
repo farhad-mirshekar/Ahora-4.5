@@ -9,8 +9,7 @@ namespace FM.Portal.DataSource
     {
         Result<Article> Insert(Article model);
         Result<Article> Update(Article model);
-        DataTable List();
-        DataTable List(int count);
+        DataTable List(ArticleListVM listVM);
         Result<Article> Get(Guid ID);
         Result<Article> Get(string TrackingCode);
         Result<int> Delete(Guid ID);

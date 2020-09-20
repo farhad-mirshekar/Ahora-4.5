@@ -5,6 +5,8 @@ using System.Web.Mvc;
 using PagedList;
 using FM.Portal.FrameWork.MVC.Controller;
 using FM.Portal.Core.Common;
+using Ahora.WebApp.Models;
+using System.Linq;
 
 namespace Ahora.WebApp.Controllers
 {
@@ -21,10 +23,18 @@ namespace Ahora.WebApp.Controllers
         public ActionResult Index(int? page)
         {
             ViewBag.Title = "لیست مقالات";
-            int pageSize = 2;
-            int pageNumber = (page ?? 1);
-            var result = _service.List(Helper.CountShowArticle);
-            return View(result.Data.ToPagedList(pageNumber, pageSize));
+            var articlesResult = _service.List(new FM.Portal.Core.Model.ArticleListVM() {PageSize = Helper.CountShowArticle , PageIndex = page });
+            if (!articlesResult.Success)
+                return View("Error");
+            var articles = articlesResult.Data;
+
+            var pageInfo = new PagingInfo();
+            pageInfo.CurrentPage = page ?? 1;
+            pageInfo.TotalItems = articles.Select(x => x.Total).First();
+            pageInfo.ItemsPerPage = Helper.CountShowArticle;
+            
+            ViewBag.Paging = pageInfo;
+            return View(articles);
         }
 
         //show detail article

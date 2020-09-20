@@ -86,7 +86,7 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public virtual ActionResult GetLastArticle()
         {
-            var result = _articleService.List(Helper.CountShowArticle);
+            var result = _articleService.List(new ArticleListVM() {PageSize = Helper.CountShowArticle });
             return PartialView("~/Views/Shared/_PartialSideArticle.cshtml", result.Data);
         }
         [ChildActionOnly]

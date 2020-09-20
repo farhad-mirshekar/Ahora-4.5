@@ -114,6 +114,7 @@
     <Compile Include="MVC\Controller\BaseController.cs" />
     <Compile Include="MVC\Helpers\AutoComplate\AutoCompleteSearchViewModel.cs" />
     <Compile Include="MVC\Helpers\File\FileHelper.cs" />
+    <Compile Include="MVC\Helpers\Paging\PagingHelper.cs" />
     <Compile Include="MVC\Helpers\Select\DropDownList.cs" />
     <Compile Include="MVC\Helpers\Select\ToSelectList.cs" />
     <Compile Include="MVC\Helpers\TreeView\TreeViewHelper.cs" />
@@ -126,6 +127,12 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ahora.WebApp\Ahora.WebApp.csproj">
+      <Project>{8E2EF2A5-E229-43C3-A73E-B6A67751F2BC}</Project>
+      <Name>Ahora.WebApp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

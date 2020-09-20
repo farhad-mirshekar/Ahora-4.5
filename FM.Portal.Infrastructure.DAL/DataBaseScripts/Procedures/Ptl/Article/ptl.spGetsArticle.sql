@@ -5,15 +5,43 @@ IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('ptl.spGets
 GO
 
 CREATE PROCEDURE ptl.spGetsArticle
+@Title NVARCHAR(100),
+@PageSize INT,
+@PageIndex INT
 --WITH ENCRYPTION
 AS
 BEGIN
-	;WITH main AS(
-	SELECT *
-	FROM ptl.Article
+	SET @PageSize = COALESCE(@PageSize , 5)
+	SET @PageIndex = COALESCE(@PageIndex,1)
+
+	IF @PageIndex = 0 
+	BEGIN
+		SET @PageSize = 10000000
+		SET @PageIndex = 1
+	END
+
+	;WITH MainSelect AS
+	(
+		SELECT 
+			Article.*,
+			CONCAT(CreatorUser.FirstName , ' ' , CreatorUser.LastName) AS CreatorUserFullName,
+			Category.Title AS CategoryName
+		FROM 
+			ptl.Article Article
+		INNER JOIN org.[User] CreatorUser ON Article.UserID = CreatorUser.ID
+		LEFT JOIN ptl.Category Category ON Article.CategoryID = Category.ID
+		WHERE
+			(@Title IS NULL OR Article.Title LIKE CONCAT('%', @Title , '%'))
+	),TempCount AS
+	(
+		SELECT 
+			COUNT(*) AS Total
+		FROM MainSelect
 	)
 
 	SELECT * 
-	FROM main
-	ORDER BY [CreationDate]
+	FROM MainSelect , TempCount
+	ORDER BY [CreationDate] DESC
+	OFFSET ((@PageIndex - 1) * @PageSize) ROWS FETCH NEXT @PageSize ROWS ONLY
+	OPTION(RECOMPILE)
 END

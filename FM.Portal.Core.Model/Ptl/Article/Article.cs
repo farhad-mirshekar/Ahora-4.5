@@ -32,5 +32,6 @@ namespace FM.Portal.Core.Model
 
         public string Path => PathType.ToString();
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
+        public int Total { get; set; }
     }
 }

@@ -1755,6 +1755,8 @@
         let article = $scope;
         article.Model = {};
         article.main = {};
+        article.search = [];
+        article.search.Model = {};
         article.Model.Errors = [];
         article.pic = { type: '4', allowMultiple: false, validTypes: 'image/jpeg' };
         article.pic.list = [];
@@ -1767,6 +1769,7 @@
         article.state = '';
         article.addArticle = addArticle;
         article.editArticle = editArticle;
+        article.search.clear = clear;
         article.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
         article.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
         init();
@@ -1788,6 +1791,9 @@
             , globalSearch: true
             , displayNameFormat: ['Title']
             , initLoad: true
+            , options: () => {
+                return article.search.Model;
+            }
         };
         article.froalaOption = angular.copy(froalaOption.main);
         function init() {
@@ -1988,6 +1994,13 @@
         function clearModel() {
             article.Model = {};
             article.pic.listUploaded = [];
+        }
+        function clear() {
+            loadingService.show();
+            article.search.Model = {};
+            article.search.searchPanel = false;
+            article.grid.getlist();
+            loadingService.hide();
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
