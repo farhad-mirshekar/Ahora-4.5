@@ -261,7 +261,6 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spDeleteArticle.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetArticle.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetsArticle.sql" />
-    <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetsArticleByCount.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spModifyArticle.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spDeleteCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Category\ptl.spGetCategory.sql" />

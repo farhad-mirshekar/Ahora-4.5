@@ -78,9 +78,12 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var param = new SqlParameter[1];
+                var param = new SqlParameter[3];
                 param[0] = new SqlParameter("@BannerType", SqlDbType.TinyInt);
                 param[0].Value = listVM.BannerType != BannerType.نامشخص ? listVM.BannerType : (object)DBNull.Value;
+
+                param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
 
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsBanner", param);
             }

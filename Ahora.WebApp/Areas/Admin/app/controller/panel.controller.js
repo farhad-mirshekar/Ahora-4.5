@@ -4011,8 +4011,8 @@
         let banner = $scope;
         banner.Model = {};
         banner.main = {};
-        banner.Search = {};
-        banner.Search.Model = {};
+        banner.search = {};
+        banner.search.Model = {};
         banner.Model.Errors = [];
         banner.pic = { type: '2', allowMultiple: true, validTypes: 'image/jpeg' };
         banner.pic.list = [];
@@ -4021,8 +4021,10 @@
         banner.state = '';
         banner.addBanner = addBanner;
         banner.editBanner = editBanner;
+        banner.search.clear = clear;
         banner.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
         banner.bannerType = toolsService.arrayEnum(enumService.BannerType);
+        banner.search.bannerType = toolsService.arrayEnum(enumService.BannerType);
         init();
         banner.main.changeState = {
             add: add,
@@ -4043,6 +4045,9 @@
             , globalSearch: true
             , displayNameFormat: ['Name']
             , initLoad: true
+            , options: () => {
+                return banner.search.Model;
+            }
         };
         function init() {
             loadingService.show();
@@ -4174,6 +4179,13 @@
         function clearModel() {
             banner.Model = {};
             banner.pic.listUploaded = [];
+        }
+        function clear() {
+            loadingService.show();
+            banner.search.Model = {};
+            banner.search.searchPanel = false;
+            banner.grid.getlist();
+            loadingService.hide();
         }
     }
     //------------------------------------------------------------------------------------------------------------------------------------

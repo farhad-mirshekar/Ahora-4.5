@@ -1,6 +1,6 @@
 ﻿namespace FM.Portal.Core.Model
 {
-   public class ArticleListVM:EntityPagination
+   public class ArticleListVM:Pagination
     {
         public string Title { get; set; }
     }
