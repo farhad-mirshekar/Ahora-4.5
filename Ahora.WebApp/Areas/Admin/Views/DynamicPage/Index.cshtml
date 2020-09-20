@@ -1,11 +1,24 @@
 ﻿<section ng-show="state ==='cartable'">
     <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
-    <div class="form-group">
-        <div class="col-md-10">
-            <label class="control-label">انتخاب صفحه داینامیک</label>
-            <select class="form-control" ng-model="Search.Model.PageID" ng-change="grid.getlist();">
-                <option ng-repeat="row in listPages" ng-value="row.Model">{{row.Name}}</option>
-            </select>
+    <div class="card">
+        <div class="card-header">
+            <div class="pull-left" title="جست و جو" ng-click="search.searchPanel = !search.searchPanel"><i class="fa fa-search" aria-hidden="true"></i></div>
+        </div>
+        <div class="card-body" ng-show="search.searchPanel">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">انتخاب صفحه داینامیک</label>
+                        <select class="form-control" ng-model="search.Model.PageID">
+                            <option ng-repeat="row in listPages" ng-value="row.Model">{{row.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button type="button" class="btn btn-primary" ng-click="grid.getlist();">جست و جو</button>
+                <button type="button" class="btn btn-cancel" ng-click="search.clear();">پاک کردن</button>
+            </div>
         </div>
     </div>
     <portal-grid obj="grid"></portal-grid>

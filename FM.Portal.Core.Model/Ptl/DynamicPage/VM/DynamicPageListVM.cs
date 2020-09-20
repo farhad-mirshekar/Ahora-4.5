@@ -2,7 +2,7 @@
 
 namespace FM.Portal.Core.Model
 {
-   public class DynamicPageListVM
+   public class DynamicPageListVM:Pagination
     {
         public Guid? PageID { get; set; }
     }

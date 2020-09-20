@@ -6,24 +6,44 @@ IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('ptl.spGets
 GO
 
 CREATE PROCEDURE [ptl].[spGetsDynamicPage]
-@PageID UNIQUEIDENTIFIER
+@PageID UNIQUEIDENTIFIER,
+@PageSize INT,
+@PageIndex INT
 --WITH ENCRYPTION
 AS
 BEGIN
-	SET NOCOUNT ON;
-	SELECT 
-		dpages.*,
-		pages.Name AS PageName,
-		attachment.PathType,
-		attachment.[FileName]
-	FROM ptl.DynamicPage dpages
-	INNER JOIN
-		ptl.Pages pages ON dpages.PageID = pages.ID
-	LEFT JOIN
-		pbl.Attachment attachment ON dpages.ID = attachment.ParentID
-	WHERE
-		dpages.PageID = @PageID
-	ORDER BY [CreationDate]
+	SET @PageSize = COALESCE(@PageSize , 5)
+	SET @PageIndex = COALESCE(@PageIndex,1)
 
-	RETURN @@ROWCOUNT
+	IF @PageIndex = 0 
+	BEGIN
+		SET @PageSize = 10000000
+		SET @PageIndex = 1
+	END
+	;WITH MainSelect AS
+	(
+		SELECT 
+			dpages.*,
+			pages.Name AS PageName,
+			attachment.PathType,
+			attachment.[FileName]
+		FROM ptl.DynamicPage dpages
+		INNER JOIN
+			ptl.Pages pages ON dpages.PageID = pages.ID
+		LEFT JOIN
+			pbl.Attachment attachment ON dpages.ID = attachment.ParentID
+		WHERE
+			dpages.PageID = @PageID
+	),TempCount AS
+	(
+		SELECT 
+			COUNT(*) AS Total
+		FROM
+			MainSelect
+	)
+	SELECT *
+	FROM MainSelect , TempCount
+	ORDER BY [CreationDate]
+	OFFSET ((@PageIndex - 1) * @PageSize) ROWS FETCH NEXT @PageSize ROWS ONLY
+	OPTION(RECOMPILE)
 END

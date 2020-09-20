@@ -3577,8 +3577,8 @@
         let pages = $scope;
         pages.Model = {};
         pages.main = {};
-        pages.Search = {};
-        pages.Search.Model = {};
+        pages.search = {};
+        pages.search.Model = {};
         pages.Model.Errors = [];
         pages.pic = { type: '1', allowMultiple: false, validTypes: 'image/jpeg' };
         pages.pic.list = [];
@@ -3587,6 +3587,7 @@
         pages.state = '';
         pages.addDynamicPage = addDynamicPage;
         pages.editDynamicPage = editDynamicPage;
+        pages.search.clear = clear;
         pages.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
         init();
         pages.main.changeState = {
@@ -3606,7 +3607,7 @@
             , globalSearch: true
             , displayNameFormat: ['Name']
             , initLoad: true
-            , options: () => { return pages.Search.Model }
+            , options: () => { return pages.search.Model }
         };
         pages.froalaOption = angular.copy(froalaOption.main);
         function init() {
@@ -3751,13 +3752,12 @@
         function clearModel() {
             pages.Model = {};
         }
-        function pageDropDown() {
+        function clear() {
             loadingService.show();
-            return $q.resolve().then(() => {
-                return pagesPortalService.list({ PageType: 1 });
-            }).then(() => {
-
-            }).finally(loadingService.hide);
+            pages.search.Model = {};
+            pages.search.searchPanel = false;
+            pages.grid.getlist();
+            loadingService.hide();
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------------
