@@ -5,15 +5,46 @@ IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('ptl.spGets
 GO
 
 CREATE PROCEDURE ptl.spGetsEvents
+@Title AS NVARCHAR(100),
+@PageSize INT,
+@PageIndex INT
 --WITH ENCRYPTION
 AS
 BEGIN
-	;WITH main AS(
-	SELECT *
-	FROM ptl.Events
+	SET @PageSize = COALESCE(@PageSize , 5)
+	SET @PageIndex = COALESCE(@PageIndex,1)
+
+	IF @PageIndex = 0 
+	BEGIN
+		SET @PageSize = 10000000
+		SET @PageIndex = 1
+	END
+
+	;WITH MainSelect AS
+	(
+		SELECT 
+			[Events].*,
+			CONCAT(CreatorUser.FirstName , ' ' ,CreatorUser.LastName) AS CreatorName,
+			attachment.PathType,
+			attachment.[FileName]
+		FROM ptl.[Events] [Events]
+		INNER JOIN 
+			org.[User] CreatorUser ON [Events].UserID = CreatorUser.ID
+		LEFT JOIN
+			pbl.Attachment attachment ON [Events].ID = attachment.ParentID
+		WHERE
+			(@Title IS NULL OR [Events].Title LIKE CONCAT('%', @Title , '%'))
+	),TempCount AS
+	(
+		SELECT 
+			COUNT(*) AS Total
+		FROM
+			MainSelect
 	)
 
 	SELECT * 
-	FROM main
+	FROM MainSelect , TempCount
 	ORDER BY [CreationDate]
+	OFFSET ((@PageIndex - 1) * @PageSize) ROWS FETCH NEXT @PageSize ROWS ONLY
+	OPTION(RECOMPILE)
 END

@@ -1,7 +1,8 @@
-﻿using FM.Portal.Core.Common;
+﻿using Ahora.WebApp.Models;
+using FM.Portal.Core.Common;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
-using PagedList;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
@@ -19,10 +20,18 @@ namespace Ahora.WebApp.Controllers
         public ActionResult Index(int? page)
         {
             ViewBag.Title = "لیست رویدادها";
-            int pageSize = Helper.CountShowEvents;
-            int pageNumber = (page ?? 1);
-            var result = _service.List(Helper.CountShowEvents);
-            return View(result.Data.ToPagedList(pageNumber, pageSize));
+            var eventsResult = _service.List(new FM.Portal.Core.Model.EventsListVM() { PageSize = Helper.CountShowArticle, PageIndex = page });
+            if (!eventsResult.Success)
+                return View("Error");
+            var events = eventsResult.Data;
+
+            var pageInfo = new PagingInfo();
+            pageInfo.CurrentPage = page ?? 1;
+            pageInfo.TotalItems = events.Select(x => x.Total).First();
+            pageInfo.ItemsPerPage = Helper.CountShowArticle;
+
+            ViewBag.Paging = pageInfo;
+            return View(events);
         }
         [Route("EventsDetail/{TrackingCode}/{Seo}")]
         public ActionResult Detail(string TrackingCode, string Seo)

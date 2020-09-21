@@ -127,22 +127,16 @@ namespace FM.Portal.Infrastructure.DAL
             => Modify(true, model);
 
 
-        public DataTable List()
+        public DataTable List(EventsListVM listVM)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsEvents", null);
-            }
-            catch (Exception e) { throw; }
-        }
-        public DataTable List(int count)
-        {
-            try
-            {
-                SqlParameter[] param = new SqlParameter[1];
-                count = count == 0 ? 4 : count;
-                param[0] = new SqlParameter("@count", count);
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsEventsByCount", param);
+                var param = new SqlParameter[3];
+                param[0] = new SqlParameter("@Title", listVM?.Title);
+                param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsEvents", param);
             }
             catch (Exception e) { throw; }
         }

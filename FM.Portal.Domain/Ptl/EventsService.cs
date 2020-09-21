@@ -118,20 +118,12 @@ namespace FM.Portal.Domain
             return events;
         }
 
-        public Result<List<Events>> List()
+        public Result<List<Events>> List(EventsListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<Events>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<Events>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<Events>>.Successful(data: table);
             return Result<List<Events>>.Failure();
-        }
-
-        public Result<List<EventsListVM>> List(int count)
-        {
-            var table = ConvertDataTableToList.BindList<EventsListVM>(_dataSource.List(count));
-            if (table.Count > 0 || table.Count == 0)
-                return Result<List<EventsListVM>>.Successful(data: table);
-            return Result<List<EventsListVM>>.Failure();
         }
     }
 }

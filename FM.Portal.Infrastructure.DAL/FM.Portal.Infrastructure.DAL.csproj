@@ -287,7 +287,6 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spDeleteEvents.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spGetEvents.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spGetsEvents.sql" />
-    <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spGetsEventsByCount.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Events\ptl.spModifyEvents.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spDeleteNews.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetNews.sql" />

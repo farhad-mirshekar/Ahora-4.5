@@ -63,7 +63,7 @@ namespace Ahora.WebApp.Controllers
                     Title = model.Title
                 });
                 if (!result.Success)
-                    return Json(new { Success = false, Message = "خطا در ارسال پیام، دوباره تلاش نمایید"});
+                    return Json(new { Success = false, Message = "خطا در ارسال پیام، دوباره تلاش نمایید" });
                 else
                     return Json(new { Success = true, Message = "پیام شما با موفقیت ارسال گردید" });
             }
@@ -73,8 +73,8 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public virtual ActionResult TrendingProduct()
         {
-            var result = _service.List(new ProductListVM() {SpecialOffer = true });
-            return PartialView("_PartialProduct", result.Data.Skip((1-1) * Helper.CountShowProduct).Take(Helper.CountShowProduct).ToList());
+            var result = _service.List(new ProductListVM() { SpecialOffer = true });
+            return PartialView("_PartialProduct", result.Data.Skip((1 - 1) * Helper.CountShowProduct).Take(Helper.CountShowProduct).ToList());
         }
         [ChildActionOnly]
         public virtual ActionResult SaleProduct()
@@ -86,7 +86,7 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public virtual ActionResult GetLastArticle()
         {
-            var result = _articleService.List(new ArticleListVM() {PageSize = Helper.CountShowArticle });
+            var result = _articleService.List(new ArticleListVM() { PageSize = Helper.CountShowArticle });
             return PartialView("~/Views/Shared/_PartialSideArticle.cshtml", result.Data);
         }
         [ChildActionOnly]
@@ -110,7 +110,7 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public ActionResult GetLastEvents()
         {
-            var result = _eventsService.List(Helper.CountShowEvents);
+            var result = _eventsService.List(new EventsListVM() { PageSize = Helper.CountShowEvents });
             return PartialView("~/Views/Shared/_PartialSideEvents.cshtml", result.Data);
         }
         [ChildActionOnly]

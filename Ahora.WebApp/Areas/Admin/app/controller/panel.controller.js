@@ -2759,8 +2759,12 @@
             add: add
         }
 
+        events.search = [];
+        events.search.Model = {};
+
         events.addEvents = addEvents;
         events.editEvents = editEvents;
+        events.search.clear = clear;
 
         events.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
         events.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
@@ -2776,6 +2780,9 @@
             , searchBy: 'Title'
             , displayNameFormat: ['Title']
             , initLoad: true
+            , options: () => {
+                return events.search.Model;
+            }
         };
         init();
         function init() {
@@ -2980,6 +2987,13 @@
         function clearModel() {
             $('.js-example-tags').empty();
             events.Model = {};
+        }
+        function clear() {
+            loadingService.show();
+            events.search.model = {};
+            events.search.searchPanel = false;
+            events.grid.getlist();
+            loadingService.hide();
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------

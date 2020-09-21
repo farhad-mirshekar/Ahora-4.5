@@ -9,8 +9,7 @@ namespace FM.Portal.DataSource
     {
         Result<Events> Insert(Events model);
         Result<Events> Update(Events model);
-        DataTable List();
-        DataTable List(int count);
+        DataTable List(EventsListVM listVM);
         Result<Events> Get(Guid ID);
         Result<Events> Get(string TrackingCode);
         Result<int> Delete(Guid ID);

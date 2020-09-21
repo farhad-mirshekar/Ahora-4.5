@@ -1,4 +1,4 @@
-﻿@model PagedList.PagedList<FM.Portal.Core.Model.EventsListVM>
+﻿@model List<FM.Portal.Core.Model.Events>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = ViewBag.Title;
@@ -37,7 +37,9 @@
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-center" dir="ltr">
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                <ul class="pagination">
+                    @Html.PageLinks((PagingInfo)ViewBag.Paging, x => Url.RouteUrl("Events", new { Page = x }))
+                </ul>
             </div>
         </div>
     </section>
