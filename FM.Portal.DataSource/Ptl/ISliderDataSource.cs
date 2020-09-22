@@ -9,8 +9,7 @@ namespace FM.Portal.DataSource
     {
         Result<Slider> Insert(Slider model);
         Result<Slider> Update(Slider model);
-        DataTable List();
-        DataTable List(int count);
+        DataTable List(SliderListVM listVM);
         Result<Slider> Get(Guid ID);
         Result<int> Delete(Guid ID);
     }

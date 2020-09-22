@@ -2556,6 +2556,8 @@
         slider.pic.list = [];
         slider.pic.listUploaded = [];
         slider.main = {};
+        slider.search = [];
+        slider.search.Model = {};
         slider.main.changeState = {
             cartable: cartable,
             edit: edit,
@@ -2568,14 +2570,17 @@
             , listService: sliderService.list
             , deleteService: sliderService.remove
             , onEdit: edit
-            , route: 'slider'
             , globalSearch: true
             , displayNameFormat: ['Title']
             , initLoad: true
+            , options: () => {
+                return slider.search.Model;
+            }
         };
 
         slider.addSlider = addSlider;
         slider.editSlider = editSlider;
+        slider.search.clear = clear;
         slider.typeEnable = toolsService.arrayEnum(enumService.ShowArticleType);
         init();
         function init() {
@@ -2714,6 +2719,13 @@
                     toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                 }).finally(loadingService.hide);
             })
+        }
+        function clear() {
+            loadingService.show();
+            slider.search.Model = {};
+            slider.search.searchPanel = false;
+            slider.grid.getlist();
+            loadingService.hide();
         }
     }
     //---------------------------------------------------------------------------------------------------------------------------------------
@@ -3003,7 +3015,7 @@
         }
         function clear() {
             loadingService.show();
-            events.search.model = {};
+            events.search.Model = {};
             events.search.searchPanel = false;
             events.grid.getlist();
             loadingService.hide();

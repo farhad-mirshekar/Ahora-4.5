@@ -40,17 +40,9 @@ namespace FM.Portal.Domain
         public Result<Slider> Get(Guid ID)
         => _dataSource.Get(ID);
 
-        public Result<List<Slider>> List()
+        public Result<List<Slider>> List(SliderListVM listVM)
         {
-           var table= ConvertDataTableToList.BindList<Slider>(_dataSource.List());
-            if (table.Count > 0 || table.Count == 0)
-                return Result<List<Slider>>.Successful(data: table);
-            return Result<List<Slider>>.Failure();
-        }
-
-        public Result<List<Slider>> List(int count)
-        {
-            var table = ConvertDataTableToList.BindList<Slider>(_dataSource.List(count));
+           var table= ConvertDataTableToList.BindList<Slider>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<Slider>>.Successful(data: table);
             return Result<List<Slider>>.Failure();

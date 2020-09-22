@@ -9,8 +9,7 @@ namespace FM.Portal.Core.Service
     {
         Result<Slider> Add(Slider model);
         Result<Slider> Edit(Slider model);
-        Result<List<Slider>> List();
-        Result<List<Slider>> List(int count);
+        Result<List<Slider>> List(SliderListVM listVM);
         Result<Slider> Get(Guid ID);
         Result<int> Delete(Guid ID);
     }

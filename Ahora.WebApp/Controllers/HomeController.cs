@@ -104,7 +104,7 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public ActionResult RenderSlide()
         {
-            var result = _sliderService.List(Helper.CountShowSlider);
+            var result = _sliderService.List(new SliderListVM() { PageSize = Helper.CountShowSlider });
             return PartialView("~/Views/Shared/_PartialSlider.cshtml", result.Data);
         }
         [ChildActionOnly]

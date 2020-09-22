@@ -165,6 +165,7 @@
     <Compile Include="Ptl\Pages\Pages.cs" />
     <Compile Include="Ptl\Pages\VM\PagesListVM.cs" />
     <Compile Include="Ptl\Slider\Slider.cs" />
+    <Compile Include="Ptl\Slider\VM\SliderListVM.cs" />
     <Compile Include="Ptl\StaticPage\StaticPage.cs" />
   </ItemGroup>
   <ItemGroup>
