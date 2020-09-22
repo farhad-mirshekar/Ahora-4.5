@@ -3027,10 +3027,11 @@
                     return callbackService.onError({ result: result });
                 })
         }
-        function list() {
+        function list(model) {
             return $http({
                 method: 'post',
                 url: url + 'list',
+                data:model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token

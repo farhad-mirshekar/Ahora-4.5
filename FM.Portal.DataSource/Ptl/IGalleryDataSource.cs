@@ -11,8 +11,7 @@ namespace FM.Portal.DataSource
         Result<Gallery> Update(Gallery model);
         Result<Gallery> Get(Guid ID);
         Result<Gallery> Get(string TrackingCode);
-        DataTable List();
-        DataTable List(int Count);
+        DataTable List(GalleryListVM listVM);
         Result Delete(Guid ID);
     }
 }

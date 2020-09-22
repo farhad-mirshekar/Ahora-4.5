@@ -23,5 +23,7 @@ namespace FM.Portal.Core.Model
         public PathType PathType { get; set; }
 
         public string Path => PathType.ToString();
+        public int Total { get; set; }
+        public string CreatorName { get; set; }
     }
 }

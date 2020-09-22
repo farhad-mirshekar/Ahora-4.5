@@ -57,23 +57,16 @@ namespace FM.Portal.Infrastructure.DAL
         public Result<Gallery> Insert(Gallery model)
         => Modify(true, model);
 
-        public DataTable List()
+        public DataTable List(GalleryListVM listVM)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsGallery", null);
-            }
-            catch (Exception e) { throw; }
-        }
+                var param = new SqlParameter[3];
+                param[0] = new SqlParameter("@Name", listVM.Name);
+                param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
 
-        public DataTable List(int Count)
-        {
-            try
-            {
-                SqlParameter[] param = new SqlParameter[1];
-                Count = Count == 0 ? 4 : Count;
-                param[0] = new SqlParameter("@Count", Count);
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsGalleryByCount", param);
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsGallery", param);
             }
             catch (Exception e) { throw; }
         }
@@ -84,9 +77,9 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[9];
+                    var param = new SqlParameter[9];
                     param[0] = new SqlParameter("@ID", model.ID);
 
                     param[1] = new SqlParameter("@Description", model.Description);

@@ -2,7 +2,7 @@
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
-using PagedList;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
@@ -18,11 +18,19 @@ namespace Ahora.WebApp.Controllers
 
         public ActionResult Image(int? page)
         {
-            ViewBag.Title = "لیست گالری تصاویر";
-            int pageSize = 2;
-            int pageNumber = (page ?? 1);
-            var result = _service.List(Helper.CountShowArticle);
-            return View(result.Data.ToPagedList(pageNumber, pageSize));
+            ViewBag.Title = "آلبوم تصاویر";
+            var galleriesResult = _service.List(new FM.Portal.Core.Model.GalleryListVM() { PageSize = Helper.CountShowArticle, PageIndex = page });
+            if (!galleriesResult.Success)
+                return View("Error");
+            var galleries = galleriesResult.Data;
+
+            var pageInfo = new PagingInfo();
+            pageInfo.CurrentPage = page ?? 1;
+            pageInfo.TotalItems = galleries.Select(x => x.Total).First();
+            pageInfo.ItemsPerPage = Helper.CountShowArticle;
+
+            ViewBag.Paging = pageInfo;
+            return View(galleries);
         }
         public ActionResult ImageDetail(string TrackingCode , string Seo)
         {

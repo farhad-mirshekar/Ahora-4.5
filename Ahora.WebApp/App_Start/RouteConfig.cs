@@ -16,17 +16,17 @@ namespace Ahora.WebApp
             routes.MapRoute(
               "ClearCompareProducts",
               "ClearCompareProducts",
-              new { controller = "Product", action = "ClearCompareProducts"},
+              new { controller = "Product", action = "ClearCompareProducts" },
               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
             routes.MapRoute(
               "RemoveProductFromCompareList",
               "RemoveProductFromCompareList/{ProductID}",
-              new { controller = "Product", action = "RemoveProductFromCompareList" , ProductID = UrlParameter.Optional },
+              new { controller = "Product", action = "RemoveProductFromCompareList", ProductID = UrlParameter.Optional },
               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
             routes.MapRoute(
               "CompareProducts",
               "CompareProducts",
-              new { controller = "Product", action = "CompareProducts"},
+              new { controller = "Product", action = "CompareProducts" },
               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
             routes.MapRoute(
               "AddProductToCompareList",
@@ -41,7 +41,7 @@ namespace Ahora.WebApp
             routes.MapRoute(
               "Gallery",
               "Gallery/Image/{Page}",
-              new { controller = "Gallery", action = "Image",Page = UrlParameter.Optional },
+              new { controller = "Gallery", action = "Image", Page = UrlParameter.Optional },
               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
             routes.MapRoute(
               "StaticPages",

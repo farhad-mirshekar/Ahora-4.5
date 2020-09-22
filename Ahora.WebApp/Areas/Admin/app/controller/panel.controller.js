@@ -4215,9 +4215,13 @@
         gallery.pic.list = [];
         gallery.pic.listUploaded = [];
 
+        gallery.search = [];
+        gallery.search.Model = {};
+
         gallery.state = '';
         gallery.addGallery = addGallery;
         gallery.editGallery = editGallery;
+        gallery.search.clear = clear;
         gallery.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
         init();
         gallery.main.changeState = {
@@ -4238,6 +4242,9 @@
             , globalSearch: true
             , displayNameFormat: ['Name']
             , initLoad: true
+            , options: () => {
+                return gallery.search.Model;
+            }
         };
         function init() {
             loadingService.show();
@@ -4405,6 +4412,13 @@
             $('.js-example-tags').empty();
             gallery.Model = {};
             gallery.pic.listUploaded = [];
+        }
+        function clear() {
+            loadingService.show();
+            gallery.search.Model = {};
+            gallery.search.searchPanel = false;
+            gallery.grid.getlist();
+            loadingService.hide();
         }
     }
     //------------------------------------------------------------------------------------------------------------------------------------

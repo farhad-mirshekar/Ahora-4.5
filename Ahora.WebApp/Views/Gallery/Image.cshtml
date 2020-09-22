@@ -1,5 +1,4 @@
-﻿@model PagedList.IPagedList<FM.Portal.Core.Model.GalleryListVM>
-@using PagedList.Mvc;
+﻿@model List<FM.Portal.Core.Model.Gallery>
 @{
     ViewBag.Title = ViewBag.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -37,7 +36,9 @@
         </div>
         <div class="card-footer">
             <div class="d-flex justify-content-center" dir="ltr">
-                @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+                <ul class="pagination">
+                    @Html.PageLinks((PagingInfo)ViewBag.Paging, x => Url.RouteUrl("Gallery", new { Page = x }))
+                </ul>
             </div>
         </div>
     </section>
