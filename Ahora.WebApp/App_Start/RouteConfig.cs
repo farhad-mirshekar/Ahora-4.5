@@ -111,8 +111,8 @@ namespace Ahora.WebApp
               );
             routes.MapRoute(
               "Article",
-              "Article",
-                new { controller = "Article", action = "Index" },
+              "Article/{Page}",
+                new { controller = "Article", action = "Index", Page = UrlParameter.Optional },
                 namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
              );
             routes.MapRoute(

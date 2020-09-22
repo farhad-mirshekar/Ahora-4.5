@@ -37,7 +37,7 @@
         <div class="card-footer">
             <div class="d-flex justify-content-center" dir="ltr">
                 <ul class="pagination">
-                    @Html.PageLinks((PagingInfo)ViewBag.Paging, x => Url.Action("Index", "Article", new { page = x }))
+                    @Html.PageLinks((PagingInfo)ViewBag.Paging, x => Url.RouteUrl("Article", new { Page = x }))
                 </ul>
             </div>
         </div>
