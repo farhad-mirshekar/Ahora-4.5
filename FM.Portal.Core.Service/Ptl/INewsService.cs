@@ -9,8 +9,7 @@ namespace FM.Portal.Core.Service
     {
         Result<News> Add(News model);
         Result<News> Edit(News model);
-        Result<List<News>> List();
-        Result<List<NewsListVM>> List(int count);
+        Result<List<News>> List(NewsListVM listVM);
         Result<News> Get(Guid ID);
         Result<News> Get(string TrackingCode);
         Result<int> Delete(Guid ID);

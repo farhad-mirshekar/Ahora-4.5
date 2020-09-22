@@ -28,7 +28,9 @@ namespace FM.Portal.Core.Model
         public PathType PathType { get; set; }
         public string ReadingTime { get; set; }
 
+        //only show
         public string Path => PathType.ToString();
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
+        public int Total { get; set; }
     }
 }

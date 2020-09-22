@@ -126,26 +126,19 @@ namespace FM.Portal.Infrastructure.DAL
             => Modify(true, model);
 
 
-        public DataTable List()
+        public DataTable List(NewsListVM listVM)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsNews", null);
-            }
-            catch (Exception e) { throw; }
-        }
-        public DataTable List(int count)
-        {
-            try
-            {
-                SqlParameter[] param = new SqlParameter[1];
-                count = count == 0 ? 4 : count;
-                param[0] = new SqlParameter("@count", count);
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsNewsByCount", param);
-            }
-            catch (Exception e) { throw; }
-        }
+                var param = new SqlParameter[3];
+                param[0] = new SqlParameter("@Title", listVM.Title);
+                param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
 
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsNews", param);
+            }
+            catch (Exception e) { throw; }
+        }
         public Result<News> Update(News model)
             => Modify(false, model);
 
@@ -153,18 +146,18 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     lock (con)
                     {
-                        SqlParameter[] param = new SqlParameter[13];
+                        var param = new SqlParameter[13];
                         param[0] = new SqlParameter("@ID", model.ID);
 
                         param[1] = new SqlParameter("@Body", model.Body);
                         param[2] = new SqlParameter("@CategoryID", model.CategoryID);
                         param[3] = new SqlParameter("@CommentStatus", (byte)model.CommentStatus);
                         param[4] = new SqlParameter("@Description", model.Description);
-                        param[5] = new SqlParameter("@isNewRecord", isNewRecord);
+                        param[5] = new SqlParameter("@IsNewRecord", isNewRecord);
                         param[6] = new SqlParameter("@IsShow", (byte)model.IsShow);
                         param[7] = new SqlParameter("@MetaKeywords", model.MetaKeywords);
                         param[8] = new SqlParameter("@Title", model.Title);
@@ -173,9 +166,10 @@ namespace FM.Portal.Infrastructure.DAL
                         param[11] = new SqlParameter("@TrackingCode", model.TrackingCode);
                         param[12] = new SqlParameter("@ReadingTime", model.ReadingTime);
 
-                        SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyNews", param);
-
-                        return Get(model.ID);
+                       var result =  SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyNews", param);
+                        if(result > 0)
+                            return Get(model.ID);
+                        return Result<News>.Failure(message: "خطا در درج / ویرایش");
                     }
                 }
             }

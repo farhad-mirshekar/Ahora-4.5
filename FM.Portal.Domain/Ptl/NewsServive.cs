@@ -101,20 +101,12 @@ namespace FM.Portal.Domain
             return news;
         }
 
-        public Result<List<News>> List()
+        public Result<List<News>> List(NewsListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<News>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<News>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<News>>.Successful(data: table);
             return Result<List<News>>.Failure();
-        }
-
-        public Result<List<NewsListVM>> List(int count)
-        {
-            var table = ConvertDataTableToList.BindList<NewsListVM>(_dataSource.List(count));
-            if (table.Count > 0 || table.Count == 0)
-                return Result<List<NewsListVM>>.Successful(data: table);
-            return Result<List<NewsListVM>>.Failure();
         }
     }
 }

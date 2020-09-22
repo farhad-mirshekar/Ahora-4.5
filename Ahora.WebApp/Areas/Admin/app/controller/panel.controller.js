@@ -2010,6 +2010,8 @@
         let news = $scope;
         news.Model = {};
         news.main = {};
+        news.search = [];
+        news.search.Model = {};
 
         news.pic = { type: '3', allowMultiple: false, validTypes: 'image/jpeg' };
         news.pic.listUploaded = [];
@@ -2024,6 +2026,7 @@
         news.froalaOption = angular.copy(froalaOption.main);
         news.addNews = addNews;
         news.editNews = editNews;
+        news.search.clear = clear;
         news.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
         news.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
         news.grid = {
@@ -2037,6 +2040,9 @@
             , globalSearch: true
             , displayNameFormat: ['Title']
             , initLoad: true
+            , options: () => {
+                return news.search.Model;
+            }
         };
 
         init();
@@ -2219,6 +2225,13 @@
         function clearModel() {
             news.Model = {};
             news.pic.listUploaded = [];
+        }
+        function clear() {
+            loadingService.show();
+            news.search.Model = {};
+            news.search.searchPanel = false;
+            news.grid.getlist();
+            loadingService.hide();
         }
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------

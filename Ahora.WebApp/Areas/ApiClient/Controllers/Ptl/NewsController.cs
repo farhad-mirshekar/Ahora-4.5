@@ -44,11 +44,11 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         }
 
         [HttpPost, Route("List")]
-        public IHttpActionResult List()
+        public IHttpActionResult List(NewsListVM listVM)
         {
             try
             {
-                var result = _service.List();
+                var result = _service.List(listVM);
                 return Ok(result);
             }
             catch (Exception e)

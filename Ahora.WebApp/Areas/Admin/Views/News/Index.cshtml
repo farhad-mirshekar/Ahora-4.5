@@ -1,5 +1,27 @@
 ﻿<div ng-show="state ==='cartable'">
     <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
+    <div class="card">
+        <div class="card-header">
+            <div class="pull-left" title="جست و جو" ng-click="search.searchPanel = !search.searchPanel"><i class="fa fa-search" aria-hidden="true"></i></div>
+        </div>
+        <div class="card-body" ng-show="search.searchPanel">
+            <div class="row">
+                <div class="input-group col-md-6">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">عنوان خبر</span>
+                    </div>
+                    <input ng-model="search.Model.Title" maxlength="100" type="text" autofocus="" class="form-control meta" placeholder="عنوان خبر جهت جست و جو">
+                    <div class="input-group-append">
+                        <span class="input-group-text"> {{search.Model.Title.length > 0 ? search.Model.Title.length : 0}}/100</span>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button type="button" class="btn btn-primary" ng-click="grid.getlist();">جست و جو</button>
+                <button type="button" class="btn btn-cancel" ng-click="search.clear();">پاک کردن</button>
+            </div>
+        </div>
+    </div>
     <portal-grid obj="grid"></portal-grid>
 </div>
 <section ng-show="['add','edit'].indexOf(state) !== -1">

@@ -92,7 +92,7 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public virtual ActionResult GetLastNews()
         {
-            var result = _newsService.List(Helper.CountShowNews);
+            var result = _newsService.List(new NewsListVM() { PageSize = Helper.CountShowNews});
             return PartialView("~/Views/Shared/_PartialSideNews.cshtml", result.Data);
         }
         [ChildActionOnly]

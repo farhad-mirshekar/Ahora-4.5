@@ -290,7 +290,6 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spDeleteNews.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetNews.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetsNews.sql" />
-    <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spGetsNewsByCount.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\News\ptl.spModifyNews.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Pages\ptl.DeletePages.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Pages\ptl.GetPage.sql" />

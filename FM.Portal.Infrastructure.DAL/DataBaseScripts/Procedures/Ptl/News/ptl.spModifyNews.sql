@@ -16,14 +16,13 @@ CREATE PROCEDURE ptl.spModifyNews
 @CategoryID uniqueidentifier,
 @UserID uniqueidentifier,
 @TrackingCode nvarchar(100),
-@isNewRecord bit,
+@IsNewRecord BIT,
 @ReadingTime NVARCHAR(200)
 WITH ENCRYPTION
 AS
 BEGIN
-	SET NOCOUNT ON;
 
-	IF @isNewRecord = 1 --insert
+	IF @IsNewRecord = 1 --insert
 		BEGIN
 
 			SET @TrackingCode = (select STR(FLOOR(RAND(CHECKSUM(NEWID()))*(9999999999-1000000000+1)+1000000000)))
@@ -51,5 +50,5 @@ BEGIN
 			WHERE
 				[ID] = @ID
 		END
-			RETURN @@ROWCOUNT
+	RETURN @@ROWCOUNT
 END
