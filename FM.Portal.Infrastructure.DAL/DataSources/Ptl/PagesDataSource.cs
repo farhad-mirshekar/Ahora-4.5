@@ -85,10 +85,12 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
         {
             try
             {
-                var param = new SqlParameter[1];
+                var param = new SqlParameter[3];
                 param[0] = new SqlParameter("@PageType", SqlDbType.TinyInt);
                 param[0].Value = listVM.PageType != Core.Model.PageType.نامشخص ? listVM.PageType : (object)DBNull.Value;
-                
+                param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsPage", param);
             }
             catch (Exception e) { throw; }

@@ -15,5 +15,6 @@ namespace FM.Portal.Core.Model.Ptl
 
         //only show
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
+        public int Total { get; set; }
     }
 }

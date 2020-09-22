@@ -3528,9 +3528,12 @@
         let pages = $scope;
         pages.Model = {};
         pages.main = {};
+        pages.search = [];
+        pages.search.Model = {};
 
         pages.addPages = addPages;
         pages.editPages = editPages;
+        pages.search.clear = clear;
         pages.main.changeState = {
             edit: edit,
             add: add
@@ -3547,8 +3550,11 @@
             , globalSearch: true
             , onEdit: pages.main.changeState.edit
             , initLoad: true
-            , displayNameFormat: ['Name'],
-            searchBy: 'Name'
+            , displayNameFormat: ['Name']
+            , searchBy: 'Name'
+            , options: () => {
+                return pages.search.Model;
+            }
         };
         function add() {
             loadingService.show();
@@ -3595,6 +3601,13 @@
                 toaster.pop('error', '', 'خطا');
                 loadingService.hide();
             }).finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            pages.search.Model = {};
+            pages.search.searchPanel = false;
+            pages.grid.getlist();
+            loadingService.hide();
         }
     }
     //------------------------------------------------------------------------------------------------------------------------------------
