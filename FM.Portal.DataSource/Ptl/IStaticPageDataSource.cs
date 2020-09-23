@@ -7,11 +7,10 @@ namespace FM.Portal.DataSource
 {
    public interface IStaticPageDataSource:IDataSource
     {
-        Result<StaticPage> Insert(StaticPage model);
         Result<StaticPage> Update(StaticPage model);
         Result<StaticPage> Get(Guid ID);
         Result<StaticPage> Get(string TrackingCode);
-        DataTable List();
+        DataTable List(StaticPageListVM listVM);
         Result Delete(Guid ID);
     }
 }

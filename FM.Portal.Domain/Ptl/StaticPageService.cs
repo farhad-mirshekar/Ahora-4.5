@@ -19,12 +19,6 @@ namespace FM.Portal.Domain
             _dataSource = dataSource;
             _tagsService = tagsService;
         }
-
-        public Result<StaticPage> Add(StaticPage model)
-        {
-            throw new NotImplementedException();
-        }
-
         public Result Delete(Guid ID)
         => _dataSource.Delete(ID);
 
@@ -87,9 +81,9 @@ namespace FM.Portal.Domain
             return dynamicPageResult;
         }
 
-        public Result<List<StaticPage>> List()
+        public Result<List<StaticPage>> List(StaticPageListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<StaticPage>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<StaticPage>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<StaticPage>>.Successful(data: table);
             return Result<List<StaticPage>>.Failure();

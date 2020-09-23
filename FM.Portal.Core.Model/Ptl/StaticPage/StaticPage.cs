@@ -14,6 +14,7 @@ namespace FM.Portal.Core.Model
         public List<String> Tags { get; set; }
         public EnableMenuType BannerShow { get; set; }
         public Guid AttachmentID { get; set; }
+        public string TrackingCode { get; set; }
 
         //only show
         public string Name { get; set; }
@@ -21,7 +22,6 @@ namespace FM.Portal.Core.Model
         public string FileName { get; set; }
         public PathType PathType { get; set; }
         public EnableMenuType Enabled { get; set; }
-        public string TrackingCode { get; set; }
         public Guid UserID { get; set; }
         public string Path => PathType.ToString();
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);

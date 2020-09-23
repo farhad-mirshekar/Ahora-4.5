@@ -3922,10 +3922,13 @@
         pages.pic = { type: '1', allowMultiple: false, validTypes: 'image/jpeg' };
         pages.pic.list = [];
         pages.pic.listUploaded = [];
+        pages.search = [];
+        pages.search.Model = {};
 
         pages.state = '';
         pages.editStaticPage = editStaticPage;
         pages.changeDrop = changeDrop;
+        pages.search.clear = clear;
         pages.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
         pages.bannerShow = toolsService.arrayEnum(enumService.EnableMenuType);
         init();
@@ -3945,6 +3948,9 @@
             , globalSearch: true
             , displayNameFormat: ['Name']
             , initLoad: true
+            , options: () => {
+                return pages.search.Model;
+            }
         };
         pages.froalaOption = angular.copy(froalaOption.main);
         function init() {
@@ -3993,6 +3999,8 @@
                         $('.js-example-tags').append(newOption).trigger('change');
                     }, 0);
                 }
+                return changeDrop();
+            }).then(() => {
                 pages.state = 'edit';
                 $location.path(`/static-page/edit/${pages.Model.ID}`);
             }).finally(loadingService.hide);
@@ -4053,6 +4061,13 @@
                     loadingService.hide();
                 }).finally(loadingService.hide)
             }
+            loadingService.hide();
+        }
+        function clear() {
+            loadingService.show();
+            pages.search.Model = {};
+            pages.search.searchPanel = false;
+            pages.grid.getlist();
             loadingService.hide();
         }
     }

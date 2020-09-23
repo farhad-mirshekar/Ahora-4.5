@@ -54,17 +54,17 @@ namespace FM.Portal.Infrastructure.DAL
             param[1] = new SqlParameter("@TrackingCode", TrackingCode);
             return _Get(param);
         }
-
-        public Result<StaticPage> Insert(StaticPage model)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DataTable List()
+        public DataTable List(StaticPageListVM listVM)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsStaticPage", null);
+                var param = new SqlParameter[4];
+                param[0] = new SqlParameter("@Name", listVM.Name);
+                param[1] = new SqlParameter("@TrackingCode", listVM.TrackingCode);
+                param[2] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[3] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsStaticPage", param);
             }
             catch (Exception e) { throw; }
         }

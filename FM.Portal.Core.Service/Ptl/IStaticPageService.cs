@@ -7,11 +7,10 @@ namespace FM.Portal.Core.Service
 {
    public interface IStaticPageService:IService
     {
-        Result<StaticPage> Add(StaticPage model);
         Result<StaticPage> Edit(StaticPage model);
         Result<StaticPage> Get(Guid ID);
         Result<StaticPage> Get(string TrackingCode);
-        Result<List<StaticPage>> List();
+        Result<List<StaticPage>> List(StaticPageListVM listVM);
         Result.Result Delete(Guid ID);
     }
 }

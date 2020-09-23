@@ -1183,7 +1183,6 @@ ADD ReadingTime NVARCHAR(200)
 
 CREATE TABLE [ptl].[Pages](
 	[ID] [uniqueidentifier] NOT NULL,
-	[TrackingCode] [Nvarchar](100) NULL,
 	[Name] [Nvarchar](1000) NULL,
 	[UrlDesc] [Nvarchar](1000) NULL,
 	[PageType] [Tinyint] NULL,

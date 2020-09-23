@@ -23,9 +23,9 @@ BEGIN
 				SET @TrackingCode = (SELECT STR(FLOOR(RAND(CHECKSUM(NEWID()))*(9999999999-1000000000+1)+1000000000)))
 
 				INSERT INTO ptl.Pages
-				(ID,[TrackingCode],[Name],[UrlDesc],[PageType],[UserID],[Enabled],[CreationDate])
+				(ID,[Name],[UrlDesc],[PageType],[UserID],[Enabled],[CreationDate])
 				VALUES
-				(@ID, @TrackingCode,@Name,@UrlDesc,@PageType,@UserID,@Enabled,GETDATE())
+				(@ID,@Name,@UrlDesc,@PageType,@UserID,@Enabled,GETDATE())
 
 				IF @PageType = 2
 				BEGIN

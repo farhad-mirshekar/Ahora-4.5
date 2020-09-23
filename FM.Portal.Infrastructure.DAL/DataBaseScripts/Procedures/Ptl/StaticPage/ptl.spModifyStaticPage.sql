@@ -20,7 +20,8 @@ CREATE PROCEDURE ptl.spModifyStaticPage
 --WITH ENCRYPTION
 AS
 BEGIN
-	UPDATE ptl.StaticPage
+	BEGIN TRAN
+	   UPDATE ptl.StaticPage
 		SET 
 			[Body] = @Body,
 			[Description] = @Description,
@@ -29,12 +30,13 @@ BEGIN
 			[AttachmentID] = @AttachmentID
 		WHERE ID = @ID
 
-	UPDATE ptl.[Pages]
+	    UPDATE ptl.[Pages]
 		SET 
 			[Name] = @Name,
 			[UrlDesc] = @UrlDesc,
 			[Enabled] = @Enabled,
 			[UserID] = @UserID
 		WHERE ID = @ID
+	COMMIT
 	RETURN @@ROWCOUNT
 END
