@@ -21,6 +21,7 @@ namespace FM.Portal.Core.Model
                 return Helper.GetPersianDate(CreationDate);
             }
         }
+        public int Total { get; set; }
     }
 
 }

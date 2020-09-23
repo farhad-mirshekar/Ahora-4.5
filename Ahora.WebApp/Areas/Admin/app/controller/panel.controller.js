@@ -4487,9 +4487,15 @@
             add: add
         };
         shipping.Errors = [];
+        shipping.search = [];
+        shipping.search.Model = {};
         shipping.state = '';
         shipping.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
-
+        shipping.search.selectYesOrNoType = toolsService.arrayEnum(enumService.YesOrNoType);
+        shipping.search.selectYesOrNoType.map((item) => {
+            if (item.Name === 'خیر')
+                item.Model = 0;
+        })
         shipping.addShippingCost = addShippingCost;
         shipping.editShippingCost = editShippingCost;
         shipping.grid = {
@@ -4500,6 +4506,9 @@
             , onEdit: shipping.main.changeState.edit
             , globalSearch: true
             , initLoad: true
+            , options: () => {
+                return shipping.search.Model;
+            }
         };
         init();
 
@@ -4599,6 +4608,13 @@
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                 loadingService.hide();
             }).finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            shipping.search.Model = {};
+            shipping.search.searchPanel = false;
+            shipping.grid.getlist();
+            loadingService.hide();
         }
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------------

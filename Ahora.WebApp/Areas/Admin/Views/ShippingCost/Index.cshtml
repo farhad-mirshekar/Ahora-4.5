@@ -1,5 +1,41 @@
 ﻿<section ng-show="state ==='cartable'">
     <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
+    <div class="card">
+        <div class="card-header">
+            <div class="pull-left" title="جست و جو" ng-click="search.searchPanel = !search.searchPanel"><i class="fa fa-search" aria-hidden="true"></i></div>
+        </div>
+        <div class="card-body" ng-show="search.searchPanel">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Type" class="control-label">فعال/غیرفعال</label>
+                        <select class="form-control" ng-model="search.Model.Enabled">
+                            <option ng-repeat="row in selectYesOrNoType" ng-value="row.Model">{{row.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group col-md-4">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">نام</span>
+                    </div>
+                    <input ng-model="search.Model.Name" maxlength="100" type="text" autofocus="" class="form-control meta" placeholder="نام جهت جست و جو">
+                    <div class="input-group-append">
+                        <span class="input-group-text"> {{search.Model.Name.length > 0 ? search.Model.Name.length : 0}}/70</span>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Type" class="control-label">اولویت</label>
+                        <input type="number" ng-model="search.Model.Priority" class="form-group" />
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button type="button" class="btn btn-primary" ng-click="grid.getlist();">جست و جو</button>
+                <button type="button" class="btn btn-cancel" ng-click="search.clear();">پاک کردن</button>
+            </div>
+        </div>
+    </div>
     <portal-grid obj="grid"></portal-grid>
 </section>
 

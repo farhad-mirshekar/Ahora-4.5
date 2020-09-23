@@ -76,9 +76,13 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var param = new SqlParameter[1];
+                var param = new SqlParameter[5];
                 param[0] = new SqlParameter("@Enabled", SqlDbType.TinyInt);
                 param[0].Value = listVM.Enabled != EnableMenuType.نامشخص ? listVM.Enabled : (object)DBNull.Value;
+                param[1] = new SqlParameter("@Priority", listVM.Priority);
+                param[2] = new SqlParameter("@Name", listVM.Name);
+                param[3] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[4] = new SqlParameter("@PageIndex", listVM.PageIndex);
 
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsShippingCost", param);
             }
