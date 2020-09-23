@@ -1188,7 +1188,8 @@ CREATE TABLE [ptl].[Pages](
 	[PageType] [Tinyint] NULL,
 	[UserID] [UniqueIdentifier] NULL,
 	[Enabled] [Tinyint] NULL,
-	[CreationDate] SmallDateTime
+	[CreationDate] SmallDateTime,
+	[TrackingCode] NVARCHAR(100)
  CONSTRAINT [PK_Pages] PRIMARY KEY CLUSTERED 
 (
 	[ID] DESC
@@ -1237,7 +1238,6 @@ CREATE TABLE [ptl].[Category](
 ) ON [PRIMARY]
 CREATE TABLE [ptl].[StaticPage](
 	[ID] [uniqueidentifier] NOT NULL,
-	[TrackingCode] [Nvarchar](100) NOT NULL,
 	[Description] [Nvarchar](1000) NULL,
 	[AttachmentID] [uniqueidentifier] NULL,
 	[MetaKeywords] [Nvarchar](1000) NULL,

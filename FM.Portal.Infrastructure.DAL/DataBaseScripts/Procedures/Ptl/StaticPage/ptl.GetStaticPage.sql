@@ -16,6 +16,7 @@ BEGIN
 	SELECT 
 		staticPage.*,
 		pages.[Name],
+		pages.TrackingCode,
 		pages.UrlDesc,
 		pages.UserID,
 		pages.CreationDate,
@@ -28,7 +29,7 @@ BEGIN
 	LEFT JOIN
 		pbl.Attachment attachemnt ON staticPage.AttachmentID = attachemnt.ParentID
 	WHERE (@ID IS NULL OR pages.ID = @ID)
-	AND (@TrackingCode IS NULL OR staticPage.TrackingCode = @TrackingCode)
+	AND (@TrackingCode IS NULL OR pages.TrackingCode = @TrackingCode)
 
 	RETURN @@ROWCOUNT
 END

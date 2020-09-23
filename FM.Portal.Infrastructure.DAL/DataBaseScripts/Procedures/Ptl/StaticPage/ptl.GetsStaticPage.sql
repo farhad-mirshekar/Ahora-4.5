@@ -26,6 +26,7 @@ BEGIN
 		SELECT 
 			staticPage.*,
 			pages.[Name],
+			pages.TrackingCode,
 			pages.UrlDesc,
 			pages.UserID,
 			pages.CreationDate,
@@ -39,7 +40,7 @@ BEGIN
 		WHERE
 			pages.PageType = 2
 		AND (@Name IS NULL OR pages.[Name] LIKE CONCAT('%' , @Name , '%'))
-		AND (@TrackingCode IS NULL OR staticPage.TrackingCode LIKE CONCAT('%', @TrackingCode , '%'))
+		AND (@TrackingCode IS NULL OR pages.TrackingCode LIKE CONCAT('%', @TrackingCode , '%'))
 	),TempCount AS
 	(
 		SELECT

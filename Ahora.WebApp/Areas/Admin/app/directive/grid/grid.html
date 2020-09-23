@@ -3,19 +3,17 @@
         <div class="col-md-12">
             <table st-safe-src="obj.items" st-table="displayedItems" class="table table-condensed table-hover th-center td-center">
                 <thead>
-
                     <tr>
                         <td colspan="{{obj.columns.length + 2}}">
-                            <div class="container">
-                                <div class="row">
-                                    <div class="col-md-9">
-                                        <i class="fa fa-refresh float-left mr-3 mt-2 mb-2" ng-click="obj.getlist();" title="بارگذاری مجدد کارتابل"></i>
+                            <div class="row">
+                                <div class="col-md-12 card">
+                                    <div>
+                                        <i class="fa fa-refresh pull-left mr-3 mt-2 mb-2" ng-click="obj.getlist();" title="بارگذاری مجدد کارتابل"></i>
                                     </div>
                                 </div>
                             </div>
                         </td>
                     </tr>
-
                     <tr ng-if="obj.globalSearch">
                         <th colspan="{{ obj.columns.length + 2 }}">
                             <input st-search="{{obj.searchBy}}"
