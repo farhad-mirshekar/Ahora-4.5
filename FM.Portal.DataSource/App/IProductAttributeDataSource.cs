@@ -10,6 +10,6 @@ namespace FM.Portal.DataSource
         Result<ProductAttribute> Insert(ProductAttribute model);
         Result<ProductAttribute> Update(ProductAttribute model);
         Result<ProductAttribute> Get(Guid ID);
-        DataTable List();
+        DataTable List(ProductAttributeListVM listVM);
     }
 }

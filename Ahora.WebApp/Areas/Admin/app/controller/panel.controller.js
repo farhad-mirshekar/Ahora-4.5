@@ -992,7 +992,7 @@
             })
         }
         function listAttribute() {
-            return attributeService.list().then((result) => {
+            return attributeService.list({PageSize : 0 , PageIndex : 0}).then((result) => {
                 var list = [].concat(result);
                 product.attributeType = [];
                 for (var i = 0; i < list.length; i++) {
@@ -1147,10 +1147,13 @@
             edit: edit
         };
         attribute.Model.Errors = [];
+        attribute.search = [];
+        attribute.search.Model = {};
         attribute.state = '';
         attribute.goToPageAdd = goToPageAdd;
         attribute.addAttribute = addAttribute;
         attribute.editAttribute = editAttribute;
+        attribute.search.clear = clear;
         attribute.grid = {
             bindingObject: attribute
             , columns: [{ name: 'Name', displayName: 'عنوان' },
@@ -1159,6 +1162,9 @@
             , onEdit: attribute.main.changeState.edit
             , globalSearch: true
             , initLoad: true
+            , options: () => {
+                return attribute.search.Model;
+            }
         };
         init();
 
@@ -1235,6 +1241,13 @@
                 toaster.pop('error', '', 'خطا');
                 loadingService.hide();
             }).finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            attribute.search.Model = {};
+            attribute.search.searchPanel = false;
+            attribute.grid.getlist();
+            loadingService.hide();
         }
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------

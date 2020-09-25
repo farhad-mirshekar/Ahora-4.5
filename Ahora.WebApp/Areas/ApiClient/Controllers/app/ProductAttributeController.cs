@@ -22,11 +22,11 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             catch { throw; }
         }
         [HttpPost, Route("List")]
-        public IHttpActionResult List()
+        public IHttpActionResult List(ProductAttributeListVM listVM)
         {
             try
             {
-                var result = _service.List();
+                var result = _service.List(listVM);
                 return Ok(result);
             }
             catch { throw; }

@@ -21,9 +21,9 @@ namespace FM.Portal.Domain
         public Result<ProductAttribute> Add(ProductAttribute model)
         => _dataSource.Insert(model);
 
-        public Result<List<ProductAttribute>> List()
+        public Result<List<ProductAttribute>> List(ProductAttributeListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<ProductAttribute>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<ProductAttribute>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<ProductAttribute>>.Successful(data: table);
             return Result<List<ProductAttribute>>.Failure();

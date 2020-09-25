@@ -10,6 +10,6 @@ namespace FM.Portal.Core.Service
         Result<ProductAttribute> Add(ProductAttribute model);
         Result<ProductAttribute> Edit(ProductAttribute model);
         Result<ProductAttribute> Get(Guid ID);
-        Result<List<ProductAttribute>> List();
+        Result<List<ProductAttribute>> List(ProductAttributeListVM listVM);
     }
 }

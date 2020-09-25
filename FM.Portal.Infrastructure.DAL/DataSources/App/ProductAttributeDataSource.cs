@@ -10,13 +10,13 @@ namespace FM.Portal.Infrastructure.DAL
 {
     public class ProductAttributeDataSource : IProductAttributeDataSource
     {
-        private Result<ProductAttribute> Modify(bool isNewRecord , ProductAttribute model)
+        private Result<ProductAttribute> Modify(bool isNewRecord, ProductAttribute model)
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[4];
+                    var param = new SqlParameter[4];
                     param[0] = new SqlParameter("@ID", model.ID);
 
                     param[1] = new SqlParameter("@Description", model.Description);
@@ -34,8 +34,8 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                ProductAttribute obj = new ProductAttribute();
-                SqlParameter[] param = new SqlParameter[1];
+                var obj = new ProductAttribute();
+                var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
@@ -66,9 +66,14 @@ namespace FM.Portal.Infrastructure.DAL
             return Modify(true, model);
         }
 
-        public DataTable List()
+        public DataTable List(ProductAttributeListVM listVM)
         {
-            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsProductAttribute", null);
+            var param = new SqlParameter[3];
+            param[0] = new SqlParameter("@Name", listVM.Name);
+            param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+            param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
+            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsProductAttribute", param);
         }
 
         public Result<ProductAttribute> Update(ProductAttribute model)
