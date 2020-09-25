@@ -9,7 +9,7 @@ namespace FM.Portal.Core.Service
     {
         Result<Discount> Add(Discount model);
         Result<Discount> Edit(Discount model);
-        Result<List<Discount>> List();
+        Result<List<Discount>> List(DiscountListVM listVM);
         Result<Discount> Get(Guid ID);
     }
 }

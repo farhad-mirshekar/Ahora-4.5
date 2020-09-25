@@ -9,7 +9,7 @@ namespace FM.Portal.DataSource
     {
         Result<Discount> Insert(Discount model);
         Result<Discount> Update(Discount model);
-        DataTable List();
+        DataTable List(DiscountListVM listVM);
         Result<Discount> Get(Guid ID);
     }
 }

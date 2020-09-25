@@ -73,6 +73,7 @@
     <Compile Include="App\DeliveryDate\DeliveryDate.cs" />
     <Compile Include="App\DeliveryDate\VM\DeliveryDateListVM.cs" />
     <Compile Include="App\Discount\Discount.cs" />
+    <Compile Include="App\Discount\VM\DiscountListVM.cs" />
     <Compile Include="App\FAQGroup\FAQGroup.cs" />
     <Compile Include="App\FAQGroup\VM\FaqGroupListVM.cs" />
     <Compile Include="App\FAQ\FAQ.cs" />

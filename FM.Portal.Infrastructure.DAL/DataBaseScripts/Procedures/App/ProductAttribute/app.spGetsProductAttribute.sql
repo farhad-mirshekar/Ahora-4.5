@@ -35,7 +35,7 @@ BEGIN
 			MainSelect
 	)
 
-		SELECT *
+	SELECT *
 	FROM MainSelect,TempCount
 	ORDER BY [CreationDate] DESC
 	OFFSET ((@PageIndex - 1) * @PageSize) ROWS FETCH NEXT @PageSize ROWS ONLY

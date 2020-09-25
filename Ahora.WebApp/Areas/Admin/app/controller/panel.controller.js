@@ -1430,9 +1430,12 @@
         };
         discount.Errors = [];
         discount.state = '';
+        discount.search = [];
+        discount.search.Model = {};
         discount.goToPageAdd = goToPageAdd;
         discount.addDiscount = addDiscount;
         discount.editDiscount = editDiscount;
+        discount.search.clear = clear;
         discount.grid = {
             bindingObject: discount
             , columns: [{ name: 'Name', displayName: 'عنوان تخفیف' },
@@ -1441,6 +1444,9 @@
             , onEdit: discount.main.changeState.edit
             , globalSearch: true
             , initLoad: true
+            , options: () => {
+                return discount.search.Model;
+            }
         };
         discount.selectDiscountType = toolsService.arrayEnum(enumService.DiscountType);
         init();
@@ -1527,6 +1533,13 @@
                 toaster.pop('error', '', 'خطا');
                 loadingService.hide();
             }).finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            discount.search.Model = {};
+            discount.search.searchPanel = false;
+            discount.grid.getlist();
+            loadingService.hide();
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------

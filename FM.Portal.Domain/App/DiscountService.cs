@@ -36,9 +36,9 @@ namespace FM.Portal.Domain
            return _dataSource.Get(ID);
         }
 
-        public Result<List<Discount>> List()
+        public Result<List<Discount>> List(DiscountListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<Discount>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<Discount>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<Discount>>.Successful(data: table);
             return Result<List<Discount>>.Failure();

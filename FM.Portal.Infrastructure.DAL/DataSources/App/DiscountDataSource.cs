@@ -66,11 +66,17 @@ namespace FM.Portal.Infrastructure.DAL
             return Modify(true, model);
         }
 
-        public DataTable List()
+        public DataTable List(DiscountListVM listVM)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsDiscount", null);
+                var param = new SqlParameter[4];
+                param[0] = new SqlParameter("@DiscountType", listVM.DiscountType);
+                param[1] = new SqlParameter("@Name", listVM.Name);
+                param[2] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[3] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsDiscount", param);
             }
             catch (Exception e) { throw; }
         }
