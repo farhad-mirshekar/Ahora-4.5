@@ -4498,6 +4498,7 @@
         })
         shipping.addShippingCost = addShippingCost;
         shipping.editShippingCost = editShippingCost;
+        shipping.search.clear = clear;
         shipping.grid = {
             bindingObject: shipping
             , columns: [{ name: 'Name', displayName: 'نام' },
@@ -4631,10 +4632,13 @@
         };
         delivery.Errors = [];
         delivery.state = '';
+        delivery.search = [];
+        delivery.search.Model = {};
         delivery.enableType = toolsService.arrayEnum(enumService.EnableMenuType);
 
         delivery.addDeliveryDate = addDeliveryDate;
         delivery.editDeliveryDate = editDeliveryDate;
+        delivery.search.clear = clear;
         delivery.grid = {
             bindingObject: delivery
             , columns: [{ name: 'Name', displayName: 'نام' },
@@ -4643,6 +4647,9 @@
             , onEdit: delivery.main.changeState.edit
             , globalSearch: true
             , initLoad: true
+            , options: () => {
+                return delivery.search.Model;
+            }
         };
         init();
 
@@ -4743,6 +4750,13 @@
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                 loadingService.hide();
             }).finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            delivery.search.Model = {};
+            delivery.search.searchPanel = false;
+            delivery.grid.getlist();
+            loadingService.hide();
         }
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------------
