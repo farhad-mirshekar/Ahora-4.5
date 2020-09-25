@@ -39,10 +39,10 @@
                     condination: false
                 }
             ];
-
             grid.obj.pageSize = grid.obj.pageSize || 5;
             grid.obj.pageIndex = grid.obj.pageIndex || 1;
             grid.obj.pageSizeRange = grid.obj.pageSizeRange || [5, 10, 20, 50, 100];
+            grid.obj.hidePaging = grid.obj.hidePaging || false;
             grid.cellValue = cellValue;
             grid.edit = edit;
             grid.remove = remove;

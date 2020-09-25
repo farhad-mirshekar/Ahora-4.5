@@ -603,9 +603,9 @@
                 loadingService.hide();
                 position.changeState.cartable();
             }).catch((error) => {
-                    loadingService.hide();
-                    toaster.pop('error', '', error || 'خطای نانشناخته');
-                })
+                loadingService.hide();
+                toaster.pop('error', '', error || 'خطای نانشناخته');
+            })
                 .finally(loadingService.hide);
         }
         function resetPassword(selected) {
@@ -741,6 +741,7 @@
                     }
                 }
             ]
+            , hidePaging: true
         };
         product.ProductVariant.grid = {
             bindingObject: product.ProductVariant
@@ -788,6 +789,7 @@
                 }
             }]
             , globalSearch: true
+            , hidePaging: true
         }
         product.relatedProduct.relatedProductGrid = {
             bindingObject: product.relatedProduct
@@ -825,6 +827,7 @@
             ]
             , globalSearch: true
             , initLoad: true
+            , hidePaging: true
         }
         init();
 
@@ -992,7 +995,7 @@
             })
         }
         function listAttribute() {
-            return attributeService.list({PageSize : 0 , PageIndex : 0}).then((result) => {
+            return attributeService.list({ PageSize: 0, PageIndex: 0 }).then((result) => {
                 var list = [].concat(result);
                 product.attributeType = [];
                 for (var i = 0; i < list.length; i++) {
@@ -1098,7 +1101,7 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('ProductCartableController', ProductCartableController);
-    ProductCartableController.$inject = ['$scope', 'productService', '$q', '$location', 'enumService','toolsService','loadingService'];
+    ProductCartableController.$inject = ['$scope', 'productService', '$q', '$location', 'enumService', 'toolsService', 'loadingService'];
     function ProductCartableController($scope, productService, $q, $location, enumService, toolsService, loadingService) {
         let product = $scope;
         product.search = [];
