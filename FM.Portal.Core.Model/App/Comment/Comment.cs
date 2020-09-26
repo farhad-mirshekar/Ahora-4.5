@@ -15,11 +15,13 @@ namespace FM.Portal.Core.Model
         public Guid DocumentID { get; set; }
         public Guid RemoverID { get; set; }
         public Guid ParentID { get; set; }
-        public string NameFamily { get; set; }
         public CommentForType CommentForType { get; set; }
-        public List<Comment> Children { get; set; }
 
         //only show
+        public string CreatorName { get; set; }
+        public List<Comment> Children { get; set; }
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
+        public int Total { get; set; }
+        public string ProductName { get; set; }
     }
 }

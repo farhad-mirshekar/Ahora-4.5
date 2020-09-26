@@ -15,12 +15,12 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         {
         }
 
-        [HttpPost, Route("List/{commentForType}")]
-        public IHttpActionResult List(CommentForType commentForType)
+        [HttpPost, Route("List")]
+        public IHttpActionResult List(CommentListVM listVM)
         {
             try
             {
-                var result = _service.List(commentForType);
+                var result = _service.List(listVM);
                 return Ok(result);
             }
             catch (Exception e)

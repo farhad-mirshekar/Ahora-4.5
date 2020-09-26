@@ -1550,15 +1550,19 @@
         comment.Model = {};
         comment.state = '';
         comment.main = {};
+        comment.search = [];
+        comment.search.Model = {};
+        comment.search.Model = { ShowChildren: false, CommentForType : 6};
         comment.froalaOptionComment = froalaOption.comment;
         comment.main.changeState = {
             cartable: cartable,
             edit: edit
         }
         comment.editComment = editComment;
+        comment.search.clear = clear;
         comment.grid = {
             bindingObject: comment
-            , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
+            , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },
             { name: 'ProductName', displayName: 'نام محصول' },
             { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
@@ -1567,7 +1571,7 @@
             , globalSearch: true
             , showRemove: true
             , options: () => {
-                return 6;
+                return comment.search.Model;
             }
             , initLoad: true
         };
@@ -1626,6 +1630,13 @@
             }).catch((error) => {
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             })
+        }
+        function clear() {
+            loadingService.show();
+            comment.search.Model = {};
+            comment.search.searchPanel = false;
+            comment.grid.getlist();
+            loadingService.hide();
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
@@ -3058,7 +3069,8 @@
         comment.Model = {};
         comment.Model.Errors = [];
 
-        comment.Search = {};
+        comment.search = [];
+        comment.search.Model = {};
         comment.state = '';
         comment.main = {};
         comment.froalaOptionComment = angular.copy(froalaOption.comment);
@@ -3078,7 +3090,7 @@
             , onEdit: comment.main.changeState.edit
             , globalSearch: true
             , showRemove: true
-            , options: () => { return comment.Search.CommentForType }
+            , options: () => { return comment.search.Model; }
             , initLoad: true
         };
 

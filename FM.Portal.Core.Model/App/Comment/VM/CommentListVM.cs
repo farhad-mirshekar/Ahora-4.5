@@ -1,13 +1,17 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System;
 
 namespace FM.Portal.Core.Model
 {
-   public class CommentListVM
+   public class CommentListVM:Pagination
     {
-        public Guid DocumentID { get; set; }
-        public int PageSize { get; set; }
-        public int PageIndex { get; set; }
+        public CommentListVM()
+        {
+            ShowChildren = true;
+        }
+        public CommentType CommentType { get; set; }
+        public CommentForType CommentForType { get; set; }
+        public Guid? ParentID { get; set; }
+        public Guid? DocumentID { get; set; }
+        public bool ShowChildren { get; set; }
     }
 }

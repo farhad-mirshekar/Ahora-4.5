@@ -52,49 +52,26 @@ namespace FM.Portal.Domain
             var model = ConvertDataTableToList.BindList<Comment>(_dataSource.List(listVM));
             if (model.Count > 0)
             {
-                for (int i = 0; i < model.Count; i++)
+                if (listVM.ShowChildren)
                 {
-                    comment.Add(new Comment { ID = model[i].ID, Body = model[i].Body, CreationDate = model[i].CreationDate, DisLikeCount = model[i].DisLikeCount, CommentType = model[i].CommentType, LikeCount = model[i].LikeCount, Children = List(model[i].ID, model[i].DocumentID).Data,ParentID=model[i].ParentID });
+                    model.ForEach(x =>
+                    {
+                        var child = model.Where(c => c.ParentID == x.ID && c.CommentType == CommentType.تایید).ToList();
+                        x.Children = child;
+                    });
+                    var list = model.Where(x => x.ParentID == Guid.Empty).Select(x => x).ToList();
+                    return Result<List<Comment>>.Successful(data: list);
                 }
-                var list = comment.Where(x => x.ParentID == Guid.Empty).Select(x => x).ToList();
-                return Result<List<Comment>>.Successful(data: list);
+                else
+                    return Result<List<Comment>>.Successful(data: model);
             }
             else
-                return Result<List<Comment>>.Failure(data:comment);
+                return Result<List<Comment>>.Failure(data: comment);
         }
-
-        public Result<List<Comment>> List(Guid ParentID, Guid DocumentID)
-        {
-            var model = ConvertDataTableToList.BindList<Comment>(_dataSource.List(ParentID, DocumentID));
-            if (model.Count > 0)
-            {
-                for (int i = 0; i < model.Count; i++)
-                {
-                    var list= List(model[i].ID, model[i].DocumentID);
-                    model[i].Children = list.Data;
-                }
-                return Result<List<Comment>>.Successful(data: model);
-            }
-            else
-                return Result<List<Comment>>.Failure();
-        }
-
         public Result<int> Like(Guid ID)
         => _dataSource.Like(ID);
         public Result<int> DisLike(Guid ID)
         => _dataSource.DisLike(ID);
-
-        public Result<List<CommentForProductAdminListVM>> List(CommentForType commentForType)
-        {
-            var model = ConvertDataTableToList.BindList<CommentForProductAdminListVM>(_dataSource.List(commentForType));
-            if (model.Count > 0 || model.Count == 0)
-            {
-                return Result<List<CommentForProductAdminListVM>>.Successful(data: model);
-            }
-            else
-                return Result<List<CommentForProductAdminListVM>>.Failure();
-        }
-
         public Result<Comment> CanUserComment(Guid DocumentID, Guid UserID)
         => _dataSource.CanUserComment(DocumentID, UserID);
     }

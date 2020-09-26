@@ -1271,13 +1271,14 @@
         function list(model) {
             return $http({
                 method: 'post',
-                url: url + `list/${model}`,
+                url: url + 'list',
+                data:model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + `list/${model}` });
+                return callbackService.onSuccess({ result: result, request: url + 'list' });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })

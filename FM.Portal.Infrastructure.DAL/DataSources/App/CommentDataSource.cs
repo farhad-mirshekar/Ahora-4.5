@@ -89,26 +89,16 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[3];
+                SqlParameter[] param = new SqlParameter[6];
                 param[0] = new SqlParameter("@DocumentID", listVM.DocumentID);
-                param[1] = new SqlParameter("@PageIndex", listVM.PageIndex);
-                param[2] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[1] = new SqlParameter("@ParentID", listVM.ParentID);
+                param[2] = new SqlParameter("@CommentType", listVM.CommentType);
+                param[3] = new SqlParameter("@CommentForType", listVM.CommentForType);
+                param[4] = new SqlParameter("@PageIndex", listVM.PageIndex);
+                param[5] = new SqlParameter("@PageSize", listVM.PageSize);
                 
                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetComments", param);
                 
-            }
-            catch (Exception e) { throw; }
-        }
-
-        public DataTable List(Guid ParentID,Guid DocumentID)
-        {
-            try
-            {
-                SqlParameter[] param = new SqlParameter[2];
-                param[0] = new SqlParameter("@ParentID", ParentID);
-                param[1] = new SqlParameter("@DocumentID", DocumentID);
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsByParentID", param);
-
             }
             catch (Exception e) { throw; }
         }
@@ -142,41 +132,6 @@ namespace FM.Portal.Infrastructure.DAL
             }
             catch { throw; }
         }
-
-        public DataTable List(CommentForType commentForType)
-        {
-            try
-            {
-                SqlParameter[] param = new SqlParameter[1];
-                switch (commentForType)
-                {
-                    case CommentForType.اخبار:
-                        {
-                            param[0] = new SqlParameter("@commentForType", commentForType);
-                            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsForAdmin", param);
-                        }
-                    case CommentForType.رویدادها:
-                        {
-                            param[0] = new SqlParameter("@commentForType", commentForType);
-                            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsForAdmin", param);
-                        }
-                    case CommentForType.محصولات:
-                        {
-                            param[0] = new SqlParameter("@commentForType", commentForType);
-                            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsForAdmin", param);
-                        }
-                    case CommentForType.مقالات:
-                        {
-                            param[0] = new SqlParameter("@commentForType", commentForType);
-                            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetCommentsForAdmin", param);
-                        }
-                }
-                return null;
-
-            }
-            catch (Exception e) { throw; }
-        }
-
         public Result<Comment> CanUserComment(Guid DocumentID, Guid UserID)
         {
             try

@@ -2,7 +2,7 @@
     <div class="form-group">
         <div class="col-md-10">
             <label class="control-label">انتخاب</label>
-            <select class="form-control" ng-model="Search.CommentForType" ng-change="changeDrop();">
+            <select class="form-control" ng-model="search.Model.CommentForType" ng-change="changeDrop();">
                 <option ng-repeat="row in selectCommentForType" ng-value="row.Model">{{row.Name}}</option>
             </select>
         </div>
