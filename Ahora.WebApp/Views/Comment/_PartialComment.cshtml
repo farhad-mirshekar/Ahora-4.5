@@ -1,13 +1,13 @@
 ﻿@using FM.Portal.FrameWork.MVC.Helpers.TreeView;
 @model List<FM.Portal.Core.Model.Comment>
 @using System.Globalization
-@{ PersianCalendar pc = new PersianCalendar();}
+@{ var pc = new PersianCalendar();}
 @(Html.TreeView(Model)
 .EmptyContent("<i>اولین نفری باشید که نظر می دهید</i>")
 .Children(c => c.Children)
 .HtmlAttributes(new { id = "tree" })
 .ChildrenHtmlAttributes(new { @class = "subItem" })
-.ItemText(c => c.NameFamily)
+.ItemText(c => c.CreatorName)
 .ItemTemplate(
     @<text>
         <div class="card">

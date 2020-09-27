@@ -41,7 +41,7 @@ namespace Ahora.WebApp.Controllers
                         if (product.Success)
                         {
                             ViewBag.stateComment = product.Data.AllowCustomerReviews;
-                            comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
+                            comment = _service.List(new CommentListVM { DocumentID = DocumentID  }).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
                             ViewBag.CommentForType = CommentForType.محصولات;
@@ -59,7 +59,7 @@ namespace Ahora.WebApp.Controllers
                                     ViewBag.stateComment = true;
                                     break;
                             }
-                            comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
+                            comment = _service.List(new CommentListVM { DocumentID = DocumentID , OnlyProduct = false}).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
                             ViewBag.CommentForType = CommentForType.مقالات;
@@ -77,7 +77,7 @@ namespace Ahora.WebApp.Controllers
                                     ViewBag.stateComment = true;
                                     break;
                             }
-                            comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
+                            comment = _service.List(new CommentListVM { DocumentID = DocumentID, OnlyProduct = false }).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
                             ViewBag.CommentForType = CommentForType.رویدادها;
@@ -95,7 +95,7 @@ namespace Ahora.WebApp.Controllers
                                     ViewBag.stateComment = true;
                                     break;
                             }
-                            comment = _service.List(new CommentListVM { DocumentID = DocumentID }).Data;
+                            comment = _service.List(new CommentListVM { DocumentID = DocumentID, OnlyProduct = false }).Data;
                             ViewBag.user = HttpContext.User.Identity.Name;
                             ViewBag.DocumentID = DocumentID;
                             ViewBag.CommentForType = CommentForType.اخبار;

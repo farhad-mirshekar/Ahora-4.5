@@ -89,13 +89,14 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[6];
+                SqlParameter[] param = new SqlParameter[7];
                 param[0] = new SqlParameter("@DocumentID", listVM.DocumentID);
                 param[1] = new SqlParameter("@ParentID", listVM.ParentID);
                 param[2] = new SqlParameter("@CommentType", listVM.CommentType);
                 param[3] = new SqlParameter("@CommentForType", listVM.CommentForType);
-                param[4] = new SqlParameter("@PageIndex", listVM.PageIndex);
-                param[5] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[4] = new SqlParameter("@OnlyProduct", listVM.OnlyProduct);
+                param[5] = new SqlParameter("@PageIndex", listVM.PageIndex);
+                param[6] = new SqlParameter("@PageSize", listVM.PageSize);
                 
                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetComments", param);
                 

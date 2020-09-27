@@ -3080,9 +3080,11 @@
         }
         comment.editComment = editComment;
         comment.changeDrop = changeDrop;
+        comment.search.clear = clear;
+        comment.search.Model = { ShowChildren: false, OnlyProduct:0 };
         comment.grid = {
             bindingObject: comment
-            , columns: [{ name: 'NameFamily', displayName: 'نام کاربر' },
+            , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },
             { name: 'ProductName', displayName: 'عنوان' },
             { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
@@ -3096,6 +3098,11 @@
 
         comment.selectCommentType = toolsService.arrayEnum(enumService.CommentType);
         comment.selectCommentForType = toolsService.arrayEnum(enumService.CommentForType);
+        comment.search.selectCommentForType = [];
+        comment.selectCommentForType.map((item) => {
+            if (item.Model !== 6)
+                comment.search.selectCommentForType.push(item);
+        })
         init();
 
         function init() {
@@ -3153,6 +3160,14 @@
                 comment.grid.getlist(false);
             }).finally(loadingService.hide);
 
+        }
+        function clear() {
+            loadingService.show();
+            comment.search.Model = {};
+            comment.search.searchPanel = false;
+            comment.search.Model = { ShowChildren: false, OnlyProduct: 0 };
+            comment.grid.getlist();
+            loadingService.hide();
         }
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------

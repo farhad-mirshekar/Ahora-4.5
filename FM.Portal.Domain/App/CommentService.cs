@@ -50,8 +50,11 @@ namespace FM.Portal.Domain
         {
             List<Comment> comment = new List<Comment>();
             var model = ConvertDataTableToList.BindList<Comment>(_dataSource.List(listVM));
-            if (model.Count > 0)
+            if (model.Count > 0 || model.Count == 0)
             {
+                if(model.Count == 0)
+                    return Result<List<Comment>>.Successful(data:model);
+
                 if (listVM.ShowChildren)
                 {
                     model.ForEach(x =>
