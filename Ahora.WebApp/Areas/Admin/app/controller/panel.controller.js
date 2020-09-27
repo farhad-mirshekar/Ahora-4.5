@@ -1408,7 +1408,7 @@
         }
         function listDiscount() {
             return $q.resolve().then(() => {
-                return discountService.list();
+                return discountService.list({});
             }).then((result) => {
                 category.listDiscount = [];
                 for (i = 0; i < result.length; i++) {
