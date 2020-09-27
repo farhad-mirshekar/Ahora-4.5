@@ -117,9 +117,7 @@
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spDisLikeComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spCanUserComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComment.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComments ForAdmin.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComments.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetCommentsByParentID.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spLikeComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Comment\app.spModifyComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Discount\app.spGetDiscount.sql" />
