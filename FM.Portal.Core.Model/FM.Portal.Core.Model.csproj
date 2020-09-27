@@ -67,7 +67,6 @@
     <Compile Include="App\Category\Category.cs" />
     <Compile Include="App\Category_Map_Discount\CategoryMapDiscount.cs" />
     <Compile Include="App\Comment\Comment.cs" />
-    <Compile Include="App\Comment\VM\CommentForProductAdminListVM.cs" />
     <Compile Include="App\Comment\VM\CommentListVM.cs" />
     <Compile Include="App\Comment_Map_User\CommentMapUser.cs" />
     <Compile Include="App\DeliveryDate\DeliveryDate.cs" />
