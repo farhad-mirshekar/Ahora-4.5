@@ -8,9 +8,8 @@ namespace FM.Portal.DataSource
    public interface IFaqGroupDataSource : IDataSource
     {
         Result<FAQGroup> Get(Guid ID);
-        DataTable List();
+        DataTable List(FaqGroupListVM listVM);
         Result<FAQGroup> Insert(FAQGroup model);
         Result<FAQGroup> Update(FAQGroup model);
-        DataTable ListForWeb();
     }
 }

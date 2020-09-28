@@ -17,9 +17,9 @@ namespace FM.Portal.Domain
             _dataSource = dataSource;
         }
 
-        public Result<List<FAQGroup>> List()
+        public Result<List<FAQGroup>> List(FaqGroupListVM listVM)
         {
-            var table= ConvertDataTableToList.BindList<FAQGroup>(_dataSource.List());
+            var table= ConvertDataTableToList.BindList<FAQGroup>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<FAQGroup>>.Successful(data: table);
             return Result<List<FAQGroup>>.Failure();
@@ -27,14 +27,5 @@ namespace FM.Portal.Domain
         public Result<FAQGroup> Add(FAQGroup model) => _dataSource.Insert(model);
         public Result<FAQGroup> Edit(FAQGroup model) => _dataSource.Update(model);
         public Result<FAQGroup> Get(Guid ID) => _dataSource.Get(ID);
-
-        public Result<List<FaqGroupListVM>> ListForWeb()
-        {
-            var table = ConvertDataTableToList.BindList<FaqGroupListVM>(_dataSource.ListForWeb());
-            if (table.Count > 0)
-                return Result<List<FaqGroupListVM>>.Successful(data: table);
-            return Result<List<FaqGroupListVM>>.Failure();
-
-        }
     }
 }

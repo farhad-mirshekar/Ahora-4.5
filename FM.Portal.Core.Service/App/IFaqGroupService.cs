@@ -8,9 +8,8 @@ namespace FM.Portal.Core.Service
    public interface IFaqGroupService : IService
     {
         Result<FAQGroup> Get(Guid ID);
-        Result<List<FAQGroup>> List();
+        Result<List<FAQGroup>> List(FaqGroupListVM listVM);
         Result<FAQGroup> Add(FAQGroup model);
         Result<FAQGroup> Edit(FAQGroup model);
-        Result<List<FaqGroupListVM>> ListForWeb();
     }
 }

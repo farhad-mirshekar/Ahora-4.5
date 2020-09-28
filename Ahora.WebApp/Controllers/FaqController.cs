@@ -1,6 +1,7 @@
 ﻿using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
 using System;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
@@ -12,8 +13,14 @@ namespace Ahora.WebApp.Controllers
         }
         public ActionResult Index(Guid ID)
         {
-            var result = _service.List(ID);
-            return View(result.Data);
+            var faqResult = _service.List(new FM.Portal.Core.Model.FaqListVM() {FAQGroupID = ID });
+            if (!faqResult.Success)
+                return View("Error");
+            var faq = faqResult.Data;
+
+            ViewBag.Title = faq.Select(x => x.FaqGroupTitle).FirstOrDefault();
+            return View(faq);
+
         }
     }
 }

@@ -93,8 +93,8 @@ namespace Ahora.WebApp
               );
             routes.MapRoute(
               "Faq-Group",
-              "FaqGroup",
-                new { controller = "FaqGroup", action = "Index" },
+              "FaqGroup/{Page}",
+                new { controller = "FaqGroup", action = "Index", Page = UrlParameter.Optional },
                 namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
              );
             routes.MapRoute(

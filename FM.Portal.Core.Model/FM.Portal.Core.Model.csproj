@@ -76,6 +76,7 @@
     <Compile Include="App\FAQGroup\FAQGroup.cs" />
     <Compile Include="App\FAQGroup\VM\FaqGroupListVM.cs" />
     <Compile Include="App\FAQ\FAQ.cs" />
+    <Compile Include="App\FAQ\VM\FaqListVM.cs" />
     <Compile Include="App\OrderDetail\OrderDetail.cs" />
     <Compile Include="App\Order\Order.cs" />
     <Compile Include="App\Order\VM\GetOrderVM.cs" />

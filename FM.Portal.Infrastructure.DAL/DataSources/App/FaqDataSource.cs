@@ -25,12 +25,15 @@ namespace FM.Portal.Infrastructure.DAL
         {
             return Modify(false,model);
         }
-        public DataTable List(Guid FAQGroupID)
+        public DataTable List(FaqListVM listVM)
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[1];
-                param[0] = new SqlParameter("@FAQGroupID", FAQGroupID);
+                SqlParameter[] param = new SqlParameter[3];
+                param[0] = new SqlParameter("@FAQGroupID", listVM.FAQGroupID);
+                param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsFaq", param);
             }
             catch

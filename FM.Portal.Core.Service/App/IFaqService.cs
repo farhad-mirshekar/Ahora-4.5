@@ -9,6 +9,6 @@ namespace FM.Portal.Core.Service
     {
         Result<FAQ> Add(FAQ model);
         Result<FAQ> Edit(FAQ model);
-        Result<List<FAQ>> List(Guid FAQGroupID);
+        Result<List<FAQ>> List(FaqListVM listVM);
     }
 }

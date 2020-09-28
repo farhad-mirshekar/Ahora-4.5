@@ -4,9 +4,8 @@ using FM.Portal.BaseModel;
 
 namespace FM.Portal.Core.Model
 {
-   public class FaqGroupListVM : Entity
+   public class FaqGroupListVM : Pagination
     {
-        public int Total { get; set; }
         public string Title { get; set; }
     }
 }

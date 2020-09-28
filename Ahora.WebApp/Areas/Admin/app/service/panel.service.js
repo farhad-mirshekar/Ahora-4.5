@@ -14,10 +14,11 @@
         };
         return service;
 
-        function list() {
+        function list(model) {
             return $http({
                 method: 'POST',
                 url: url + 'list',
+                data:model,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -118,13 +119,14 @@
         function list(model) {
             return $http({
                 method: 'POST',
-                url: url + `list/${model}`,
+                url: url + `list`,
+                data:model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
-                return callbackService.onSuccess({ result: result, request: url + `list/${model}` });
+                return callbackService.onSuccess({ result: result, request: url + `list` });
             }).catch(function (result) {
                 return callbackService.onError({ result: result });
             });

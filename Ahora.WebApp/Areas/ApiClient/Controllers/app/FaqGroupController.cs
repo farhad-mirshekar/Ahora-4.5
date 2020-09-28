@@ -14,9 +14,9 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         }
 
         [HttpPost, Route("List")]
-        public IHttpActionResult List()
+        public IHttpActionResult List(FaqGroupListVM listVM)
         {
-            return Ok(_service.List());
+            return Ok(_service.List(listVM));
         }
         [HttpPost, Route("Add")]
         public IHttpActionResult Add(FAQGroup model)

@@ -16,9 +16,14 @@ namespace FM.Portal.Infrastructure.DAL
         {
             _requestInfo = requestInfo;
         }
-       public DataTable List()
+       public DataTable List(FaqGroupListVM listVM)
         {
-            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsFaqGroup", null);
+            var param = new SqlParameter[3];
+            param[0] = new SqlParameter("@Title", listVM.Title);
+            param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+            param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
+            return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsFaqGroup", param);
         }
         private Result<FAQGroup> Modify(bool isNewrecord, FAQGroup model)
         {

@@ -37,6 +37,8 @@
         faqgroup.Model = {};
         faqgroup.faq = {};
         faqgroup.faq.Model = {};
+        faqgroup.search = {};
+        faqgroup.search.Model = {};
         faqgroup.faq.state = '';
         faqgroup.main = {};
         faqgroup.main.changeState = {
@@ -57,6 +59,9 @@
             , onEdit: faqgroup.main.changeState.edit
             , globalSearch: true
             , initLoad: true
+            , options: () => {
+                return faqgroup.search.Model;
+            }
         };
         init();
         function init() {
@@ -89,7 +94,7 @@
             loadingService.show();
             faqgroup.faq = {};
             return $q.resolve().then(() => {
-                return faqService.list(model.ID);
+                return faqService.list({ FaqGroupID: model.ID });
             }).then((result) => {
                 faqgroup.faq = result;
                 faqgroup.state = 'edit';
@@ -1552,7 +1557,7 @@
         comment.main = {};
         comment.search = [];
         comment.search.Model = {};
-        comment.search.Model = { ShowChildren: false, CommentForType : 6};
+        comment.search.Model = { ShowChildren: false, CommentForType: 6 };
         comment.froalaOptionComment = froalaOption.comment;
         comment.main.changeState = {
             cartable: cartable,
@@ -3081,7 +3086,7 @@
         comment.editComment = editComment;
         comment.changeDrop = changeDrop;
         comment.search.clear = clear;
-        comment.search.Model = { ShowChildren: false, OnlyProduct:0 };
+        comment.search.Model = { ShowChildren: false, OnlyProduct: 0 };
         comment.grid = {
             bindingObject: comment
             , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },

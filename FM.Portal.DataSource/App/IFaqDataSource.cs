@@ -10,6 +10,6 @@ namespace FM.Portal.DataSource
         Result<FAQ> Insert(FAQ model);
         Result<FAQ> Update(FAQ model);
         Result<FAQ> Get(Guid ID);
-        DataTable List(Guid FAQGroupID);
+        DataTable List(FaqListVM listVM);
     }
 }

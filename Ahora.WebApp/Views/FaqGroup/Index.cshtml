@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model List<FM.Portal.Core.Model.FaqGroupListVM>
+@model List<FM.Portal.Core.Model.FAQGroup>
 @section bannerSection{
     <div class="row">
         <div class="col-md-12 d-flex justify-content-center">
@@ -27,12 +27,19 @@
                             <ul class="list-group">
                                 <li class="list-group-item faq-item">
                                     <span class="mb-3">@item.Title</span>
-                                    <span class="badge badge-light pull-left">@item.Total</span>
+                                    <span class="badge badge-light pull-left">@item.CountFaq</span>
                                 </li>
                             </ul>
                         </div>
                     }
                 }
+            </div>
+        </div>
+        <div class="card-footer">
+            <div class="d-flex justify-content-center" dir="ltr">
+                <ul class="pagination">
+                    @Html.PageLinks((PagingInfo)ViewBag.Paging, x => Url.RouteUrl("Faq-Group", new { Page = x }))
+                </ul>
             </div>
         </div>
     </div>

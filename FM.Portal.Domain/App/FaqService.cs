@@ -15,9 +15,9 @@ namespace FM.Portal.Domain
         public Result<FAQ> Add(FAQ model) => _dataSource.Insert(model);
 
         public Result<FAQ> Edit(FAQ model) => _dataSource.Update(model);
-        public Result<List<FAQ>> List(Guid FAQGroupID)
+        public Result<List<FAQ>> List(FaqListVM listVM)
         {
-          var table =  ConvertDataTableToList.BindList<FAQ>(_dataSource.List(FAQGroupID));
+          var table =  ConvertDataTableToList.BindList<FAQ>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<FAQ>>.Successful(data: table);
             return Result<List<FAQ>>.Failure();

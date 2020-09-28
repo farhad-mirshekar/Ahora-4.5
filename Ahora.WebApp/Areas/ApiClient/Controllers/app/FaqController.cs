@@ -37,12 +37,12 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
                 return NotFound();
             }
         }
-        [HttpPost,Route("List/{FAQGroupID:Guid}")]
-        public IHttpActionResult List(Guid FAQGroupID)
+        [HttpPost,Route("List")]
+        public IHttpActionResult List(FaqListVM listVM)
         {
             try
             {
-                return Ok(_service.List(FAQGroupID));
+                return Ok(_service.List(listVM));
             }
             catch
             {
