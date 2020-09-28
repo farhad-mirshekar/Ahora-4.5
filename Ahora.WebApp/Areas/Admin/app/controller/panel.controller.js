@@ -3278,6 +3278,8 @@
         let notification = $scope;
         notification.Model = {};
         notification.main = {};
+        notification.search = {};
+        notification.search.Model = {};
         notification.state = '';
         notification.main.changeState = {
             cartable: cartable,
@@ -3301,6 +3303,9 @@
                     return true;
             }
             , initLoad: true
+            , options: () => {
+                return notification.search.Model;
+            }
         };
         function init() {
             loadingService.show();
@@ -3332,6 +3337,13 @@
                 $location.path(`notification/view/${notification.Model.ID}`);
             })
                 .finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            notification.search.Model = {};
+            notification.search.searchPanel = false;
+            notification.grid.getlist();
+            loadingService.hide();
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------------

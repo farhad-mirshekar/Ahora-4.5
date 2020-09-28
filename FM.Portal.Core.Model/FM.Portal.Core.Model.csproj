@@ -146,6 +146,7 @@
     <Compile Include="Pbl\Menu\VM\GetModelVM.cs" />
     <Compile Include="Pbl\Menu\VM\MenuVM.cs" />
     <Compile Include="Pbl\Notification\Notification.cs" />
+    <Compile Include="Pbl\Notification\VM\NotificationListVM.cs" />
     <Compile Include="Pbl\Pages\Pages.cs" />
     <Compile Include="Pbl\Tags\Tags.cs" />
     <Compile Include="Pbl\Tags\VM\TagsSearchListVM.cs" />

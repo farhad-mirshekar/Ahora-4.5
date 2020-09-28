@@ -27,9 +27,9 @@ namespace FM.Portal.Domain
             return Result<List<Notification>>.Failure();
         }
 
-        public Result<List<Notification>> List()
+        public Result<List<Notification>> List(NotificationListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<Notification>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<Notification>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<Notification>>.Successful(data: table);
             return Result<List<Notification>>.Failure();

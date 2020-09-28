@@ -23,5 +23,6 @@ namespace FM.Portal.Core.Model
                     return null;
             }
         }
+        public int Total { get; set; }
     }
 }

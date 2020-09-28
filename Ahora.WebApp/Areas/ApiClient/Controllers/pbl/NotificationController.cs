@@ -1,4 +1,5 @@
-﻿using FM.Portal.Core.Service;
+﻿using FM.Portal.Core.Model;
+using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.Api.Controller;
 using System;
 using System.Web.Http;
@@ -13,11 +14,11 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         }
 
         [HttpPost , Route("List")]
-        public IHttpActionResult List()
+        public IHttpActionResult List(NotificationListVM listVM)
         {
             try
             {
-                var result = _service.List();
+                var result = _service.List(listVM);
                 return Ok(result);
             }
             catch(Exception e) { return NotFound() ; }

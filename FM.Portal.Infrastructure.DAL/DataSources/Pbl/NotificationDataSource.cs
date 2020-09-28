@@ -65,12 +65,14 @@ namespace FM.Portal.Infrastructure.DAL
             }
         }
 
-        public DataTable List()
+        public DataTable List(NotificationListVM listVM)
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[1];
+                SqlParameter[] param = new SqlParameter[3];
                 param[0] = new SqlParameter("@UserID", _requestInfo.UserId);
+                param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
 
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsNotification", param);
             }

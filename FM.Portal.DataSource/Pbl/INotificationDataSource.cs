@@ -7,7 +7,7 @@ namespace FM.Portal.DataSource
 {
    public interface INotificationDataSource:IDataSource
     {
-        DataTable List();
+        DataTable List(NotificationListVM listVM);
         Result ReadNotification(Guid ID);
         Result<Notification> Get(Guid ID);
         DataTable GetActiveNotification();
