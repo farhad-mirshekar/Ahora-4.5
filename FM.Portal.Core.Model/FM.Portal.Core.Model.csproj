@@ -130,6 +130,7 @@
     <Compile Include="Pbl\Attachment\Attachment.cs" />
     <Compile Include="Pbl\Attachment\VM\DeleteAttachmentVM.cs" />
     <Compile Include="Pbl\Contact\Contact.cs" />
+    <Compile Include="Pbl\Contact\VM\ContactListVM.cs" />
     <Compile Include="Pbl\Contact\VM\ContactVM.cs" />
     <Compile Include="Pbl\Document\BaseDocument\BaseDocument.cs" />
     <Compile Include="Pbl\Document\Flow\VM\DocumentFlowListVM.cs" />

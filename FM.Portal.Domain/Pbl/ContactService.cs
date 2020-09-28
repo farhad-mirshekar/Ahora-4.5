@@ -28,9 +28,9 @@ namespace FM.Portal.Domain
         public Result<Contact> Get(Guid ID)
         => _dataSource.Get(ID);
 
-        public Result<List<Contact>> List()
+        public Result<List<Contact>> List(ContactListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<Contact>(_dataSource.List());
+            var table = ConvertDataTableToList.BindList<Contact>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<Contact>>.Successful(data: table);
             return Result<List<Contact>>.Failure();

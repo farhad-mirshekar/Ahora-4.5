@@ -2552,10 +2552,11 @@
         };
         return service;
 
-        function list() {
+        function list(model) {
             return $http({
                 method: 'POST',
                 url: url + 'list',
+                data:model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token

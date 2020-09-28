@@ -1,4 +1,39 @@
 ﻿<section>
+    <div class="card">
+        <div class="card-header">
+            <div class="pull-left" title="جست و جو" ng-click="search.searchPanel = !search.searchPanel"><i class="fa fa-search" aria-hidden="true"></i></div>
+        </div>
+        <div class="card-body" ng-show="search.searchPanel">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Type" class="control-label">شماره تماس</label>
+                        <div class="input-group">
+                            <input ng-model="search.Model.Phone" maxlength="20" type="text" autofocus="" class="form-control meta" placeholder="شماره تماس جهت جست و جو">
+                            <div class="input-group-append">
+                                <span class="input-group-text"> {{search.Model.Phone > 0 ? search.Model.Phone : 0}}/20</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="Type" class="control-label">پست الکترونیک</label>
+                        <div class="input-group">
+                            <input ng-model="search.Model.Email" maxlength="100" type="text" autofocus="" class="form-control meta" placeholder="پست الکترونیک جهت جست و جو">
+                            <div class="input-group-append">
+                                <span class="input-group-text"> {{search.Model.Email > 0 ? search.Model.Emaile : 0}}/100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left">
+                <button type="button" class="btn btn-primary" ng-click="grid.getlist();">جست و جو</button>
+                <button type="button" class="btn btn-cancel" ng-click="search.clear();">پاک کردن</button>
+            </div>
+        </div>
+    </div>
     <portal-grid obj="grid"></portal-grid>
 </section>
 <div class="modal fade" dir="rtl"

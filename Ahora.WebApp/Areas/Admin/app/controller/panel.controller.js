@@ -3567,6 +3567,9 @@
     function contactController($scope, contactService, loadingService) {
         let contact = $scope;
         contact.Model = {};
+        contact.search = [];
+        contact.search.Model = {};
+        contact.search.clear = clear;
         contact.grid = {
             bindingObject: contact
             , columns: [{ name: 'FirstName', displayName: 'نام' },
@@ -3581,11 +3584,21 @@
             , displayNameFormat: (selected) => {
                 return `پیام ${selected.FirstName} ${selected.LastName}`;
             }
+            , options: () => {
+                return contact.search.Model;
+            }
         };
         function show(selected) {
             loadingService.show();
             contact.Model = selected;
             $('#contact-modal').modal('show');
+            loadingService.hide();
+        }
+        function clear() {
+            loadingService.show();
+            contact.search.Model = {};
+            contact.search.searchPanel = false;
+            contact.grid.getlist();
             loadingService.hide();
         }
     }

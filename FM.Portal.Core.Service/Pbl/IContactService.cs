@@ -10,6 +10,6 @@ namespace FM.Portal.Core.Service
         Result<Contact> Add(Contact model);
         Result<Contact> Get(Guid ID);
         Result.Result Delete (Guid ID);
-        Result<List<Contact>> List();
+        Result<List<Contact>> List(ContactListVM listVM);
     }
 }

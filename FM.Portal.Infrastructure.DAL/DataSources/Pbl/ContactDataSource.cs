@@ -63,11 +63,17 @@ namespace FM.Portal.Infrastructure.DAL
         public Result<Contact> Insert(Contact model)
         => Modify(true, model);
 
-        public DataTable List()
+        public DataTable List(ContactListVM listVM)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsContact", null);
+                var param = new SqlParameter[4];
+                param[0] = new SqlParameter("@Email", listVM.Email);
+                param[1] = new SqlParameter("@Phone", listVM.Phone);
+                param[2] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[3] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsContact", param);
             }
             catch (Exception e) { throw; }
         }
