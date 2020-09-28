@@ -341,6 +341,8 @@
         let role = $scope;
         role.Model = {};
         role.main = {};
+        role.search = {};
+        role.search.Model = {};
         role.main.changeState = {
             cartable: cartable,
             edit: edit,
@@ -358,6 +360,9 @@
             , onEdit: role.main.changeState.edit
             , globalSearch: true
             , initLoad: true
+            , options: () => {
+                return role.search.Model;
+            }
         };
         init();
 

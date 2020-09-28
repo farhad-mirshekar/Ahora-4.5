@@ -59,10 +59,12 @@ namespace FM.Portal.Infrastructure.DAL
 
         public DataTable List(RoleListVM listVM)
         {
-            var param = new SqlParameter[3];
+            var param = new SqlParameter[5];
             param[0] = new SqlParameter("@ApplicationID", _requestInfo.ApplicationId);
             param[1] = new SqlParameter("@PositionID", listVM?.PositionID);
             param[2] = new SqlParameter("@UserID", listVM?.UserID);
+            param[3] = new SqlParameter("@PageSize", listVM.PageSize);
+            param[4] = new SqlParameter("@PageIndex", listVM.PageIndex);
 
             return SQLHelper.GetDataTable(CommandType.StoredProcedure, "org.spGetRoles", param);
         }
