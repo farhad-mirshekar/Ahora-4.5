@@ -74,9 +74,14 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ShowFooter", SqlDbType.Bit);
-                param[0].Value = listVM.ShowFooter ?? (object)DBNull.Value;
+                var param = new SqlParameter[6];
+                param[0] = new SqlParameter("@ShowFooter", listVM.ShowFooter);
+                param[1] = new SqlParameter("@Enabled", listVM.Enabled);
+                param[2] = new SqlParameter("@Name", listVM.Name);
+                param[3] = new SqlParameter("@Priority", listVM.Priority);
+                param[4] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[5] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsLink", param);
             }
             catch (Exception e) { throw; }

@@ -3889,7 +3889,10 @@
         link.Model = {};
         link.Model.Errors = [];
         link.main = {};
+        link.search = {};
+        link.search.Model = {};
 
+        link.search.clear = clear;
         link.addLink = addLink;
         link.editLink = editLink;
         link.main.changeState = {
@@ -3907,8 +3910,11 @@
             , globalSearch: true
             , onEdit: link.main.changeState.edit
             , initLoad: true
-            , displayNameFormat: ['Name'],
-            searchBy: 'Name'
+            , displayNameFormat: ['Name']
+            , searchBy: 'Name'
+            , options: () => {
+                return link.search.Model;
+            }
         };
         function add() {
             loadingService.show();
@@ -3978,6 +3984,13 @@
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                 loadingService.hide();
             }).finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            link.search.Model = {};
+            link.search.searchPanel = false;
+            link.grid.getlist();
+            loadingService.hide();
         }
     }
     //-------------------------------------------------------------------------------------------------------------------------------------
