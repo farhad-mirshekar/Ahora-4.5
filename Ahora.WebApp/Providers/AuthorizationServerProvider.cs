@@ -109,7 +109,8 @@ namespace FM.Portal.WebApp.Providers
             container.RegisterType<IPositionService, PositionService>();
             container.RegisterType<IUserDataSource, UserDataSource>();
             container.RegisterType<IUserService, UserService>();
-
+            container.RegisterType<IRoleDataSource, RoleDataSource>();
+            container.RegisterType<IRoleService, RoleService>();
             IUserService _userservice = container.Resolve<IUserService>();
             IPositionService _positionService = container.Resolve<IPositionService>();
 

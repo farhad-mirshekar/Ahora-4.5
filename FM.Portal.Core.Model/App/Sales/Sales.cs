@@ -13,5 +13,6 @@ namespace FM.Portal.Core.Model
         public string BuyerPhone { get; set; }
         public decimal Price { get; set; }
         public string TransactionStatusMessage { get; set; }
+        public int Total { get; set; }
     }
 }

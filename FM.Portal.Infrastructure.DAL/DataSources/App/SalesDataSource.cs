@@ -70,9 +70,12 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var param = new SqlParameter[2];
+                var param = new SqlParameter[4];
                 param[0] = new SqlParameter("@UserPositionID",_requestInfo.PositionId);
                 param[1] = new SqlParameter("@ActionState", (byte)listVM.ActionState);
+                param[2] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[3] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsSales",param);
             }
             catch (Exception e) { throw; }

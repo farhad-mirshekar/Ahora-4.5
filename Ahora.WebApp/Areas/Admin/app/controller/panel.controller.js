@@ -4870,13 +4870,13 @@
         let sales = $scope;
         sales.Model = {};
         sales.main = {};
-        sales.Search = {};
+        sales.search = {};
         sales.Payment = [];
         sales.Payment.Model = {};
         sales.Flow = [];
         sales.Flow.Model = {};
-        sales.Search.Model = {};
-        sales.Search.Model.ActionState = 1;
+        sales.search.Model = {};
+        sales.search.Model.ActionState = 1;
         sales.main.state = '';
         sales.main.changeState = {
             cartable: cartable,
@@ -4892,7 +4892,7 @@
             , listService: salesService.list
             , globalSearch: true
             , initLoad: true
-            , options: () => { return sales.Search.Model }
+            , options: () => { return sales.search.Model; }
             , actions:
                 [
                     {
@@ -4929,6 +4929,7 @@
                     $(`#flow-comment-modal-${sales.Flow.selectedID}`).modal('show');
                 }
             }]
+            , hidePaging: true
         }
         sales.Flow.confirm = confirm;
         sales.getExcel = getExcel;
