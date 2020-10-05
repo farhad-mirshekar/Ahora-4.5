@@ -3,14 +3,14 @@
         .module('portal')
         .run(run);
 
-    run.$inject = ['$rootScope', 'toolsService', 'authenticationService', '$window', 'positionService', 'userService', 'loadingService'];
-    function run($rootScope, toolsService, authenticationService, $window, positionService, userService, loadingService) {
+    run.$inject = ['$rootScope', 'toolsService', 'authenticationService', '$window', 'positionService', 'userService', 'loadingService','$location'];
+    function run($rootScope, toolsService, authenticationService, $window, positionService, userService, loadingService, $location) {
         $rootScope.currentUserPosition = authenticationService.get('currentUserPosition');
         $rootScope.currentUserPositions = authenticationService.get('currentUserPositions');
         $rootScope.changePosition = changePosition;
         $rootScope.signOut = signOut;
-        toolsService.getPermission();
-        console.log(authenticationService.get('authorizationData').Access_Token);
+        $rootScope.checkPermission = checkPermission;
+
         $rootScope.Menus = [
             {
                 name: 'dashboard', title: 'داشبورد', icon: 'fa-home', hasShow: () => { return true; }
@@ -80,6 +80,29 @@
             }
         ]
 
+        $rootScope.$on('$locationChangeStart', locationChangeStart);
+        function locationChangeStart(event, next, current) {
+            if (authenticationService.isAuthenticated() && !$rootScope.permissions) {
+                if (next.split('/')[next.split('/').length - 1] !== 'init')
+                    $rootScope.pathBuffer = next.split('#/')[1] ? decodeURIComponent(next.split('#/')[1]) : '';
+                return $location.path('init');
+            }
+
+
+            //if (restrictedPage && !authenticationService.isAuthenticated()) {
+            //    if ($location.path() === '/')
+            //        $location.path('/');
+            //    else {
+            //        $location.path('/');
+            //        logout();
+            //    }
+            //}
+            //else if (!restrictedPage && authenticationService.isAuthenticated()) {
+            //    $location.path('/');
+            //    return event.preventDefault();
+            //}
+        }
+
         function signOut() {
             toolsService.signOut();
         }
@@ -96,6 +119,10 @@
                     $window.location.reload();
                 }).catch(loadingService.hide);
             }
+        }
+
+        function checkPermission(name) {
+            return $rootScope.permissions && $rootScope.permissions.some((e) => { return e.FullName === name; });
         }
     }
 })();

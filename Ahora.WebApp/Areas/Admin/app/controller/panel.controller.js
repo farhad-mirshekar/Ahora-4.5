@@ -2,6 +2,26 @@
 (() => {
     var app = angular.module('portal');
 
+    app.controller('initController', initController);
+    initController.$inject = ['$scope', '$rootScope', '$location', 'authenticationService', 'commandService', '$timeout'];
+    function initController($scope, $rootScope, $location, authenticationService, commandService, $timeout) {
+       
+        let init = $scope
+            , path = ($rootScope.pathBuffer && $rootScope.pathBuffer !== 'init' ? $rootScope.pathBuffer : '/');
+        init.main = {};
+
+        $timeout(() => { init.main.displayError = true }, 30000);
+
+        if (authenticationService.isAuthenticated() && !$rootScope.permissions) {
+            commandService.getPermission().then((permissions) => {
+                $rootScope.permissions = permissions;
+                $location.path(path);
+            })
+        }
+        else
+            $location.path(path);
+    }
+
     app.controller('homeController', homeController);
     homeController.$inject = ['$scope', '$q', 'loadingService', 'notificationService'];
     function homeController($scope, $q, loadingService, notificationService) {
@@ -3283,8 +3303,8 @@
     }
     //-------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('notificationController', notificationController);
-    notificationController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'notificationService', '$location'];
-    function notificationController($scope, $q, loadingService, $routeParams, notificationService, $location) {
+    notificationController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'notificationService', '$location', 'toolsService', 'toaster'];
+    function notificationController($scope, $q, loadingService, $routeParams, notificationService, $location, toolsService,toaster) {
         let notification = $scope;
         notification.Model = {};
         notification.main = {};

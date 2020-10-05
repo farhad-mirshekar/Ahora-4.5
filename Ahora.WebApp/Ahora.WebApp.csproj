@@ -658,6 +658,7 @@
     <Content Include="Areas\Admin\Views\ShippingCost\Index.cshtml" />
     <Content Include="Areas\Admin\Views\DeliveryDate\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Sales\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\Init\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
@@ -1829,6 +1830,7 @@
     <Compile Include="Areas\Admin\Controllers\Org\UserController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\ContactController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\GeneralSettingController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Pbl\InitController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\LinkController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\MenuController.cs" />
     <Compile Include="Areas\Admin\Controllers\Pbl\NotificationController.cs" />
