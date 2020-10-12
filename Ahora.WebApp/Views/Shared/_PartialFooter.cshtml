@@ -1,46 +1,123 @@
-﻿<footer class="container-fluid mt-3">
+﻿@model List<FM.Portal.Core.Model.Link>
+<footer class="container-fluid mt-3">
     <div class="row p-3">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label class="control-label">آدرس :</label>
-                <span>@FM.Portal.Core.Common.Helper.Address</span>
-            </div>
-            <div class="form-group">
-                <label class="control-label">تلفن :</label>
-                <span>@FM.Portal.Core.Common.Helper.Phone</span>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title">
+                        <i class="fa fa-book"></i>
+                        لینک های مفید
+                    </span>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @foreach (var item in Model)
+                        {
+                            if (item.ShowFooter && item.Enabled == EnableMenuType.فعال)
+                            {
+                                if (!string.IsNullOrEmpty(item.IconText))
+                                {
+                                    <li class="list-group-item">
+                                        <a href="@item.Url">
+                                            <i class="@item.IconText"></i>
+                                            @item.Name
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="list-group-item">
+                                        <a href="@item.Url">
+                                            <i class="fa fa-hand-o-left"></i>
+                                            @item.Name
+                                        </a>
+                                    </li>
+                                }
+                            }
+
+                        }
+                    </ul>
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            @if (!FM.Portal.Core.Common.Helper.InstagramUrl.IsEmpty())
-            {
-                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.InstagramUrl)" class="p-1" target="_blank">
-                    <i class="fa fa-instagram text-danger"></i>
-                </a>
-            }
-            @if (!FM.Portal.Core.Common.Helper.TelegramUrl.IsEmpty())
-            {
-                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.TelegramUrl)" class="p-1" target="_blank">
-                    <i class="fa fa-telegram text-primary"></i>
-                </a>
-            }
-            @if (!FM.Portal.Core.Common.Helper.TwitterUrl.IsEmpty())
-            {
-                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.TwitterUrl)" class="p-1" target="_blank">
-                    <i class="fa fa-twitter text-primary"></i>
-                </a>
-            }
-            @if (!FM.Portal.Core.Common.Helper.WhatsAppUrl.IsEmpty())
-            {
-                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.WhatsAppUrl)" class="p-1" target="_blank">
-                    <i class="fa fa-whatsapp text-success"></i>
-                </a>
-            }
-            @if (!FM.Portal.Core.Common.Helper.FacebookUrl.IsEmpty())
-            {
-                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.FacebookUrl)" class="p-1" target="_blank">
-                    <i class="fa fa-facebook text-primary"></i>
-                </a>
-            }
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa fa-address-book"></i>
+                        <span>تماس با ما</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item">
+                            <i class="fa fa-automobile"></i>
+                            <span>@FM.Portal.Core.Common.Helper.Address</span>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fa fa-phone"></i>
+                            <span>@FM.Portal.Core.Common.Helper.Phone</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">
+                        <i class="fa fa-address-book"></i>
+                        <span>همراهی ما در شبکه های اجتماعی</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        @if (!FM.Portal.Core.Common.Helper.TelegramUrl.IsEmpty())
+                        {
+                            <li class="list-group-item">
+                                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.TelegramUrl)" class="p-1" target="_blank">
+                                    <i class="fa fa-telegram text-primary"></i>
+                                </a>
+                            </li>
+                        }
+                        @if (!FM.Portal.Core.Common.Helper.InstagramUrl.IsEmpty())
+                        {
+                            <li class="list-group-item">
+                                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.InstagramUrl)" class="p-1" target="_blank">
+                                    <i class="fa fa-instagram text-danger"></i>
+                                </a>
+                            </li>
+                        }
+                        @if (!FM.Portal.Core.Common.Helper.TwitterUrl.IsEmpty())
+                        {
+                            <li class="list-group-item">
+                                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.TwitterUrl)" class="p-1" target="_blank">
+                                    <i class="fa fa-twitter text-primary"></i>
+                                </a>
+                            </li>
+                        }
+                        @if (!FM.Portal.Core.Common.Helper.WhatsAppUrl.IsEmpty())
+                        {
+                            <li class="list-group-item">
+                                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.WhatsAppUrl)" class="p-1" target="_blank">
+                                    <i class="fa fa-whatsapp text-success"></i>
+                                </a>
+                            </li>
+                        }
+                        @if (!FM.Portal.Core.Common.Helper.FacebookUrl.IsEmpty())
+                        {
+                            <li class="list-group-item">
+                                <a href="http://@Html.Raw(FM.Portal.Core.Common.Helper.FacebookUrl)" class="p-1" target="_blank">
+                                    <i class="fa fa-facebook text-primary"></i>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+
+
 
         </div>
     </div>

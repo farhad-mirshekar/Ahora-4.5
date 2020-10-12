@@ -17,6 +17,7 @@ namespace Ahora.WebApp.Controllers
         private readonly ISliderService _sliderService;
         private readonly IEventsService _eventsService;
         private readonly IContactService _contactService;
+        private readonly ILinkService _linkService;
         public HomeController(IProductService service
                              , IAttachmentService attachmentService
                              , IMenuService menuService
@@ -24,7 +25,8 @@ namespace Ahora.WebApp.Controllers
                              , INewsService newsService
                              , ISliderService sliderService
                              , IEventsService eventsService
-                             , IContactService contactService) : base(service)
+                             , IContactService contactService
+                             , ILinkService linkService) : base(service)
         {
             _attachmentService = attachmentService;
             _menuService = menuService;
@@ -33,6 +35,7 @@ namespace Ahora.WebApp.Controllers
             _sliderService = sliderService;
             _eventsService = eventsService;
             _contactService = contactService;
+            _linkService = linkService;
         }
         // GET: Home
         public ActionResult Index()
@@ -117,6 +120,12 @@ namespace Ahora.WebApp.Controllers
         public ActionResult AutoComplateSearch()
         {
             return PartialView("~/Views/Shared/_PartialAutoComplateSearch.cshtml");
+        }
+        [ChildActionOnly]
+        public ActionResult RenderFooter()
+        {
+            var linkResult = _linkService.List(new LinkListVM() {PageIndex = 0 });
+            return PartialView("~/Views/Shared/_PartialFooter.cshtml",linkResult.Data);
         }
         #endregion
     }

@@ -28,7 +28,7 @@
             @RenderBody()
         </main>
     </div>
-    @Html.Partial("_PartialFooter")
+    @Html.Action("RenderFooter","Home")
 
     <script>
         $('a.dropdown-toggle').on('click', function (e) {
