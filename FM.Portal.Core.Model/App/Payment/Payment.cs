@@ -14,7 +14,11 @@ namespace FM.Portal.Core.Model
         public string Token { get; set; }
         public string RetrivalRefNo { get; set; }
         public string SystemTraceNo { get; set; }
+
+        //only show
         public string CreationDatePersian =>Helper.GetPersianDate(CreationDate);
+        public string TrackingCode { get; set; }
+        public int Total { get; set; }
 
     }
 }

@@ -1,0 +1,42 @@
+﻿@model List<FM.Portal.Core.Model.Payment>
+@{
+    ViewBag.Title = "سفارش های من";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+<section class="card">
+    <div class="card-header">
+        <span class="card-title">سفارش های من</span>
+    </div>
+    <div class="card-body">
+        <table class="table">
+            <thead class="text-center">
+                <tr>
+                    <th>شماره سفارش</th>
+                    <th>تاریخ ثبت سفارش</th>
+                    <th>مبلغ کل (تومان)</th>
+                    <th>جزئیات</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                @{
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.TrackingCode</td>
+                            <td>@item.CreationDatePersian</td>
+                            <td>@string.Format("{0:C0}", item.Price).Replace("$", "")</td>
+                            <td><a href="@Url.RouteUrl("User_OrderDetail",new { PaymentID = item.ID })" class="btn btn-primary">مشاهده جزئیات</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex justify-content-center" dir="ltr">
+            <ul class="pagination">
+                @Html.PageLinks((PagingInfo)ViewBag.Paging, x => Url.RouteUrl("User_Orders", new { Page = x }))
+            </ul>
+        </div>
+    </div>
+</section>

@@ -14,7 +14,7 @@ namespace FM.Portal.DataSource
         Result<Payment> GetByToken(string Token , BankName bankName);
         DataTable List();
         //for user
-        DataTable ListPaymentForUser(Guid UserID);
+        DataTable ListPaymentForUser(PaymentListForUserVM listVm);
 
     }
 }

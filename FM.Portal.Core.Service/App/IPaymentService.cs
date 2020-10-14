@@ -16,6 +16,6 @@ namespace FM.Portal.Core.Service
         Result<List<PaymentListVM>> List();
         Result<byte[]> GetExcel();
         // user dashboard
-        Result<List<PaymentListForUserVM>> ListPaymentForUser(Guid UserID);
+        Result<List<Payment>> ListPaymentForUser(PaymentListForUserVM listVm);
     }
 }

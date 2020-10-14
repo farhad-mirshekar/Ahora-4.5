@@ -176,12 +176,15 @@ namespace FM.Portal.Infrastructure.DAL
             }
         }
 
-        public DataTable ListPaymentForUser(Guid UserID)
+        public DataTable ListPaymentForUser(PaymentListForUserVM listVm)
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[1];
-                param[0] = new SqlParameter("@UserID", UserID);
+                var param = new SqlParameter[3];
+                param[0] = new SqlParameter("@UserID", listVm.UserID);
+                param[1] = new SqlParameter("@PageSize", listVm.PageSize);
+                param[2] = new SqlParameter("@PageIndex", listVm.PageIndex);
+
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsPaymentForUser", param);
             }
             catch

@@ -78,12 +78,12 @@ namespace FM.Portal.Domain
         public Result<Payment> Edit(Payment model)
         => _dataSource.Update(model);
 
-        public Result<List<PaymentListForUserVM>> ListPaymentForUser(Guid UserID)
+        public Result<List<Payment>> ListPaymentForUser(PaymentListForUserVM listVm)
         {
-            var table = ConvertDataTableToList.BindList<PaymentListForUserVM>(_dataSource.ListPaymentForUser(UserID));
+            var table = ConvertDataTableToList.BindList<Payment>(_dataSource.ListPaymentForUser(listVm));
             if (table.Count > 0 || table.Count == 0)
-                return Result<List<PaymentListForUserVM>>.Successful(data: table);
-            return Result<List<PaymentListForUserVM>>.Failure();
+                return Result<List<Payment>>.Successful(data: table);
+            return Result<List<Payment>>.Failure();
         }
 
         public Result<Payment> GetByToken(string Token, BankName BankName)

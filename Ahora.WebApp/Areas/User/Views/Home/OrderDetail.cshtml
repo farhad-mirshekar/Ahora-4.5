@@ -30,7 +30,7 @@
                         <label class="d-inline mr-2">@item.ToDocState.ToString().Replace("_", " ")</label>
                         if (item.ToDocState != FM.Portal.Core.Model.SalesDocState.ارسال_محصول)
                         {
-                            <i class="fa fa-arrow-left"></i>
+                            <i class="fa fa-arrow-left text-danger"></i>
                         }
                     }
                 }
@@ -149,7 +149,7 @@
         <div class="card-footer">
             <div class="btn-group-justified pull-left">
                 <button type="button" class="btn btn-primary">چاپ فاکتور</button>
-                @Html.ActionLink("بازگشت", "Order", "Home", new { Area = "User" }, new { @class = "btn btn-cancel" })
+                <a class="btn btn-cancel" href="@Url.RouteUrl("User_Orders")">بازگشت</a>
             </div>
         </div>
     </div>

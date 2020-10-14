@@ -29,7 +29,7 @@
                 <div class="sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="/user/home/order">
+                            <a class="nav-link" href="/user/home/orders">
                                 سفارش های من
                                 <i class="fa fa-first-order"></i>
                             </a>
@@ -61,17 +61,11 @@
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="d-inline-block header-icon">
+                        <div class="form-inline header-icon">
                             <a href="@Url.RouteUrl("Home")">
                                 <i class="fa fa-home home-icon"></i>
                             </a>
-                            @*<a href="" ng-click="">
-                                <i class="fa fa-bell-o home-icon"></i>
-                            </a>*@
-                            <a href="" ng-click="">
-                                <i class="fa fa-envelope-o message-icon"></i>
-                            </a>
-                            <form method="post" action="/account/signout" class="form-inline">
+                            <form method="post" action="/account/signout" class="">
                                 <button type="submit" class="btn" style="cursor:pointer">
                                     <i class="fa fa-power-off exit-icon"></i>
                                 </button>

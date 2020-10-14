@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
+using Ahora.WebApp.Models;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.Attributes;
@@ -22,15 +24,27 @@ namespace Ahora.WebApp.Areas.User.Controllers
         {
             return View();
         }
-        public ActionResult Order()
+        public ActionResult Orders(int? page)
         {
             var userID = SQLHelper.CheckGuidNull(User.Identity.Name);
-            var result = _service.ListPaymentForUser(userID);
-            result.Data.ForEach(x => {
+            var ordersResult = _service.ListPaymentForUser(new FM.Portal.Core.Model.PaymentListForUserVM() {UserID = userID , PageSize = 4 , PageIndex = page });
+            if (!ordersResult.Success)
+                return View("Error");
+
+            var orders = ordersResult.Data;
+            
+            orders.ForEach(x => {
                 x.TrackingCode = x.TrackingCode.Split('-')[1];
-                x.Price = x.Price.Split('.')[0];
             }) ;
-            return View(result.Data);
+
+            var pageInfo = new PagingInfo();
+            pageInfo.CurrentPage = page ?? 1;
+            pageInfo.TotalItems = orders.Select(x=>x.Total).First();
+            pageInfo.ItemsPerPage = 4;
+
+            ViewBag.Paging = pageInfo;
+
+            return View(orders);
         }
         public ActionResult OrderDetail(Guid PaymentID)
         {

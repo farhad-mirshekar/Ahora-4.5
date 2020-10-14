@@ -594,7 +594,7 @@
     <Content Include="Areas\User\Views\Address\Edit.cshtml" />
     <Content Include="Areas\User\Views\Address\Index.cshtml" />
     <Content Include="Areas\User\Views\Home\Index.cshtml" />
-    <Content Include="Areas\User\Views\Home\Order.cshtml" />
+    <Content Include="Areas\User\Views\Home\Orders.cshtml" />
     <Content Include="Areas\User\Views\Shared\_Layout.cshtml" />
     <Content Include="Areas\User\Views\web.config" />
     <Content Include="appsetting.config" />
