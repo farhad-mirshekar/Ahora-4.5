@@ -99,7 +99,7 @@ element {
 .sidebar-sticky {
     position: relative;
     top: 0;
-    height: calc(100vh - 48px);
+    height: calc(70vh - 48px);
     padding-top: .5rem;
     overflow-x: hidden;
     overflow-y: auto;
