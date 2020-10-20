@@ -15,6 +15,11 @@ namespace Ahora.WebApp.Areas.User
         public override void RegisterArea(AreaRegistrationContext context) 
         {
             context.MapRoute(
+               "User_Profile",
+               "User/Home/Profile",
+               new { controller = "Profile", action = "Index" }
+           );
+            context.MapRoute(
                "User_AddressEdit",
                "User/Home/Address/Edit/{ID}",
                new { controller = "Address", action = "Edit" , ID=UrlParameter.Optional }

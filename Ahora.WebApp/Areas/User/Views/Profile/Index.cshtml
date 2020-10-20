@@ -1,29 +1,37 @@
 ﻿@model FM.Portal.Core.Model.User
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "ویرایش پروفایل";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
 }
 <h2 class="main-title">ویرایش پروفایل</h2>
 @using (Html.BeginForm("Edit", "Profile", FormMethod.Post))
 {
-    <div class="card-body">
-        <input type="hidden" name="ID" value="@Model.ID" />
-        <div class="form-group">
-            <label class="control-label">نام</label>
-            <input type="text" class="form-control" name="FirstName" id="FirstName" value="@Model.FirstName" />
-        </div>
-        <div class="form-group">
-            <label class="control-label">نام خانوادگی</label>
-            <input type="text" class="form-control" name="LastName" id="LastName" value="@Model.LastName" />
-        </div>
-        <div class="form-group">
-            <label class="control-label">شماره تلفن</label>
-            <input type="text" class="form-control" name="CellPhone" id="CellPhone" value="@Model.CellPhone" />
-        </div>
-        <div class="btn-group-justified pull-left mb-5">
-            <button type="submit" class="btn btn-primary text-white">ثبت</button>
-        </div>
+<div class="card-body">
+    <input type="hidden" name="ID" value="@Model.ID" />
+    <div class="form-group">
+        <label class="control-label">نام</label>
+        <input type="text" class="form-control" name="FirstName" id="FirstName" value="@Model.FirstName" />
     </div>
+    <div class="form-group">
+        <label class="control-label">نام خانوادگی</label>
+        <input type="text" class="form-control" name="LastName" id="LastName" value="@Model.LastName" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">کدملی</label>
+        <input type="text" class="form-control" name="NationalCode" id="NationalCode" value="@Model.NationalCode" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">شماره تلفن</label>
+        <input type="text" class="form-control" name="CellPhone" id="CellPhone" value="@Model.CellPhone" />
+    </div>
+    <div class="form-group">
+        <label class="control-label">پست الکترونیکی</label>
+        <input type="text" class="form-control" name="Email" id="Email" value="@Model.Email" />
+    </div>
+    <div class="btn-group-justified pull-left mb-5">
+        <button type="submit" class="btn btn-primary text-white">ثبت</button>
+    </div>
+</div>
 }
 
 
