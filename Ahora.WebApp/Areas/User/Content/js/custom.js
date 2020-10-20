@@ -20,7 +20,7 @@
     success_process: function (response) {
         $('#deleteAddress').modal('hide');
         
-        window.location.href='/user/address/index?page=1';
+        window.location.href='/user/home/address/1';
     },
     ajaxFailure: function (response) {
         $('#deleteAddress').modal('hide');

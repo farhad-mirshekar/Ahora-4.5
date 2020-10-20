@@ -10,7 +10,7 @@ namespace FM.Portal.Core.Service
         Result<UserAddress> Add(UserAddress model);
         Result<UserAddress> Edit(UserAddress model);
         Result<UserAddress> Get(Guid ID);
-        Result<List<UserAddress>> List(Guid ID);
+        Result<List<UserAddress>> List(UserAddressListVM listVM);
         Result.Result Remove(Guid ID);
     }
 }

@@ -57,7 +57,7 @@ namespace Ahora.WebApp.Controllers
             {
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
                 var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
-                var address = _addressService.List(SQLHelper.CheckGuidNull(User.Identity.Name));
+                var address = _addressService.List(new UserAddressListVM() { UserID = SQLHelper.CheckGuidNull(User.Identity.Name) });
 
                 if (!result.Success || result.Data.Count == 0)
                     return RedirectToAction("CartEmpty");

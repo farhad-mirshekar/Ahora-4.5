@@ -1,44 +1,40 @@
-﻿using FM.Portal.Core.Common;
+﻿using Ahora.WebApp.Models;
+using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
-using PagedList;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace Ahora.WebApp.Areas.User.Controllers
 {
     public class AddressController : BaseController<IUserAddressService>
     {
-        private readonly IUserAddressService _service;
         public AddressController(IUserAddressService service) : base(service)
         {
-            _service = service;
         }
 
         // GET: User/Address
         public ActionResult Index(int? page)
         {
-            var result = _service.List(SQLHelper.CheckGuidNull(User.Identity.Name));
-            int pageSize = 2;
-            int pageNumber = (page ?? 1);
-            if(result.Data != null)
+            var addressResult = _service.List(new UserAddressListVM() { UserID = SQLHelper.CheckGuidNull(User.Identity.Name) , PageSize = 3 , PageIndex = page });
+            if (!addressResult.Success)
+                return View("Error");
+            var addressList = addressResult.Data;
+            if (addressList.Count > 0)
             {
-                if(result.Data.Count < pageNumber)
-                {
-                    // Create new url
-                    string url = Request.Path;
+                var pageInfo = new PagingInfo();
+                pageInfo.CurrentPage = page ?? 1;
+                pageInfo.TotalItems = addressList.Select(a => a.Total).First();
+                pageInfo.ItemsPerPage = 3;
 
-                    return Redirect(url); // redirect
-                }
-                else
-                    return View(result.Data.ToPagedList(pageNumber, pageSize));
+                ViewBag.Paging = pageInfo;
+                return View(addressList);
             }
             else
-                return View(result.Data);
+                return View(addressList);
+            
         }
         public ActionResult Create()
         {

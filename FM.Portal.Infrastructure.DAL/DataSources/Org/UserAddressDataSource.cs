@@ -81,10 +81,12 @@ namespace FM.Portal.Infrastructure.DAL
             }
         }
 
-        public DataTable List(Guid ID)
+        public DataTable List(UserAddressListVM listVM)
         {
-            SqlParameter[] param = new SqlParameter[1];
-            param[0] = new SqlParameter("@UserID", ID);
+            var param = new SqlParameter[3];
+            param[0] = new SqlParameter("@UserID", listVM.UserID);
+            param[1] = new SqlParameter("@PageSize", listVM.PageSize);
+            param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
 
             return SQLHelper.GetDataTable(CommandType.StoredProcedure, "org.spGetsUserAddress", param);
         }

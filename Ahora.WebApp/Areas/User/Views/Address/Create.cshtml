@@ -1,15 +1,16 @@
 ﻿
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "افزودن آدرس جدید";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
 }
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <span class="panel-title">افزودن آدرس جدید</span>
+<div class="card">
+    <div class="card-header">
+        <span class="card-title">افزودن آدرس جدید</span>
     </div>
-    <div class="panel-body form-horizontal">
-        @using (Html.BeginForm("Create", "Address", FormMethod.Post))
-        {
+    @using (Html.BeginForm("Create", "Address", FormMethod.Post))
+    {
+        <div class="card-body form-horizontal">
+
             <div class="form-group">
                 <label for="postalCode" class="col-md-1 control-label">کد پستی</label>
                 <div class="col-md-9">
@@ -22,12 +23,13 @@
                     <textarea class="form-control" id="Address" name="Address" style="resize:none;"></textarea>
                 </div>
             </div>
-
-            <div class="modal-footer">
-                <button class="btn btn-default">بازگشت</button>
+        </div>
+        <div class="card-footer">
+            <div class="pull-left">
                 <button type="submit" class="btn btn-success">افزودن</button>
+                <a href="@Url.RouteUrl("User_AddressList")" class="btn btn-cancel">بازگشت</a>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
 

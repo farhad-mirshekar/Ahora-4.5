@@ -106,6 +106,7 @@
     <Compile Include="App\ShoppingCartItem\VM\DeleteCartItemVM.cs" />
     <Compile Include="App\ShoppingCartItem\VM\ShoppingItemVM.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="Org\UserAddress\VM\UserAddressListVM.cs" />
     <Compile Include="Pagination.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="EnumCast.cs" />

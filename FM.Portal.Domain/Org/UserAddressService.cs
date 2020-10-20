@@ -37,9 +37,9 @@ namespace FM.Portal.Domain
         public Result<UserAddress> Get(Guid ID)
         => _dataSource.Get(ID);
 
-        public Result<List<UserAddress>> List(Guid ID)
+        public Result<List<UserAddress>> List(UserAddressListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<UserAddress>(_dataSource.List(ID));
+            var table = ConvertDataTableToList.BindList<UserAddress>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<UserAddress>>.Successful(data: table);
             return Result<List<UserAddress>>.Failure();

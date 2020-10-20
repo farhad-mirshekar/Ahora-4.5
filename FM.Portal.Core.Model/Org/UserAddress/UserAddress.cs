@@ -9,5 +9,8 @@ namespace FM.Portal.Core.Model
         public string Address { get; set; }
         public string PostalCode { get; set; }
         public string CellPhone { get; set; }
+
+        //only show
+        public int Total { get; set; }
     }
 }

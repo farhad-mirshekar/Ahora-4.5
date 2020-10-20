@@ -1,6 +1,6 @@
 ﻿@model FM.Portal.Core.Model.UserAddress
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "ویرایش آدرس";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
 }
 
@@ -23,7 +23,7 @@
         </div>
         <div class="btn-group-justified pull-left mb-5">
             <button type="submit" class="btn btn-success">ویرایش</button>
-            <button class="btn btn-cancel">بازگشت</button>
+            <a href="@Url.RouteUrl("User_AddressList")" class="btn btn-cancel">بازگشت</a>
         </div>
     }
 </div>

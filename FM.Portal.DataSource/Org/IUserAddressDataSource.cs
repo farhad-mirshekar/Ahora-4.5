@@ -11,6 +11,6 @@ namespace FM.Portal.DataSource
         Result<UserAddress> Update(UserAddress model);
         Result<UserAddress> Get(Guid ID);
         Result Delete(Guid ID);
-        DataTable List(Guid ID);
+        DataTable List(UserAddressListVM listVM);
     }
 }

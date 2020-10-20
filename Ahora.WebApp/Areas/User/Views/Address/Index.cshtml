@@ -1,10 +1,11 @@
-﻿@model PagedList.IPagedList<FM.Portal.Core.Model.UserAddress>
-@using PagedList.Mvc;
+﻿@model List<FM.Portal.Core.Model.UserAddress>
+
 @{
+    ViewBag.Title = "لیست آدرس ها";
     Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
 }
 <h2 class="main-title">لیست آدرس های من</h2>
-<a href="create" class="btn btn-success btn-circle"><i class="fa fa-plus"></i></a>
+<a href="@Url.RouteUrl("User_AddressCreate")" class="btn btn-success btn-circle"><i class="fa fa-plus"></i></a>
 <div class="card-body">
     @if (Model != null && Model.Count > 0)
     {
@@ -27,7 +28,7 @@
                 </div>
                 <div class="card-footer">
                     <div class="btn-group-justified pull-left">
-                        @Html.ActionLink("ویرایش", "Edit", "Address", new { ID = @item.ID }, new { @class = "btn btn-primary" })
+                        <a href="@Url.RouteUrl("User_AddressEdit" , new { ID = item.ID})" class="btn btn-primary">ویرایش</a>
                         <button class="btn btn-danger" onclick="Address.showModal('#deleteAddress','@item.Address','@item.ID')">حذف</button>
                     </div>
                 </div>
@@ -35,7 +36,11 @@
         }
 
         <div class="mt-2">
-            @Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+            <div class="d-flex justify-content-center" dir="ltr">
+                <ul class="pagination">
+                    @Html.PageLinks((PagingInfo)ViewBag.Paging, x => Url.RouteUrl("User_AddressList", new { Page = x }))
+                </ul>
+            </div>
         </div>
     }
 </div>

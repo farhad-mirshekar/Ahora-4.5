@@ -6,12 +6,20 @@ IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('org.spGets
 GO
 
 CREATE PROCEDURE org.spGetsUserAddress
-	@UserID UNIQUEIDENTIFIER
+	@UserID UNIQUEIDENTIFIER,
+	@PageSize INT,
+	@PageIndex INT
 --WITH ENCRYPTION
 AS
 BEGIN
+	SET @PageSize = COALESCE(@PageSize , 5)
+	SET @PageIndex = COALESCE(@PageIndex,1)
 
-	SET NOCOUNT ON;
+	IF @PageIndex = 0 
+	BEGIN
+		SET @PageSize = 10000000
+		SET @PageIndex = 1
+	END
 
 	;WITH MainSelect AS (
 	SELECT 
@@ -26,9 +34,13 @@ BEGIN
 	WHERE
 		users.ID = @UserID AND
 		users.Enabled = 1
+	), TempCount AS 
+	(
+		SELECT COUNT(*) AS Total FROM MainSelect
 	)
-	SELECT * FROM MainSelect		 
-	ORDER BY [CreationDate] DESC
 
-	RETURN @@ROWCOUNT
+	SELECT * FROM MainSelect, TempCount						
+	ORDER BY CreationDate DESC
+	OFFSET ((@PageIndex - 1) * @PageSize) ROWS FETCH NEXT @PageSize ROWS ONLY
+	OPTION (RECOMPILE);
 END

@@ -2,7 +2,7 @@
 
 <html>
 <head>
-    <title>پرتال</title>
+    <title>صفحه کاربری - @ViewBag.Title</title>
     <meta name="viewport" content="width=device-width" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link href="~/Areas/User/Content/bootstrap-rtl/bootstrap-rtl.css" rel="stylesheet" />
@@ -35,7 +35,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/user/address/index">
+                            <a class="nav-link" href="@Url.RouteUrl("User_AddressList")">
                                 آدرس های من
                                 <i class="fa fa-address-card"></i>
                             </a>
