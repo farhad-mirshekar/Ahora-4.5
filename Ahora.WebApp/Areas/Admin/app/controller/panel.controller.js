@@ -5023,5 +5023,238 @@
             }).finally(loadingService.hide);
         }
     }
+    //--------------------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('languageController', languageController);
+    languageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', '$location', 'toaster', 'languageService', 'enumService', 'localeStringResourceService','toolsService'];
+    function languageController($scope, $q, loadingService, $routeParams, $location, toaster, languageService, enumService, localeStringResourceService, toolsService) {
+        var language = $scope;
+        language.main = {};
+        language.Model = {};
+        language.state = '';
+        language.localeStringResource = {};
+        language.localeStringResource.state = '';
+        language.localeStringResource.Model = {};
+        language.localeStringResource.search = {};
+        language.localeStringResource.search.Model = {};
 
+        language.main.changeState = {
+            cartable: cartable,
+            add: add,
+            edit:edit
+        }
+        language.languageCultureType = toolsService.arrayEnum(enumService.LanguageCultureType);
+        language.enableMenuType = toolsService.arrayEnum(enumService.EnableMenuType);
+
+        language.addLanguage = addLanguage;
+        language.editLanguage = editLanguage;
+        language.localeStringResource.openModalLocaleStringResource = openModalLocaleStringResource;
+        language.localeStringResource.addLocaleStringResource = addLocaleStringResource;
+        language.localeStringResource.editLocaleStringResource = editLocaleStringResource;
+
+
+        language.grid = {
+            bindingObject: language
+            , columns: [{ name: 'Name', displayName: 'نام زبان' }]
+            , listService: languageService.list
+            , deleteService: languageService.remove
+            , onEdit: language.main.changeState.edit
+            , globalSearch: true
+            , searchBy: 'Name'
+            , displayNameFormat: ['Name']
+            , initLoad: true
+        };
+        language.localeStringResource.grid = {
+            bindingObject: language.localeStringResource
+            , columns: [{ name: 'ResourceName', displayName: 'نام فیلد' }
+                , { name: 'ResourceValue', displayName: 'مقدار' }]
+            , listService: localeStringResourceService.list
+            , deleteService: localeStringResourceService.remove
+            , onEdit: (selected) => {
+                language.localeStringResource.Model = selected;
+                language.localeStringResource.state = 'edit';
+                $('.grid-localeStringResource').modal('show');
+            }
+            , globalSearch: true
+            , searchBy: 'ResourceName'
+            , displayNameFormat: ['ResourceName']
+            , initLoad: false
+            , options: () => {
+                return language.localeStringResource.search.Model;
+            }
+        };
+
+        init();
+
+        function init() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        language.main.changeState.cartable();
+                        loadingService.hide();
+                        break;
+                    case 'add':
+                        language.main.changeState.add();
+                        loadingService.hide();
+                        break;
+                    case 'edit':
+                        languageService.get($routeParams.id).then((result) => {
+                            language.main.changeState.edit(result);
+                        })
+                        loadingService.hide();
+                        break;
+                }
+            })
+        }
+
+        function cartable() {
+            loadingService.show();
+            language.state = 'cartable';
+            $location.path('language/cartable');
+            loadingService.hide();
+        }
+        function add() {
+            loadingService.show();
+            language.state = 'add';
+            $location.path('language/add');
+            loadingService.hide();
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (model && model.ID)
+                    return languageService.get(model.ID);
+                else
+                    return languageService.get($routeParams.id);
+            }).then((result) => {
+                language.Model = angular.copy(result);
+                language.localeStringResource.search.Model = { LanguageID: language.Model.ID };
+                return language.localeStringResource.grid.getlist();
+            }).then(() => {
+                $location.path(`language/edit/${language.Model.ID}`);
+                language.state = 'edit';
+                loadingService.hide();
+            }).catch((error) => {
+                loadingService.hide();
+                toaster.pop('error', '', error || 'خطای ناشناخته');
+            }).finally(loadingService.hide);
+        }
+        function openModalLocaleStringResource() {
+            loadingService.show();
+            language.localeStringResource.Model = {};
+            language.localeStringResource.state = 'add';
+            $('.grid-localeStringResource').modal('show');
+            loadingService.hide();
+        }
+
+        function addLanguage() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return languageService.add(language.Model);
+            }).then((result) => {
+                language.Model = angular.copy(result);
+                toaster.pop('success', '', 'زبان مورد نظر با موفقیت اضافه شد');
+                language.grid.getlist();
+                language.localeStringResource.search.Model = { LanguageID: language.Model.ID };
+            }).catch((error) => {
+                if (!error) {
+                    var listError = error.split('&&');
+                    language.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#languageSection').offset().top - $('#languageSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    $('#content > div').animate({
+                        scrollTop: $('#languageSection').offset().top - $('#languageSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+        function editLanguage() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return languageService.edit(language.Model);
+            }).then((result) => {
+                language.Model = angular.copy(result);
+                toaster.pop('success', '', 'زبان مورد نظر با موفقیت ویرایش شد');
+                language.grid.getlist();
+                language.localeStringResource.search.Model = { LanguageID: language.Model.ID };
+            }).catch((error) => {
+                if (!error) {
+                    var listError = error.split('&&');
+                    language.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#languageSection').offset().top - $('#languageSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    $('#content > div').animate({
+                        scrollTop: $('#languageSection').offset().top - $('#languageSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+        function addLocaleStringResource() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                language.localeStringResource.Model.LanguageID = language.Model.ID;
+                return localeStringResourceService.add(language.localeStringResource.Model);
+            }).then((result) => {
+                return language.localeStringResource.grid.getlist();
+            }).then(() => {
+                $('.grid-localeStringResource').modal('hide');
+                loadingService.hide();
+                toaster.pop('success', '', 'پارامترهای زبان مورد نظر با موفقیت ثبت شد');
+            })
+                .catch((error) => {
+                if (error) {
+                    var listError = error.split('&&');
+                    language.localeStringResource.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#localeStringResource').offset().top - $('#localeStringResource').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                    $('#content > div').animate({
+                        scrollTop: $('#localeStringResource').offset().top - $('#localeStringResource').offsetParent().offset().top
+                    }, 'slow');
+                }
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+        function editLocaleStringResource() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                language.localeStringResource.Model.LanguageID = language.Model.ID;
+                return localeStringResourceService.edit(language.localeStringResource.Model);
+            }).then((result) => {
+                return language.localeStringResource.grid.getlist();
+            }).then(() => {
+                $('.grid-localeStringResource').modal('hide');
+                loadingService.hide();
+                toaster.pop('success', '', 'پارامترهای زبان مورد نظر با موفقیت ویرایش شد');
+            })
+                .catch((error) => {
+                    if (!error) {
+                        var listError = error.split('&&');
+                        language.Model.Errors = [].concat(listError);
+                        $('#content > div').animate({
+                            scrollTop: $('#languageSection').offset().top - $('#languageSection').offsetParent().offset().top
+                        }, 'slow');
+                    } else {
+                        $('#content > div').animate({
+                            scrollTop: $('#languageSection').offset().top - $('#languageSection').offsetParent().offset().top
+                        }, 'slow');
+                    }
+
+                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                    loadingService.hide();
+                }).finally(loadingService.hide);
+        }
+    }
 })();

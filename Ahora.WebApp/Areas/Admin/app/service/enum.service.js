@@ -125,6 +125,17 @@
 			enumService.YesOrNoType = {
 				'1': 'بله',
 				'2': 'خیر'
+			},
+			enumService.LanguageCultureType = {
+				'1': 'English',
+				'2': 'French',
+				'3': 'German',
+				'4': 'Turkish',
+				'5': 'Spanish',
+				'6': 'Persian',
+				'7': 'Arabic',
+				'8': 'Hindi',
+				'9': 'Chinese'
 			}
 
 		return enumService;

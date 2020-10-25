@@ -3485,6 +3485,192 @@
         }
     }
 
+    app.factory('languageService', languageService);
+    languageService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
+    function languageService($http, callbackService, $q, authenticationService) {
+        var url = '/api/v1/Language/'
+        var service = {
+            add: add,
+            edit: edit,
+            get: get,
+            list: list,
+            remove: remove
+
+        }
+        return service;
+
+        function add(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'add',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'add' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function edit(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'edit',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function list(model) {
+            return $http({
+                method: 'post',
+                url: url + 'list',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'List' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function remove(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Delete/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+    }
+
+    app.factory('localeStringResourceService', localeStringResourceService);
+    localeStringResourceService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
+    function localeStringResourceService($http, callbackService, $q, authenticationService) {
+        var url = '/api/v1/LocaleStringResource/'
+        var service = {
+            add: add,
+            edit: edit,
+            get: get,
+            list: list,
+            remove: remove
+
+        }
+        return service;
+
+        function add(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'add',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'add' });
+            })
+                .catch(function (result) {
+                   return callbackService.onError({ result: result });
+                })
+        }
+        function edit(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'edit',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function list(model) {
+            return $http({
+                method: 'post',
+                url: url + 'list',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'List' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function remove(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Delete/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Delete/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+    }
+
     app.factory('callbackService', callbackService);
     callbackService.$inject = ['$q', '$http', 'authenticationService'];
     function callbackService($q, $http, authenticationService) {

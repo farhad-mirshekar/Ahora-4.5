@@ -89,13 +89,13 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    var param = new SqlParameter[7];
+                    var param = new SqlParameter[6];
                     param[0] = new SqlParameter("@ID", model.ID);
                     param[1] = new SqlParameter("@IsNewRecord", IsNewrecord);
                     param[2] = new SqlParameter("@ResourceName", model.ResourceName);
                     param[3] = new SqlParameter("@ResourceValue", model.ResourceValue);
                     param[4] = new SqlParameter("@LanguageID", model.LanguageID);
-                    param[6] = new SqlParameter("@UserId", _requestInfo.UserId);
+                    param[5] = new SqlParameter("@UserId", _requestInfo.UserId);
 
                     int result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "pbl.spModifyLocaleStringResource", param);
                     if (result > 0)

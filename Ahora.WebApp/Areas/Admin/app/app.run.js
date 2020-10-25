@@ -41,6 +41,8 @@
                     { route: '#/pages/cartable', title: 'آدرس صفحات', hasShow: () => { return toolsService.checkPermission('pgaddresspages') }, icon: 'fa-address-book' },
                     { route: '#/contact-us', title: 'ارتباط با ما', hasShow: () => { return toolsService.checkPermission('pgcontactus') }, icon: 'fa-at' },
                     { route: '#/link', title: 'پیوندها', hasShow: () => { return toolsService.checkPermission('pglink') }, icon: 'fa-anchor' },
+                    { route: '#/language/cartable', title: 'مدیریت زبان', hasShow: () => { return toolsService.checkPermission('pglanguage') }, icon: 'fa-anchor' },
+
                 ]
             },
             {

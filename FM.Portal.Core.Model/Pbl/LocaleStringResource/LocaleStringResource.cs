@@ -9,5 +9,8 @@ namespace FM.Portal.Core.Model
         public string ResourceValue { get; set; }
         public Guid LanguageID { get; set; }
         public Guid UserID { get; set; }
+
+        //only show
+        public int Total { get; set; }
     }
 }

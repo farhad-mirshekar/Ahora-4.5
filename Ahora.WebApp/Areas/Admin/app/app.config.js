@@ -43,6 +43,7 @@
             .when("/delivery-date/:state/:id?", { templateUrl: "/Admin/DeliveryDate/index", controller: 'deliveryDateController', reloadOnUrl: false })// add;
             .when("/sales/:state/:id?", { templateUrl: "/Admin/Sales/index", controller: 'salesController', reloadOnUrl: false })
             .when('/init', { templateUrl: ('/Admin/Init/index'), controller: 'initController' })
+            .when("/language/:state/:id?", { templateUrl: "/Admin/Language/index", controller: 'languageController', reloadOnUrl: false })
             .when('/not-found', { templateUrl: ('./areas/admin/app/NotFound/not-found.html') })// add;
             .otherwise({
                 templateUrl: './areas/admin/app/NotFound/not-found.html'
