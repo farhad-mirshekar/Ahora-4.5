@@ -1022,6 +1022,42 @@ GO
 ALTER TABLE pbl.[Notification]
 ADD PositionID UNIQUEIDENTIFIER
 GO
+CREATE TABLE [pbl].[Language](
+	[ID] [uniqueidentifier] NOT NULL,
+	[Name] [Nvarchar](1000) NOT NULL,
+	[LanguageCultureType] [TINYINT] NOT NULL,
+	[UniqueSeoCode] [NVARCHAR](100) NOT NULL,
+	[UserID] [Uniqueidentifier] NOT NULL,
+	[Enabled] [TINYINT] DEFAULT 1 NULL,
+	[CreationDate] [SmalldateTime] NOT NULL,
+ CONSTRAINT [PK_Language] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [pbl].[Language] WITH CHECK ADD FOREIGN KEY ([UserID])
+REFERENCES [org].[User] ([ID])
+GO
+CREATE TABLE [pbl].[LocaleStringResource](
+	[ID] [uniqueidentifier] NOT NULL,
+	[LanguageID] [Uniqueidentifier] NOT NULL,
+	[ResourceName] [NVARCHAR](3000) NULL,
+	[ResourceValue] [NVARCHAR](3000) NULL,
+	[UserID] [Uniqueidentifier] NOT NULL,
+	[CreationDate] [SmalldateTime] NOT NULL,
+ CONSTRAINT [PK_LocaleStringResource] PRIMARY KEY CLUSTERED 
+(
+	[ID] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+
+ALTER TABLE [pbl].[LocaleStringResource] WITH CHECK ADD FOREIGN KEY ([LanguageID])
+REFERENCES [pbl].[Language] ([ID])
+
+ALTER TABLE [pbl].[LocaleStringResource] WITH CHECK ADD FOREIGN KEY ([UserID])
+REFERENCES [org].[User] ([ID])
+GO
 -----------------------------------------------------------------------------------
 CREATE SCHEMA ptl
 GO

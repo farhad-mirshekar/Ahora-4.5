@@ -142,8 +142,12 @@
     <Compile Include="Pbl\Email-Log\EmailLogs.cs" />
     <Compile Include="Pbl\GeneralSetting\GeneralSetting.cs" />
     <Compile Include="Pbl\GeneralSetting\VM\SettingVM.cs" />
+    <Compile Include="Pbl\Language\Language.cs" />
+    <Compile Include="Pbl\Language\VM\LanguageListVM.cs" />
     <Compile Include="Pbl\Link\Link.cs" />
     <Compile Include="Pbl\Link\VM\LinkListVM.cs" />
+    <Compile Include="Pbl\LocaleStringResource\LocaleStringResource.cs" />
+    <Compile Include="Pbl\LocaleStringResource\VM\LocaleStringResourceListVM.cs" />
     <Compile Include="Pbl\Menu\Menu.cs" />
     <Compile Include="Pbl\Menu\VM\GetModelVM.cs" />
     <Compile Include="Pbl\Menu\VM\MenuVM.cs" />

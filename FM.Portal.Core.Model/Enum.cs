@@ -133,10 +133,10 @@
         unknown = 0,
         محصولات = 1
     }
-    public enum DocState:byte
+    public enum DocState : byte
     {
         نامشخص = 0,
-        تایید_نهایی =100
+        تایید_نهایی = 100
     }
     public enum SalesDocState : byte
     {
@@ -160,19 +160,32 @@
         سامانه_اصلی = 1,
         واحد_فروش = 2,
         واحد_مالی = 3,
-        واحد_انبار_و_لجستیک=4
+        واحد_انبار_و_لجستیک = 4
     }
     public enum ActionState : byte
     {
-        نامشخص=0,
+        نامشخص = 0,
         موارد_در_دست_اقدام = 1,
         موارد_ارسال_شده = 2,
         موارد_نهایی = 3
     }
     public enum YesOrNoType : byte
     {
-        نامشخص=0,
-        بله=1,
-        خیر=2
+        نامشخص = 0,
+        بله = 1,
+        خیر = 2
+    }
+    public enum LanguageCultureType : byte
+    {
+        unknown = 0,
+        English = 1,
+        French = 2,
+        German = 3,
+        Turkish = 4,
+        Spanish = 5,
+        Persian = 6,
+        Arabic = 7,
+        Hindi = 8,
+        Chinese = 9
     }
 }

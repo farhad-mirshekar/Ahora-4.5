@@ -154,6 +154,12 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IDepartmentDataSource, DepartmentDataSource>();
             container.RegisterType<IDepartmentService, DepartmentService>();
 
+            container.RegisterType<ILanguageDataSource, LanguageDataSource>();
+            container.RegisterType<ILanguageService, LanguageService>();
+
+            container.RegisterType<ILocaleStringResourceDataSource, LocaleStringResourceDataSource>();
+            container.RegisterType<ILocaleStringResourceService, LocaleStringResourceService>();
+
             container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ICompareProductService, CompareProductService>();
             container.RegisterType<ICacheService, CacheService>();

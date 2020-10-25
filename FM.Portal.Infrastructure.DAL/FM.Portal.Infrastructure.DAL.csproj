@@ -86,7 +86,9 @@
     <Compile Include="DataSources\Pbl\DownloadDataSource.cs" />
     <Compile Include="DataSources\Pbl\EmailLogsDataSource.cs" />
     <Compile Include="DataSources\Pbl\GeneralSettingDataSource.cs" />
+    <Compile Include="DataSources\Pbl\LanguageDataSource.cs" />
     <Compile Include="DataSources\Pbl\LinkDataSource.cs" />
+    <Compile Include="DataSources\Pbl\LocaleStringResourceDataSource.cs" />
     <Compile Include="DataSources\Pbl\MenuDataSource.cs" />
     <Compile Include="DataSources\Pbl\NotificationDataSource.cs" />
     <Compile Include="DataSources\Pbl\PagesDataSource.cs" />
@@ -234,6 +236,14 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Email-Log\pbl.spModifyEmailLogs.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.GetsGeneralSetting.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\GeneralSetting\pbl.spModifyGeneralSetting.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Language\pbl.DeleteLanguage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Language\pbl.GetLanguage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Language\pbl.GetsLanguage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\Language\pbl.spModifyLanguage.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\LocaleStringResource\pbl.DeleteLocaleStringResource.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\LocaleStringResource\pbl.GetLocaleStringResource.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\LocaleStringResource\pbl.GetsLocaleStringResource.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\LocaleStringResource\pbl.spModifyLocaleStringResource.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetChildMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.DeleteMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetMenu.sql" />
