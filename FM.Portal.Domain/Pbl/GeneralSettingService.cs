@@ -62,6 +62,9 @@ namespace FM.Portal.Domain
 
                 setting.ShoppingCartRate = result.FirstOrDefault(x => x.Name.Equals("ShoppingCartRate")).Value;
                 setting.ShippingCosts = result.FirstOrDefault(x => x.Name.Equals("ShippingCosts")).Value;
+
+                setting.LanguageID = result.FirstOrDefault(x => x.Name.Equals("LanguageID")).Value;
+
                 return Result<SettingVM>.Successful(data: setting);
             }
             return Result<SettingVM>.Failure();

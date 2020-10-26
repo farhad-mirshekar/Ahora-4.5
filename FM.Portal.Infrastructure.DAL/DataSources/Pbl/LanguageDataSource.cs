@@ -72,7 +72,7 @@ namespace FM.Portal.Infrastructure.DAL
             try
             {
                 var param = new SqlParameter[3];
-                param[0] = new SqlParameter("@Name", listVM.Name);
+                param[0] = new SqlParameter("@Name", listVM?.Name);
                 param[1] = new SqlParameter("@PageSize", listVM.PageSize);
                 param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
 

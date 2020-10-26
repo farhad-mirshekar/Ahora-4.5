@@ -4,5 +4,6 @@
     {
         public static string Prefix => ".Ahora";
         public static string ComparedProductsCookie => ".ComparedProducts";
+        public static string Language => ".Language";
     }
 }

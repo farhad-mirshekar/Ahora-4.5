@@ -1,0 +1,14 @@
+﻿@model List<Language>
+<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            انتخاب زبان
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            @foreach (var item in Model)
+            {
+                <a class="dropdown-item" href="@Url.RouteUrl("ChangeLanguage" , new { LanguageID=item.ID })">@item.Name</a>
+            }
+        </div>
+    </li>
+</ul>

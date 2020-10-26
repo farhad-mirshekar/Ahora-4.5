@@ -6,15 +6,19 @@ using FM.Portal.DataSource;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace FM.Portal.Domain
 {
     public class LocaleStringResourceService : ILocaleStringResourceService
     {
         private readonly ILocaleStringResourceDataSource _dataSource;
-        public LocaleStringResourceService(ILocaleStringResourceDataSource dataSource)
+        private readonly HttpContextBase _httpContext;
+        public LocaleStringResourceService(ILocaleStringResourceDataSource dataSource
+                                           , HttpContextBase httpContext)
         {
             _dataSource = dataSource;
+            _httpContext = httpContext;
         }
         public Result<LocaleStringResource> Add(LocaleStringResource model)
         {
@@ -41,6 +45,19 @@ namespace FM.Portal.Domain
         public Result<LocaleStringResource> Get(Guid ID)
         => _dataSource.Get(ID);
 
+        public Result<string> GetResource(string format)
+        {
+            var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.Language}";
+            var languageID = Helper.LanguageID;
+
+            if (_httpContext.Request.Cookies[cookieName] != null)
+            {
+                languageID = SQLHelper.CheckGuidNull(_httpContext.Request.Cookies[cookieName].Value);
+            }
+
+           return GetResource(format, languageID);
+        }
+
         public Result<List<LocaleStringResource>> List(LocaleStringResourceListVM listVM)
         {
             var table = ConvertDataTableToList.BindList<LocaleStringResource>(_dataSource.List(listVM));
@@ -66,6 +83,42 @@ namespace FM.Portal.Domain
                 return Result.Failure(message: string.Join("&&", errors));
 
             return Result.Successful();
+        }
+        private Result<string> GetResource(string resourceKey , Guid LanguageID)
+        {
+            string result = string.Empty;
+            if (resourceKey == null)
+                resourceKey = string.Empty;
+            resourceKey = resourceKey.Trim().ToLowerInvariant();
+            var resourcesResult = GetAllResourceValues(LanguageID);
+            if (!resourcesResult.Success)
+                return Result<string>.Failure(message: resourcesResult.Message);
+            
+            var resources = resourcesResult.Data;
+            if (resources.ContainsKey(resourceKey))
+            {
+                result = resources[resourceKey].Value;
+            }
+
+            return Result<string>.Successful(data: result);
+        }
+        private Result<Dictionary<string,KeyValuePair<Guid , string>>> GetAllResourceValues(Guid LanguageID)
+        {
+            var listResult = List(new LocaleStringResourceListVM() {LanguageID = LanguageID });
+            if (!listResult.Success)
+                return Result<Dictionary<string, KeyValuePair<Guid, string>>>.Failure(message:listResult.Message);
+
+            var localeStringResources = listResult.Data;
+            var dictionary = new Dictionary<string, KeyValuePair<Guid, string>>();
+
+            foreach (var locale in localeStringResources)
+            {
+                var resourceName = locale.ResourceName.ToLowerInvariant();
+                if (!dictionary.ContainsKey(resourceName))
+                    dictionary.Add(resourceName, new KeyValuePair<Guid, string>(locale.ID, locale.ResourceValue));
+            }
+
+            return Result<Dictionary<string, KeyValuePair<Guid, string>>>.Successful(data: dictionary);
         }
     }
 }

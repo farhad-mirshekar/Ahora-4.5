@@ -19,7 +19,14 @@
     <div class="container-fluid">
         <header class="sticky-top py-1">
             @{Html.RenderAction("RenderMenu", "Home"); }
-            @RenderSection("SearchSection",false)
+                <div class="row">
+                    <div class="col-md-10">
+                        @RenderSection("SearchSection", false)
+                    </div>
+                    <div class="col-md-2">
+                        @{ Html.RenderAction("LanguageSelector", "Common");}
+                    </div>
+            </div>
         </header>
         @RenderSection("BannerSection", false)
 

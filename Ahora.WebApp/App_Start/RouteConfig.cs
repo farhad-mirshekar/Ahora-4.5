@@ -14,6 +14,11 @@ namespace Ahora.WebApp
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+              "ChangeLanguage",
+              "ChangeLanguage/{LanguageID}",
+              new { controller = "Common", action = "ChangeLanguage", LanguageID=UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" });
+            routes.MapRoute(
               "ClearCompareProducts",
               "ClearCompareProducts",
               new { controller = "Product", action = "ClearCompareProducts" },

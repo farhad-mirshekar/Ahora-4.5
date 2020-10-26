@@ -12,7 +12,7 @@ namespace FM.Portal.Core.Service
         Result<LocaleStringResource> Get(Guid ID);
         Result<List<LocaleStringResource>> List(LocaleStringResourceListVM listVM);
         Result.Result Delete(Guid ID);
-
+        Result<string> GetResource(string format);
 
     }
 }

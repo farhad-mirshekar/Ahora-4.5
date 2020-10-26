@@ -203,6 +203,15 @@ namespace FM.Portal.Core.Common
                 return SQLHelper.CheckDecimalNull(result.ShippingCosts);
             }
         }
+        public static Guid LanguageID
+        {
+            get
+            {
+                HttpContextBase httpContext = new HttpContextWrapper(HttpContext.Current);
+                var result = CacheManager.CacheRead<SettingVM>(httpContext, "SiteSettings");
+                return SQLHelper.CheckGuidNull(result.LanguageID);
+            }
+        }
         public static int GetPersianDay(DateTime date)
         {
             return new PersianCalendar().GetDayOfMonth(date);
@@ -256,6 +265,6 @@ namespace FM.Portal.Core.Common
             return GetPersianYear(date).ToString() + "/" + (GetPersianMonth(date).ToString().Length == 1 ? "0" + GetPersianMonth(date).ToString() : GetPersianMonth(date).ToString()) + "/" + (GetPersianDay(date).ToString().Length == 1 ? "0" + GetPersianDay(date).ToString() : GetPersianDay(date).ToString());
         }
         public static string GetIP()
-        =>(HttpContext.Current != null ? HttpContext.Current.Request.UserHostAddress : "0.0.0.0");
+        => (HttpContext.Current != null ? HttpContext.Current.Request.UserHostAddress : "0.0.0.0");
     }
 }

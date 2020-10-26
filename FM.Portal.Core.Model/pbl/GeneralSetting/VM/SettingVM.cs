@@ -23,5 +23,6 @@
         public string CountShowEvents { get; set; }
         public string ShoppingCartRate { get; set; }
         public string ShippingCosts { get; set; }
+        public string LanguageID { get; set; }
     }
 }

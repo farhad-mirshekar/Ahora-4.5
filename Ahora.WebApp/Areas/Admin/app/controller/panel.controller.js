@@ -2800,11 +2800,13 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------
     app.controller('generalSettingController', generalSettingController);
-    generalSettingController.$inject = ['$scope', 'loadingService', 'generalSettingService', 'toaster', '$q'];
-    function generalSettingController($scope, loadingService, generalSettingService, toaster, $q) {
+    generalSettingController.$inject = ['$scope', 'loadingService', 'generalSettingService', 'toaster', '$q','languageService'];
+    function generalSettingController($scope, loadingService, generalSettingService, toaster, $q, languageService) {
         let setting = $scope;
         setting.Model = {};
+        setting.languageList = [];
         setting.editSetting = editSetting;
+        setting.languageDropDown = languageDropDown;
         init();
 
         function init() {
@@ -2813,6 +2815,7 @@
                 return generalSettingService.getSetting();
             }).then((result) => {
                 setting.Model = angular.copy(result);
+                return languageDropDown({});
             }).catch((error) => {
                 toaster.pop('error', '', 'خطا در بازیابی اطلاعات');
             }).finally(loadingService.hide);
@@ -2826,6 +2829,18 @@
                 toaster.pop('success', '', 'تنظیمات با موفقیت ذخیره گردید');
                 init();
             }).finally(loadingService.hide);
+        }
+        function languageDropDown(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return languageService.list(model);
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        setting.languageList.push({ Name: result[i].Name, Model: result[i].ID });
+                    }
+                }
+            })
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------

@@ -66,6 +66,8 @@ namespace FM.Portal.Infrastructure.DAL
 
                 setting.ShoppingCartRate = result.FirstOrDefault(x => x.Name.Equals("ShoppingCartRate")).Value;
                 setting.ShippingCosts = result.FirstOrDefault(x => x.Name.Equals("ShippingCosts")).Value;
+
+                setting.LanguageID = result.FirstOrDefault(x => x.Name.Equals("LanguageID")).Value;
             }
 
 
@@ -216,6 +218,14 @@ namespace FM.Portal.Infrastructure.DAL
                 SqlParameter[] param = new SqlParameter[2];
                 param[0] = new SqlParameter("@Name", "ShippingCosts");
                 param[1] = new SqlParameter("@Value", model.ShippingCosts);
+                commands.Add(SQLHelper.CreateCommand("pbl.spModifyGeneralSetting", CommandType.StoredProcedure, param));
+            }
+
+            if (setting.LanguageID != model.LanguageID)
+            {
+                SqlParameter[] param = new SqlParameter[2];
+                param[0] = new SqlParameter("@Name", "LanguageID");
+                param[1] = new SqlParameter("@Value", model.LanguageID);
                 commands.Add(SQLHelper.CreateCommand("pbl.spModifyGeneralSetting", CommandType.StoredProcedure, param));
             }
             return commands;
