@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using System.Linq;

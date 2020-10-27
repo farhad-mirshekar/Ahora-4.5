@@ -1,6 +1,4 @@
-﻿using FM.Portal.Core.Result;
-
-namespace FM.Portal.Core.Service
+﻿namespace FM.Portal.Core.Service
 {
    public interface IBankService : IService
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Data;
 using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
 using System.Data.SqlClient;

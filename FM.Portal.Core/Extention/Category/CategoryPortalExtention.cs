@@ -1,5 +1,5 @@
 ﻿using FM.Portal.Core.Common;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using FM.Portal.Core.Service.Ptl;
 using System;
 using System.Collections.Generic;

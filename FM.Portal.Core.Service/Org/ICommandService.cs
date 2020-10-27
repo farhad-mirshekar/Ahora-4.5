@@ -1,5 +1,4 @@
 ﻿using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +8,7 @@ namespace FM.Portal.Core.Service
     {
         Result<Command> Add(Command model);
         Result<Command> Edit(Command model);
-        Result.Result Delete(Guid ID);
+        Result Delete(Guid ID);
         Result<List<Command>> List();
         Result<List<Command>> ListByNode(string Node);
         Result<Command> Get(Guid id);

@@ -1,5 +1,4 @@
 ﻿using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +10,6 @@ namespace FM.Portal.Core.Service
         Result<RelatedProduct> Edit(RelatedProduct model);
         Result<List<RelatedProduct>> List(RelatedProductListVM listVM);
         Result<RelatedProduct> Get(Guid ID);
-        Result.Result Delete(Guid ID);
+        Result Delete(Guid ID);
     }
 }

@@ -6,9 +6,7 @@ using System.Data.SqlClient;
 using FM.Portal.Core.Common;
 using System.Data;
 using FM.Portal.Core.Owin;
-using FM.Portal.Core.Result;
-using FM.Portal.Core.Common.Serializer;
-using System.Linq;
+using FM.Portal.Core;
 
 namespace FM.Portal.Infrastructure.DAL
 {

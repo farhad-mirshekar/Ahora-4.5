@@ -1,4 +1,4 @@
-﻿namespace FM.Portal.Core.Result
+﻿namespace FM.Portal.Core
 {
    public class Result
     {

@@ -1,5 +1,4 @@
 ﻿using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +11,6 @@ namespace FM.Portal.Core.Service
         Result<List<ShoppingCartItem>> List(Guid ShoppingID);
         Result<List<ShoppingCartItem>> Delete(DeleteCartItemVM model);
         Result<ShoppingCartItem> Get(Guid ShoppingID , Guid ProductID);
-        Result.Result Delete(Guid ShoppingID);
+        Result Delete(Guid ShoppingID);
     }
 }

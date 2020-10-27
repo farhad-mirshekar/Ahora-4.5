@@ -1,12 +1,11 @@
 ﻿using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using FM.Portal.Core.Service;
 using System;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
-using System.Reflection;
 using System.Web;
 
 namespace FM.Portal.FrameWork.Email

@@ -4,7 +4,7 @@ using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using Newtonsoft.Json;
 using System.Linq;
 using OfficeOpenXml;

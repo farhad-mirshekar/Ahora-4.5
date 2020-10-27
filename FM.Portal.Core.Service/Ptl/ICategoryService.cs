@@ -1,5 +1,4 @@
 ﻿using FM.Portal.Core.Model.Ptl;
-using FM.Portal.Core.Result;
 using System;
 using System.Collections.Generic;
 
@@ -12,7 +11,7 @@ namespace FM.Portal.Core.Service.Ptl
         Result<List<Category>> List();
         Result<Category> Get(Guid ID);
         Result<List<GetCountCategoryVM>> GetCountCategory();
-        Result.Result Delete(Guid ID);
+        Result Delete(Guid ID);
         
     }
 }

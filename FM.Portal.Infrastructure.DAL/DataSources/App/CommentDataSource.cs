@@ -1,6 +1,6 @@
 ﻿using System;
 using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using FM.Portal.DataSource;
 using System.Data.SqlClient;
 using FM.Portal.Core.Common;

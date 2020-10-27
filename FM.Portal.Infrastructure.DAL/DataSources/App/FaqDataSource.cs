@@ -4,7 +4,7 @@ using FM.Portal.DataSource;
 using System.Data.SqlClient;
 using FM.Portal.Core.Common;
 using System.Data;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using FM.Portal.Core.Owin;
 
 namespace FM.Portal.Infrastructure.DAL

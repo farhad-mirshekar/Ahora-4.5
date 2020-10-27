@@ -1,12 +1,10 @@
 ﻿using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
-using System.Windows.Media;
 
 namespace FM.Portal.Domain
 {

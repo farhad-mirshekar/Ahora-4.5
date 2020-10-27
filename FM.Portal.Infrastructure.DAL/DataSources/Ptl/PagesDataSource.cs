@@ -1,7 +1,7 @@
 ﻿using FM.Portal.Core.Common;
 using FM.Portal.Core.Model.Ptl;
 using FM.Portal.Core.Owin;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using FM.Portal.DataSource.Ptl;
 using System;
 using System.Data;

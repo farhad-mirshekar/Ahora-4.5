@@ -4,7 +4,7 @@ using FM.Portal.Core.Model;
 using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
 using System.Data.SqlClient;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using System.Collections.Generic;
 
 namespace FM.Portal.Infrastructure.DAL

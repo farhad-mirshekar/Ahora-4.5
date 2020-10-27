@@ -1,7 +1,6 @@
 ﻿using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using System;
-using System.Collections.Generic;
 using System.Data;
 
 namespace FM.Portal.DataSource
@@ -10,7 +9,7 @@ namespace FM.Portal.DataSource
     {
         Result<EmailLogs> Insert(EmailLogs model);
         Result<EmailLogs> Get(Guid ID);
-        //Result.Result Delete(Guid ID);
+        //Result Delete(Guid ID);
         DataTable List();
     }
 }

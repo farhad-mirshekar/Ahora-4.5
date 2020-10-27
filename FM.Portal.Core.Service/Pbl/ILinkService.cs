@@ -1,5 +1,4 @@
 ﻿using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +10,6 @@ namespace FM.Portal.Core.Service
         Result<Link> Edit(Link model);
         Result<Link> Get(Guid ID);
         Result<List<Link>> List(LinkListVM listVM);
-        Result.Result Delete(Guid ID);
+        Result Delete(Guid ID);
     }
 }

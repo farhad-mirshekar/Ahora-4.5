@@ -1,4 +1,4 @@
-﻿using FM.Portal.Core.Result;
+﻿using FM.Portal.Core;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 

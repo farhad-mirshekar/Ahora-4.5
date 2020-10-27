@@ -4,7 +4,7 @@ using System.Web.Http;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using System;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using System.Collections.Generic;
 
 namespace Ahora.WebApp.Areas.ApiClient.Controllers

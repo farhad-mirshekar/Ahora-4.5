@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
+using FM.Portal.Core;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 

@@ -67,7 +67,7 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
                             return category;
 
                         });
-                        var results = FM.Portal.Core.Result.Result<System.Collections.Generic.List<Category>>.Successful(data: model.ToList());
+                        var results = FM.Portal.Core.Result<System.Collections.Generic.List<Category>>.Successful(data: model.ToList());
                         return Ok(results);
                 }
                 return Ok(result);

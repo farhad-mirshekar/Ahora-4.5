@@ -1,5 +1,4 @@
 ﻿using FM.Portal.Core.Model;
-using FM.Portal.Core.Result;
 using System;
 using System.Collections.Generic;
 
@@ -12,6 +11,6 @@ namespace FM.Portal.Core.Service
         Result<Menu> Get(Guid ID);
         Result<List<Menu>> List();
         Result<List<MenuVM>> GetMenuForWeb(string Node);
-        Result.Result Delete(Guid ID);
+        Result Delete(Guid ID);
     }
 }
