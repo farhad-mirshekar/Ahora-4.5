@@ -18,15 +18,15 @@
 <body dir="rtl">
     <div class="container-fluid">
         <header class="sticky-top py-1">
-            @{Html.RenderAction("RenderMenu", "Home"); }
-                <div class="row">
-                    <div class="col-md-10">
-                        @RenderSection("SearchSection", false)
-                    </div>
-                    <div class="col-md-2">
-                        @{ Html.RenderAction("LanguageSelector", "Common");}
-                    </div>
+            <div class="row">
+                <div class="col-md-10">
+                    @{Html.RenderAction("RenderMenu", "Home"); }
+                </div>
+                <div class="col-md-2">
+                    @{ Html.RenderAction("LanguageSelector", "Common");}
+                </div>
             </div>
+            @RenderSection("SearchSection", false)
         </header>
         @RenderSection("BannerSection", false)
 
@@ -35,7 +35,7 @@
             @RenderBody()
         </main>
     </div>
-    @Html.Action("RenderFooter","Home")
+    @Html.Action("RenderFooter", "Home")
 
     <script>
         $('a.dropdown-toggle').on('click', function (e) {
