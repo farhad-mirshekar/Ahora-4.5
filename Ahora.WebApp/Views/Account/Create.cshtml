@@ -1,7 +1,7 @@
 ﻿@model FM.Portal.Core.Model.RegisterVM
 <section class="card">
     <div class="card-header">
-        <h5 class="card-title">فرم ثبت نام</h5>
+        <h5 class="card-title">@T("Account.Register")</h5>
     </div>
     <div class="card-body form-horizontal">
         @using (Html.BeginForm("Create", "Account", FormMethod.Post, new { @class = "container" }))
@@ -9,14 +9,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="FirstName">نام</label>
+                        <label class="control-label" for="FirstName">@T("Account.Register.Field.Firstname")</label>
                         @Html.TextBoxFor(u => u.FirstName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(r => r.FirstName, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="LastName">نام خانوادگی</label>
+                        <label class="control-label" for="LastName">@T("Account.Register.Field.Lastname")</label>
                         @Html.TextBoxFor(u => u.LastName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(r => r.LastName, "", new { @class = "text-danger" })
                     </div>
@@ -25,14 +25,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="NationalCode">کد ملی</label>
+                        <label class="control-label" for="NationalCode">@T("Account.Register.Field.Nationalcode")</label>
                         @Html.TextBoxFor(u => u.NationalCode, new { @class = "form-control" })
                         @Html.ValidationMessageFor(r => r.NationalCode, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="CellPhone">شماره همراه</label>
+                        <label class="control-label" for="CellPhone">@T("Account.Register.Field.Cellphone")</label>
                         @Html.TextBoxFor(u => u.CellPhone, new { @class = "form-control" })
                         @Html.ValidationMessageFor(r => r.CellPhone, "", new { @class = "text-danger" })
                     </div>
@@ -41,14 +41,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="Password">رمز عبور</label>
+                        <label class="control-label" for="Password">@T("Account.Register.Field.Password")</label>
                         @Html.PasswordFor(u => u.Password, new { @class = "form-control" })
                         @Html.ValidationMessageFor(r => r.Password, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="RePassword">تکرار رمز عبور</label>
+                        <label class="control-label" for="RePassword">@T("Account.Register.Field.Repassword")</label>
                         @Html.PasswordFor(u => u.RePassword, new { @class = "form-control" })
                         @Html.ValidationMessageFor(r => r.RePassword, "", new { @class = "text-danger" })
                     </div>
@@ -57,7 +57,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label class="control-label" for="UserName">نام کاربری</label>
+                        <label class="control-label" for="UserName">@T("Account.Register.Field.Username")</label>
                         @Html.TextBoxFor(u => u.UserName, new { @class = "form-control" })
                         @Html.ValidationMessageFor(r => r.UserName, "", new { @class = "text-danger" })
                     </div>

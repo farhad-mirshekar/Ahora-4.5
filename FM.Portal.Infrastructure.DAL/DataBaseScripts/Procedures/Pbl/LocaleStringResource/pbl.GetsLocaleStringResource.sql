@@ -12,8 +12,8 @@ CREATE PROCEDURE pbl.spGetsLocaleStringResource
 --WITH ENCRYPTION
 AS
 BEGIN
-	SET @PageSize = COALESCE(@PageSize , 5)
-	SET @PageIndex = COALESCE(@PageIndex,1)
+	SET @PageSize = COALESCE(@PageSize , 0)
+	SET @PageIndex = COALESCE(@PageIndex,0)
 
 	IF @PageIndex = 0 
 	BEGIN
