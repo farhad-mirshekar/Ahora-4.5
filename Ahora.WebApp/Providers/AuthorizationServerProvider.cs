@@ -13,17 +13,22 @@ using System.Collections.Generic;
 using FM.Portal.Core.Owin;
 using System.Linq;
 using FM.Portal.Core.Common;
+using FM.Portal.FrameWork.Unity;
+using System.Web.Mvc;
 
 namespace FM.Portal.WebApp.Providers
 {
     public class AuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
-
+        private IAppSetting _appSetting;
+        private IUserService _userService;
+        private IPositionService _positionService;
         public override Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
-            var container = new UnityContainer();
-            container.RegisterType<IAppSetting, AppSetting>();
-            var _appSetting = container.Resolve<IAppSetting>();
+            if (_appSetting == null)
+            {
+                _appSetting = (IAppSetting)DependencyResolver.Current.GetService(typeof(IAppSetting));
+            }
 
             context.Validated();
             context.OwinContext.Set("clientRefreshTokenLifeTime", "1140");
@@ -34,21 +39,18 @@ namespace FM.Portal.WebApp.Providers
         {
             var applicationId = Guid.Parse(context.OwinContext.Get<string>("applicationId"));
 
-            var container = new UnityContainer();
-            container.RegisterType<IRequestInfo, RequestInfo>();
-            container.RegisterType<IUserDataSource, UserDataSource>();
-            container.RegisterType<IUserService, UserService>();
-            container.RegisterType<IRoleDataSource, RoleDataSource>();
-            container.RegisterType<IRoleService, RoleService>();
-            container.RegisterType<IPositionDataSource, PositionDataSource>();
-            container.RegisterType<IPositionService, PositionService>();
-
-            var _service = container.Resolve<IUserService>();
-            var _position = container.Resolve<IPositionService>();
-            var data = _service.Get(context.UserName, context.Password, null , UserType.Unknown);
+            if (_userService == null)
+            {
+                _userService = (IUserService)DependencyResolver.Current.GetService(typeof(IUserService));
+            }
+            if (_positionService == null)
+            {
+                _positionService = (IPositionService)DependencyResolver.Current.GetService(typeof(IPositionService));
+            }
+            var data = _userService.Get(context.UserName, context.Password, null, UserType.Unknown);
             if (data.Data.ID != Guid.Empty)
             {
-                var positionDefault = _position.GetDefaultPosition(data.Data.ID);
+                var positionDefault = _positionService.GetDefaultPosition(data.Data.ID);
                 var position = positionDefault.Data;
                 var claims = new List<Claim>
             {
@@ -103,19 +105,17 @@ namespace FM.Portal.WebApp.Providers
             var newIdentity = new ClaimsIdentity(context.Ticket.Identity);
             var userId = Guid.Parse(newIdentity.GetUserId());
 
-            var container = new UnityContainer();
-            container.RegisterType<IRequestInfo, RequestInfo>();
-            container.RegisterType<IPositionDataSource, PositionDataSource>();
-            container.RegisterType<IPositionService, PositionService>();
-            container.RegisterType<IUserDataSource, UserDataSource>();
-            container.RegisterType<IUserService, UserService>();
-            container.RegisterType<IRoleDataSource, RoleDataSource>();
-            container.RegisterType<IRoleService, RoleService>();
-            IUserService _userservice = container.Resolve<IUserService>();
-            IPositionService _positionService = container.Resolve<IPositionService>();
+            if (_userService == null)
+            {
+                _userService = (IUserService)DependencyResolver.Current.GetService(typeof(IUserService));
+            }
+            if (_positionService == null)
+            {
+                _positionService = (IPositionService)DependencyResolver.Current.GetService(typeof(IPositionService));
+            }
 
-            var userResult = _userservice.Get(userId);
-            if(!userResult.Success)
+            var userResult = _userService.Get(userId);
+            if (!userResult.Success)
             {
                 context.SetError("invalid_user", userResult.Message);
                 return Task.FromResult(0);
