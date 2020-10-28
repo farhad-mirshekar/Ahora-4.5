@@ -97,6 +97,7 @@
     <Compile Include="Common\EnumExtensions.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\AppSetting\IAppSetting.cs" />
+    <Compile Include="Common\IWorkContext.cs" />
     <Compile Include="Common\Serializer\IObjectSerializer.cs" />
     <Compile Include="Common\Serializer\ObjectSerializer.cs" />
     <Compile Include="Common\SqlHelper.cs" />

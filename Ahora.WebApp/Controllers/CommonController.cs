@@ -10,11 +10,11 @@ namespace Ahora.WebApp.Controllers
 {
     public class CommonController : BaseController<ILanguageService>
     {
-        private readonly ICacheService _cacheService;
+        private readonly IWorkContext _workContext;
         public CommonController(ILanguageService service
-                                , ICacheService cacheService) : base(service)
+                                , IWorkContext workContext) : base(service)
         {
-            _cacheService = cacheService;
+            _workContext = workContext;
         }
 
         [ChildActionOnly]
@@ -25,6 +25,14 @@ namespace Ahora.WebApp.Controllers
                 return Content("");
             var languageList = languageResult.Data;
 
+            languageList.ForEach(lng =>
+            {
+                if(_workContext.WorkingLanguage != null)
+                {
+                    if (lng.ID == _workContext.WorkingLanguage.ID)
+                        lng.CurrentLanguage = _workContext.WorkingLanguage;
+                }
+            });
             return PartialView("_PartialLanguageSelector", languageList);
         }
         public ActionResult ChangeLanguage(Guid LanguageID)
@@ -37,12 +45,8 @@ namespace Ahora.WebApp.Controllers
 
             if (language != null)
             {
-                var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.Language}";
-                var myCookie = new HttpCookie(cookieName, null);
-                myCookie.Expires = DateTime.Now.AddYears(-1);
-                HttpContext.Response.Cookies.Add(myCookie);
-                HttpContext.Response.Cookies[cookieName].Value = language.ID.ToString();
-                HttpContext.Response.Cookies[cookieName].Expires = DateTime.Now.AddDays(1);
+                _workContext.WorkingLanguage = language;
+                language.CurrentLanguage = language;
             }
 
             redirect = Url.RouteUrl("Home");

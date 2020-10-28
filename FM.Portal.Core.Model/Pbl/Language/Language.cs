@@ -13,5 +13,6 @@ namespace FM.Portal.Core.Model
 
         //only show
         public int Total { get; set; }
+        public Language CurrentLanguage { get; set; }
     }
 }

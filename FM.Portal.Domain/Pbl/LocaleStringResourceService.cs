@@ -13,12 +13,12 @@ namespace FM.Portal.Domain
     public class LocaleStringResourceService : ILocaleStringResourceService
     {
         private readonly ILocaleStringResourceDataSource _dataSource;
-        private readonly HttpContextBase _httpContext;
+        private readonly IWorkContext _workContext;
         public LocaleStringResourceService(ILocaleStringResourceDataSource dataSource
-                                           , HttpContextBase httpContext)
+                                          , IWorkContext workContext)
         {
             _dataSource = dataSource;
-            _httpContext = httpContext;
+            _workContext = workContext;
         }
         public Result<LocaleStringResource> Add(LocaleStringResource model)
         {
@@ -47,12 +47,11 @@ namespace FM.Portal.Domain
 
         public Result<string> GetResource(string format)
         {
-            var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.Language}";
             var languageID = Helper.LanguageID;
 
-            if (_httpContext.Request.Cookies[cookieName] != null)
+            if (_workContext.WorkingLanguage != null)
             {
-                languageID = SQLHelper.CheckGuidNull(_httpContext.Request.Cookies[cookieName].Value);
+                languageID = _workContext.WorkingLanguage.ID;
             }
 
            return GetResource(format, languageID);

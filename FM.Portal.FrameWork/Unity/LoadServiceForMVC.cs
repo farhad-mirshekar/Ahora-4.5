@@ -11,6 +11,7 @@ using Unity.Injection;
 using FM.Portal.Core.Common;
 using FM.Portal.FrameWork.Email;
 using FM.Portal.Core.Common.Serializer;
+using Unity.Lifetime;
 
 namespace FM.Portal.FrameWork.Unity
 {
@@ -160,6 +161,7 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<ILocaleStringResourceDataSource, LocaleStringResourceDataSource>();
             container.RegisterType<ILocaleStringResourceService, LocaleStringResourceService>();
 
+            container.RegisterType<IWorkContext, WebWorkContext>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ICompareProductService, CompareProductService>();
             container.RegisterType<ICacheService, CacheService>();

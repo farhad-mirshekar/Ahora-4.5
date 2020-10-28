@@ -2,10 +2,12 @@
 @using FM.Portal.Core.Common
 @{ 
     var languageID = Helper.LanguageID;
-    var cookieName = $"{CookieDefaults.Prefix}{CookieDefaults.Language}";
-    if (HttpContext.Current.Request.Cookies[cookieName] != null)
+    foreach (var item in Model)
     {
-        languageID = SQLHelper.CheckGuidNull(HttpContext.Current.Request.Cookies[cookieName].Value);
+        if(item.CurrentLanguage != null)
+        {
+            languageID = item.CurrentLanguage.ID;
+        }
     }
 }
 <ul class="navbar-nav mt-2 pull-left">

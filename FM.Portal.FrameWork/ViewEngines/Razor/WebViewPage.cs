@@ -1,16 +1,20 @@
-﻿using FM.Portal.Core.Owin;
+﻿using FM.Portal.Core.Common;
+using FM.Portal.Core.Owin;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Domain;
 using FM.Portal.FrameWork.Localization;
+using FM.Portal.FrameWork.Unity;
 using FM.Portal.Infrastructure.DAL;
+using System;
 using System.Web;
 using Unity;
 using Unity.Injection;
+using Unity.Lifetime;
 
 namespace FM.Portal.FrameWork.ViewEngines.Razor
 {
-   public abstract class WebViewPage<TModel>: System.Web.Mvc.WebViewPage<TModel>
+    public abstract class WebViewPage<TModel> : System.Web.Mvc.WebViewPage<TModel>
     {
         private ILocaleStringResourceService _resourceService;
         private Localizer _localizer;
@@ -22,6 +26,13 @@ namespace FM.Portal.FrameWork.ViewEngines.Razor
         {
             get
             {
+                if (_resourceService == null)
+                {
+                    var container = new UnityContainer();
+                    var unityDependencyResolver = new UnityDependencyResolver(container);
+                    _resourceService = (ILocaleStringResourceService)unityDependencyResolver.GetService(typeof(ILocaleStringResourceService));
+                }
+
                 if (_localizer == null)
                 {
                     //null localizer
@@ -48,20 +59,6 @@ namespace FM.Portal.FrameWork.ViewEngines.Razor
                 }
                 return _localizer;
             }
-        }
-
-        public override void InitHelpers()
-        {
-            base.InitHelpers();
-            var container = new UnityContainer();
-
-            container.RegisterType<IRequestInfo, RequestInfo>();
-            container.RegisterType<ILocaleStringResourceDataSource, LocaleStringResourceDataSource>();
-            container.RegisterType<ILocaleStringResourceService, LocaleStringResourceService>();
-            container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
-                   new HttpContextWrapper(HttpContext.Current)));
-
-            _resourceService = container.Resolve<ILocaleStringResourceService>();
         }
     }
 
