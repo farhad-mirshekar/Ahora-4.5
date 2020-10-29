@@ -71,32 +71,6 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             }
         }
 
-        [HttpPost, Route("TypeShowArticle")]
-        public IHttpActionResult TypeShowArticle()
-        {
-            try
-            {
-                var result = EnumExtensions.GetValues<ShowArticleType>();
-                if (result.Count > 0)
-                    return Ok(Result<List<EnumCast>>.Successful(data: result));
-                else
-                    return Ok(Result<List<EnumCast>>.Failure());
-            }
-            catch { return NotFound(); }
-        }
-        [HttpPost, Route("TypeCommentArticle")]
-        public IHttpActionResult TypeCommentArticle()
-        {
-            try
-            {
-                var result = EnumExtensions.GetValues<CommentArticleType>();
-                if (result.Count > 0)
-                    return Ok(Result<List<EnumCast>>.Successful(data: result));
-                else
-                    return Ok(Result<List<EnumCast>>.Failure());
-            }
-            catch { return NotFound(); }
-        }
         [HttpPost, Route("Remove/{ID:guid}")]
         public IHttpActionResult Remove(Guid ID)
         {
