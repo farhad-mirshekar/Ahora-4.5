@@ -20,7 +20,7 @@
         <header class="sticky-top py-1">
             <div class="row">
                 <div class="col-md-10">
-                    @{Html.RenderAction("RenderMenu", "Home"); }
+                    @{Html.RenderAction("RenderMenu", "Common"); }
                 </div>
                 <div class="col-md-2">
                     @{ Html.RenderAction("LanguageSelector", "Common");}
@@ -35,7 +35,7 @@
             @RenderBody()
         </main>
     </div>
-    @Html.Action("RenderFooter", "Home")
+    @Html.Action("RenderFooter", "Common")
 
     <script>
         $('a.dropdown-toggle').on('click', function (e) {

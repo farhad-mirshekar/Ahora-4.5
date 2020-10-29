@@ -1,19 +1,19 @@
 ﻿@section BannerSection{
-    @{Html.RenderAction("RenderSlide", "Home");}
+    @{Html.RenderAction("RenderSlide", "Common");}
 }
 @section SearchSection{
-    @{Html.RenderAction("AutoComplateSearch", "Home");}
+    @{Html.RenderAction("AutoComplateSearch", "Common");}
 }
 @section BodySection{
     <div class="row">
         <div class="col-md-9 mt-2">
-            @{Html.RenderAction("SaleProduct", "Home");}
-            @{Html.RenderAction("TrendingProduct", "Home");}
+            @{Html.RenderAction("SaleProduct", "Common");}
+            @{Html.RenderAction("TrendingProduct", "Common");}
         </div>
         <div class="col-md-3 mt-2">
-            @{ Html.RenderAction("GetLastArticle", "Home");}
-            @{ Html.RenderAction("GetLastNews", "Home");}
-            @{ Html.RenderAction("GetLastEvents", "Home");}
+            @{ Html.RenderAction("GetLastArticle", "Common");}
+            @{ Html.RenderAction("GetLastNews", "Common");}
+            @{ Html.RenderAction("GetLastEvents", "Common");}
         </div>
     </div>
 }

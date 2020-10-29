@@ -10,33 +10,14 @@ namespace Ahora.WebApp.Controllers
 {
     public partial class HomeController : BaseController<FM.Portal.Core.Service.IProductService>
     {
-        private readonly IAttachmentService _attachmentService;
-        private readonly IMenuService _menuService;
-        private readonly IArticleService _articleService;
-        private readonly INewsService _newsService;
-        private readonly ISliderService _sliderService;
-        private readonly IEventsService _eventsService;
         private readonly IContactService _contactService;
-        private readonly ILinkService _linkService;
+
         public HomeController(IProductService service
-                             , IAttachmentService attachmentService
-                             , IMenuService menuService
-                             , IArticleService articleService
-                             , INewsService newsService
-                             , ISliderService sliderService
-                             , IEventsService eventsService
-                             , IContactService contactService
-                             , ILinkService linkService) : base(service)
+                             , IContactService contactService) : base(service)
         {
-            _attachmentService = attachmentService;
-            _menuService = menuService;
-            _articleService = articleService;
-            _newsService = newsService;
-            _sliderService = sliderService;
-            _eventsService = eventsService;
             _contactService = contactService;
-            _linkService = linkService;
         }
+
         // GET: Home
         public ActionResult Index()
         {
@@ -72,61 +53,6 @@ namespace Ahora.WebApp.Controllers
             }
 
         }
-        #region ChildAction
-        [ChildActionOnly]
-        public virtual ActionResult TrendingProduct()
-        {
-            var result = _service.List(new ProductListVM() { SpecialOffer = true });
-            return PartialView("_PartialProduct", result.Data.Skip((1 - 1) * Helper.CountShowProduct).Take(Helper.CountShowProduct).ToList());
-        }
-        [ChildActionOnly]
-        public virtual ActionResult SaleProduct()
-        {
-            var result = _service.List(new ProductListVM() { HasDiscount = true });
-            return PartialView("_PartialProduct", result.Data.Skip((1 - 1) * Helper.CountShowProduct).Take(Helper.CountShowProduct).ToList());
-        }
-
-        [ChildActionOnly]
-        public virtual ActionResult GetLastArticle()
-        {
-            var result = _articleService.List(new ArticleListVM() { PageSize = Helper.CountShowArticle });
-            return PartialView("~/Views/Shared/_PartialSideArticle.cshtml", result.Data);
-        }
-        [ChildActionOnly]
-        public virtual ActionResult GetLastNews()
-        {
-            var result = _newsService.List(new NewsListVM() { PageSize = Helper.CountShowNews});
-            return PartialView("~/Views/Shared/_PartialSideNews.cshtml", result.Data);
-        }
-        [ChildActionOnly]
-        public ActionResult RenderMenu()
-        {
-            var result = _menuService.GetMenuForWeb("/1/");
-            return PartialView("~/Views/Home/_PartialMenu.cshtml", result.Data);
-        }
-        [ChildActionOnly]
-        public ActionResult RenderSlide()
-        {
-            var result = _sliderService.List(new SliderListVM() { PageSize = Helper.CountShowSlider });
-            return PartialView("~/Views/Shared/_PartialSlider.cshtml", result.Data);
-        }
-        [ChildActionOnly]
-        public ActionResult GetLastEvents()
-        {
-            var result = _eventsService.List(new EventsListVM() { PageSize = Helper.CountShowEvents });
-            return PartialView("~/Views/Shared/_PartialSideEvents.cshtml", result.Data);
-        }
-        [ChildActionOnly]
-        public ActionResult AutoComplateSearch()
-        {
-            return PartialView("~/Views/Shared/_PartialAutoComplateSearch.cshtml");
-        }
-        [ChildActionOnly]
-        public ActionResult RenderFooter()
-        {
-            var linkResult = _linkService.List(new LinkListVM() {PageIndex = 0 });
-            return PartialView("~/Views/Shared/_PartialFooter.cshtml",linkResult.Data);
-        }
-        #endregion
+        
     }
 }
