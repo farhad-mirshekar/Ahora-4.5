@@ -24,13 +24,14 @@ namespace FM.Portal.Core.Model
         public string TrackingCode { get; set; }
         public List<String> Tags { get; set; }
         public string ReadingTime { get; set; }
+        public Guid? LanguageID { get; set; }
 
         //for only show 
         public string CreatorName { get; set; }
         public string FileName { get; set; }
         public PathType PathType { get; set; }
 
-        public string Path => PathType.ToString();
+        public string Path => "Article";
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public int Total { get; set; }
     }

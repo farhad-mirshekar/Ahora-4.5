@@ -69,6 +69,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
                             obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
                             obj.ReadingTime = SQLHelper.CheckStringNull(dr["ReadingTime"]);
+                            obj.LanguageID = SQLHelper.CheckGuidNull(dr["LanguageID"]);
                         }
                     }
 
@@ -115,6 +116,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
                             obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
                             obj.ReadingTime = SQLHelper.CheckStringNull(dr["ReadingTime"]);
+                            obj.LanguageID = SQLHelper.CheckGuidNull(dr["LanguageID"]);
                         }
                     }
 
@@ -132,10 +134,11 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var param = new SqlParameter[3];
+                var param = new SqlParameter[4];
                 param[0] = new SqlParameter("@Title", listVM?.Title);
                 param[1] = new SqlParameter("@PageSize", listVM.PageSize);
                 param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
+                param[3] = new SqlParameter("@LanguageID", listVM.LanguageID);
 
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsArticle", param);
             }
@@ -153,14 +156,14 @@ namespace FM.Portal.Infrastructure.DAL
                 {
                     lock (con)
                     {
-                        SqlParameter[] param = new SqlParameter[13];
+                        SqlParameter[] param = new SqlParameter[14];
                         param[0] = new SqlParameter("@ID", model.ID);
 
                         param[1] = new SqlParameter("@Body", model.Body);
                         param[2] = new SqlParameter("@CategoryID", model.CategoryID);
                         param[3] = new SqlParameter("@CommentStatus", (byte)model.CommentStatus);
                         param[4] = new SqlParameter("@Description", model.Description);
-                        param[5] = new SqlParameter("@isNewRecord", isNewRecord);
+                        param[5] = new SqlParameter("@IsNewRecord", isNewRecord);
                         param[6] = new SqlParameter("@IsShow", (bool)model.IsShow);
                         param[7] = new SqlParameter("@MetaKeywords", model.MetaKeywords);
                         param[8] = new SqlParameter("@Title", model.Title);
@@ -168,10 +171,13 @@ namespace FM.Portal.Infrastructure.DAL
                         param[10] = new SqlParameter("@UserID", _requestInfo.UserId);
                         param[11] = new SqlParameter("@TrackingCode", model.TrackingCode);
                         param[12] = new SqlParameter("@ReadingTime", model.ReadingTime);
+                        param[13] = new SqlParameter("@LanguageID", model.LanguageID);
 
-                        SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyArticle", param);
-
-                        return Get(model.ID);
+                       int result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyArticle", param);
+                        if (result > 0)
+                            return Get(model.ID);
+                        else
+                            return Result<Article>.Failure(message: "خطا در درج / ویرایش");
                     }
                 }
             }

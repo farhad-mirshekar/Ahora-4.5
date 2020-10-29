@@ -1820,14 +1820,15 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('articleController', articleController);
-    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption'];
-    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption) {
+    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption','languageService'];
+    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption,languageService) {
         let article = $scope;
         article.Model = {};
         article.main = {};
         article.search = [];
         article.search.Model = {};
         article.Model.Errors = [];
+        article.languageList = [];
         article.pic = { type: '4', allowMultiple: false, validTypes: 'image/jpeg' };
         article.pic.list = [];
         article.pic.listUploaded = [];
@@ -1895,6 +1896,8 @@
             return $q.resolve().then(() => {
                 return fillDropCategory();
             }).then(() => {
+                return fillDropLanguage();
+            }).then(() => { 
                 article.state = 'add';
                 $location.path('/article/add');
             }).finally(loadingService.hide);
@@ -1919,6 +1922,8 @@
             }).then(() => {
                 return fillDropCategory();
             }).then(() => {
+                return fillDropLanguage();
+            }).then(() => { 
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
                 article.pic.listUploaded = [];
@@ -2071,6 +2076,22 @@
             article.search.searchPanel = false;
             article.grid.getlist();
             loadingService.hide();
+        }
+        function fillDropLanguage() {
+            loadingService.show();
+            article.languageList = [];
+            return $q.resolve().then(() => {
+                return languageService.list({});
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        article.languageList.push({ Name: result[i].Name, Model: result[i].ID });
+                    }
+                }
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطا در بازیابی زبان');
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------

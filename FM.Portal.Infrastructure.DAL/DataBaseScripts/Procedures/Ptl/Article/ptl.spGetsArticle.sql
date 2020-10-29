@@ -6,6 +6,7 @@ GO
 
 CREATE PROCEDURE ptl.spGetsArticle
 @Title NVARCHAR(100),
+@LanguageID UNIQUEIDENTIFIER,
 @PageSize INT,
 @PageIndex INT
 --WITH ENCRYPTION
@@ -30,8 +31,10 @@ BEGIN
 			ptl.Article Article
 		INNER JOIN org.[User] CreatorUser ON Article.UserID = CreatorUser.ID
 		LEFT JOIN ptl.Category Category ON Article.CategoryID = Category.ID
+		LEFT JOIN pbl.[Language] lng ON Article.LanguageID = lng.ID
 		WHERE
 			(@Title IS NULL OR Article.Title LIKE CONCAT('%', @Title , '%'))
+		AND (@LanguageID IS NULL OR Article.LanguageID = @LanguageID)
 	),TempCount AS
 	(
 		SELECT 
