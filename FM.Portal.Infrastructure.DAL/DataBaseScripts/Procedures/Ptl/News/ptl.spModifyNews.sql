@@ -17,7 +17,8 @@ CREATE PROCEDURE ptl.spModifyNews
 @UserID uniqueidentifier,
 @TrackingCode nvarchar(100),
 @IsNewRecord BIT,
-@ReadingTime NVARCHAR(200)
+@ReadingTime NVARCHAR(200),
+@LanguageID UNIQUEIDENTIFIER
 WITH ENCRYPTION
 AS
 BEGIN
@@ -28,9 +29,9 @@ BEGIN
 			SET @TrackingCode = (select STR(FLOOR(RAND(CHECKSUM(NEWID()))*(9999999999-1000000000+1)+1000000000)))
 
 			INSERT INTO [ptl].[News]
-				([ID],Body,CommentStatus,CreationDate,[Description],DisLikeCount,IsShow,LikeCount,MetaKeywords,ModifiedDate,RemoverID,Title,UrlDesc,UserID,VisitedCount , TrackingCode,CategoryID,ReadingTime)
+				([ID],Body,CommentStatus,CreationDate,[Description],DisLikeCount,IsShow,LikeCount,MetaKeywords,ModifiedDate,RemoverID,Title,UrlDesc,UserID,VisitedCount , TrackingCode,CategoryID,ReadingTime,LanguageID)
 			VALUES
-				(@ID , @Body  , @CommentStatus , GETDATE() , @Description , 0,@IsShow , 0 , @MetaKeywords , GETDATE() , null , @Title ,@UrlDesc, @UserID , 0 , @TrackingCode,@CategoryID,@ReadingTime)
+				(@ID , @Body  , @CommentStatus , GETDATE() , @Description , 0,@IsShow , 0 , @MetaKeywords , GETDATE() , null , @Title ,@UrlDesc, @UserID , 0 , @TrackingCode,@CategoryID,@ReadingTime,@LanguageID)
 		END
 	ELSE -- update
 		BEGIN
@@ -46,7 +47,8 @@ BEGIN
 				[IsShow] = @IsShow,
 				[CategoryID] = @CategoryID,
 				[UserID] = @UserID,
-				[ReadingTime] = @ReadingTime
+				[ReadingTime] = @ReadingTime,
+				[LanguageID] = @LanguageID
 			WHERE
 				[ID] = @ID
 		END

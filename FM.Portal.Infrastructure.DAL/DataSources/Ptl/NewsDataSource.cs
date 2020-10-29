@@ -47,31 +47,9 @@ namespace FM.Portal.Infrastructure.DAL
                 {
                     using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetNews", param))
                     {
-                        while (dr.Read())
-                        {
-                            obj.Body = SQLHelper.CheckStringNull(dr["Body"]);
-                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
-                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
-                            obj.CategoryID = SQLHelper.CheckGuidNull(dr["CategoryID"]);
-                            obj.CommentStatus = (CommentArticleType)SQLHelper.CheckByteNull(dr["CommentStatus"]);
-                            obj.Description = SQLHelper.CheckStringNull(dr["Description"]);
-                            obj.DisLikeCount = SQLHelper.CheckIntNull(dr["DisLikeCount"]);
-                            obj.IsShow = (ShowArticleType)SQLHelper.CheckByteNull(dr["IsShow"]);
-                            obj.LikeCount = SQLHelper.CheckIntNull(dr["LikeCount"]);
-                            obj.MetaKeywords = SQLHelper.CheckStringNull(dr["MetaKeywords"]);
-                            obj.ModifiedDate = SQLHelper.CheckDateTimeNull(dr["ModifiedDate"]);
-                            obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
-                            obj.TrackingCode = SQLHelper.CheckStringNull(dr["TrackingCode"]);
-                            obj.UrlDesc = SQLHelper.CheckStringNull(dr["UrlDesc"]);
-                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
-                            obj.VisitedCount = SQLHelper.CheckIntNull(dr["VisitedCount"]);
-                            obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
-                            obj.ReadingTime = SQLHelper.CheckStringNull(dr["ReadingTime"]);
-                        }
+                        return ToModel(dr);
                     }
-
                 }
-                return Result<News>.Successful(data: obj);
             }
             catch (Exception e) { return Result<News>.Failure(); }
         }
@@ -90,34 +68,10 @@ namespace FM.Portal.Infrastructure.DAL
                 {
                     using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetNews", param))
                     {
-                        while (dr.Read())
-                        {
-                            obj.Body = SQLHelper.CheckStringNull(dr["Body"]);
-                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
-                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
-                            obj.CategoryID = SQLHelper.CheckGuidNull(dr["CategoryID"]);
-                            obj.CommentStatus = (CommentArticleType)SQLHelper.CheckByteNull(dr["CommentStatus"]);
-                            obj.Description = SQLHelper.CheckStringNull(dr["Description"]);
-                            obj.DisLikeCount = SQLHelper.CheckIntNull(dr["DisLikeCount"]);
-                            obj.IsShow = (ShowArticleType)SQLHelper.CheckByteNull(dr["IsShow"]);
-                            obj.LikeCount = SQLHelper.CheckIntNull(dr["LikeCount"]);
-                            obj.MetaKeywords = SQLHelper.CheckStringNull(dr["MetaKeywords"]);
-                            obj.ModifiedDate = SQLHelper.CheckDateTimeNull(dr["ModifiedDate"]);
-                            obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
-                            obj.TrackingCode = SQLHelper.CheckStringNull(dr["TrackingCode"]);
-                            obj.UrlDesc = SQLHelper.CheckStringNull(dr["UrlDesc"]);
-                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
-                            obj.VisitedCount = SQLHelper.CheckIntNull(dr["VisitedCount"]);
-                            obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
-                            obj.CreatorName = SQLHelper.CheckStringNull(dr["CreatorName"]);
-                            obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
-                            obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
-                            obj.ReadingTime = SQLHelper.CheckStringNull(dr["ReadingTime"]);
-                        }
+                        return ToModel(dr);
                     }
 
                 }
-                return Result<News>.Successful(data: obj);
             }
             catch (Exception e) { return Result<News>.Failure(); }
         }
@@ -130,10 +84,11 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var param = new SqlParameter[3];
+                var param = new SqlParameter[4];
                 param[0] = new SqlParameter("@Title", listVM.Title);
                 param[1] = new SqlParameter("@PageSize", listVM.PageSize);
                 param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
+                param[3] = new SqlParameter("@LanguageID", listVM.LanguageID);
 
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsNews", param);
             }
@@ -150,7 +105,7 @@ namespace FM.Portal.Infrastructure.DAL
                 {
                     lock (con)
                     {
-                        var param = new SqlParameter[13];
+                        var param = new SqlParameter[14];
                         param[0] = new SqlParameter("@ID", model.ID);
 
                         param[1] = new SqlParameter("@Body", model.Body);
@@ -165,13 +120,49 @@ namespace FM.Portal.Infrastructure.DAL
                         param[10] = new SqlParameter("@UserID", _requestInfo.UserId);
                         param[11] = new SqlParameter("@TrackingCode", model.TrackingCode);
                         param[12] = new SqlParameter("@ReadingTime", model.ReadingTime);
+                        param[13] = new SqlParameter("@LanguageID", model.LanguageID);
 
-                       var result =  SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyNews", param);
+                        var result =  SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyNews", param);
                         if(result > 0)
                             return Get(model.ID);
                         return Result<News>.Failure(message: "خطا در درج / ویرایش");
                     }
                 }
+            }
+            catch (Exception e) { throw; }
+        }
+        private Result<News> ToModel(SqlDataReader dr)
+        {
+            try
+            {
+                var obj = new News();
+
+                while (dr.Read())
+                {
+                    obj.Body = SQLHelper.CheckStringNull(dr["Body"]);
+                    obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
+                    obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
+                    obj.CategoryID = SQLHelper.CheckGuidNull(dr["CategoryID"]);
+                    obj.CommentStatus = (CommentArticleType)SQLHelper.CheckByteNull(dr["CommentStatus"]);
+                    obj.Description = SQLHelper.CheckStringNull(dr["Description"]);
+                    obj.DisLikeCount = SQLHelper.CheckIntNull(dr["DisLikeCount"]);
+                    obj.IsShow = (ShowArticleType)SQLHelper.CheckByteNull(dr["IsShow"]);
+                    obj.LikeCount = SQLHelper.CheckIntNull(dr["LikeCount"]);
+                    obj.MetaKeywords = SQLHelper.CheckStringNull(dr["MetaKeywords"]);
+                    obj.ModifiedDate = SQLHelper.CheckDateTimeNull(dr["ModifiedDate"]);
+                    obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
+                    obj.TrackingCode = SQLHelper.CheckStringNull(dr["TrackingCode"]);
+                    obj.UrlDesc = SQLHelper.CheckStringNull(dr["UrlDesc"]);
+                    obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
+                    obj.VisitedCount = SQLHelper.CheckIntNull(dr["VisitedCount"]);
+                    obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
+                    obj.CreatorName = SQLHelper.CheckStringNull(dr["CreatorName"]);
+                    obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
+                    obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
+                    obj.ReadingTime = SQLHelper.CheckStringNull(dr["ReadingTime"]);
+                    obj.LanguageID = SQLHelper.CheckGuidNull(dr["LanguageID"]);
+                }
+                return Result<News>.Successful(data: obj);
             }
             catch (Exception e) { throw; }
         }

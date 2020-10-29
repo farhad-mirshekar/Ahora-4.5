@@ -2096,13 +2096,14 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('newsController', newsController);
-    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption'];
-    function newsController($scope, $q, loadingService, $routeParams, newsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption) {
+    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption','languageService'];
+    function newsController($scope, $q, loadingService, $routeParams, newsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption, languageService) {
         let news = $scope;
         news.Model = {};
         news.main = {};
         news.search = [];
         news.search.Model = {};
+        news.languageList = [];
 
         news.pic = { type: '3', allowMultiple: false, validTypes: 'image/jpeg' };
         news.pic.listUploaded = [];
@@ -2168,6 +2169,7 @@
                 return fillDropCategory();
             }).then(() => {
                 news.attachment.reset();
+                return fillDropLanguage();
             }).then(() => {
                 news.Model = {};
                 news.state = 'add';
@@ -2207,6 +2209,8 @@
             }).then(() => {
                 return fillDropCategory();
             }).then(() => {
+                return fillDropLanguage();
+            }).then(() => { 
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
                 if (result && result.length > 0)
@@ -2323,6 +2327,22 @@
             news.search.searchPanel = false;
             news.grid.getlist();
             loadingService.hide();
+        }
+        function fillDropLanguage() {
+            loadingService.show();
+            news.languageList = [];
+            return $q.resolve().then(() => {
+                return languageService.list({});
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        news.languageList.push({ Name: result[i].Name, Model: result[i].ID });
+                    }
+                }
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطا در بازیابی زبان');
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
@@ -2866,14 +2886,15 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('eventsController', eventsController);
-    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption'];
-    function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption) {
+    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption','languageService'];
+    function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption, languageService) {
         let events = $scope;
         events.state = '';
         events.froalaOption = angular.copy(froalaOption.main);
 
         events.Model = {};
         events.Model.Errors = [];
+        events.languageList = [];
 
         events.pic = { type: '8', allowMultiple: false, validTypes: 'image/jpeg' };
         events.pic.list = [];
@@ -2946,6 +2967,8 @@
             return $q.resolve().then(() => {
                 return fillDropCategory();
             }).then(() => {
+                return fillDropLanguage();
+            }).then(() => { 
                 events.state = 'add';
                 $location.path('/events/add');
             }).finally(loadingService.hide);
@@ -2967,6 +2990,8 @@
                 }
                 return fillDropCategory();
             }).then(() => {
+                return fillDropLanguage();
+            }).then(() => { 
                 return attachmentService.list({ ParentID: events.Model.ID });
             }).then((result) => {
                 events.pic.listUploaded = [];
@@ -3125,6 +3150,22 @@
             events.search.searchPanel = false;
             events.grid.getlist();
             loadingService.hide();
+        }
+        function fillDropLanguage() {
+            loadingService.show();
+            events.languageList = [];
+            return $q.resolve().then(() => {
+                return languageService.list({});
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        events.languageList.push({ Name: result[i].Name, Model: result[i].ID });
+                    }
+                }
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطا در بازیابی زبان');
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------

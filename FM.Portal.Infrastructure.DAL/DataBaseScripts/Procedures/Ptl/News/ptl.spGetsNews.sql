@@ -6,6 +6,7 @@ GO
 
 CREATE PROCEDURE ptl.spGetsNews
 @Title NVARCHAR(100),
+@LanguageID UNIQUEIDENTIFIER,
 @PageSize INT,
 @PageIndex INT
 --WITH ENCRYPTION
@@ -39,9 +40,12 @@ BEGIN
 			org.[User] CreatorUser ON News.UserID = CreatorUser.ID
 		LEFT JOIN
 			Attachment Attachment ON News.ID = Attachment.ParentID
+		LEFT JOIN
+			pbl.[Language] lng ON News.LanguageID = lng.ID
 		WHERE
 			News.RemoverID IS NULL
 		AND (@Title IS NULL OR News.Title LIKE CONCAT ('%' , @Title , '%'))
+		AND (@LanguageID IS NULL OR News.LanguageID = @LanguageID)
 	), TempCount AS
 	(
 		SELECT

@@ -20,7 +20,7 @@ namespace FM.Portal.Core.Model
         public bool IsShow { get; set; }
         public Guid CategoryID { get; set; }
         public Guid UserID { get; set; }
-        public Guid RemoverID { get; set; }
+        public Guid? RemoverID { get; set; }
         public string TrackingCode { get; set; }
         public List<String> Tags { get; set; }
         public string ReadingTime { get; set; }

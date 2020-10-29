@@ -6,6 +6,7 @@ GO
 
 CREATE PROCEDURE ptl.spGetsEvents
 @Title AS NVARCHAR(100),
+@LanguageID UNIQUEIDENTIFIER,
 @PageSize INT,
 @PageIndex INT
 --WITH ENCRYPTION
@@ -32,8 +33,11 @@ BEGIN
 			org.[User] CreatorUser ON [Events].UserID = CreatorUser.ID
 		LEFT JOIN
 			pbl.Attachment attachment ON [Events].ID = attachment.ParentID
+		LEFT JOIN
+			pbl.[Language] lng ON [Events].LanguageID = lng.ID
 		WHERE
 			(@Title IS NULL OR [Events].Title LIKE CONCAT('%', @Title , '%'))
+		AND (@LanguageID IS NULL OR [Events].LanguageID = @LanguageID)
 	),TempCount AS
 	(
 		SELECT 
