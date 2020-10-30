@@ -108,6 +108,7 @@
     <Compile Include="Extention\Category\CategoryPortalExtention.cs" />
     <Compile Include="Extention\ReadingTime\CalculateReadingTime.cs" />
     <Compile Include="Extention\ReadingTime\CalculateWordsCount.cs" />
+    <Compile Include="Infrastructure\IStartupTask.cs" />
     <Compile Include="LucenceSearch\Product\LucenceProductIndexSearch.cs" />
     <Compile Include="LucenceSearch\StronglyTyped.cs" />
     <Compile Include="Owin\Claims.cs" />

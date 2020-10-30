@@ -1,6 +1,7 @@
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Domain;
+using FM.Portal.FrameWork.AutoMapper;
 using FM.Portal.FrameWork.Caching;
 using FM.Portal.FrameWork.Unity;
 using FM.Portal.Infrastructure.DAL;
@@ -26,6 +27,8 @@ namespace Ahora.WebApp
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             UnityConfig.RegisterComponents();
             siteOption();
+            var autoMapper = new AutoMapperStartupTask();
+            autoMapper.Execute();
         }
         private void siteOption()
         {

@@ -1,24 +1,14 @@
-﻿@model List<Language>
-@using FM.Portal.Core.Common
-@{ 
-    var languageID = Helper.LanguageID;
-    foreach (var item in Model)
-    {
-        if(item.CurrentLanguage != null)
-        {
-            languageID = item.CurrentLanguage.ID;
-        }
-    }
-}
+﻿@model Ahora.WebApp.Models.Pbl.Language.LanguageSelectorModel
+
 <ul class="navbar-nav mt-2 pull-left">
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             انتخاب زبان
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="position:absolute;">
-            @foreach (var item in Model)
+            @foreach (var item in Model.AvailableLanguage)
             {
-                if (item.ID == languageID)
+                if (item.ID == Model.CurrentLanguageID)
                 {
                     <a class="dropdown-item active" href="@Url.RouteUrl("ChangeLanguage" , new { LanguageID=item.ID })">@item.UniqueSeoCode</a>
                 }
