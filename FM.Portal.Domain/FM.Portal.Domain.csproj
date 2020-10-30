@@ -89,6 +89,7 @@
     <Compile Include="App\ShippingCostService.cs" />
     <Compile Include="App\ProductVariantAttributeService.cs" />
     <Compile Include="App\ShoppingCartItemService.cs" />
+    <Compile Include="Org\Authentication\FormsAuthenticationService.cs" />
     <Compile Include="Org\CommandService.cs" />
     <Compile Include="Org\DepartmentService.cs" />
     <Compile Include="Org\PositionService.cs" />

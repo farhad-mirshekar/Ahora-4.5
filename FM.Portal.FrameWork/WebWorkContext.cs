@@ -13,5 +13,7 @@ namespace FM.Portal.FrameWork
             _languageService = languageService;
         }
         public Language WorkingLanguage { get; set; }
+        public User User { get; set; }
+        public bool IsAdmin { get; set; }
     }
 }

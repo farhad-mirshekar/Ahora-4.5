@@ -1,36 +1,37 @@
 ﻿using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
-using Entity = FM.Portal.Core.Model.User;
 using System.Web.Mvc;
 using System;
-using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using System.Net.Http;
 using System.Collections.Generic;
-using System.Security.Claims;
-using FM.Portal.Core.Owin;
-using System.Web.Security;
-using System.Web;
 using System.Linq;
-using Newtonsoft.Json;
+using FM.Portal.Core.Common;
+using FM.Portal.Core.Common.Serializer;
 
 namespace Ahora.WebApp.Controllers
 {
     public class AccountController : BaseController<IUserService>
     {
-        private readonly IRequestInfo _requestInfo;
         private readonly IPositionService _positionService;
+        private readonly IAuthenticationService _authenticationService;
+        private readonly IWorkContext _workContext;
+        private readonly IObjectSerializer _objectSerializer;
         public AccountController(IUserService service
-                                 , IRequestInfo requestInfo
-                                 , IPositionService positionService) : base(service)
+                                 , IPositionService positionService
+                                 , IAuthenticationService authenticationService
+                                 , IWorkContext workContext
+                                 , IObjectSerializer objectSerializer) : base(service)
         {
-            _requestInfo = requestInfo;
             _positionService = positionService;
+            _authenticationService = authenticationService;
+            _workContext = workContext;
+            _objectSerializer = objectSerializer;
         }
 
-        // GET: Account
+        #region Login / Register / SignOut
         public ActionResult Login(string returnurl)
         {
             TempData["returnUrl"] = "";
@@ -72,13 +73,26 @@ namespace Ahora.WebApp.Controllers
                 return View(registerVM);
             else
             {
-                SetAuthCookie(result.Data.ID.ToString(), "User", false);
-                Session.RemoveAll();
-                Session.Add("login", true);
-                Session.Timeout = 30;
+                _authenticationService.SignIn(result.Data, false);
                 return RedirectToRoute("Home");
             }
         }
+
+        [Route("SignOut"), HttpPost]
+        public ActionResult SignOut(string type)
+        {
+            _authenticationService.SignOut();
+            switch (type)
+            {
+                case "admin":
+                    return Json(new { Success = true, Data = true });
+                default:
+                    return RedirectToAction("Index", "Home");
+            }     
+        }
+        #endregion
+
+        #region Utilities
         [HttpPost]
         public JsonResult IsAlreadyUserName(string UserName)
         {
@@ -99,57 +113,59 @@ namespace Ahora.WebApp.Controllers
         {
             try
             {
-                var user = _service.Get(model.username, model.password, null, UserType.Unknown);
-                if (user.Success && user.Data.ID != Guid.Empty)
-                {
-                    if (user.Data.Type == UserType.کاربر_درون_سازمانی)
-                    {
-                        using (var client = new HttpClient())
-                        {
-                            client.BaseAddress = new Uri($"{Request.Url.Scheme}://{Request.Url.Authority}");
-                            client.DefaultRequestHeaders.Accept.Clear();
-                            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                            //setup login data
-                            var formContent = new FormUrlEncodedContent(new[]
-                            {  new KeyValuePair<string, string>("grant_type", "password"),
-                           new KeyValuePair<string, string>("username", model.username),
-                           new KeyValuePair<string, string>("password", model.password),
-                        });
-                            //send request
-                            HttpResponseMessage responseMessage = await client.PostAsync("/Token", formContent);
-                            var result = await responseMessage.Content.ReadAsStringAsync();
-                            var tokenvm = Newtonsoft.Json.JsonConvert.DeserializeObject<TokenVM>(result);
-                            switch (responseMessage.StatusCode)
-                            {
-                                case System.Net.HttpStatusCode.OK:
-                                    {
-                                        var positionsResult = _positionService.ListByUser(new PositionListVM() { UserID = user.Data.ID });
-                                        if (!positionsResult.Success)
-                                            return Json(new { status = 0, token = "" });
+                var userResult = _service.Get(model.username, model.password, null, UserType.Unknown);
+                if (!userResult.Success)
+                    return Json(new { status = 0, token = "" });
 
-                                        Session.RemoveAll();
-                                        SetAuthCookie(user.Data.ID.ToString(), "Admin", false);
-                                        Session.Add("login", true);
-                                        Session.Timeout = 30;
-                                        return Json(new { status = 1 , type = 1, authorizationData = JsonConvert.SerializeObject(tokenvm), currentUserPositions = JsonConvert.SerializeObject(positionsResult.Data), currentUserPosition = JsonConvert.SerializeObject(positionsResult.Data.Where(x => x.Default == true).First()) });
-                                    }
-                                default:
-                                    return Json(new { status = 0, token = "" });
-                            }
-                        }
-                    }
-                    else
+                var user = userResult.Data;
+                if (user.Type == UserType.کاربر_درون_سازمانی)
+                {
+                    using (var client = new HttpClient())
                     {
-                        SetAuthCookie(user.Data.ID.ToString(), "User", false);
-                        Session.RemoveAll();
-                        Session.Add("login", true);
-                        Session.Timeout = 30;
-                        return Json(new { status = 1, token = "", userid = "", type = user.Data.Type, url = returnUrl });
+                        client.BaseAddress = new Uri($"{Request.Url.Scheme}://{Request.Url.Authority}");
+                        client.DefaultRequestHeaders.Accept.Clear();
+                        client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                        //setup login data
+                        var formContent = new FormUrlEncodedContent(new[]
+                        {  new KeyValuePair<string, string>("grant_type", "password"),
+                                new KeyValuePair<string, string>("username", model.username),
+                                new KeyValuePair<string, string>("password", model.password),
+                            });
+                        //send request
+                        HttpResponseMessage responseMessage = await client.PostAsync("/Token", formContent);
+                        var result = await responseMessage.Content.ReadAsStringAsync();
+                        var tokenvm = _objectSerializer.DeSerialize<TokenVM>(result);
+                        switch (responseMessage.StatusCode)
+                        {
+                            case System.Net.HttpStatusCode.OK:
+                                {
+                                    var positionsResult = _positionService.ListByUser(new PositionListVM() { UserID = user.ID });
+                                    if (!positionsResult.Success)
+                                        return Json(new { status = 0, token = "" });
+
+                                    _authenticationService.SignIn(user, false);
+                                    _workContext.User = user;
+                                    _workContext.IsAdmin = true;
+                                    return Json(new
+                                    {
+                                        status = 1,
+                                        type = 1,
+                                        authorizationData = _objectSerializer.Serialize(tokenvm),
+                                        currentUserPositions = _objectSerializer.Serialize(positionsResult.Data),
+                                        currentUserPosition = _objectSerializer.Serialize(positionsResult.Data.Where(x => x.Default == true).First())
+                                    });
+                                }
+                            default:
+                                return Json(new { status = 0, token = "" });
+                        }
                     }
                 }
                 else
                 {
-                    return Json(new { status = 0, token = "" });
+                    _authenticationService.SignIn(user, false);
+                    _workContext.User = user;
+                    _workContext.IsAdmin = false;
+                    return Json(new { status = 1, token = "", userid = "", type = user.Type, url = returnUrl });
                 }
             }
             catch (Exception e) { throw; }
@@ -178,7 +194,7 @@ namespace Ahora.WebApp.Controllers
 
                     if (user.Data.Type == UserType.کاربر_برون_سازمانی)
                     {
-                        SetAuthCookie(user.Data.ID.ToString(), "User", false);
+                        _authenticationService.SignIn(user.Data, false);
                     }
                     switch (responseMessage.StatusCode)
                     {
@@ -190,7 +206,7 @@ namespace Ahora.WebApp.Controllers
                                 }
                                 else if (user.Data.Type == UserType.کاربر_درون_سازمانی)
                                 {
-                                    return Json(new { status = 0 ,authorizationData = tokenvm });
+                                    return Json(new { status = 0, authorizationData = tokenvm });
                                 }
                                 return null;
                             }
@@ -202,63 +218,6 @@ namespace Ahora.WebApp.Controllers
             }
 
         }
-        [Route("SignOut"), HttpPost]
-        public ActionResult SignOut(string type)
-        {
-            Session.Clear();
-            Session.Abandon();
-            Session.RemoveAll();
-            FormsAuthentication.SignOut();
-
-            if (type == "admin")
-            {
-                return Json(new { Success = true, Data = true });
-            }
-            else
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-        }
-
-        #region Authentication
-        [NonAction]
-        private void SetAuthCookie(string userName, string roleofUser, bool presistantCookie)
-        {
-            var timeout = presistantCookie ? FormsAuthentication.Timeout.TotalMinutes : 30;
-
-            var now = DateTime.UtcNow.ToLocalTime();
-            var expirationTimeSapne = TimeSpan.FromMinutes(timeout);
-
-            var authTicket = new FormsAuthenticationTicket(
-                1,
-                userName,
-                now,
-                now.Add(expirationTimeSapne),
-                presistantCookie,
-                roleofUser,
-                FormsAuthentication.FormsCookiePath
-                );
-
-            var encryptedTicket = FormsAuthentication.Encrypt(authTicket);
-
-            var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)
-            {
-                HttpOnly = true,
-                Secure = FormsAuthentication.RequireSSL,
-                Path = FormsAuthentication.FormsCookiePath
-            };
-
-            if (FormsAuthentication.CookieDomain != null)
-            {
-                authCookie.Domain = FormsAuthentication.CookieDomain;
-            }
-
-            if (presistantCookie)
-                authCookie.Expires = DateTime.Now.AddMinutes(timeout);
-
-            Response.Cookies.Add(authCookie);
-        }
-        #endregion //Authentication
+        #endregion
     }
 }

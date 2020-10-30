@@ -24,6 +24,6 @@ BEGIN
 		(@Password IS NULL OR [Password] = @Password) AND
 		(@NationalCode IS NULL OR [NationalCode] = @NationalCode) AND
 		(@ID IS NULL OR [ID] = @ID) AND
-		(@UserType IS NULL OR [UserType] = @UserType) AND
+		(@UserType < 1 OR [UserType] = @UserType) AND
 		[Enabled] = 1
 END

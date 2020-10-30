@@ -40,7 +40,7 @@ namespace FM.Portal.Infrastructure.DAL
 
                     SQLHelper.ExecuteNonQuery(con, System.Data.CommandType.StoredProcedure, param, "org.spModifyUser");
 
-                    return this.Get(model.ID, null, null, null,UserType.Unknown);
+                    return this.Get(model.ID, null, null, null, UserType.Unknown);
                 }
             }
             catch
@@ -48,26 +48,17 @@ namespace FM.Portal.Infrastructure.DAL
                 return Result<User>.Failure();
             }
         }
-        public Result<User> Get(Guid? ID, string Username, string Password , string NationalCode , UserType userType)
+        public Result<User> Get(Guid? ID, string Username, string Password, string NationalCode, UserType userType)
         {
             try
             {
-                User obj = new User();
+                var obj = new User();
                 SqlParameter[] param = new SqlParameter[5];
-                param[0] = new SqlParameter("@ID", SqlDbType.UniqueIdentifier);
-                param[0].Value = (object)ID ?? DBNull.Value;
-
-                param[1] = new SqlParameter("@Username", SqlDbType.VarChar);
-                param[1].Value = Username != null ? (object)Username : DBNull.Value;
-
-                param[2] = new SqlParameter("@Password", SqlDbType.VarChar);
-                param[2].Value = Password != null ? (object)Password : DBNull.Value;
-
-                param[3] = new SqlParameter("@NationalCode", SqlDbType.VarChar);
-                param[3].Value = NationalCode != null ? (object)NationalCode : DBNull.Value;
-
-                param[4] = new SqlParameter("@UserType", SqlDbType.TinyInt);
-                param[4].Value = userType != UserType.Unknown ? (object)userType : DBNull.Value;
+                param[0] = new SqlParameter("@ID", ID.HasValue ? ID.Value : (object)DBNull.Value);
+                param[1] = new SqlParameter("@Username", string.IsNullOrEmpty(Username) ? (object)DBNull.Value : Username);
+                param[2] = new SqlParameter("@Password", string.IsNullOrEmpty(Password) ? (object)DBNull.Value : Password);
+                param[3] = new SqlParameter("@NationalCode", string.IsNullOrEmpty(NationalCode) ? (object)DBNull.Value : NationalCode);
+                param[4] = new SqlParameter("@UserType", userType);
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
@@ -88,7 +79,10 @@ namespace FM.Portal.Infrastructure.DAL
                     }
 
                 }
-                return Result<User>.Successful(data: obj);
+                if(obj.ID != Guid.Empty)
+                    return Result<User>.Successful(data: obj);
+                else
+                    return Result<User>.Failure();
             }
             catch
             {
@@ -113,17 +107,17 @@ namespace FM.Portal.Infrastructure.DAL
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     SqlParameter[] param = new SqlParameter[3];
-                    param[0] = new SqlParameter("@ID",model.UserID);
+                    param[0] = new SqlParameter("@ID", model.UserID);
                     param[1] = new SqlParameter("@Password", model.NewPassword);
                     param[2] = new SqlParameter("@PasswordExpireDate", DateTime.Now);
-                   int i= SQLHelper.CheckIntNull(SQLHelper.ExecuteScalar(con, CommandType.StoredProcedure, "org.spSetUserPassword", param));
+                    int i = SQLHelper.CheckIntNull(SQLHelper.ExecuteScalar(con, CommandType.StoredProcedure, "org.spSetUserPassword", param));
                     if (i > 0)
-                        return Result.Successful(message:"تغییر رمز عبور با موفقیت انجام گرفت");
+                        return Result.Successful(message: "تغییر رمز عبور با موفقیت انجام گرفت");
                     else
-                    return Result.Failure(message:"خطایی رخ داده است");
+                        return Result.Failure(message: "خطایی رخ داده است");
                 }
             }
-            catch(Exception e) { throw; }
+            catch (Exception e) { throw; }
         }
 
         public DataTable List()

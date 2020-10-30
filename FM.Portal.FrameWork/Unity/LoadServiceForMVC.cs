@@ -165,11 +165,15 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ICompareProductService, CompareProductService>();
             container.RegisterType<ICacheService, CacheService>();
+
             container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));
+
             container.RegisterType<IRequestInfo, RequestInfo>();
             container.RegisterType<IAppSetting, AppSetting>();
             container.RegisterType<IObjectSerializer, ObjectSerializer>();
+
+            container.RegisterType<IAuthenticationService, FormsAuthenticationService>();
 
             DependencyResolver.SetResolver(new Unity.UnityDependencyResolver(container));
         }
