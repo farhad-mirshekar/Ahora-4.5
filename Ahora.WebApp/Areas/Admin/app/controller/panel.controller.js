@@ -1842,7 +1842,7 @@
         article.editArticle = editArticle;
         article.search.clear = clear;
         article.ViewStatusType = toolsService.arrayEnum(enumService.ViewStatusType);
-        article.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
+        article.CommentStatusType = toolsService.arrayEnum(enumService.CommentStatusType);
         init();
         article.main.changeState = {
             add: add,
@@ -2120,7 +2120,7 @@
         news.editNews = editNews;
         news.search.clear = clear;
         news.ViewStatusType = toolsService.arrayEnum(enumService.ViewStatusType);
-        news.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
+        news.CommentStatusType = toolsService.arrayEnum(enumService.CommentStatusType);
         news.grid = {
             bindingObject: news
             , columns: [{ name: 'Title', displayName: 'عنوان خبر' },
@@ -2907,7 +2907,7 @@
         events.search.clear = clear;
 
         events.ViewStatusType = toolsService.arrayEnum(enumService.ViewStatusType);
-        events.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
+        events.CommentStatusType = toolsService.arrayEnum(enumService.CommentStatusType);
         events.grid = {
             bindingObject: events
             , columns: [{ name: 'Title', displayName: 'عنوان رویداد' },

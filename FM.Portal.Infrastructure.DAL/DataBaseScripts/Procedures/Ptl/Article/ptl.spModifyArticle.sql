@@ -10,7 +10,7 @@ CREATE PROCEDURE ptl.spModifyArticle
 @Body nvarchar(max),
 @MetaKeywords nvarchar(400),
 @Description nvarchar(max),
-@CommentStatus Tinyint,
+@CommentStatusType Tinyint,
 @UrlDesc nvarchar(max),
 @ViewStatusType TINYINT,
 @CategoryID uniqueidentifier,
@@ -28,9 +28,9 @@ BEGIN
 			SET @TrackingCode = (select STR(FLOOR(RAND(CHECKSUM(NEWID()))*(9999999999-1000000000+1)+1000000000)))
 
 			INSERT INTO [ptl].[Article]
-				([ID],Body,CommentStatus,CreationDate,[Description],DisLikeCount,ViewStatusType,LikeCount,MetaKeywords,ModifiedDate,RemoverID,Title,UrlDesc,UserID,VisitedCount , TrackingCode,CategoryID,ReadingTime,LanguageID)
+				([ID],Body,CommentStatusType,CreationDate,[Description],DisLikeCount,ViewStatusType,LikeCount,MetaKeywords,ModifiedDate,RemoverID,Title,UrlDesc,UserID,VisitedCount , TrackingCode,CategoryID,ReadingTime,LanguageID)
 			VALUES
-				(@ID , @Body  , @CommentStatus , GETDATE() , @Description , 0,@ViewStatusType , 0 , @MetaKeywords , GETDATE() , null , @Title ,@UrlDesc, @UserID , 0 , @TrackingCode,@CategoryID,@ReadingTime,@LanguageID)
+				(@ID , @Body  , @CommentStatusType , GETDATE() , @Description , 0,@ViewStatusType , 0 , @MetaKeywords , GETDATE() , null , @Title ,@UrlDesc, @UserID , 0 , @TrackingCode,@CategoryID,@ReadingTime,@LanguageID)
 		END
 	ELSE -- update
 		BEGIN
@@ -41,7 +41,7 @@ BEGIN
 				[Body] = @Body ,
 				[MetaKeywords] = @MetaKeywords,
 				[Description] = @Description,
-				[CommentStatus] = @CommentStatus,
+				[CommentStatusType] = @CommentStatusType,
 				[UrlDesc] = @UrlDesc,
 				[ViewStatusType] = @ViewStatusType,
 				[CategoryID] = @CategoryID,

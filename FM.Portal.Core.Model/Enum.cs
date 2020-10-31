@@ -42,7 +42,7 @@
         عدم_نمایش = 1,
         نمایش = 2
     }
-    public enum CommentArticleType : byte
+    public enum CommentStatusType : byte
     {
         نامشخص = 0,
         بسته = 1,

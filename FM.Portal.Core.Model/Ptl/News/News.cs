@@ -12,7 +12,7 @@ namespace FM.Portal.Core.Model
         public string Body { get; set; }
         public string MetaKeywords { get; set; }
         public string Description { get; set; }
-        public CommentArticleType CommentStatus { get; set; }
+        public CommentStatusType CommentStatusType { get; set; }
         public int VisitedCount { get; set; }
         public int LikeCount { get; set; }
         public int DisLikeCount { get; set; }

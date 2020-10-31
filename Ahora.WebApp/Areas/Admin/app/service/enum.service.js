@@ -36,7 +36,7 @@
 				'1': 'عدم نمایش',
 				'2': 'نمایش'
 			},
-			enumService.CommentArticleType = {
+			enumService.CommentStatusType = {
 				'1': 'بسته',
 				'2': 'باز'
 			},

@@ -75,7 +75,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.CategoryID = SQLHelper.CheckGuidNull(dr["CategoryID"]);
-                            obj.CommentStatus = (CommentArticleType)SQLHelper.CheckByteNull(dr["CommentStatus"]);
+                            obj.CommentStatusType = (CommentStatusType)SQLHelper.CheckByteNull(dr["CommentStatusType"]);
                             obj.Description = SQLHelper.CheckStringNull(dr["Description"]);
                             obj.DisLikeCount = SQLHelper.CheckIntNull(dr["DisLikeCount"]);
                             obj.ViewStatusType = (ViewStatusType)SQLHelper.CheckByteNull(dr["ViewStatusType"]);
@@ -136,7 +136,7 @@ namespace FM.Portal.Infrastructure.DAL
 
                         param[1] = new SqlParameter("@Body", model.Body);
                         param[2] = new SqlParameter("@CategoryID", model.CategoryID);
-                        param[3] = new SqlParameter("@CommentStatus", (byte)model.CommentStatus);
+                        param[3] = new SqlParameter("@CommentStatusType", (byte)model.CommentStatusType);
                         param[4] = new SqlParameter("@Description", model.Description);
                         param[5] = new SqlParameter("@IsNewRecord", isNewRecord);
                         param[6] = new SqlParameter("@ViewStatusType", (byte)model.ViewStatusType);
@@ -168,7 +168,7 @@ namespace FM.Portal.Infrastructure.DAL
                     obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
                     obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                     obj.CategoryID = SQLHelper.CheckGuidNull(dr["CategoryID"]);
-                    obj.CommentStatus = (CommentArticleType)SQLHelper.CheckByteNull(dr["CommentStatus"]);
+                    obj.CommentStatusType = (CommentStatusType)SQLHelper.CheckByteNull(dr["CommentStatusType"]);
                     obj.Description = SQLHelper.CheckStringNull(dr["Description"]);
                     obj.DisLikeCount = SQLHelper.CheckIntNull(dr["DisLikeCount"]);
                     obj.ViewStatusType = (ViewStatusType)SQLHelper.CheckByteNull(dr["ViewStatusType"]);

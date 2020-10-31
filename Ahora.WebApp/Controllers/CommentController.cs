@@ -53,9 +53,9 @@ namespace Ahora.WebApp.Controllers
                         var article = _articleService.Get(DocumentID);
                         if (article.Success)
                         {
-                            switch (article.Data.CommentStatus)
+                            switch (article.Data.CommentStatusType)
                             {
-                                case CommentArticleType.باز:
+                                case CommentStatusType.باز:
                                     ViewBag.stateComment = true;
                                     break;
                             }
@@ -71,9 +71,9 @@ namespace Ahora.WebApp.Controllers
                         var article = _eventsService.Get(DocumentID);
                         if (article.Success)
                         {
-                            switch (article.Data.CommentStatus)
+                            switch (article.Data.CommentStatusType)
                             {
-                                case CommentArticleType.باز:
+                                case CommentStatusType.باز:
                                     ViewBag.stateComment = true;
                                     break;
                             }
@@ -89,9 +89,9 @@ namespace Ahora.WebApp.Controllers
                         var article = _newsService.Get(DocumentID);
                         if (article.Success)
                         {
-                            switch (article.Data.CommentStatus)
+                            switch (article.Data.CommentStatusType)
                             {
-                                case CommentArticleType.باز:
+                                case CommentStatusType.باز:
                                     ViewBag.stateComment = true;
                                     break;
                             }
