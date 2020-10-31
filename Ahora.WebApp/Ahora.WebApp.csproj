@@ -1925,6 +1925,7 @@
     <Compile Include="Models\Pbl\Language\LanguageModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\Pbl\Language\LanguageSelectorModel.cs" />
+    <Compile Include="Models\Pbl\Menu\MemuModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Providers\RefreshTokenProvider.cs" />

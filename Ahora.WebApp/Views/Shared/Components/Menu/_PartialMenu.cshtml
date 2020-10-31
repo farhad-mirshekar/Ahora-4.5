@@ -1,4 +1,4 @@
-﻿@model List<FM.Portal.Core.Model.MenuVM>
+﻿@model Ahora.WebApp.Models.Pbl.Menu.MemuModel
 @using FM.Portal.Core.Common;
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarAhora" aria-controls="navbarAhora" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,10 +7,10 @@
     <div class="collapse navbar-collapse" id="navbarAhora">
         <a class="navbar-brand" href="@Url.RouteUrl("Home")">@Helper.SiteName</a>
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            @RenderMenu(Model)
+            @RenderMenu(Model.AvailableMenu)
         </ul>
     </div>
-    @if (SQLHelper.CheckGuidNull(User.Identity.Name) != Guid.Empty)
+    @if (Model.User != null)
     {
         <div class="pull-right mr-5">
             <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
@@ -19,7 +19,7 @@
                         خوش آمدید
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        @if (User.IsInRole("User"))
+                        @if (!Model.IsAdmin)
                         {
                             <a class="dropdown-item" href="/user/home">
                                 <i class="fa fa-arrow-right"></i> ورود به پنل
@@ -69,7 +69,7 @@
         }
         else
         {
-            if (Session["login"] != null && SQLHelper.CheckBoolNull(Session["login"]))
+            if (Model.User != null)
             {
                 if (item.Url.ToLower() != "login")
                 {

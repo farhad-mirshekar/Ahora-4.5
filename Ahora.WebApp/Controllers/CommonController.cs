@@ -1,4 +1,5 @@
 ﻿using Ahora.WebApp.Models.Pbl.Language;
+using Ahora.WebApp.Models.Pbl.Menu;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
@@ -115,8 +116,17 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public ActionResult RenderMenu()
         {
-            var result = _menuService.GetMenuForWeb("/1/");
-            return PartialView(string.Format(ComponentUrl, "Menu", "_PartialMenu.cshtml"), result.Data);
+            var menusResult = _menuService.GetMenuForWeb("/1/");
+            if (!menusResult.Success)
+                return Content("");
+            var menus = menusResult.Data;
+
+            var menuModel = new MemuModel();
+            menuModel.AvailableMenu = menus;
+            menuModel.User = _workContext.User;
+            menuModel.IsAdmin = _workContext.IsAdmin;
+
+            return PartialView(string.Format(ComponentUrl, "Menu", "_PartialMenu.cshtml"), menuModel);
         }
         [ChildActionOnly]
         public ActionResult RenderSlide()
