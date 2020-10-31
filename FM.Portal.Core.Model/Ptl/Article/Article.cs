@@ -17,7 +17,7 @@ namespace FM.Portal.Core.Model
         public int LikeCount { get; set; }
         public int DisLikeCount { get; set; }
         public string UrlDesc { get; set; }
-        public bool IsShow { get; set; }
+        public ViewStatusType ViewStatusType { get; set; }
         public Guid CategoryID { get; set; }
         public Guid UserID { get; set; }
         public Guid? RemoverID { get; set; }

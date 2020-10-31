@@ -113,7 +113,7 @@ namespace FM.Portal.Infrastructure.DAL
                         param[3] = new SqlParameter("@CommentStatus", (byte)model.CommentStatus);
                         param[4] = new SqlParameter("@Description", model.Description);
                         param[5] = new SqlParameter("@IsNewRecord", isNewRecord);
-                        param[6] = new SqlParameter("@IsShow", (byte)model.IsShow);
+                        param[6] = new SqlParameter("@ViewStatusType", (byte)model.ViewStatusType);
                         param[7] = new SqlParameter("@MetaKeywords", model.MetaKeywords);
                         param[8] = new SqlParameter("@Title", model.Title);
                         param[9] = new SqlParameter("@UrlDesc", model.UrlDesc);
@@ -146,7 +146,7 @@ namespace FM.Portal.Infrastructure.DAL
                     obj.CommentStatus = (CommentArticleType)SQLHelper.CheckByteNull(dr["CommentStatus"]);
                     obj.Description = SQLHelper.CheckStringNull(dr["Description"]);
                     obj.DisLikeCount = SQLHelper.CheckIntNull(dr["DisLikeCount"]);
-                    obj.IsShow = (ShowArticleType)SQLHelper.CheckByteNull(dr["IsShow"]);
+                    obj.ViewStatusType = (ViewStatusType)SQLHelper.CheckByteNull(dr["ViewStatusType"]);
                     obj.LikeCount = SQLHelper.CheckIntNull(dr["LikeCount"]);
                     obj.MetaKeywords = SQLHelper.CheckStringNull(dr["MetaKeywords"]);
                     obj.ModifiedDate = SQLHelper.CheckDateTimeNull(dr["ModifiedDate"]);

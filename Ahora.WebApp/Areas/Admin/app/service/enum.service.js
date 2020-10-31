@@ -32,7 +32,7 @@
 				'2': 'منو',
 				'3': 'صفحه'
 			},
-			enumService.ShowArticleType = {
+			enumService.ViewStatusType = {
 				'1': 'عدم نمایش',
 				'2': 'نمایش'
 			},

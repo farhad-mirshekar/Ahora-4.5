@@ -36,7 +36,7 @@
         منو = 2,
         صفحه = 3
     }
-    public enum ShowArticleType : byte
+    public enum ViewStatusType : byte
     {
         نامشخص = 0,
         عدم_نمایش = 1,

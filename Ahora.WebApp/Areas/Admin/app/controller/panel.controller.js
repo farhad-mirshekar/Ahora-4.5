@@ -1841,7 +1841,7 @@
         article.addArticle = addArticle;
         article.editArticle = editArticle;
         article.search.clear = clear;
-        article.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
+        article.ViewStatusType = toolsService.arrayEnum(enumService.ViewStatusType);
         article.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
         init();
         article.main.changeState = {
@@ -2119,7 +2119,7 @@
         news.addNews = addNews;
         news.editNews = editNews;
         news.search.clear = clear;
-        news.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
+        news.ViewStatusType = toolsService.arrayEnum(enumService.ViewStatusType);
         news.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
         news.grid = {
             bindingObject: news
@@ -2183,18 +2183,6 @@
                 return newsService.get(model.ID);
             }).then((result) => {
                 news.Model = angular.copy(result);
-                if (news.Model.IsShow) {
-                    news.Model.IsShow = 1;
-                }
-                else {
-                    news.Model.IsShow = 0;
-                }
-                if (news.Model.CommentStatus) {
-                    news.Model.CommentStatus = 1;
-                }
-                else {
-                    news.Model.CommentStatus = 0;
-                }
                 if (news.Model.Tags !== null && news.Model.Tags.length > 0) {
                     var newOption = [];
                     for (var i = 0; i < news.Model.Tags.length; i++) {
@@ -2918,7 +2906,7 @@
         events.editEvents = editEvents;
         events.search.clear = clear;
 
-        events.typeshow = toolsService.arrayEnum(enumService.ShowArticleType);
+        events.ViewStatusType = toolsService.arrayEnum(enumService.ViewStatusType);
         events.typecomment = toolsService.arrayEnum(enumService.CommentArticleType);
         events.grid = {
             bindingObject: events
