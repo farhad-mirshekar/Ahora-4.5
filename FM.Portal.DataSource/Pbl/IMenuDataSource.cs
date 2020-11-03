@@ -7,11 +7,10 @@ namespace FM.Portal.DataSource
 {
     public interface IMenuDataSource : IDataSource
     {
-        Result<Menu> Create(Menu model);
+        Result<Menu> Insert(Menu model);
         Result<Menu> Update(Menu model);
         Result<Menu> Get(Guid ID);
-        DataTable List();
-        DataTable GetChildren(string ParentNode);
+        DataTable List(MenuListVM listVM);
         Result Delete(Guid ID);
 
     }

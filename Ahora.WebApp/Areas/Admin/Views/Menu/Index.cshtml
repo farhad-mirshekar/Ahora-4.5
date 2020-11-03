@@ -1,4 +1,4 @@
-﻿<div>
+﻿@*<div>
     <button class="btn btn-success btn-circle pull-left" ng-click="changeState.add();"><i class="fa fa-plus"></i></button>
         <tree-grid tree-data="tree.data"
                    col-defs="tree.colDefs"
@@ -7,10 +7,71 @@
                    icon-leaf="fa fa-circle-o"
                    icon-expand="fa fa-plus"
                    icon-collapse="fa fa-minus"></tree-grid>
-</div>
+</div>*@
+    <section ng-show="state==='cartable'">
+        <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
+        <portal-grid obj="grid"></portal-grid>
+    </section>
+    <section ng-show="['add','edit'].indexOf(state) !== -1">
+        <h2 class="main-title" ng-show="state==='add'">افزودن منو</h2>
+        <h2 class="main-title" ng-show="state==='edit'">ویرایش منو</h2>
+        <div id="languageSection">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-show="Model.Errors.length" class="alert alert-danger">
+                            <ul ng-repeat="row in Model.Errors">
+                                <li>{{row}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body form-horizontal">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label for="Title" class="control-label">نام منو</label>
+                        <input type="text" class="form-control" ng-model="Model.Name" placeholder="نام منو را وارد نمایید">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <label for="categoryID" class="control-label">انتخاب زبان</label>
+                        <select class="form-control" ng-model="Model.LanguageID">
+                            <option ng-repeat="row in languageList" ng-value="row.Model">{{row.Name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row" ng-show="state==='edit'">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title">آیتم های منو</span>
+                                <span ng-click="menuItem.openModalMenuItem(null);" class="btn btn-outline-info pull-left mt-1"><i class="fa fa-plus"></i></span>
 
-<div class="modal fade" dir="rtl"
-     id="menu-modal"
+                            </div>
+                            <div class="card-body">
+                                <tree-grid tree-data="menuItem.tree.data"
+                                           col-defs="menuItem.tree.colDefs"
+                                           expand-on="menuItem.tree.expandingProperty"
+                                           expand-to="menuItem.tree.expandTo"
+                                           icon-leaf="fa fa-circle-o"
+                                           icon-expand="fa fa-plus"
+                                           icon-collapse="fa fa-minus"></tree-grid>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="btn-group-justified pull-left mb-5">
+                <button type="submit" ng-click="addMenu()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
+                <button type="submit" ng-click="editMenu()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
+            </div>
+        </div>
+    </section>
+<div class="modal fade menu-item-modal" dir="rtl"
+     id="menu-item-modal"
      tabindex="-1"
      role="dialog"
      aria-hidden="true">
@@ -25,13 +86,13 @@
                     <div class="form-group">
                         <label for="CategorySub" class="control-label">نام منو</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" ng-model="Model.Name" />
+                            <input type="text" class="form-control" ng-model="menuItem.Model.Name" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="Type" class="control-label">افزودن لینک خارجی</label>
                         <div class="col-md-10">
-                            <select class="form-control" ng-model="Model.ForeignLink">
+                            <select class="form-control" ng-model="menuItem.Model.ForeignLink">
                                 <option ng-repeat="row in EnableType" ng-value="row.Model">{{row.Name}}</option>
                             </select>
                         </div>
@@ -39,23 +100,23 @@
                     <div class="form-group">
                         <label for="CategorySub" class="control-label">آدرس</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" ng-model="Model.Url" />
+                            <input type="text" class="form-control" ng-model="menuItem.Model.Url" />
                         </div>
                     </div>
-                    <div class="form-group" ng-show="Model.ForeignLink === 2">
+                    <div class="form-group" ng-show="menuItem.Model.ForeignLink === 2">
                         <label for="CategorySub" class="control-label">
                             پارامترها
                             <i class="fa fa-info-circle text-info" data-container="body" title="نحوه پر کردن پارامترها" data-toggle="popover" data-placement="left" data-content="برای جدا کردن پارامترها از ویرگول استفاده نمایید">
                             </i>
                         </label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" ng-model="Model.Parameters" />
+                            <input type="text" class="form-control" ng-model="menuItem.Model.Parameters" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="CategorySub" class="control-label">اولویت نمایش</label>
                         <div class="col-md-10">
-                            <input type="number" class="form-control" ng-model="Model.Priority" />
+                            <input type="number" class="form-control" ng-model="menuItem.Model.Priority" />
                         </div>
                     </div>
                     <div class="form-group">
@@ -65,13 +126,13 @@
                             </i>
                         </label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" ng-model="Model.IconText" />
+                            <input type="text" class="form-control" ng-model="menuItem.Model.IconText" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="Type" class="control-label">نمایش در منو</label>
                         <div class="col-md-10">
-                            <select class="form-control" ng-model="Model.Enabled">
+                            <select class="form-control" ng-model="menuItem.Model.Enabled">
                                 <option ng-repeat="row in EnableType" ng-value="row.Model">{{row.Name}}</option>
                             </select>
                         </div>
@@ -79,8 +140,8 @@
                 </div>
             </div>
             <div class="modal-footer pull-left">
-                <button type="submit" ng-click="addMenu()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
-                <button type="submit" ng-click="editMenu()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button type="submit" ng-click="menuItem.addMenuItem()" ng-show="menuItem.state==='add'" class="btn btn-success">ثبت</button>
+                <button type="submit" ng-click="menuItem.editMenuItem()" ng-show="menuItem.state==='edit'" class="btn btn-primary">ویرایش</button>
                 <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
             </div>
         </div>

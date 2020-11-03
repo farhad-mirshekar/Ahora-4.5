@@ -5,7 +5,7 @@
     app.controller('initController', initController);
     initController.$inject = ['$scope', '$rootScope', '$location', 'authenticationService', 'commandService', '$timeout'];
     function initController($scope, $rootScope, $location, authenticationService, commandService, $timeout) {
-       
+
         let init = $scope
             , path = ($rootScope.pathBuffer && $rootScope.pathBuffer !== 'init' ? $rootScope.pathBuffer : '/');
         init.main = {};
@@ -1820,8 +1820,8 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('articleController', articleController);
-    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption','languageService'];
-    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption,languageService) {
+    articleController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption', 'languageService'];
+    function articleController($scope, $q, loadingService, $routeParams, articleService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption, languageService) {
         let article = $scope;
         article.Model = {};
         article.main = {};
@@ -1897,7 +1897,7 @@
                 return fillDropCategory();
             }).then(() => {
                 return fillDropLanguage();
-            }).then(() => { 
+            }).then(() => {
                 article.state = 'add';
                 $location.path('/article/add');
             }).finally(loadingService.hide);
@@ -1923,7 +1923,7 @@
                 return fillDropCategory();
             }).then(() => {
                 return fillDropLanguage();
-            }).then(() => { 
+            }).then(() => {
                 return attachmentService.list({ ParentID: article.Model.ID });
             }).then((result) => {
                 article.pic.listUploaded = [];
@@ -2096,7 +2096,7 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('newsController', newsController);
-    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption','languageService'];
+    newsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption', 'languageService'];
     function newsController($scope, $q, loadingService, $routeParams, newsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption, languageService) {
         let news = $scope;
         news.Model = {};
@@ -2198,7 +2198,7 @@
                 return fillDropCategory();
             }).then(() => {
                 return fillDropLanguage();
-            }).then(() => { 
+            }).then(() => {
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
                 if (result && result.length > 0)
@@ -2496,25 +2496,52 @@
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('menuController', menuController);
-    menuController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'menuService', '$location', '$timeout', 'toolsService', 'enumService', 'toaster'];
-    function menuController($scope, $q, loadingService, $routeParams, menuService, $location, toaster, toolsService, enumService, toaster) {
+    menuController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'menuService', '$location', '$timeout', 'toolsService', 'enumService', 'toaster', 'languageService','menuItemService'];
+    function menuController($scope, $q, loadingService, $routeParams, menuService, $location, toaster, toolsService, enumService, toaster, languageService, menuItemService) {
         let menu = $scope;
         menu.Model = {};
-        menu.list = [];
-        menu.lists = [];
+        menu.languageList = []
+
+        menu.Model.Errors = [];
+        menu.search = {};
+        menu.search.Model = {};
+
+        menu.menuItem = {};
+        menu.menuItem.Model = {};
+        menu.menuItem.Model.Errors = [];
+        menu.menuItem.state = '';
+
+        menu.main = {};
+        menu.main.changeState = {
+            cartable: cartable,
+            add: add,
+            edit: edit
+        }
         menu.state = '';
-        menu.addMenu = addMenu;
-        menu.editMenu = editMenu;
         menu.changeState = {
             cartable: cartable,
             edit: edit,
             add: add
         }
         menu.EnableType = toolsService.arrayEnum(enumService.EnableMenuType);
-        menu.tree = {
+
+        menu.grid = {
+            bindingObject: menu
+            , columns: [{ name: 'Name', displayName: 'نام منو' }]
+            , listService: menuService.list
+            , deleteService: menuService.remove
+            , onEdit: menu.main.changeState.edit
+            , globalSearch: true
+            , displayNameFormat: ['Name']
+            , initLoad: true
+            , options: () => {
+                return menu.search.Model;
+            }
+        };
+        menu.menuItem.tree = {
             data: []
             , colDefs: [
-                { field: 'Name', displayName: 'عنوان' }
+                { field: 'Name', displayName: 'نام آیتم' }
                 , {
                     field: ''
                     , displayName: ''
@@ -2525,9 +2552,9 @@
                             <i class='fa fa-trash tgrid-action pl-1 text-danger' style='cursor:pointer;' ng-click='cellTemplateScope.remove(row.branch)' title='حذف'></i>
                         </div>`)
                     , cellTemplateScope: {
-                        edit: edit,
-                        add: addFirst,
-                        remove: remove
+                        add: openModalMenuItem,
+                        edit: editMenuItemTree,
+                        remove: removeMenuItem
                     }
                 }
             ]
@@ -2536,6 +2563,14 @@
                 , displayName: "عنوان"
             }
         };
+
+        menu.addMenu = addMenu;
+        menu.editMenu = editMenu;
+        menu.menuItem.openModalMenuItem = openModalMenuItem;
+        menu.menuItem.addMenuItem = addMenuItem;
+        menu.menuItem.editMenuItem = editMenuItem;
+
+        menu.menuItem.edit = editMenuItemTree;
         init();
 
 
@@ -2560,25 +2595,24 @@
         }
 
         function cartable() {
+            loadingService.show();
+            menu.state = 'cartable';
+            $location.path('menu/cartable');
+            loadingService.hide();
+        }
+        function add() {
             menu.Model = {};
             loadingService.show();
             return $q.resolve().then(() => {
-                return menuService.list();
-            }).then((result) => {
-                setTreeObject(result);
-                menu.state = 'cartable';
-                $location.path('menu/cartable');
+                return fillDropLanguage();
+            }).then(() => {
+                menu.state = 'add';
+                setTreeObject(null);
+                $location.path('menu/add');
+                loadingService.hide();
             }).catch(() => {
                 loadingService.hide();
             }).finally(loadingService.hide);
-        }
-        function add(parent) {
-            loadingService.show();
-            parent = parent || {};
-            menu.Model = { ParentID: parent.ID };
-            menu.state = 'add';
-            $('#menu-modal').modal('show');
-            loadingService.hide();
         }
         function edit(model) {
             loadingService.show();
@@ -2586,16 +2620,19 @@
                 return menuService.get(model.ID)
             }).then((result) => {
                 menu.Model = angular.copy(result);
+                return fillDropLanguage();
+            }).then(() => {
+                return menuItemService.list({ MenuID: menu.Model.ID });
+            }).then((result) => {
+                setTreeObject(result);
                 menu.state = 'edit';
-                $('#menu-modal').modal('show');
+                $location.path(`menu/edit/${menu.Model.ID}`);
+            }).catch(() => {
+                loadingService.hide();
             }).finally(loadingService.hide);
 
         }
 
-        function addFirst(parent) {
-            menu.state = 'add';
-            menu.changeState.add(parent);
-        }
         function addMenu() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -2603,8 +2640,9 @@
             }).then((result) => {
                 toaster.pop('success', '', 'منو جدید با موفقیت اضافه گردید');
                 loadingService.hide();
-                menu.changeState.cartable();
-                $('#menu-modal').modal('hide');
+                return menu.grid.getlist();
+            }).then(() => {
+                return menu.changeState.edit(result);
             }).catch((error) => {
                 toaster.pop('error', '', 'خطا');
                 loadingService.hide();
@@ -2616,10 +2654,9 @@
                 return menuService.edit(menu.Model)
             }).then((result) => {
                 menu.Model = result;
-                toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
+                toaster.pop('success', '', 'منو با موفقیت ویرایش گردید');
                 loadingService.hide();
-                menu.changeState.cartable();
-                $('#menu-modal').modal('hide');
+                return menu.grid.getlist();
             }).catch((error) => {
                 toaster.pop('error', '', 'خطا');
                 loadingService.hide();
@@ -2630,16 +2667,117 @@
                 if (item.ParentNode === '/')
                     item.expanded = true;
             });
-            menu.tree.data = toolsService.getTreeObject(items, 'Node', 'ParentNode', '/');
+            menu.menuItem.tree.data = toolsService.getTreeObject(items, 'Node', 'ParentNode', '/');
         }
-        function remove(model) {
+        function fillDropLanguage() {
             loadingService.show();
+            menu.languageList = [];
             return $q.resolve().then(() => {
-                return menuService.remove(model.ID);
-            }).then(() => {
-                return menuService.list();
+                return languageService.list({});
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        menu.languageList.push({ Name: result[i].Name, Model: result[i].ID });
+                    }
+                }
+            }).catch((error) => {
+                toaster.pop('error', '', 'خطا در بازیابی زبان');
+                loadingService.hide();
+            }).finally(loadingService.hide);
+        }
+
+
+        function openModalMenuItem(parent) {
+            if (parent != null)
+                parent = parent.ID;
+            else
+                parent = {};
+
+            menu.menuItem.Model = { MenuID: $routeParams.id, ParentID: parent };
+            loadingService.show();
+            $('.menu-item-modal').modal('show')
+            menu.menuItem.state = 'add';
+            loadingService.hide();
+        }
+        function addMenuItem() {
+            loadingService.hide();
+            return $q.resolve().then(() => {
+                return menuItemService.add(menu.menuItem.Model);
+            }).then((result) => {
+                if (result)
+                    return menuItemService.list({ MenuID: $routeParams.id });
             }).then((result) => {
                 setTreeObject(result);
+                $('.menu-item-modal').modal('hide');
+                loadingService.hide();
+            })
+                .catch((error) => {
+                if (!error) {
+                    var listError = error.split('&&');
+                    menu.menuItem.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#menuSection').offset().top - $('#menuSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    $('#content > div').animate({
+                        scrollTop: $('#menuSection').offset().top - $('#menuSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            })
+        }
+        function editMenuItem() {
+            loadingService.hide();
+            return $q.resolve().then(() => {
+                return menuItemService.edit(menu.menuItem.Model);
+            }).then((result) => {
+                if (result)
+                    return menuItemService.list({ MenuID: $routeParams.id });
+            }).then((result) => {
+                setTreeObject(result);
+                $('.menu-item-modal').modal('hide');
+                loadingService.hide();
+            }).catch((error) => {
+                    if (!error) {
+                        var listError = error.split('&&');
+                        menu.menuItem.Model.Errors = [].concat(listError);
+                        $('#content > div').animate({
+                            scrollTop: $('#menuSection').offset().top - $('#menuSection').offsetParent().offset().top
+                        }, 'slow');
+                    } else {
+                        $('#content > div').animate({
+                            scrollTop: $('#menuSection').offset().top - $('#menuSection').offsetParent().offset().top
+                        }, 'slow');
+                    }
+
+                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                    loadingService.hide();
+                })
+        }
+        function removeMenuItem(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return menuItemService.remove(model.ID);
+            }).then(() => {
+                return menuItemService.list({ MenuID: $routeParams.id });
+            }).then((result) => {
+                setTreeObject(result);
+            }).finally(loadingService.hide);
+        }
+
+        function editMenuItemTree(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return menuItemService.get(model.ID);
+            }).then((result) => {
+                menu.menuItem.Model = angular.copy(result);
+                $('.menu-item-modal').modal('show')
+                menu.menuItem.state = 'edit';
+                loadingService.hide();
+            }).catch(() => {
+                loadingService.hide();
             }).finally(loadingService.hide);
         }
     }
@@ -2829,7 +2967,7 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------
     app.controller('generalSettingController', generalSettingController);
-    generalSettingController.$inject = ['$scope', 'loadingService', 'generalSettingService', 'toaster', '$q','languageService'];
+    generalSettingController.$inject = ['$scope', 'loadingService', 'generalSettingService', 'toaster', '$q', 'languageService'];
     function generalSettingController($scope, loadingService, generalSettingService, toaster, $q, languageService) {
         let setting = $scope;
         setting.Model = {};
@@ -2874,7 +3012,7 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('eventsController', eventsController);
-    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption','languageService'];
+    eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption', 'languageService'];
     function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption, languageService) {
         let events = $scope;
         events.state = '';
@@ -2956,7 +3094,7 @@
                 return fillDropCategory();
             }).then(() => {
                 return fillDropLanguage();
-            }).then(() => { 
+            }).then(() => {
                 events.state = 'add';
                 $location.path('/events/add');
             }).finally(loadingService.hide);
@@ -2979,7 +3117,7 @@
                 return fillDropCategory();
             }).then(() => {
                 return fillDropLanguage();
-            }).then(() => { 
+            }).then(() => {
                 return attachmentService.list({ ParentID: events.Model.ID });
             }).then((result) => {
                 events.pic.listUploaded = [];
@@ -3369,7 +3507,7 @@
     //-------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('notificationController', notificationController);
     notificationController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'notificationService', '$location', 'toolsService', 'toaster'];
-    function notificationController($scope, $q, loadingService, $routeParams, notificationService, $location, toolsService,toaster) {
+    function notificationController($scope, $q, loadingService, $routeParams, notificationService, $location, toolsService, toaster) {
         let notification = $scope;
         notification.Model = {};
         notification.main = {};
@@ -5090,7 +5228,7 @@
     }
     //--------------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('languageController', languageController);
-    languageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', '$location', 'toaster', 'languageService', 'enumService', 'localeStringResourceService','toolsService'];
+    languageController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', '$location', 'toaster', 'languageService', 'enumService', 'localeStringResourceService', 'toolsService'];
     function languageController($scope, $q, loadingService, $routeParams, $location, toaster, languageService, enumService, localeStringResourceService, toolsService) {
         var language = $scope;
         language.main = {};
@@ -5105,7 +5243,7 @@
         language.main.changeState = {
             cartable: cartable,
             add: add,
-            edit:edit
+            edit: edit
         }
         language.languageCultureType = toolsService.arrayEnum(enumService.LanguageCultureType);
         language.enableMenuType = toolsService.arrayEnum(enumService.EnableMenuType);
@@ -5277,20 +5415,20 @@
                 toaster.pop('success', '', 'پارامترهای زبان مورد نظر با موفقیت ثبت شد');
             })
                 .catch((error) => {
-                if (error) {
-                    var listError = error.split('&&');
-                    language.localeStringResource.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#localeStringResource').offset().top - $('#localeStringResource').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                    $('#content > div').animate({
-                        scrollTop: $('#localeStringResource').offset().top - $('#localeStringResource').offsetParent().offset().top
-                    }, 'slow');
-                }
-                loadingService.hide();
-            }).finally(loadingService.hide);
+                    if (error) {
+                        var listError = error.split('&&');
+                        language.localeStringResource.Model.Errors = [].concat(listError);
+                        $('#content > div').animate({
+                            scrollTop: $('#localeStringResource').offset().top - $('#localeStringResource').offsetParent().offset().top
+                        }, 'slow');
+                    } else {
+                        toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                        $('#content > div').animate({
+                            scrollTop: $('#localeStringResource').offset().top - $('#localeStringResource').offsetParent().offset().top
+                        }, 'slow');
+                    }
+                    loadingService.hide();
+                }).finally(loadingService.hide);
         }
         function editLocaleStringResource() {
             loadingService.show();

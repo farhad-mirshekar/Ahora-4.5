@@ -148,9 +148,10 @@
     <Compile Include="Pbl\Link\VM\LinkListVM.cs" />
     <Compile Include="Pbl\LocaleStringResource\LocaleStringResource.cs" />
     <Compile Include="Pbl\LocaleStringResource\VM\LocaleStringResourceListVM.cs" />
+    <Compile Include="Pbl\MenuItem\MenuItem.cs" />
+    <Compile Include="Pbl\MenuItem\VM\MenuItemListVM.cs" />
     <Compile Include="Pbl\Menu\Menu.cs" />
-    <Compile Include="Pbl\Menu\VM\GetModelVM.cs" />
-    <Compile Include="Pbl\Menu\VM\MenuVM.cs" />
+    <Compile Include="Pbl\Menu\VM\MenuListVM.cs" />
     <Compile Include="Pbl\Notification\Notification.cs" />
     <Compile Include="Pbl\Notification\VM\NotificationListVM.cs" />
     <Compile Include="Pbl\Pages\Pages.cs" />

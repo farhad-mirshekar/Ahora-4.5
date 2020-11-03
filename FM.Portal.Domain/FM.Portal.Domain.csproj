@@ -106,6 +106,7 @@
     <Compile Include="Pbl\LanguageService.cs" />
     <Compile Include="Pbl\LinkService.cs" />
     <Compile Include="Pbl\LocaleStringResourceService.cs" />
+    <Compile Include="Pbl\MenuItemService.cs" />
     <Compile Include="Pbl\MenuService.cs" />
     <Compile Include="Pbl\NotificationService.cs" />
     <Compile Include="Pbl\PagesService.cs" />

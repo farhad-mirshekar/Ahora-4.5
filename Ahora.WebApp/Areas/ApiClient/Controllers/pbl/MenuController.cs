@@ -1,4 +1,5 @@
-﻿using FM.Portal.Core.Model;
+﻿using FM.Portal.Core;
+using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.Api.Controller;
 using System;
@@ -13,39 +14,22 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         {
         }
         [HttpPost, Route("Add")]
-        public IHttpActionResult Add(Menu model)
-        {
-            try
-            {
-                var result = _service.Add(model);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<Menu> Add(Menu model)
+        => _service.Add(model);
+
+
 
         [HttpPost, Route("Edit")]
-        public IHttpActionResult Edit(Menu model)
-        {
-            try
-            {
-                var result = _service.Edit(model);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<Menu> Edit(Menu model)
+       => _service.Edit(model);
+
 
         [HttpPost, Route("List")]
-        public IHttpActionResult List()
+        public IHttpActionResult List(MenuListVM listVM)
         {
             try
             {
-                var result = _service.List();
+                var result = _service.List(listVM);
                 return Ok(result);
             }
             catch (Exception e)

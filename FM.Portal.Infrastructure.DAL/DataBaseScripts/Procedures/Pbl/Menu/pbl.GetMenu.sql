@@ -10,32 +10,20 @@ CREATE PROCEDURE pbl.spGetMenu
 --WITH ENCRYPTION
 AS
 BEGIN
-	SET NOCOUNT ON;
-	DECLARE @ParentID UNIQUEIDENTIFIER,
-	@ParentNode HIERARCHYID
-	SET @ParentNode = (SELECT Top 1 [Node].GetAncestor(1).ToString() FROM pbl.Menu WHERE ID = @ID)
-	SET @ParentID = (SELECT ID FROM pbl.Menu WHERE Node = @ParentNode)
-
-	SELECT 
-		menu.ID,
-		menu.[Node].ToString() AS [Node],
-		menu.[Node].GetAncestor(1).ToString() AS ParentNode,
-		menu.[Name],
-		menu.RemoverID,
-		menu.RemoverDate,
-		menu.[Enabled],
-		menu.IconText,
-		menu.[Url],
-		menu.[Priority],
-		menu.[Parameters],
-		menu.CreationDate,
-		@ParentID ParentID,
-		menu.ForeignLink
+	SELECT
+		Menu.ID,
+		Menu.LanguageID,
+		Menu.[Name],
+		Menu.UserID,
+		Menu.CreationDate,
+		Menu.RemoverDate,
+		Menu.RemoverID,
+		lng.[Name] AS LanguageName
 	FROM 
-		pbl.Menu menu
+		pbl.Menu Menu
+	INNER JOIN pbl.[Language] lng ON Menu.LanguageID = lng.ID
 	WHERE 
-		(ID = @ID) 
-	AND menu.RemoverID IS NULL
+		(Menu.ID = @ID) 
 
 	RETURN @@ROWCOUNT
 END

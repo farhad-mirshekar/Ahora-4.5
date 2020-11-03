@@ -161,6 +161,9 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<ILocaleStringResourceDataSource, LocaleStringResourceDataSource>();
             _container.RegisterType<ILocaleStringResourceService, LocaleStringResourceService>();
 
+            _container.RegisterType<IMenuItemDataSource, MenuItemDataSource>();
+            _container.RegisterType<IMenuItemService, MenuItemService>();
+
             _container.RegisterType<IWorkContext, WebWorkContext>();
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>

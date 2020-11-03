@@ -22,18 +22,12 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[11];
+                    SqlParameter[] param = new SqlParameter[5];
                     param[0] = new SqlParameter("@ID", model.ID);
-                    param[1] = new SqlParameter("@Enabled", (byte)model.Enabled);
-                    param[2] = new SqlParameter("@IsNewRecord", IsNewRecord);
-                    param[3] = new SqlParameter("@Name", model.Name);
-                    param[4] = new SqlParameter("@ParentID", model.ParentID);
-                    param[5] = new SqlParameter("@Node", model.Node);
-                    param[6] = new SqlParameter("@Url", model.Url);
-                    param[7] = new SqlParameter("@IconText", model.IconText);
-                    param[8] = new SqlParameter("@Priority", model.Priority);
-                    param[9] = new SqlParameter("@Parameters", model.Parameters);
-                    param[10] = new SqlParameter("@ForeignLink", (byte)model.ForeignLink);
+                    param[1] = new SqlParameter("@IsNewRecord", IsNewRecord);
+                    param[2] = new SqlParameter("@Name", model.Name);
+                    param[3] = new SqlParameter("@LanguageID", model.LanguageID);
+                    param[4] = new SqlParameter("@UserID", _requestInfo.UserId);
 
                     var result =  SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "pbl.spModifyMenu", param);
                     if(result > 0)
@@ -43,7 +37,7 @@ namespace FM.Portal.Infrastructure.DAL
             }
             catch (Exception e) { throw; }
         }
-        public Result<Menu> Create(Menu model)
+        public Result<Menu> Insert(Menu model)
         {
             model.ID = Guid.NewGuid();
             return Modify(true, model);
@@ -54,7 +48,7 @@ namespace FM.Portal.Infrastructure.DAL
             try
             {
                 var obj = new Menu();
-                SqlParameter[] param = new SqlParameter[1];
+                var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
@@ -65,17 +59,11 @@ namespace FM.Portal.Infrastructure.DAL
                         {
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
-                            obj.Enabled = (EnableMenuType)SQLHelper.CheckByteNull(dr["Enabled"]);
-                            obj.Node = SQLHelper.CheckStringNull(dr["Node"]);
-                            obj.ParentNode = SQLHelper.CheckStringNull(dr["ParentNode"]);
+                            obj.RemoverDate =SQLHelper.CheckDateTimeNull(dr["RemoverDate"]);
+                            obj.LanguageID = SQLHelper.CheckGuidNull(dr["LanguageID"]);
+                            obj.LanguageName = SQLHelper.CheckStringNull(dr["LanguageName"]);
                             obj.Name = SQLHelper.CheckStringNull(dr["Name"]);
-                            obj.Url = SQLHelper.CheckStringNull(dr["Url"]);
-                            obj.IconText = SQLHelper.CheckStringNull(dr["IconText"]);
-                            obj.Priority = SQLHelper.CheckIntNull(dr["Priority"]);
-                            obj.Parameters = SQLHelper.CheckStringNull(dr["Parameters"]);
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
-                            obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
-                            obj.ForeignLink = (EnableMenuType)SQLHelper.CheckByteNull(dr["ForeignLink"]);
                         }
                     }
 
@@ -88,11 +76,17 @@ namespace FM.Portal.Infrastructure.DAL
             }
         }
 
-        public DataTable List()
+        public DataTable List(MenuListVM listVM)
         {
             try
             {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsMenu", null);
+                var param = new SqlParameter[4];
+                param[0] = new SqlParameter("@LanguageID", listVM.LanguageID);
+                param[1] = new SqlParameter("@Name", listVM.Name);
+                param[2] = new SqlParameter("@PageSize", listVM.PageSize);
+                param[3] = new SqlParameter("@PageIndex", listVM.PageIndex);
+
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetsMenu", param);
             }
             catch (Exception e) { throw; }
         }
@@ -100,17 +94,6 @@ namespace FM.Portal.Infrastructure.DAL
         public Result<Menu> Update(Menu model)
         {
             return Modify(false, model);
-        }
-
-        public DataTable GetChildren(string ParentNode)
-        {
-            try
-            {
-                SqlParameter[] param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ParentNode", ParentNode);
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "pbl.spGetChildMenu", param);
-            }
-            catch (Exception e) { throw; }
         }
 
         public Result Delete(Guid ID)

@@ -19,9 +19,9 @@ namespace FM.Portal.FrameWork.AutoMapper
         #endregion
 
         #region Menu
-        public static MemuModel ToModel(this MenuVM entity)
+        public static MemuModel ToModel(this MenuItem entity)
         {
-            return Mapper.Map<MenuVM, MemuModel>(entity);
+            return Mapper.Map<MenuItem, MemuModel>(entity);
         }
         #endregion
     }

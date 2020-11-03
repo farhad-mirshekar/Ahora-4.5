@@ -45,7 +45,7 @@
     }
 </nav>
 
-@helper RenderMenu(List<MenuVM> model)
+@helper RenderMenu(List<MenuItem> model)
 {
     foreach (var item in model)
     {
@@ -118,7 +118,7 @@
         }
     }
 }
-@helper ChildRender(List<MenuVM> child, Guid parent)
+@helper ChildRender(List<MenuItem> child, Guid parent)
 {
     <ul class='dropdown-menu' aria-labelledby='@parent'>
         @if (child.Count > 0)

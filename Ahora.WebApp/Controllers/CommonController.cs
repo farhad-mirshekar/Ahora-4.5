@@ -15,7 +15,7 @@ namespace Ahora.WebApp.Controllers
     public class CommonController : BaseController<ILanguageService>
     {
         private readonly IWorkContext _workContext;
-        private readonly IMenuService _menuService;
+        private readonly IMenuItemService _menuItemService;
         private readonly IArticleService _articleService;
         private readonly INewsService _newsService;
         private readonly ISliderService _sliderService;
@@ -26,7 +26,7 @@ namespace Ahora.WebApp.Controllers
         public CommonController(ILanguageService service
                                 , IWorkContext workContext,
                                 IProductService Productservice
-                             , IMenuService menuService
+                             , IMenuItemService menuItemService
                              , IArticleService articleService
                              , INewsService newsService
                              , ISliderService sliderService
@@ -34,7 +34,7 @@ namespace Ahora.WebApp.Controllers
                              , ILinkService linkService) : base(service)
         {
             _workContext = workContext;
-            _menuService = menuService;
+            _menuItemService = menuItemService;
             _articleService = articleService;
             _newsService = newsService;
             _sliderService = sliderService;
@@ -116,7 +116,7 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public ActionResult RenderMenu()
         {
-            var menusResult = _menuService.GetMenuForWeb("/1/");
+            var menusResult = _menuItemService.List(new MenuItemListVM() {LanguageID = CurrentLanguageID() });
             if (!menusResult.Success)
                 return Content("");
             var menus = menusResult.Data;

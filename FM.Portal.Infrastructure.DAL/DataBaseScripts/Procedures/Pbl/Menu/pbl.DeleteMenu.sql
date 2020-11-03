@@ -11,13 +11,12 @@ CREATE PROCEDURE pbl.spDeleteMenu
 --WITH ENCRYPTION
 AS
 BEGIN
-	--SET NOCOUNT ON;
-	DECLARE @Node HIERARCHYID
-	SET @Node = (SELECT [Node] FROM pbl.Menu WHERE ID = @ID )
 	UPDATE pbl.Menu
-	SET RemoverID = @RemoverID,
+	SET 
+		RemoverID = @RemoverID,
 		RemoverDate = GETDATE()
-	WHERE [Node].IsDescendantOf(@Node) = 1
+	WHERE
+		(ID = @ID)
+		
 	RETURN @@ROWCOUNT
-
 END

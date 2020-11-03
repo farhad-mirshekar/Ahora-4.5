@@ -9,8 +9,7 @@ namespace FM.Portal.Core.Service
         Result<Menu> Add(Menu model);
         Result<Menu> Edit(Menu model);
         Result<Menu> Get(Guid ID);
-        Result<List<Menu>> List();
-        Result<List<MenuVM>> GetMenuForWeb(string Node);
+        Result<List<Menu>> List(MenuListVM listVM);
         Result Delete(Guid ID);
     }
 }

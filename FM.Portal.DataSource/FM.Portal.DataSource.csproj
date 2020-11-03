@@ -84,6 +84,7 @@
     <Compile Include="Pbl\ILanguageDataSource.cs" />
     <Compile Include="Pbl\ILocaleStringResourceDataSource.cs" />
     <Compile Include="Pbl\IMenuDataSource.cs" />
+    <Compile Include="Pbl\IMenuItemDataSource.cs" />
     <Compile Include="Pbl\INotificationDataSource.cs" />
     <Compile Include="Pbl\ILinkDataSource.cs" />
     <Compile Include="Pbl\IPagesDataSource.cs" />

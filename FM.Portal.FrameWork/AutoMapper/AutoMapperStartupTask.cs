@@ -17,7 +17,7 @@ namespace FM.Portal.FrameWork.AutoMapper
                 config.CreateMap<Language, LanguageModel>();
                 config.CreateMap<LanguageModel, Language>();
 
-                config.CreateMap<MenuVM, MemuModel>();
+                config.CreateMap<MenuItem, MemuModel>();
             });
         }
     }

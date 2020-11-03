@@ -90,6 +90,7 @@
     <Compile Include="DataSources\Pbl\LinkDataSource.cs" />
     <Compile Include="DataSources\Pbl\LocaleStringResourceDataSource.cs" />
     <Compile Include="DataSources\Pbl\MenuDataSource.cs" />
+    <Compile Include="DataSources\Pbl\MenuItemDataSource.cs" />
     <Compile Include="DataSources\Pbl\NotificationDataSource.cs" />
     <Compile Include="DataSources\Pbl\PagesDataSource.cs" />
     <Compile Include="DataSources\Pbl\TagsDataSource.cs" />
@@ -244,7 +245,10 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\LocaleStringResource\pbl.GetLocaleStringResource.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\LocaleStringResource\pbl.GetsLocaleStringResource.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\LocaleStringResource\pbl.spModifyLocaleStringResource.sql" />
-    <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetChildMenu.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\MenuItem\pbl.DeleteMenuItem.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\MenuItem\pbl.GetMenuItem.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\MenuItem\pbl.GetsMenuItem.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\MenuItem\pbl.spModifyMenuItem.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.DeleteMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetMenu.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Menu\pbl.GetsMenu.sql" />
