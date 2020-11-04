@@ -22,8 +22,6 @@ CREATE PROCEDURE ptl.spModifyEvents
 WITH ENCRYPTION
 AS
 BEGIN
-	SET NOCOUNT ON;
-
 	IF @IsNewRecord = 1 --insert
 		BEGIN
 
@@ -53,5 +51,5 @@ BEGIN
 			WHERE
 				[ID] = @ID
 		END
-			RETURN @@ROWCOUNT
+	RETURN @@ROWCOUNT
 END

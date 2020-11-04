@@ -1,5 +1,6 @@
 ﻿using Ahora.WebApp.Models.Pbl.Language;
 using Ahora.WebApp.Models.Pbl.Menu;
+using Ahora.WebApp.Models.Ptl.Events;
 using AutoMapper;
 using FM.Portal.Core.Model;
 
@@ -22,6 +23,13 @@ namespace FM.Portal.FrameWork.AutoMapper
         public static MemuModel ToModel(this MenuItem entity)
         {
             return Mapper.Map<MenuItem, MemuModel>(entity);
+        }
+        #endregion
+
+        #region Events
+        public static EventModel ToModel(this Events entity)
+        {
+            return Mapper.Map<Events, EventModel>(entity);
         }
         #endregion
     }

@@ -81,7 +81,7 @@
                 }).then((result) => {
                     if (result && result.length > 0) {
                         for (var i = 0; i < result.length; i++) {
-                            if (result[i].PathType === 8) // only video add
+                            if (result[i].PathType === 7) // only video add
                                 scope.main.listVideoUploaded = [].concat(result);
                         }
                     }

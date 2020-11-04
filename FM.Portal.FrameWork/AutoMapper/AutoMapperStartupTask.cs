@@ -1,5 +1,6 @@
 ﻿using Ahora.WebApp.Models.Pbl.Language;
 using Ahora.WebApp.Models.Pbl.Menu;
+using Ahora.WebApp.Models.Ptl.Events;
 using AutoMapper;
 using FM.Portal.Core.Infrastructure;
 using FM.Portal.Core.Model;
@@ -18,6 +19,8 @@ namespace FM.Portal.FrameWork.AutoMapper
                 config.CreateMap<LanguageModel, Language>();
 
                 config.CreateMap<MenuItem, MemuModel>();
+
+                config.CreateMap<Events, EventModel>();
             });
         }
     }

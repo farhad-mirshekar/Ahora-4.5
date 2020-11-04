@@ -1,7 +1,10 @@
 ﻿using Ahora.WebApp.Models;
+using Ahora.WebApp.Models.Ptl.Events;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Service;
+using FM.Portal.FrameWork.AutoMapper;
 using FM.Portal.FrameWork.MVC.Controller;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -20,32 +23,52 @@ namespace Ahora.WebApp.Controllers
         public ActionResult Index(int? page)
         {
             ViewBag.Title = "لیست رویدادها";
+            var eventsModel = new EventListModel();
+
             var eventsResult = _service.List(new FM.Portal.Core.Model.EventsListVM() { PageSize = Helper.CountShowArticle, PageIndex = page });
             if (!eventsResult.Success)
                 return View("Error");
             var events = eventsResult.Data;
+
+            events.ForEach(e =>
+            {
+                var attachmentResult = _attachmentService.List(e.ID);
+                e.Attachments = attachmentResult.Data;
+            });
+
+            eventsModel.AvailableEvents = events;
 
             var pageInfo = new PagingInfo();
             pageInfo.CurrentPage = page ?? 1;
             pageInfo.TotalItems = events.Select(x => x.Total).First();
             pageInfo.ItemsPerPage = Helper.CountShowArticle;
 
-            ViewBag.Paging = pageInfo;
-            return View(events);
+            eventsModel.PagingInfo = pageInfo;
+
+            return View(eventsModel);
         }
         [Route("EventsDetail/{TrackingCode}/{Seo}")]
         public ActionResult Detail(string TrackingCode, string Seo)
         {
-            if (TrackingCode != null && TrackingCode != string.Empty)
+            if (!string.IsNullOrEmpty(TrackingCode))
             {
-                var result = _service.Get(TrackingCode);
-                if (!result.Success)
+                var eventDetail = new EventModel();
+                var eventResult = _service.Get(TrackingCode);
+                if (!eventResult.Success)
                     return View("Error");
-                var events = result.Data;
-                var resultVideo = _attachmentService.GetVideo(events.ID);
-                if (resultVideo.Success)
-                    ViewBag.video = resultVideo.Data;
-                return View(events);
+
+                var events = eventResult.Data;
+                eventDetail = events.ToModel();
+
+                var attachmentsResult = _attachmentService.List(eventDetail.ID);
+                if (attachmentsResult.Success)
+                {
+                    eventDetail.VideoAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.video).ToList();
+                    eventDetail.PictureAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.events).ToList();
+
+                }
+
+                return View(eventDetail);
 
             }
             return View("Error");

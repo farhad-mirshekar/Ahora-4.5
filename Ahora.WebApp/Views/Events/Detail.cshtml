@@ -1,8 +1,7 @@
-﻿@model FM.Portal.Core.Model.Events
+﻿@model Ahora.WebApp.Models.Ptl.Events.EventModel
 @{
     ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    Attachment attachment = (Attachment)ViewBag.video;
 }
 @section BodySection{
     <nav aria-label="breadcrumb">
@@ -37,11 +36,18 @@
                 <hr />
                 <p class="mb-0 text-dark">@Html.Raw(Model.Body)</p>
             </div>
-            @if (attachment.FileName != string.Empty && attachment.FileName != null)
+            @if (Model.VideoAttachments.Count > 0)
             {
-                <div class="embed-responsive embed-responsive-16by9">
-                    <iframe class="embed-responsive-item" src="~/Content/TemporaryFiles/@attachment.Path/@attachment.FileName" allowfullscreen></iframe>
-                </div>
+
+                foreach (var attachment in Model.VideoAttachments)
+                {
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <video controls>
+                            <source src="~/Content/TemporaryFiles/@attachment.Path/@attachment.FileName" type="video/mp4" />
+                        </video>
+                    </div>
+                }
+
             }
         </div>
         @if (Model.Tags != null && Model.Tags.Count > 0)

@@ -131,7 +131,7 @@ namespace FM.Portal.Infrastructure.DAL
                 {
                     lock (con)
                     {
-                        SqlParameter[] param = new SqlParameter[14];
+                        var param = new SqlParameter[14];
                         param[0] = new SqlParameter("@ID", model.ID);
 
                         param[1] = new SqlParameter("@Body", model.Body);
@@ -146,11 +146,12 @@ namespace FM.Portal.Infrastructure.DAL
                         param[10] = new SqlParameter("@UserID", _requestInfo.UserId);
                         param[11] = new SqlParameter("@TrackingCode", model.TrackingCode);
                         param[12] = new SqlParameter("@ReadingTime", model.ReadingTime);
-                        param[14] = new SqlParameter("@LanguageID", model.LanguageID);
+                        param[13] = new SqlParameter("@LanguageID", model.LanguageID);
 
-                        SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyEvents", param);
-
-                        return Get(model.ID);
+                       var result= SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyEvents", param);
+                        if(result > 0)
+                            return Get(model.ID);
+                        return Result<Events>.Failure(message:"خطا در درج / ویرایش");
                     }
                 }
             }

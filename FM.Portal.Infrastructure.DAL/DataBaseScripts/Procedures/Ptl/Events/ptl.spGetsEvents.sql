@@ -25,14 +25,14 @@ BEGIN
 	(
 		SELECT 
 			[Events].*,
-			CONCAT(CreatorUser.FirstName , ' ' ,CreatorUser.LastName) AS CreatorName,
-			attachment.PathType,
-			attachment.[FileName]
+			CONCAT(CreatorUser.FirstName , ' ' ,CreatorUser.LastName) AS CreatorName
+			--attachment.PathType,
+			--attachment.[FileName]
 		FROM ptl.[Events] [Events]
 		INNER JOIN 
 			org.[User] CreatorUser ON [Events].UserID = CreatorUser.ID
-		LEFT JOIN
-			pbl.Attachment attachment ON [Events].ID = attachment.ParentID
+		--LEFT JOIN
+		--	pbl.Attachment attachment ON [Events].ID = attachment.ParentID
 		LEFT JOIN
 			pbl.[Language] lng ON [Events].LanguageID = lng.ID
 		WHERE

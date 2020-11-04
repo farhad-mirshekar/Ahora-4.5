@@ -3019,6 +3019,8 @@
         events.froalaOption = angular.copy(froalaOption.main);
 
         events.Model = {};
+        events.languageList = [];
+
         events.Model.Errors = [];
         events.languageList = [];
 
@@ -3198,7 +3200,8 @@
         function editEvents() {
             loadingService.show();
             return $q.resolve().then(() => {
-                eventsService.edit(events.Model).then((result) => {
+                return eventsService.edit(events.Model)
+            }).then((result) => {
                     events.Model = angular.copy(result);
                     if (events.pic.list.length) {
                         events.pics = [];
@@ -3216,6 +3219,7 @@
                             return attachmentService.add(events.videos);
                         }
                     }
+                    return true;
                 }).then((result) => {
                     events.pics = [];
                     events.videos = [];
@@ -3253,7 +3257,6 @@
 
                     toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                 }).finally(loadingService.hide);
-            })
         }
 
         function fillDropCategory() {
@@ -3279,7 +3282,6 @@
         }
         function fillDropLanguage() {
             loadingService.show();
-            events.languageList = [];
             return $q.resolve().then(() => {
                 return languageService.list({});
             }).then((result) => {
