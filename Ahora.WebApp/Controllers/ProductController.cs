@@ -20,18 +20,21 @@ namespace Ahora.WebApp.Controllers
         private readonly IProductMapAttributeService _productMapattributeService;
         private readonly IProductVariantAttributeService _productVariantAttributeService;
         private readonly ICompareProductService _compareProductService;
+        private readonly IWorkContext _workContext;
         public ProductController(IProductService service
                                  , IAttachmentService attachmentService
                                  , IShoppingCartItemService shoppingCartService
                                  , IProductMapAttributeService productMapattributeService
                                  , IProductVariantAttributeService productVariantAttributeService
-                                 , ICompareProductService compareProductService) : base(service)
+                                 , ICompareProductService compareProductService
+                                 , IWorkContext workContext) : base(service)
         {
             _attachmentService = attachmentService;
             _shoppingCartService = shoppingCartService;
             _productMapattributeService = productMapattributeService;
             _productVariantAttributeService = productVariantAttributeService;
             _compareProductService = compareProductService;
+            _workContext = workContext;
         }
 
         #region Product
@@ -67,7 +70,7 @@ namespace Ahora.WebApp.Controllers
                 });
             //var attributes = _service.SelectAttributeForCustomer(ProductID);
 
-            if (User.Identity.Name == "")
+            if (_workContext.User == null)
                 return Json(new
                 {
                     success = false,
@@ -169,7 +172,7 @@ namespace Ahora.WebApp.Controllers
 
                     var cart = new model.ShoppingCartItem();
                     cart.ProductID = product.ID;
-                    cart.UserID = SQLHelper.CheckGuidNull(User.Identity.Name);
+                    cart.UserID = _workContext.User.ID;
                     cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);
                     if (attributeChosen.Count > 0)
                         cart.AttributeJson = JsonConvert.SerializeObject(attributeChosen);
@@ -223,7 +226,7 @@ namespace Ahora.WebApp.Controllers
             {
                 var cart = new model.ShoppingCartItem();
                 cart.ProductID = product.ID;
-                cart.UserID = SQLHelper.CheckGuidNull(User.Identity.Name);
+                cart.UserID = _workContext.User.ID;
                 cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);
                 cart.AttributeJson = null;
                 var shopResult = _shoppingCartService.Get(cart.ShoppingID, cart.ProductID);

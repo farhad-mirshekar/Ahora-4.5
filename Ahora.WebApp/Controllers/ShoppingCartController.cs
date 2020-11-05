@@ -23,6 +23,7 @@ namespace Ahora.WebApp.Controllers
         private readonly IOrderService _orderService;
         private readonly IUserAddressService _addressService;
         private readonly IBankService _bankService;
+        private readonly IWorkContext _workContext;
         public ShoppingCartController(IShoppingCartItemService service
                                      , IProductService productService
                                      , IAttachmentService attachmentService
@@ -31,7 +32,8 @@ namespace Ahora.WebApp.Controllers
                                      , IUserService userService
                                      , IOrderService orderService
                                      , IUserAddressService addressService
-                                     , IBankService bankService) : base(service)
+                                     , IBankService bankService
+                                     , IWorkContext workContext) : base(service)
         {
             _productService = productService;
             _attachmentService = attachmentService;
@@ -41,6 +43,7 @@ namespace Ahora.WebApp.Controllers
             _orderService = orderService;
             _addressService = addressService;
             _bankService = bankService;
+            _workContext = workContext;
 
         }
         #region Action
@@ -57,7 +60,7 @@ namespace Ahora.WebApp.Controllers
             {
                 var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
                 var result = _service.List(SQLHelper.CheckGuidNull(shoppingID));
-                var address = _addressService.List(new UserAddressListVM() { UserID = SQLHelper.CheckGuidNull(User.Identity.Name) });
+                var address = _addressService.List(new UserAddressListVM() { UserID = _workContext.User.ID });
 
                 if (!result.Success || result.Data.Count == 0)
                     return RedirectToAction("CartEmpty");
@@ -139,7 +142,9 @@ namespace Ahora.WebApp.Controllers
                         decimal temp1 = 0;
                         decimal temp2 = 0;
                         decimal attributePrice = 0;
-                        var product = item.Product;
+                        var productResult =_productService.Get(item.Product.ID);
+                        var product = productResult.Data;
+
                         var price = product.Price;
                         if (product.HasDiscount)
                         {
@@ -172,10 +177,14 @@ namespace Ahora.WebApp.Controllers
 
                         if (item.AttributeJson != "" && item.AttributeJson != null)
                         {
-                            listAttribute.Add(JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson));
-                            var attribute = JsonConvert.DeserializeObject<AttributeJsonVM>(item.AttributeJson);
-                            if (attribute.Price > 0)
-                                attributePrice = attribute.Price;
+                            listAttribute = JsonConvert.DeserializeObject<List<AttributeJsonVM>>(item.AttributeJson);
+                            var attributes = JsonConvert.DeserializeObject<List<AttributeJsonVM>>(item.AttributeJson);
+                            foreach (var attribute in attributes)
+                            {
+                                if (attribute.Price > 0)
+                                    attributePrice += attribute.Price;
+                            }
+                           
                         }
                         product.CountSelect = item.Quantity;
 
@@ -210,15 +219,15 @@ namespace Ahora.WebApp.Controllers
 
                 order.SendType = SendType.آنلاین;
                 order.ShoppingID = SQLHelper.CheckGuidNull(shoppingID);
-                order.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
+                order.UserID = _workContext.User.ID;
                 order.Price = amount;
                 orderDetail.ProductJson = productJson;
                 orderDetail.AttributeJson = attributeJson;
                 orderDetail.ShoppingCartJson = JsonConvert.SerializeObject(shoppingCartItem);
                 orderDetail.Quantity = shoppingCartItem.Count;
-                orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name)).Data);
+                orderDetail.UserJson = JsonConvert.SerializeObject(_userService.Get(_workContext.User.ID).Data);
 
-                payment.UserID = SQLHelper.CheckGuidNull(HttpContext.User.Identity.Name);
+                payment.UserID = SQLHelper.CheckGuidNull(_workContext.User.ID);
                 payment.Price = amount;
 
 
