@@ -1,13 +1,23 @@
-﻿@model FM.Portal.Core.Model.News
+﻿@model Ahora.WebApp.Models.Ptl.News.NewsModel
+@using System.Linq;
 @{
     ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Metatag{
+    <meta itemprop="name" name="twitter:title" property="dc.title" content="@Model.Title">
+    <meta name="description" property="dc.description" content="@Model.Description">
+    <meta property="og:type" content="article">
+    <meta property="article:modified_time" content="@Model.ModifiedDate">
+    <meta name="keywords" property="article:tag" content="@Model.MetaKeywords">
+    <meta property="nastooh:publishDate" content="@Model.CreationDate.ToString("yyyy-MM-dd")">
+    <meta property="og:title" itemprop="headline" content="@Model.Title">
+}
 @section BodySection{
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Home")">خانه</a></li>
-            <li class="breadcrumb-item"><a href="@Url.RouteUrl("News")">خبرها</a></li>
+            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Home")">@T("Breadcrumb.Home")</a></li>
+            <li class="breadcrumb-item"><a href="@Url.RouteUrl("News")">@T("Breadcrumb.News")</a></li>
             <li class="breadcrumb-item active">@Model.Title</li>
         </ol>
     </nav>
@@ -16,11 +26,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <label class="control-label">کد خبر : </label> <label class="control-label">@Model.TrackingCode</label> -
-                        <label class="control-label">تاریخ انتشار :</label> <label class="control-label">@FM.Portal.Core.Common.Helper.GetPersianDay(Model.CreationDate) - @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(Model.CreationDate)) - @FM.Portal.Core.Common.Helper.GetPersianYear(Model.CreationDate)</label>
+                        <label class="control-label">@T("News.DetailPage.TrackingCode") : </label> <label class="control-label">@Model.TrackingCode</label> -
+                        <label class="control-label">@T("News.DetailPage.CreationDate") :</label> <label class="control-label">@FM.Portal.Core.Common.Helper.GetPersianDay(Model.CreationDate) - @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(Model.CreationDate)) - @FM.Portal.Core.Common.Helper.GetPersianYear(Model.CreationDate)</label>
                         <label class="control-label pull-left">
                             <i class="fa fa-clock-o"></i>
-                            <span>تخمین مدت زمان مطالعه خبر: </span>
+                            <span>@T("News.DetailPage.EstimateTheDurationOfTheNewsStudy"): </span>
                             <span>@Model.ReadingTime</span>
                         </label>
                     </div>
@@ -29,18 +39,18 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="alert alert-secondary" role="alert">
+            <div class="alert alert-light text-justify" role="alert">
                 <div class="alert-heading">
                     <p>@Model.Description</p>
                 </div>
                 <hr />
-                <p class="mb-0">@Html.Raw(Model.Body)</p>
+                <div class="p-1 text-dark">@Html.Raw(Model.Body)</div>
             </div>
         </div>
         @if (Model.Tags != null && Model.Tags.Count > 0)
         {
             <div class="card-footer">
-                <label>برچسب ها :</label>
+                <label>@T("News.DetailPage.Labels") :</label>
                 @{
                     var lastitem = Model.Tags.Last();
                     foreach (var item in Model.Tags)
@@ -63,7 +73,7 @@
         <div class="card-header">
             <h5 class="card-title">
                 <i class="fa fa-comments-o"></i>
-                دیدگاه ها
+                @T("News.DetailPage.Comment.Card.Title")
             </h5>
             <div class="card-body">
                 @Html.Action("Index", "Comment", new { DocumentID = Model.ID, State = "News" })

@@ -28,7 +28,7 @@
                 <div class="card-footer">
                     <div class="btn-group-justified pull-left">
                         <a href="@Url.RouteUrl("ArticleDetail",new { TrackingCode=item.TrackingCode , Seo=item.UrlDesc.Replace(" ","_").Replace(':','_')})" class="btn btn-outline-success btn-lg btn-block">
-                            ادامه
+                            @T("Article.List.Button.More")
                             <i class="fa fa-arrow-left"></i>
                         </a>
                     </div>

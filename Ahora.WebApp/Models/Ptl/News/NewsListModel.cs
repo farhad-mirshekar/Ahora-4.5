@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ahora.WebApp.Models.Ptl.News
 {
-    public class ArticleListModel
+    public class NewsListModel
     {
         public List<Model.News> AvailableNews { get; set; }
         public PagingInfo PagingInfo { get; set; }
