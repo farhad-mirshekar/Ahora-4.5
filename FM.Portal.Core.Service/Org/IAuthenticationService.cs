@@ -6,5 +6,6 @@ namespace FM.Portal.Core.Service
     {
         Result SignIn(User user, bool createPersistentCookie);
         Result SignOut();
+        Result<User> GetAuthenticatedCustomer();
     }
 }

@@ -11,11 +11,41 @@ namespace FM.Portal.Domain
     {
         private readonly TimeSpan _expirationTimeSpan;
         private readonly HttpContextBase _httpContext;
-        public FormsAuthenticationService(HttpContextBase httpContext)
+        private readonly IUserService _userService;
+        public FormsAuthenticationService(HttpContextBase httpContext
+                                        , IUserService userService)
         {
             _httpContext = httpContext;
             _expirationTimeSpan = FormsAuthentication.Timeout;
+            _userService = userService;
         }
+
+        private User _cachedUser;
+
+        public Result<User> GetAuthenticatedCustomer()
+        {
+            if (_cachedUser != null)
+                return Result<User>.Successful(data: _cachedUser);
+
+            if (_httpContext == null ||
+                _httpContext.Request == null ||
+                !_httpContext.Request.IsAuthenticated ||
+                !(_httpContext.User.Identity is FormsIdentity))
+            {
+                return null;
+            }
+
+            var formsIdentity = (FormsIdentity)_httpContext.User.Identity;
+            var userResult = GetAuthenticatedCustomerFromTicket(formsIdentity.Ticket);
+            if (!userResult.Success)
+                return Result<User>.Failure();
+            var user = userResult.Data;
+
+            if (user != null && user.Enabled)
+                _cachedUser = user;
+            return Result<User>.Successful(data: user);
+        }
+
         public Result SignIn(User user, bool createPersistentCookie)
         {
             try
@@ -28,7 +58,7 @@ namespace FM.Portal.Domain
                     now,
                     now.Add(_expirationTimeSpan),
                     createPersistentCookie,
-                    user.Type == UserType.کاربر_درون_سازمانی ? "Admin":"User",
+                    user.Type == UserType.کاربر_درون_سازمانی ? "Admin" : "User",
                     FormsAuthentication.FormsCookiePath);
 
                 var encryptedTicket = FormsAuthentication.Encrypt(ticket);
@@ -49,7 +79,7 @@ namespace FM.Portal.Domain
                 _httpContext.Response.Cookies.Add(cookie);
                 return Result.Successful();
             }
-            catch(Exception e) { return Result.Failure(); }
+            catch (Exception e) { return Result.Failure(); }
         }
 
         public Result SignOut()
@@ -59,7 +89,20 @@ namespace FM.Portal.Domain
                 FormsAuthentication.SignOut();
                 return Result.Successful();
             }
-            catch(Exception e) { return Result.Failure(); }
+            catch (Exception e) { return Result.Failure(); }
+        }
+
+        public virtual Result<User> GetAuthenticatedCustomerFromTicket(FormsAuthenticationTicket ticket)
+        {
+            if (ticket == null)
+                throw new ArgumentNullException("ticket");
+
+            var usernameOrEmail = ticket.Name;
+
+            if (String.IsNullOrWhiteSpace(usernameOrEmail))
+                return null;
+            var userResult = _userService.Get(usernameOrEmail, null, null, UserType.Unknown);
+            return userResult;
         }
     }
 }
