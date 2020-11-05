@@ -32,7 +32,7 @@ namespace FM.Portal.Domain
                 !_httpContext.Request.IsAuthenticated ||
                 !(_httpContext.User.Identity is FormsIdentity))
             {
-                return null;
+                return Result<User>.Successful(data: null);
             }
 
             var formsIdentity = (FormsIdentity)_httpContext.User.Identity;
@@ -87,6 +87,7 @@ namespace FM.Portal.Domain
             try
             {
                 FormsAuthentication.SignOut();
+                _cachedUser = null;
                 return Result.Successful();
             }
             catch (Exception e) { return Result.Failure(); }

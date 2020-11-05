@@ -82,6 +82,8 @@ namespace Ahora.WebApp.Controllers
         public ActionResult SignOut(string type)
         {
             _authenticationService.SignOut();
+            _workContext.User = null;
+            _workContext.IsAdmin = false;
             switch (type)
             {
                 case "admin":

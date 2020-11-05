@@ -1,4 +1,4 @@
-﻿@model FM.Portal.Core.Model.Article
+﻿@model Ahora.WebApp.Models.Ptl.Article.ArticleModel
 @using System.Linq;
 @{
     ViewBag.Title = Model.Title;
@@ -16,8 +16,8 @@
 @section BodySection{
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Home")">خانه</a></li>
-            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Article")">مقالات</a></li>
+            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Home")">@T("Breadcrumb.Home")</a></li>
+            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Article")">@T("Breadcrumb.Article")</a></li>
             <li class="breadcrumb-item active">@Model.Title</li>
         </ol>
     </nav>
@@ -26,11 +26,11 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <label class="control-label">کد مقاله : </label> <label class="control-label">@Model.TrackingCode</label> -
-                        <label class="control-label">تاریخ انتشار :</label> <label class="control-label">@FM.Portal.Core.Common.Helper.GetPersianDay(Model.CreationDate) - @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(Model.CreationDate)) - @FM.Portal.Core.Common.Helper.GetPersianYear(Model.CreationDate)</label>
+                        <label class="control-label">@T("Article.DetailPage.TrackingCode") : </label> <label class="control-label">@Model.TrackingCode</label> -
+                         <label class="control-label">@T("Article.DetailPage.CreationDate") :</label> <label class="control-label">@FM.Portal.Core.Common.Helper.GetPersianDay(Model.CreationDate) - @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(Model.CreationDate)) - @FM.Portal.Core.Common.Helper.GetPersianYear(Model.CreationDate)</label>
                         <label class="control-label pull-left">
                             <i class="fa fa-clock-o"></i>
-                            <span>تخمین مدت زمان مطالعه مقاله: </span>
+                            <span>@T("Article.DetailPage.EstimateTheDurationOfTheArticleStudy"): </span>
                             <span>@Model.ReadingTime</span>
                         </label>
                     </div>
@@ -50,7 +50,7 @@
         @if (Model.Tags != null && Model.Tags.Count > 0)
         {
             <div class="card-footer">
-                <label>برچسب ها :</label>
+                <label>@T("Article.DetailPage.Labels") :</label>
                 @{
                     var lastitem = Model.Tags.Last();
                     foreach (var item in Model.Tags)
@@ -73,7 +73,7 @@
         <div class="card-header">
             <h5 class="card-title">
                 <i class="fa fa-comments-o"></i>
-                دیدگاه ها
+                @T("Article.DetailPage.Comment.Card.Title")
             </h5>
             <div class="card-body">
                 @Html.Action("Index", "Comment", new { DocumentID = Model.ID, State = "Article" })

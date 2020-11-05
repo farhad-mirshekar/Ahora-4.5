@@ -9,6 +9,7 @@ using FM.Portal.Infrastructure.DAL;
 using System.Web;
 using Unity;
 using Unity.Injection;
+using Unity.Lifetime;
 
 namespace FM.Portal.FrameWork.Unity
 {
@@ -164,13 +165,15 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IMenuItemDataSource, MenuItemDataSource>();
             _container.RegisterType<IMenuItemService, MenuItemService>();
 
-            _container.RegisterType<IWorkContext, WebWorkContext>();
+            _container.RegisterType<IWorkContext, WebWorkContext>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>
                 new HttpContextWrapper(HttpContext.Current)));
             _container.RegisterType<IRequestInfo, RequestInfo>();
             _container.RegisterType<IAppSetting, AppSetting>();
             _container.RegisterType<IObjectSerializer, ObjectSerializer>();
+
+            _container.RegisterType<IAuthenticationService, FormsAuthenticationService>();
             return _container;
         }
     }

@@ -1933,8 +1933,12 @@
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\Pbl\Language\LanguageSelectorModel.cs" />
     <Compile Include="Models\Pbl\Menu\MemuModel.cs" />
+    <Compile Include="Models\Ptl\Article\ArticleListModel.cs" />
+    <Compile Include="Models\Ptl\Article\ArticleModel.cs" />
     <Compile Include="Models\Ptl\Events\EventListModel.cs" />
     <Compile Include="Models\Ptl\Events\EventModel.cs" />
+    <Compile Include="Models\Ptl\News\NewsListModel.cs" />
+    <Compile Include="Models\Ptl\News\NewsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\AuthorizationServerProvider.cs" />
     <Compile Include="Providers\RefreshTokenProvider.cs" />

@@ -33,5 +33,6 @@ namespace FM.Portal.Core.Model
         public string Path => "News";
         public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public int Total { get; set; }
+        public List<Attachment> Attachments { get; set; }
     }
 }
