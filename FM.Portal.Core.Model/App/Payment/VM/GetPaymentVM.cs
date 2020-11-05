@@ -12,6 +12,7 @@ namespace FM.Portal.Core.Model
         public UserAddress UserAddress { get; set; }
         public Payment Payment { get; set; }
         public List<SalesFlow> SalesFlows { get; set; }
+        public Order Order { get; set; }
 
     }
 }

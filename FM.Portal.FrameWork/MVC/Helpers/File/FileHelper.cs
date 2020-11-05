@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Web;
+using System.Web.Hosting;
 
 namespace FM.Portal.FrameWork.MVC.Helpers.Files
 {
@@ -31,6 +32,21 @@ namespace FM.Portal.FrameWork.MVC.Helpers.Files
             if (System.IO.File.Exists(filePath))
             {
                 System.IO.File.Delete(filePath);
+            }
+        }
+        public static string MapPath(string path)
+        {
+            if (HostingEnvironment.IsHosted)
+            {
+                //hosted
+                return HostingEnvironment.MapPath(path);
+            }
+            else
+            {
+                //not hosted. For example, run in unit tests
+                string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+                path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
+                return Path.Combine(baseDirectory, path);
             }
         }
     }

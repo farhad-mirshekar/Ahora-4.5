@@ -2,18 +2,23 @@
 
 namespace Ahora.WebApp.Areas.User
 {
-    public class UserAreaRegistration : AreaRegistration 
+    public class UserAreaRegistration : AreaRegistration
     {
-        public override string AreaName 
+        public override string AreaName
         {
-            get 
+            get
             {
                 return "User";
             }
         }
 
-        public override void RegisterArea(AreaRegistrationContext context) 
+        public override void RegisterArea(AreaRegistrationContext context)
         {
+            context.MapRoute(
+               "User_PrintToPdf",
+               "User/Home/PrintToPdf/{PaymentID}",
+               new { controller = "Home", action = "PrintToPdf", PaymentID = UrlParameter.Optional }
+           );
             context.MapRoute(
                "User_Profile",
                "User/Home/Profile",
@@ -22,7 +27,7 @@ namespace Ahora.WebApp.Areas.User
             context.MapRoute(
                "User_AddressEdit",
                "User/Home/Address/Edit/{ID}",
-               new { controller = "Address", action = "Edit" , ID=UrlParameter.Optional }
+               new { controller = "Address", action = "Edit", ID = UrlParameter.Optional }
            );
             context.MapRoute(
                "User_AddressCreate",
@@ -42,7 +47,7 @@ namespace Ahora.WebApp.Areas.User
             context.MapRoute(
                 "User_Orders",
                 "User/Home/Orders/{Page}",
-                new { controller="Home", action = "Orders", Page = UrlParameter.Optional }
+                new { controller = "Home", action = "Orders", Page = UrlParameter.Optional }
             );
             context.MapRoute(
                 "User_default",

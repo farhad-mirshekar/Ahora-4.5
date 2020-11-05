@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using Ahora.WebApp.Models;
@@ -13,10 +14,16 @@ namespace Ahora.WebApp.Areas.User.Controllers
     public class HomeController : BaseController<IPaymentService>
     {
         private readonly ISalesService _salesService;
+        private readonly IPdfService _pdfService;
+        private readonly IWorkContext _workContext;
         public HomeController(IPaymentService service
-                             , ISalesService salesService) : base(service)
+                             , ISalesService salesService
+                             , IPdfService pdfService
+                             , IWorkContext workContext) : base(service)
         {
             _salesService = salesService;
+            _pdfService = pdfService;
+            _workContext = workContext;
         }
 
         // GET: User/Home
@@ -26,8 +33,7 @@ namespace Ahora.WebApp.Areas.User.Controllers
         }
         public ActionResult Orders(int? page)
         {
-            var userID = SQLHelper.CheckGuidNull(User.Identity.Name);
-            var ordersResult = _service.ListPaymentForUser(new FM.Portal.Core.Model.PaymentListForUserVM() {UserID = userID , PageSize = 4 , PageIndex = page });
+            var ordersResult = _service.ListPaymentForUser(new FM.Portal.Core.Model.PaymentListForUserVM() {UserID = _workContext.User.ID, PageSize = 4 , PageIndex = page });
             if (!ordersResult.Success)
                 return View("Error");
 
@@ -64,6 +70,19 @@ namespace Ahora.WebApp.Areas.User.Controllers
         public ActionResult Address()
         {
             return View();
+        }
+
+        public ActionResult PrintToPdf(Guid PaymentID)
+        {
+            var paymentDetailResult = _service.GetDetail(PaymentID);
+            byte[] bytes = null;
+            using (var stream = new MemoryStream())
+            {
+                _pdfService.PrintPaymentToPdf(PaymentID, Helper.LanguageID);
+                bytes = stream.ToArray();
+            }
+            return null;
+            //return File(bytes, "application/pdf", string.Format("order_{0}.pdf",paymentDetailResult.Data.Payment.OrderID ));
         }
     }
 }

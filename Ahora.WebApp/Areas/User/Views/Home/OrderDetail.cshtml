@@ -148,7 +148,7 @@
         </div>
         <div class="card-footer">
             <div class="btn-group-justified pull-left">
-                <button type="button" class="btn btn-primary">چاپ فاکتور</button>
+                <a href="@Url.RouteUrl("User_PrintToPdf",new { PaymentID = Model.Payment.ID })" class="btn btn-primary">دانلود فاکتور</a>
                 <a class="btn btn-cancel" href="@Url.RouteUrl("User_Orders")">بازگشت</a>
             </div>
         </div>

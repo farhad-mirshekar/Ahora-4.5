@@ -120,50 +120,53 @@
 }
 @helper ChildRender(List<MenuItem> child, Guid parent)
 {
-    <ul class='dropdown-menu' aria-labelledby='@parent'>
-        @if (child.Count > 0)
-        {
-            foreach (var item in child)
+    if (child != null)
+    {
+        <ul class='dropdown-menu' aria-labelledby='@parent'>
+            @if (child.Count > 0)
             {
-                if (item.Children != null && item.Children.Count > 0)
+                foreach (var item in child)
                 {
-                    if (item.ForeignLink == EnableMenuType.غیرفعال)
+                    if (item.Children != null && item.Children.Count > 0)
                     {
-                        var parameters = routeParams(item.Parameters);
-                        <li class='nav-item dropdown'>
-                            <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
-                            @ChildRender(item.Children, item.ID)
-                        </li>
+                        if (item.ForeignLink == EnableMenuType.غیرفعال)
+                        {
+                            var parameters = routeParams(item.Parameters);
+                            <li class='nav-item dropdown'>
+                                <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                                @ChildRender(item.Children, item.ID)
+                            </li>
+                        }
+                        else
+                        {
+                            <li class='nav-item dropdown'>
+                                <a class='nav-link dropdown-toggle' href='@item.Url' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                                @ChildRender(item.Children, item.ID)
+                            </li>
+                        }
                     }
                     else
                     {
-                        <li class='nav-item dropdown'>
-                            <a class='nav-link dropdown-toggle' href='@item.Url' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
-                            @ChildRender(item.Children, item.ID)
-                        </li>
-                    }
-                }
-                else
-                {
-                    if (item.ForeignLink == EnableMenuType.غیرفعال)
-                    {
-                        var parameters = routeParams(item.Parameters);
-                        <li class='nav-item dropdown'>
-                            <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
-                            @ChildRender(item.Children, item.ID)
-                        </li>
-                    }
-                    else
-                    {
-                        <li class='nav-item dropdown'>
-                            <a class='nav-link dropdown-toggle' href='@item.Url' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
-                            @ChildRender(item.Children, item.ID)
-                        </li>
+                        if (item.ForeignLink == EnableMenuType.غیرفعال)
+                        {
+                            var parameters = routeParams(item.Parameters);
+                            <li class='nav-item dropdown'>
+                                <a class='nav-link dropdown-toggle' href='@Url.RouteUrl(item.Url,parameters)' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                                @ChildRender(item.Children, item.ID)
+                            </li>
+                        }
+                        else
+                        {
+                            <li class='nav-item dropdown'>
+                                <a class='nav-link dropdown-toggle' href='@item.Url' id='@item.ID' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                                @ChildRender(item.Children, item.ID)
+                            </li>
+                        }
                     }
                 }
             }
-        }
-    </ul>
+        </ul>
+    }
 }
 @functions{
     private RouteValueDictionary routeParams(string parameters)

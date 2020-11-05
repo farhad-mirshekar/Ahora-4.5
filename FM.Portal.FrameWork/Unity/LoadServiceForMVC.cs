@@ -177,6 +177,7 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IObjectSerializer, ObjectSerializer>();
 
             container.RegisterType<IAuthenticationService, FormsAuthenticationService>();
+            container.RegisterType<IPdfService, PdfService>();
 
             DependencyResolver.SetResolver(new Unity.UnityDependencyResolver(container));
         }
