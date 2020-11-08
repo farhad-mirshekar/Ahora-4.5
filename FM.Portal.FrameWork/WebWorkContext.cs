@@ -34,7 +34,7 @@ namespace FM.Portal.FrameWork
                     _cachedUser = user;
                 }
 
-                return _cachedUser;
+                return user;
             }
             set
             {
