@@ -115,6 +115,24 @@ namespace Ahora.WebApp
               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
               );
             routes.MapRoute(
+            "DisLikeArticleComment",
+            "Article/DisLike/{CommentID}",
+              new { controller = "Article", action = "DisLike", CommentID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
+            routes.MapRoute(
+            "LikeArticleComment",
+            "Article/Like/{CommentID}",
+              new { controller = "Article", action = "Like", CommentID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
+            routes.MapRoute(
+             "AddArticleComment",
+             "Article/AddArticleComment/{ArticleID}/{ParentID}",
+               new { controller = "Article", action = "AddArticleComment", ArticleID = UrlParameter.Optional , ParentID=UrlParameter.Optional },
+               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+            );
+            routes.MapRoute(
               "Article",
               "Article/{Page}",
                 new { controller = "Article", action = "Index", Page = UrlParameter.Optional },

@@ -1,0 +1,25 @@
+﻿@model Ahora.WebApp.Models.Error
+
+@switch (Model.Code)
+{
+    case 1:
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @Model.ErorrDescription
+        </div>
+        break;
+    case 404:
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @Model.ErorrDescription
+        </div>
+        break;
+    case 500:
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+            @Model.ErorrDescription
+        </div>
+        break;
+}
+
+

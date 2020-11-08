@@ -76,7 +76,7 @@
                 @T("Article.DetailPage.Comment.Card.Title")
             </h5>
             <div class="card-body">
-                @Html.Action("Index", "Comment", new { DocumentID = Model.ID, State = "Article" })
+                @Html.Action("Comment", "Article", new { ArticleID = Model.ID})
             </div>
         </div>
     </section>

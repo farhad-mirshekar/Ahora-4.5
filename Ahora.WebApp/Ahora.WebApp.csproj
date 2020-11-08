@@ -1933,6 +1933,8 @@
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\Pbl\Language\LanguageSelectorModel.cs" />
     <Compile Include="Models\Pbl\Menu\MemuModel.cs" />
+    <Compile Include="Models\Ptl\ArticleComment\ArticleCommentListModel.cs" />
+    <Compile Include="Models\Ptl\ArticleComment\ArticleCommentModel.cs" />
     <Compile Include="Models\Ptl\Article\ArticleListModel.cs" />
     <Compile Include="Models\Ptl\Article\ArticleModel.cs" />
     <Compile Include="Models\Ptl\Events\EventListModel.cs" />
@@ -1972,6 +1974,9 @@
     <Content Include="Views\Product\_PartialRelatedProduct.cshtml" />
     <Content Include="Views\ShoppingCart\CartEmpty.cshtml" />
     <Content Include="Views\Common\_PartialLanguageSelector.cshtml" />
+    <Content Include="Views\Article\Partial\_PartialComment.cshtml" />
+    <Content Include="Views\Article\Partial\_PartialError.cshtml" />
+    <Content Include="Views\Article\Partial\_PartialModify.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

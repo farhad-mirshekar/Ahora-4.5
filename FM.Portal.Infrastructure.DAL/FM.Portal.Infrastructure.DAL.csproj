@@ -94,6 +94,7 @@
     <Compile Include="DataSources\Pbl\NotificationDataSource.cs" />
     <Compile Include="DataSources\Pbl\PagesDataSource.cs" />
     <Compile Include="DataSources\Pbl\TagsDataSource.cs" />
+    <Compile Include="DataSources\Ptl\ArticleCommentDataSource.cs" />
     <Compile Include="DataSources\Ptl\ArticleDataSource.cs" />
     <Compile Include="DataSources\Ptl\BannerDataSource.cs" />
     <Compile Include="DataSources\Ptl\CategoryDataSource.cs" />
@@ -270,6 +271,9 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Tags\pbl.spDeleteTagsByDocumnetID.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Tags\pbl.spModifyTags.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Tags_Mapping\pbl.spModifyTagsMapping.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\ArticleComment\ptl.spDisLikeArticleComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\ArticleComment\ptl.spLikeArticleComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\ArticleComment\ptl.spDeleteArticleComment.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spDeleteArticle.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetArticle.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Article\ptl.spGetsArticle.sql" />
@@ -283,6 +287,10 @@
     <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.GetsBanner.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.GetBanner.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Banner\ptl.spModifyBanner.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\ArticleComment\ptl.spGetArticleComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\ArticleComment\ptl.spGetsArticleComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\ArticleComment\ptl.spUserCanLikeArticle.sql" />
+    <Content Include="DataBaseScripts\Procedures\Ptl\ArticleComment\ptl.spModifyArticleComment.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.DeleteGallery.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.GetGallery.sql" />
     <Content Include="DataBaseScripts\Procedures\Ptl\Gallery\ptl.GetsGallery.sql" />

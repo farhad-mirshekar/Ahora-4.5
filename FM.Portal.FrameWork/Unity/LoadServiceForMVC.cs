@@ -164,6 +164,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IMenuItemDataSource, MenuItemDataSource>();
             container.RegisterType<IMenuItemService, MenuItemService>();
 
+            container.RegisterType<IArticleCommentDataSource, ArticleCommentDataSource>();
+            container.RegisterType<IArticleCommentService, ArticleCommentService>();
+
             container.RegisterType<IWorkContext, WebWorkContext>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ICompareProductService, CompareProductService>();

@@ -10,13 +10,17 @@ CREATE PROCEDURE ptl.spUserCanLikeArticle
 --WITH ENCRYPTION
 AS
 BEGIN
-	SELECT 
-		* 
-	FROM 
-		ptl.ArticleComment_User_Mapping
-	WHERE 
-		 CommentID = @CommentID 
-	AND	 UserID = @UserID
+	DECLARE @Count INT;
+	SET @Count = 
+	(
+		SELECT 
+			COUNT(*)
+		FROM 
+			ptl.ArticleComment_User_Mapping
+		WHERE 
+			CommentID = @CommentID 
+		AND	 UserID = @UserID
+	)
 
-	RETURN @@ROWCOUNT
+	RETURN @Count
 END

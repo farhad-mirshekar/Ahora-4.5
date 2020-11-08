@@ -1,6 +1,7 @@
 ﻿using Ahora.WebApp.Models.Pbl.Language;
 using Ahora.WebApp.Models.Pbl.Menu;
 using Ahora.WebApp.Models.Ptl.Article;
+using Ahora.WebApp.Models.Ptl.ArticleComment;
 using Ahora.WebApp.Models.Ptl.Events;
 using Ahora.WebApp.Models.Ptl.News;
 using AutoMapper;
@@ -46,6 +47,13 @@ namespace FM.Portal.FrameWork.AutoMapper
         public static NewsModel ToModel(this News entity)
         {
             return Mapper.Map<News, NewsModel>(entity);
+        }
+        #endregion
+
+        #region ArticleComment
+        public static ArticleComment ToEntity(this ArticleCommentModel model)
+        {
+            return Mapper.Map<ArticleCommentModel, ArticleComment>(model);
         }
         #endregion
     }
