@@ -158,6 +158,12 @@
     <Compile Include="Pbl\Tags\Tags.cs" />
     <Compile Include="Pbl\Tags\VM\TagsSearchListVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Ptl\EventsComment\EventsComment.cs" />
+    <Compile Include="Ptl\EventsComment\EventsComment_User_Mapping\EventsCommentMapUser.cs" />
+    <Compile Include="Ptl\EventsComment\VM\EventsCommentListVM.cs" />
+    <Compile Include="Ptl\NewsComment\NewsComment.cs" />
+    <Compile Include="Ptl\NewsComment\NewsComment_User_Mapping\NewsCommentMapUser.cs" />
+    <Compile Include="Ptl\NewsComment\VM\NewsCommentListVM.cs" />
     <Compile Include="Ptl\ArticleComment\ArticleComment.cs" />
     <Compile Include="Ptl\ArticleComment\ArticleComment_User_Mapping\ArticleCommentMapUser.cs" />
     <Compile Include="Ptl\ArticleComment\VM\ArticleCommentListVM.cs" />

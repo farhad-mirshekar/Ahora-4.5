@@ -64,17 +64,26 @@
     </text>)
 )
 
-@if (Model.Article.CommentStatusType == CommentStatusType.باز)
+@if (Model.Article.CommentStatusType == CommentStatusType.باز && Model.User != null)
 {
     <div style="text-align: center;" class="comment-reply-container">
-        @Ajax.ActionLink("ارسال دیدگاه", "AddArticleComment", "Article",new { ArticleID = Model.Article.ID}, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "addComment", OnSuccess = "AddComment.slideToggle", LoadingElementDuration = 300, LoadingElementId = "loadingMessage" }, new { @class = "btn btn-success", style = "width:80%;", rel = "nofollow" })
+        @Ajax.ActionLink("ارسال دیدگاه", "AddArticleComment", "Article", new { ArticleID = Model.Article.ID }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "addComment", OnSuccess = "AddComment.slideToggle", LoadingElementDuration = 300, LoadingElementId = "loadingMessage" }, new { @class = "btn btn-success", style = "width:80%;", rel = "nofollow" })
     </div>
 }
 else
 {
-    <div class="alert alert-danger text-center">
-        <span>افزودن نظر برای این محصول توسط مدیریت، بسته شده است</span>
-    </div>
+    if (Model.User == null)
+    {
+        <div class="alert alert-info text-center">
+            <span>مهمان گرامی! برای ارسال نظر نیاز است وارد سایت شوید</span>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <span>افزودن نظر برای این مقاله توسط مدیریت، بسته شده است</span>
+        </div>
+    }
 }
 <div id="addComment">
 </div>

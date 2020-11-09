@@ -85,6 +85,24 @@ namespace Ahora.WebApp
               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
            );
             routes.MapRoute(
+            "DisLikeEventsComment",
+            "Events/DisLike/{CommentID}",
+              new { controller = "Events", action = "DisLike", CommentID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
+            routes.MapRoute(
+            "LikeEventsComment",
+            "Events/Like/{CommentID}",
+              new { controller = "Events", action = "Like", CommentID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
+            routes.MapRoute(
+             "AddEventsComment",
+             "Events/AddEventsComment/{EventsID}/{ParentID}",
+               new { controller = "Events", action = "AddEventsComment", ArticleID = UrlParameter.Optional, ParentID = UrlParameter.Optional },
+               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+            );
+            routes.MapRoute(
               "Events",
               "Events/{Page}",
               new { controller = "Events", action = "Index", Page = UrlParameter.Optional },
@@ -102,6 +120,24 @@ namespace Ahora.WebApp
                 new { controller = "FaqGroup", action = "Index", Page = UrlParameter.Optional },
                 namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
              );
+            routes.MapRoute(
+            "DisLikeNewsComment",
+            "News/DisLike/{CommentID}",
+              new { controller = "News", action = "DisLike", CommentID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
+            routes.MapRoute(
+            "LikeNewsComment",
+            "News/Like/{CommentID}",
+              new { controller = "News", action = "Like", CommentID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
+            routes.MapRoute(
+             "AddNewsComment",
+             "News/AddNewsComment/{NewsID}/{ParentID}",
+               new { controller = "News", action = "AddNewsComment", NewsID = UrlParameter.Optional, ParentID = UrlParameter.Optional },
+               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+            );
             routes.MapRoute(
               "News",
               "News/{Page}",

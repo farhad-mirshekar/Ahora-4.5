@@ -95,7 +95,7 @@ namespace Ahora.WebApp.Controllers
                 article.CommentStatusType == CommentStatusType.نامشخص)
                 return Content("");
 
-            var commentsResult = _articleCommentService.List(new ArticleCommentListVM() { ArticleID = ArticleID, ShowChildren = true });
+            var commentsResult = _articleCommentService.List(new ArticleCommentListVM() { ArticleID = ArticleID, ShowChildren = true , CommentType = CommentType.تایید });
             if (!commentsResult.Success)
                 return Content("");
 

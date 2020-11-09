@@ -1,10 +1,10 @@
 USE [Ahora]
 GO
-IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('ptl.spUserCanLikeArticle'))
-	DROP PROCEDURE ptl.spUserCanLikeArticle
+IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('ptl.spUserCanLikeNewsComment'))
+	DROP PROCEDURE ptl.spUserCanLikeNewsComment
 GO
 
-CREATE PROCEDURE ptl.spUserCanLikeArticle
+CREATE PROCEDURE ptl.spUserCanLikeNewsComment
 @CommentID UNIQUEIDENTIFIER,
 @UserID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
@@ -16,7 +16,7 @@ BEGIN
 		SELECT 
 			COUNT(*)
 		FROM 
-			ptl.ArticleComment_User_Mapping
+			ptl.NewsComment_User_Mapping
 		WHERE 
 			CommentID = @CommentID 
 		AND	 UserID = @UserID

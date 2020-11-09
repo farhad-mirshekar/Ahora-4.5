@@ -146,7 +146,7 @@ namespace FM.Portal.Infrastructure.DAL
                     param[2] = new SqlParameter("@Count", SqlDbType.Int);
                     param[2].Direction = ParameterDirection.ReturnValue;
 
-                    SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spUserCanLikeArticle", param);
+                    SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spUserCanLikeArticleComment", param);
                     var result = param[2].Value;
                     if ((int)result <= 0)
                         return Result.Successful();

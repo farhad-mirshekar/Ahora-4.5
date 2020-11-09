@@ -85,6 +85,8 @@
     <Compile Include="Pbl\ILocaleStringResourceService.cs" />
     <Compile Include="Pbl\IMenuItemService.cs" />
     <Compile Include="Pbl\IPdfService.cs" />
+    <Compile Include="Ptl\IEventsCommentService.cs" />
+    <Compile Include="Ptl\INewsCommentService.cs" />
     <Compile Include="Ptl\IArticleCommentService.cs" />
     <Compile Include="Ptl\IGalleryService.cs" />
     <Compile Include="Pbl\IGeneralSettingService.cs" />

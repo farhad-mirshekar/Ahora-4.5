@@ -1933,6 +1933,10 @@
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\Pbl\Language\LanguageSelectorModel.cs" />
     <Compile Include="Models\Pbl\Menu\MemuModel.cs" />
+    <Compile Include="Models\Ptl\NewsComment\NewsCommentListModel.cs" />
+    <Compile Include="Models\Ptl\NewsComment\NewsCommentModel.cs" />
+    <Compile Include="Models\Ptl\EventsComment\EventsCommentListModel.cs" />
+    <Compile Include="Models\Ptl\EventsComment\EventsCommentModel.cs" />
     <Compile Include="Models\Ptl\ArticleComment\ArticleCommentListModel.cs" />
     <Compile Include="Models\Ptl\ArticleComment\ArticleCommentModel.cs" />
     <Compile Include="Models\Ptl\Article\ArticleListModel.cs" />
@@ -1977,6 +1981,12 @@
     <Content Include="Views\Article\Partial\_PartialComment.cshtml" />
     <Content Include="Views\Article\Partial\_PartialError.cshtml" />
     <Content Include="Views\Article\Partial\_PartialModify.cshtml" />
+    <Content Include="Views\Events\Partial\_PartialComment.cshtml" />
+    <Content Include="Views\Events\Partial\_PartialError.cshtml" />
+    <Content Include="Views\Events\Partial\_PartialModify.cshtml" />
+    <Content Include="Views\News\Partial\_PartialComment.cshtml" />
+    <Content Include="Views\News\Partial\_PartialError.cshtml" />
+    <Content Include="Views\News\Partial\_PartialModify.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
