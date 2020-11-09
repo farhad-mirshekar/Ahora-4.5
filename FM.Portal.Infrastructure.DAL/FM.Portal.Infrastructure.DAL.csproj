@@ -65,6 +65,7 @@
     <Compile Include="DataSources\App\OrderDetailDataSource.cs" />
     <Compile Include="DataSources\App\PaymentDataSource.cs" />
     <Compile Include="DataSources\App\ProductAttributeDataSource.cs" />
+    <Compile Include="DataSources\App\ProductCommentDataSource.cs" />
     <Compile Include="DataSources\App\ProductDataSource.cs" />
     <Compile Include="DataSources\App\ProductMapAttributeDataSource.cs" />
     <Compile Include="DataSources\App\RelatedProductDataSource.cs" />
@@ -110,6 +111,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spDeleteProductComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spDisLikeProductComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spGetProductComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spGetsProductComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spLikeProductComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spModifyProductComment.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spUserCanLikeProductComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Bank\app.spGetActiveBank.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CategoryMapDiscount\app.spDeleteCategoryMapDiscountByCategoryID.sql" />
     <Content Include="DataBaseScripts\Procedures\App\CategoryMapDiscount\app.spModifyCategoryMapDiscount.sql" />

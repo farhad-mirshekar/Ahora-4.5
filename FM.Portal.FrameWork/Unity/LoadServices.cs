@@ -174,6 +174,9 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IEventsCommentDataSource, EventsCommentDataSource>();
             _container.RegisterType<IEventsCommentService, EventsCommentService>();
 
+            _container.RegisterType<IProductCommentDataSource, ProductCommentDataSource>();
+            _container.RegisterType<IProductCommentService, ProductCommentService>();
+
             _container.RegisterType<IWorkContext, WebWorkContext>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>

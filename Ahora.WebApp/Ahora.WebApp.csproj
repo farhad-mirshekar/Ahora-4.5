@@ -1802,8 +1802,8 @@
     <Content Include="Views\Shared\Components\Product\_PartialProduct.cshtml" />
     <Content Include="Views\News\Detail.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
-    <Content Include="Views\Product\_PartialCarousel.cshtml" />
-    <Content Include="Views\Product\_PartialPrice.cshtml" />
+    <Content Include="Views\Product\Partial\_PartialCarousel.cshtml" />
+    <Content Include="Views\Product\Partial\_PartialPrice.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\Components\Slider\_PartialSlider.cshtml" />
@@ -1928,6 +1928,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\App\ProductComment\ProductCommentModel.cs" />
+    <Compile Include="Models\App\ProductComment\ProductCommentListModel.cs" />
     <Compile Include="Models\Error.cs" />
     <Compile Include="Models\Pbl\Language\LanguageModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
@@ -1958,7 +1960,7 @@
     <Content Include="Views\Events\Index.cshtml" />
     <Content Include="Views\Shared\Components\Events\_PartialSideEvents.cshtml" />
     <Content Include="Views\Events\Detail.cshtml" />
-    <Content Include="Views\Product\_PartialMain.cshtml" />
+    <Content Include="Views\Product\Partial\_PartialMain.cshtml" />
     <Content Include="Views\ShoppingCart\_PartialCart.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
     <Content Include="Views\Tag\Index.cshtml" />
@@ -1975,7 +1977,7 @@
     <Content Include="Views\ShoppingCart\Partial\_PartialDeliveryDateAndShippingCost.cshtml" />
     <Content Include="Views\Shared\Components\AutoComplateSearch\_PartialAutoComplateSearch.cshtml" />
     <Content Include="Views\Product\CompareProducts.cshtml" />
-    <Content Include="Views\Product\_PartialRelatedProduct.cshtml" />
+    <Content Include="Views\Product\Partial\_PartialRelatedProduct.cshtml" />
     <Content Include="Views\ShoppingCart\CartEmpty.cshtml" />
     <Content Include="Views\Common\_PartialLanguageSelector.cshtml" />
     <Content Include="Views\Article\Partial\_PartialComment.cshtml" />
@@ -1987,6 +1989,10 @@
     <Content Include="Views\News\Partial\_PartialComment.cshtml" />
     <Content Include="Views\News\Partial\_PartialError.cshtml" />
     <Content Include="Views\News\Partial\_PartialModify.cshtml" />
+    <Content Include="Views\Product\Partial\_PartialComment.cshtml" />
+    <Content Include="Views\Product\Partial\_PartialError.cshtml" />
+    <Content Include="Views\Product\Partial\_PartialModify.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -2005,6 +2011,7 @@
     <Folder Include="Content\TemporaryFiles\pages\" />
     <Folder Include="Content\TemporaryFiles\video\" />
     <Folder Include="Files\Report-Excel\" />
+    <Folder Include="Models\App\Product\" />
     <Folder Include="Views\Download\" />
     <Folder Include="Views\Search\" />
   </ItemGroup>

@@ -99,7 +99,7 @@ namespace Ahora.WebApp
             routes.MapRoute(
              "AddEventsComment",
              "Events/AddEventsComment/{EventsID}/{ParentID}",
-               new { controller = "Events", action = "AddEventsComment", ArticleID = UrlParameter.Optional, ParentID = UrlParameter.Optional },
+               new { controller = "Events", action = "AddEventsComment", EventsID = UrlParameter.Optional, ParentID = UrlParameter.Optional },
                namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
             );
             routes.MapRoute(
@@ -211,6 +211,24 @@ namespace Ahora.WebApp
                 new { controller = "Product", action = "AddToCart", ProductID = UrlParameter.Optional },
                 namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
                 );
+            routes.MapRoute(
+            "DisLikeProductComment",
+            "Product/DisLike/{CommentID}",
+              new { controller = "Product", action = "DisLike", CommentID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
+            routes.MapRoute(
+            "LikeProductComment",
+            "Product/Like/{CommentID}",
+              new { controller = "Product", action = "Like", CommentID = UrlParameter.Optional },
+              namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+           );
+            routes.MapRoute(
+             "AddProductComment",
+             "Product/AddProductComment/{ProductID}/{ParentID}",
+               new { controller = "Product", action = "AddProductComment", ProductID = UrlParameter.Optional, ParentID = UrlParameter.Optional },
+               namespaces: new[] { $"{typeof(RouteConfig).Namespace}.Controllers" }
+            );
             routes.MapRoute(
                 "product",
                 "product/{TrackingCode}/{Title}",

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\IProductCommentService.cs" />
     <Compile Include="App\IBankService.cs" />
     <Compile Include="App\ICategoryMapDiscountService.cs" />
     <Compile Include="App\ICategoryService.cs" />

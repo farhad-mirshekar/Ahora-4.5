@@ -24,7 +24,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        @Html.Partial("~/Views/product/_PartialCarousel.cshtml", Model.Attachments)
+                        @Html.Partial("~/Views/product/Partial/_PartialCarousel.cshtml", Model.Attachments)
                     </div>
                     <div class="col-md-6 col-sm-7 col-xs-12">
                         <section>
@@ -37,19 +37,19 @@
                     <div class="col-md-3 col-sm-5 col-xs-12" id="price">
                         @using (Html.BeginRouteForm("Product", FormMethod.Post, new { id = "product-details-form" }))
                         {
-                            @Html.Partial("~/Views/product/_PartialPrice.cshtml", Model)
+                            @Html.Partial("~/Views/product/Partial/_PartialPrice.cshtml", Model)
                         }
 
                     </div>
                 </div>
                 <div class="row">
-                    @Html.Partial("_PartialMain", Model)
+                    @Html.Partial("~/Views/product/Partial/_PartialMain.cshtml", Model)
                 </div>
                 @if (Model.RelatedProducts.Count > 0)
                 {
                     <div class="row">
                         <div class="col-md-12">
-                            @Html.Partial("_PartialRelatedProduct",Model.RelatedProducts)
+                            @Html.Partial("~/Views/product/Partial/_PartialRelatedProduct.cshtml", Model.RelatedProducts)
                         </div>
                     </div>
                 }

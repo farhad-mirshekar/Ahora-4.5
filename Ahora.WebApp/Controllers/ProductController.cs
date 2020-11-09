@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Ahora.WebApp.Models;
 using FM.Portal.Core.Model;
+using Ahora.WebApp.Models.App;
+using FM.Portal.FrameWork.AutoMapper;
 
 namespace Ahora.WebApp.Controllers
 {
@@ -21,13 +23,15 @@ namespace Ahora.WebApp.Controllers
         private readonly IProductVariantAttributeService _productVariantAttributeService;
         private readonly ICompareProductService _compareProductService;
         private readonly IWorkContext _workContext;
+        private readonly IProductCommentService _productCommentService;
         public ProductController(IProductService service
                                  , IAttachmentService attachmentService
                                  , IShoppingCartItemService shoppingCartService
                                  , IProductMapAttributeService productMapattributeService
                                  , IProductVariantAttributeService productVariantAttributeService
                                  , ICompareProductService compareProductService
-                                 , IWorkContext workContext) : base(service)
+                                 , IWorkContext workContext
+                                 , IProductCommentService productCommentService) : base(service)
         {
             _attachmentService = attachmentService;
             _shoppingCartService = shoppingCartService;
@@ -35,6 +39,7 @@ namespace Ahora.WebApp.Controllers
             _productVariantAttributeService = productVariantAttributeService;
             _compareProductService = compareProductService;
             _workContext = workContext;
+            _productCommentService = productCommentService;
         }
 
         #region Product
@@ -313,6 +318,119 @@ namespace Ahora.WebApp.Controllers
         {
             _compareProductService.ClearCompareProducts();
             return RedirectToRoute("Home");
+        }
+        #endregion
+
+        #region Product Comment
+        public ActionResult Comment(Guid ProductID)
+        {
+            var productResult = _service.Get(ProductID);
+            if (!productResult.Success)
+                return Content("");
+
+            var product = productResult.Data;
+            if (!product.AllowCustomerReviews)
+                return Content("");
+
+            var commentsResult = _productCommentService.List(new ProductCommentListVM() { ProductID = ProductID, ShowChildren = true, CommentType = CommentType.تایید });
+            if (!commentsResult.Success)
+                return Content("");
+
+            var comments = commentsResult.Data;
+            var productCommentListModel = new ProductCommentListModel();
+            productCommentListModel.AvailableComments = comments;
+            productCommentListModel.User = _workContext.User;
+            productCommentListModel.Product = product;
+
+            return PartialView("~/Views/Product/Partial/_PartialComment.cshtml", productCommentListModel);
+
+        }
+
+        [HttpGet]
+        public ActionResult AddProductComment(Guid ProductID, Guid? ParentID)
+        {
+            var errors = new Error();
+            errors.Code = 500;
+            errors.ErorrDescription = "خطای ناشناخته";
+
+            var productCommentModel = new ProductCommentModel();
+            productCommentModel.ProductID = ProductID;
+
+            if (_workContext.User == null)
+            {
+                errors.Code = 404;
+                errors.ErorrDescription = "برای رای دادن باید عضو سایت باشید";
+                return PartialView("~/Views/Product/Partial/_PartialError.cshtml", errors);
+            }
+            var commentsResult = _productCommentService.List(new ProductCommentListVM() { ProductID = ProductID, UserID = _workContext.User.ID, CommentType = CommentType.در_حال_بررسی });
+
+            if (!commentsResult.Success)
+                return PartialView("~/Views/Product/Partial/_PartialError.cshtml");
+
+            if (commentsResult.Data.Any())
+            {
+                errors.Code = 1;
+                errors.ErorrDescription = "شما برای این مقاله یک نظر تایید نشده دارید";
+                return PartialView("~/Views/Product/Partial/_PartialError.cshtml", errors);
+            }
+            else
+            {
+                if (ParentID.HasValue)
+                    productCommentModel.ParentID = ParentID;
+
+                return PartialView("~/Views/Product/Partial/_PartialModify.cshtml", productCommentModel);
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public JsonResult AddProductComment(ProductCommentModel model)
+        {
+            if (_workContext.User == null)
+                return Json(new { show = "true" });
+
+            model.UserID = _workContext.User.ID;
+
+            var result = _productCommentService.Add(model.ToEntity());
+            if (!result.Success)
+                return Json(new { show = "true" });
+
+            return Json(new { show = "false" });
+        }
+
+        public JsonResult Like(Guid CommentID)
+        {
+            if (_workContext.User == null)
+                return Json(new { result = "login", CommentID = CommentID });
+
+            var userCanLikeResult = _productCommentService.UserCanLike(new ProductCommentMapUser() { CommentID = CommentID, UserID = _workContext.User.ID });
+            if (!userCanLikeResult.Success)
+                return Json(new { result = "duplicate", CommentID = CommentID });
+
+            var LikeResult = _productCommentService.Like(CommentID, _workContext.User.ID);
+            if (!LikeResult.Success)
+                return Json(new { result = "error", CommentID = CommentID });
+
+
+            return Json(new { result = "success", CommentID = CommentID, state = "like", count = LikeResult.Data.LikeCount });
+
+        }
+        public JsonResult DisLike(Guid CommentID)
+        {
+            if (_workContext.User == null)
+                return Json(new { result = "login", CommentID = CommentID });
+
+            var userCanLikeResult = _productCommentService.UserCanLike(new ProductCommentMapUser() { CommentID = CommentID, UserID = _workContext.User.ID });
+            if (!userCanLikeResult.Success)
+                return Json(new { result = "duplicate", CommentID = CommentID });
+
+            var disLikeResult = _productCommentService.DisLike(CommentID, _workContext.User.ID);
+            if (!disLikeResult.Success)
+                return Json(new { result = "error", CommentID = CommentID });
+
+
+            return Json(new { result = "success", CommentID = CommentID, state = "dislike", count = disLikeResult.Data.DisLikeCount });
+
         }
         #endregion
     }

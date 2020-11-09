@@ -88,6 +88,7 @@
     <Compile Include="App\OrderService.cs" />
     <Compile Include="App\PaymentService.cs" />
     <Compile Include="App\ProductAttributeService.cs" />
+    <Compile Include="App\ProductCommentService.cs" />
     <Compile Include="App\ProductMapAttributeService.cs" />
     <Compile Include="App\ProductService.cs" />
     <Compile Include="App\RelatedProductService.cs" />

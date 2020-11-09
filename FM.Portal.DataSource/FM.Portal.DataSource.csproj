@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App\IProductCommentDataSource.cs" />
     <Compile Include="App\IBankDataSource.cs" />
     <Compile Include="App\ICategoryDataSource.cs" />
     <Compile Include="App\ICategoryMapDiscountDataSource.cs" />

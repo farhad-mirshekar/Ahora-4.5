@@ -1,4 +1,5 @@
-﻿using Ahora.WebApp.Models.Pbl.Language;
+﻿using Ahora.WebApp.Models.App;
+using Ahora.WebApp.Models.Pbl.Language;
 using Ahora.WebApp.Models.Pbl.Menu;
 using Ahora.WebApp.Models.Ptl.Article;
 using Ahora.WebApp.Models.Ptl.ArticleComment;
@@ -70,6 +71,13 @@ namespace FM.Portal.FrameWork.AutoMapper
         public static EventsComment ToEntity(this EventsCommentModel model)
         {
             return Mapper.Map<EventsCommentModel, EventsComment>(model);
+        }
+        #endregion
+
+        #region ProductComment
+        public static ProductComment ToEntity(this ProductCommentModel model)
+        {
+            return Mapper.Map<ProductCommentModel, ProductComment>(model);
         }
         #endregion
     }

@@ -80,7 +80,7 @@
                 </div>
                 <div id="commentProduct" class="tab-pane fade">
                     <div class="col-md-12 mt-3">
-                        @Html.Action("Index", "Comment", new { DocumentID = Model.ID, State = "Product" })
+                        @Html.Action("Comment", "Product", new { ProductID = Model.ID })
                     </div>
                 </div>
 

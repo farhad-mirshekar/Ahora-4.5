@@ -1,4 +1,5 @@
-﻿using Ahora.WebApp.Models.Pbl.Language;
+﻿using Ahora.WebApp.Models.App;
+using Ahora.WebApp.Models.Pbl.Language;
 using Ahora.WebApp.Models.Pbl.Menu;
 using Ahora.WebApp.Models.Ptl.Article;
 using Ahora.WebApp.Models.Ptl.ArticleComment;
@@ -31,6 +32,7 @@ namespace FM.Portal.FrameWork.AutoMapper
                 config.CreateMap<ArticleCommentModel, ArticleComment>();
                 config.CreateMap<NewsCommentModel, NewsComment>();
                 config.CreateMap<EventsCommentModel, EventsComment>();
+                config.CreateMap<ProductCommentModel, ProductComment>();
             });
         }
     }

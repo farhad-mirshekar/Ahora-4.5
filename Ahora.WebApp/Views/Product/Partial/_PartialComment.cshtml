@@ -1,0 +1,90 @@
+﻿@using FM.Portal.FrameWork.MVC.Helpers.TreeView;
+@model Ahora.WebApp.Models.App.ProductCommentListModel
+@using System.Globalization
+@{ var pc = new PersianCalendar();}
+@(Html.TreeView(Model.AvailableComments)
+.EmptyContent("<i>اولین نفری باشید که نظر می دهید</i>")
+.Children(c => c.Children)
+.HtmlAttributes(new { id = "tree" })
+.ChildrenHtmlAttributes(new { @class = "subItem" })
+.ItemText(c => c.CreatorName)
+.ItemTemplate(
+    @<text>
+        <div class="card">
+            <div class="card-header">
+                <div class="d-inline">
+                    <div class="mr-2 d-inline">
+                         <span><i class="fa fa-calendar text-success"></i> تاریخ : </span>
+                         <span>@string.Format("{2}/{1}/{0}", pc.GetDayOfMonth(item.CreationDate), pc.GetMonth(item.CreationDate), pc.GetYear(item.CreationDate))</span>
+                    </div>
+                    <div class="mr-2 d-inline">
+                         <span><i class="fa fa-dashboard text-info"></i> زمان : </span>
+                         <span>@string.Format("{1}:{0}", @pc.GetMinute(item.CreationDate), pc.GetHour(item.CreationDate))</span>
+                    </div>
+                    <div class="pull-left">
+                        <span><i class="fa fa-thumbs-up text-success"></i></span>
+                        <span id="comment-like-count-@(item.ID)">@item.LikeCount</span>
+                        <span><i class="fa fa-thumbs-down text-danger"></i></span>
+                        <span id="comment-dislike-count-@(item.ID)">@item.DisLikeCount</span>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="card-body">
+                <div class="col-md-12" id="body_comment">
+                    @Html.Raw(item.Body)
+
+                </div>
+            </div>
+            <div class="card-footer clearfix">
+                <div class="pull-right">
+                    <div class="comment-like-link btn btn-success" title="موافقم">
+                        <span><i class="fa fa-thumbs-up" style="top: 4px;"></i></span>
+                        <span data-href="@Url.RouteUrl("LikeProductComment", new {CommentID=@item.ID })" data-comment-id="@item.ID">موافقم</span>
+                    </div>
+
+                    <div class="comment-like comment-like-link btn btn-danger" title="مخالف">
+                        <span><i class="fa fa-thumbs-down" style="top: 4px;"></i></span>
+                        <span data-href="@Url.RouteUrl("DisLikeProductComment",new {CommentID=@item.ID })" data-comment-id="@item.ID">مخالفم</span>
+                    </div>
+                    <div id="comment-like-result-@(item.ID)" class="mt-2"></div>
+                </div>
+                @if (Model.Product.AllowCustomerReviews)
+                {
+                    <div class="pull-left">
+                        @Ajax.ActionLink("پاسخ دادن", "AddProductComment", "Product", new { ProductID = Model.Product.ID, ParentID = @item.ID  }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comment-reply-" + @item.ID, OnBegin = "CommentReply.onBegin" }, new { rel = "nofollow",@class="btn btn-primary" })
+                    </div>
+                }
+
+                <div class="clear clearfix"></div>
+                <div id="comment-reply-@(item.ID)" class="comment-reply-container mt-4" style="display: none;"></div>
+            </div>
+        </div>
+    </text>)
+)
+
+@if (Model.Product.AllowCustomerReviews && Model.User != null)
+{
+    <div style="text-align: center;" class="comment-reply-container">
+        @Ajax.ActionLink("ارسال دیدگاه", "AddProductComment", "Product", new { ProductID = Model.Product.ID }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "addComment", OnSuccess = "AddComment.slideToggle", LoadingElementDuration = 300, LoadingElementId = "loadingMessage" }, new { @class = "btn btn-success", style = "width:80%;", rel = "nofollow" })
+    </div>
+}
+else
+{
+    if (Model.User == null)
+    {
+        <div class="alert alert-info text-center">
+            <span>مهمان گرامی! برای ارسال نظر نیاز است وارد سایت شوید</span>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info text-center">
+            <span>افزودن نظر برای این محصول توسط مدیریت، بسته شده است</span>
+        </div>
+    }
+}
+<div id="addComment">
+</div>
+<script src="~/Scripts/custom/comment.js"></script>
