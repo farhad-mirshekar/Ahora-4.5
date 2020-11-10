@@ -55,8 +55,6 @@
     <Compile Include="DataSources\App\BankDataSource.cs" />
     <Compile Include="DataSources\App\CategoryDataSource.cs" />
     <Compile Include="DataSources\App\CategoryMapDiscountDataSource.cs" />
-    <Compile Include="DataSources\App\CommentDataSource.cs" />
-    <Compile Include="DataSources\App\CommentMapUserDataSource.cs" />
     <Compile Include="DataSources\App\DeliveryDateDataSource.cs" />
     <Compile Include="DataSources\App\DiscountDataSource.cs" />
     <Compile Include="DataSources\App\FaqDataSource.cs" />
@@ -125,15 +123,6 @@
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spGetsCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spModifyCategory.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Category\app.spDeleteCategory.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spGetCommentMapUser.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spIsUserLikeOrUnlike.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\CommentMapProduct\app.spModifyCommentMapUser.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spDisLikeComment.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spCanUserComment.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComment.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spGetComments.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spLikeComment.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\Comment\app.spModifyComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Discount\app.spGetDiscount.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Discount\app.spGetsDiscount.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Discount\app.spModifyDiscount.sql" />

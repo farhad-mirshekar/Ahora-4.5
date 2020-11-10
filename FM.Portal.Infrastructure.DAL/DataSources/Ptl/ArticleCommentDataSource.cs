@@ -137,7 +137,6 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var obj = new Comment();
                 using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var param = new SqlParameter[3];

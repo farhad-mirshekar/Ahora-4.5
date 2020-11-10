@@ -1793,8 +1793,6 @@
     <Content Include="Views\Article\Index.cshtml" />
     <Content Include="Views\Category\Index.cshtml" />
     <Content Include="Views\Category\_PartialMain.cshtml" />
-    <Content Include="Views\Comment\_PartialComment.cshtml" />
-    <Content Include="Views\Comment\_PartialModify.cshtml" />
     <Content Include="Views\FaqGroup\Index.cshtml" />
     <Content Include="Views\Faq\Index.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
@@ -1826,7 +1824,6 @@
     <Compile Include="Areas\Admin\AdminAreaRegistration.cs" />
     <Compile Include="Areas\Admin\BundleConfig.cs" />
     <Compile Include="Areas\Admin\Controllers\App\CategoryController.cs" />
-    <Compile Include="Areas\Admin\Controllers\App\CommentController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\DeliveryDateController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\DiscountController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\FaqGroupController.cs" />
@@ -1863,7 +1860,6 @@
     <Compile Include="Areas\ApiClient\ApiClientAreaRegistration.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\CategoryController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\CategoryMapDiscountController.cs" />
-    <Compile Include="Areas\ApiClient\Controllers\app\CommentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\DeliveryDateController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\DiscountController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\FaqController.cs" />
@@ -1909,7 +1905,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ArticleController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
-    <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\DownloadController.cs" />
     <Compile Include="Controllers\DynamicPageController.cs" />
@@ -1965,7 +1960,6 @@
     <Content Include="Views\Account\Create.cshtml" />
     <Content Include="Views\Tag\Index.cshtml" />
     <Content Include="Views\Redirect\Melli.cshtml" />
-    <Content Include="Views\Comment\_PartialError.cshtml" />
     <Content Include="Views\Redirect\_PartialDownload.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\DynamicPage\Index.cshtml" />

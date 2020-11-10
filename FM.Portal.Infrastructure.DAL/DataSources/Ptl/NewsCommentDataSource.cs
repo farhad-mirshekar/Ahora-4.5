@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 
 namespace FM.Portal.Infrastructure.DAL
 {
+
     public class NewsCommentDataSource : INewsCommentDataSource
     {
         readonly IRequestInfo _requestInfo;
@@ -137,7 +138,6 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var obj = new Comment();
                 using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var param = new SqlParameter[3];

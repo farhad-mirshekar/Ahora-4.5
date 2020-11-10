@@ -51,8 +51,6 @@
     <Compile Include="App\IBankService.cs" />
     <Compile Include="App\ICategoryMapDiscountService.cs" />
     <Compile Include="App\ICategoryService.cs" />
-    <Compile Include="App\ICommentMapUserService.cs" />
-    <Compile Include="App\ICommentService.cs" />
     <Compile Include="App\IDeliveryDateService.cs" />
     <Compile Include="App\IDiscountService.cs" />
     <Compile Include="App\IFaqGroupService.cs" />

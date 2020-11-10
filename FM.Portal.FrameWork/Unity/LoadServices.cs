@@ -55,9 +55,6 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IDiscountDataSource, DiscountDataSource>();
             _container.RegisterType<IDiscountService, DiscountService>();
 
-            _container.RegisterType<ICommentDataSource, CommentDataSource>();
-            _container.RegisterType<ICommentService, CommentService>();
-
             _container.RegisterType<IProductMapAttributeDataSource, ProductMapAttributeDataSource>();
             _container.RegisterType<IProductMapAttributeService, ProductMapAttributeService>();
 

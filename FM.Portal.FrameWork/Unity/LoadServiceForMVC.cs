@@ -45,12 +45,6 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IProductVariantAttributeDataSource, ProductVariantAttributeDataSource>();
             container.RegisterType<IProductVariantAttributeService, ProductVariantAttributeService>();
 
-            container.RegisterType<ICommentDataSource, CommentDataSource>();
-            container.RegisterType<ICommentService, CommentService>();
-
-            container.RegisterType<ICommentMapUserDataSource, CommentMapUserDataSource>();
-            container.RegisterType<ICommentMapUserService, CommentMapUserService>();
-
             container.RegisterType<IProductMapAttributeDataSource, ProductMapAttributeDataSource>();
             container.RegisterType<IProductMapAttributeService, ProductMapAttributeService>();
 
