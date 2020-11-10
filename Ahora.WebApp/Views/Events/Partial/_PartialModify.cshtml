@@ -1,4 +1,4 @@
-﻿@model Ahora.WebApp.Models.Ptl.EventsComment.EventsCommentModel
+﻿@model Ahora.WebApp.Models.Ptl.EventsCommentModel
 <div>
     <!--begin form-->
     @using (Ajax.BeginForm("AddEventsComment", "Events", new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddComment.onSuccess", LoadingElementId = "loadingMessage", LoadingElementDuration = 300 }, new { @class = "form-horizontal", id = "frmCommentReply" }))

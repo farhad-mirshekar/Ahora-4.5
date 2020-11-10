@@ -13,13 +13,6 @@ namespace FM.Portal.Core.Model
         public int Priority { get; set; }
 
         //only show
-        public string CreationDatePersian
-        {
-            get
-            {
-                return Helper.GetPersianDate(CreationDate);
-            }
-        }
         public int Total { get; set; }
     }
 }

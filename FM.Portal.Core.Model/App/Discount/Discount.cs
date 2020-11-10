@@ -10,7 +10,6 @@ namespace FM.Portal.Core.Model
         public decimal DiscountAmount { get; set; }
 
         //only show
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public int Total { get; set; }
     }
 }

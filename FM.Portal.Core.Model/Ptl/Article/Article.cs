@@ -32,7 +32,6 @@ namespace FM.Portal.Core.Model
         public PathType PathType { get; set; }
 
         public string Path => "Article";
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public int Total { get; set; }
         public List<Attachment> Attachments { get; set; }
     }

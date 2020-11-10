@@ -4,11 +4,10 @@ using FM.Portal.FrameWork.MVC.Controller;
 using FM.Portal.Core.Common;
 using Ahora.WebApp.Models;
 using System.Linq;
-using Ahora.WebApp.Models.Ptl.Article;
+using Ahora.WebApp.Models.Ptl;
 using FM.Portal.FrameWork.AutoMapper;
 using System;
 using FM.Portal.Core.Model;
-using Ahora.WebApp.Models.Ptl.ArticleComment;
 
 namespace Ahora.WebApp.Controllers
 {

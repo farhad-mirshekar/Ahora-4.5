@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ahora.WebApp.Models.Pbl.Language
+namespace Ahora.WebApp.Models.Pbl
 {
     public class LanguageModel
     {

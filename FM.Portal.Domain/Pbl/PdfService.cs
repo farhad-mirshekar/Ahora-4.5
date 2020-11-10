@@ -123,7 +123,7 @@ namespace FM.Portal.Domain
 
             var creationDateCol = new PdfPTable(1);
             SetDefaultCell(creationDateCol);
-            creationDateCol.AddCell(new Paragraph($"{lng} : {Helper.GetPersianDate(payment.CreationDate)}", font));
+            creationDateCol.AddCell(new Paragraph($"{lng} : {Helper.GetPersianDate(payment.CreationDate.Value)}", font));
             headerTable.AddCell(creationDateCol);
 
             doc.Add(headerTable);

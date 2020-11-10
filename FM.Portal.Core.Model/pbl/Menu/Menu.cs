@@ -13,7 +13,6 @@ namespace FM.Portal.Core.Model
         public Guid UserID { get; set; }
 
         //only show
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public string LanguageName { get; set; }
         public int Total { get; set; }
     }

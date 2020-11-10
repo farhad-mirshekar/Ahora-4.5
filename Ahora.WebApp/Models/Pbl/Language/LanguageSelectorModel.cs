@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Ahora.WebApp.Models.Pbl.Language
+namespace Ahora.WebApp.Models.Pbl
 {
     public class LanguageSelectorModel
     {

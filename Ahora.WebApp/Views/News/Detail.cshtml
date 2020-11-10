@@ -1,4 +1,4 @@
-﻿@model Ahora.WebApp.Models.Ptl.News.NewsModel
+﻿@model Ahora.WebApp.Models.Ptl.NewsModel
 @using System.Linq;
 @{
     ViewBag.Title = Model.Title;
@@ -10,7 +10,7 @@
     <meta property="og:type" content="article">
     <meta property="article:modified_time" content="@Model.ModifiedDate">
     <meta name="keywords" property="article:tag" content="@Model.MetaKeywords">
-    <meta property="nastooh:publishDate" content="@Model.CreationDate.ToString("yyyy-MM-dd")">
+    <meta property="nastooh:publishDate" content="@Model.CreationDate.Value.ToString("yyyy-MM-dd")">
     <meta property="og:title" itemprop="headline" content="@Model.Title">
 }
 @section BodySection{

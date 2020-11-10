@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Ahora.WebApp.Models.Ptl.Article
+namespace Ahora.WebApp.Models.Ptl
 {
     public class ArticleModel
     {
@@ -30,7 +30,7 @@ namespace Ahora.WebApp.Models.Ptl.Article
         public DateTime ModifiedDate { get; set; }
         public string Title { get; set; }
         public int Total { get; set; }
-        public DateTime CreationDate { get; set; }
+        public DateTime? CreationDate { get; set; }
         public List<Attachment> PictureAttachments { get; set; }
         public List<Attachment> VideoAttachments { get; set; }
     }

@@ -45,7 +45,6 @@ namespace FM.Portal.Core.Model
         public DiscountType DiscountTypes { get; set; }
         public decimal DiscountAmount { get; set; }
         public int CountSelect { get; set; }
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public string CategoryName { get; set; }
         public List<RelatedProduct> RelatedProducts { get; set; }
         public ShippingCost ShippingCost { get; set; }

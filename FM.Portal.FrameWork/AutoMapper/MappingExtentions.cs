@@ -1,12 +1,6 @@
 ﻿using Ahora.WebApp.Models.App;
-using Ahora.WebApp.Models.Pbl.Language;
-using Ahora.WebApp.Models.Pbl.Menu;
-using Ahora.WebApp.Models.Ptl.Article;
-using Ahora.WebApp.Models.Ptl.ArticleComment;
-using Ahora.WebApp.Models.Ptl.Events;
-using Ahora.WebApp.Models.Ptl.EventsComment;
-using Ahora.WebApp.Models.Ptl.News;
-using Ahora.WebApp.Models.Ptl.NewsComment;
+using Ahora.WebApp.Models.Pbl;
+using Ahora.WebApp.Models.Ptl;
 using AutoMapper;
 using FM.Portal.Core.Model;
 

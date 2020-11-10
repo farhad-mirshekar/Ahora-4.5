@@ -1,7 +1,7 @@
 ﻿using FM.Portal.Core.Model;
 using System.Collections.Generic;
 
-namespace Ahora.WebApp.Models.Pbl.Menu
+namespace Ahora.WebApp.Models.Pbl
 {
     public class MemuModel
     {

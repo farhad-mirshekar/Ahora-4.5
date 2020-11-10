@@ -23,7 +23,6 @@ namespace FM.Portal.Core.Model
         public EnableMenuType Enabled { get; set; }
         public Guid UserID { get; set; }
         public string Path => PathType.ToString();
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public string TrackingCode { get; set; }
     }
 }

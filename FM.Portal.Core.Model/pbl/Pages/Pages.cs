@@ -18,6 +18,5 @@ namespace FM.Portal.Core.Model
         public string RouteUrl { get; set; }
 
         //only show
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
     }
 }

@@ -212,19 +212,19 @@ namespace FM.Portal.Core.Common
                 return SQLHelper.CheckGuidNull(result.LanguageID);
             }
         }
-        public static int GetPersianDay(DateTime date)
+        public static int GetPersianDay(DateTime? date)
         {
-            return new PersianCalendar().GetDayOfMonth(date);
+            return new PersianCalendar().GetDayOfMonth(date.Value);
         }
 
-        public static int GetPersianMonth(DateTime date)
+        public static int GetPersianMonth(DateTime? date)
         {
-            return new PersianCalendar().GetMonth(date);
+            return new PersianCalendar().GetMonth(date.Value);
         }
 
-        public static int GetPersianYear(DateTime date)
+        public static int GetPersianYear(DateTime? date)
         {
-            return new PersianCalendar().GetYear(date);
+            return new PersianCalendar().GetYear(date.Value);
         }
 
         public static string GetPersianMonthName(int MonthNumber)
@@ -260,7 +260,7 @@ namespace FM.Portal.Core.Common
             }
             return "";
         }
-        public static string GetPersianDate(DateTime date)
+        public static string GetPersianDate(DateTime? date)
         {
             return GetPersianYear(date).ToString() + "/" + (GetPersianMonth(date).ToString().Length == 1 ? "0" + GetPersianMonth(date).ToString() : GetPersianMonth(date).ToString()) + "/" + (GetPersianDay(date).ToString().Length == 1 ? "0" + GetPersianDay(date).ToString() : GetPersianDay(date).ToString());
         }

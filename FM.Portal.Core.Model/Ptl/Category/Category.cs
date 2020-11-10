@@ -14,6 +14,5 @@ namespace FM.Portal.Core.Model.Ptl
         public bool IncludeInLeftMenu { get; set; }
 
         //only show
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
     }
 }

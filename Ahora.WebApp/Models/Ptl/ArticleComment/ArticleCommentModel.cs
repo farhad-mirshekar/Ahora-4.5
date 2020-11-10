@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Ahora.WebApp.Models.Ptl.ArticleComment
+namespace Ahora.WebApp.Models.Ptl
 {
     public class ArticleCommentModel
     {

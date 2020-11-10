@@ -18,7 +18,6 @@ namespace FM.Portal.Core.Model
         public string UrlDesc { get; set; }
 
         //only show
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public string FileName { get; set; }
         public PathType PathType { get; set; }
 

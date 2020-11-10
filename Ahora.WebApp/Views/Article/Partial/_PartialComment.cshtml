@@ -1,6 +1,7 @@
 ﻿@using FM.Portal.FrameWork.MVC.Helpers.TreeView;
-@model Ahora.WebApp.Models.Ptl.ArticleComment.ArticleCommentListModel
-@using System.Globalization
+@model Ahora.WebApp.Models.Ptl.ArticleCommentListModel
+@using FM.Portal.Core.Common;
+@using System.Globalization;
 @{ var pc = new PersianCalendar();}
 @(Html.TreeView(Model.AvailableComments)
 .EmptyContent("<i>اولین نفری باشید که نظر می دهید</i>")
@@ -15,11 +16,11 @@
                 <div class="d-inline">
                     <div class="mr-2 d-inline">
                          <span><i class="fa fa-calendar text-success"></i> تاریخ : </span>
-                         <span>@string.Format("{2}/{1}/{0}", pc.GetDayOfMonth(item.CreationDate), pc.GetMonth(item.CreationDate), pc.GetYear(item.CreationDate))</span>
+                         <span>@($"{Helper.GetPersianYear(item.CreationDate)}/{Helper.GetPersianMonth(item.CreationDate)}/{Helper.GetPersianDay(item.CreationDate)}")</span>
                     </div>
                     <div class="mr-2 d-inline">
                          <span><i class="fa fa-dashboard text-info"></i> زمان : </span>
-                         <span>@string.Format("{1}:{0}", @pc.GetMinute(item.CreationDate), pc.GetHour(item.CreationDate))</span>
+                         <span>@($"{pc.GetHour(item.CreationDate.Value)}:{pc.GetMinute(item.CreationDate.Value)}")</span>
                     </div>
                     <div class="pull-left">
                         <span><i class="fa fa-thumbs-up text-success"></i></span>

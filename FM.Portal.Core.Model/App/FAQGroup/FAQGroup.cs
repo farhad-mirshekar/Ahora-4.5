@@ -12,7 +12,6 @@ namespace FM.Portal.Core.Model
         public Guid ApplicationID { get; set; }
 
         //only show
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public int Total { get; set; }
         public int CountFaq { get; set; }
     }

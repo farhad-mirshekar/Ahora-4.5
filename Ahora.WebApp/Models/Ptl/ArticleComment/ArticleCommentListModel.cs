@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using FM.Portal.Core.Model;
 
-namespace Ahora.WebApp.Models.Ptl.ArticleComment
+namespace Ahora.WebApp.Models.Ptl
 {
     public class ArticleCommentListModel
     {

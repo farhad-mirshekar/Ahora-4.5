@@ -11,14 +11,14 @@ namespace FM.Portal.Core.Model
         public string Description { get; set; }
         public DateTime ReadDate { get; set; }
         public Guid PositionID { get; set; }
+
         //only show
-        public string CreationDatePersian => Helper.GetPersianDate(CreationDate);
         public string ReadDatePersian
         {
             get
             {
                 if (ReadDate != null)
-                    return Helper.GetPersianDate(CreationDate);
+                    return Helper.GetPersianDate(CreationDate.Value);
                 else
                     return null;
             }

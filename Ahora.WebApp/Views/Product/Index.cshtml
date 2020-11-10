@@ -8,7 +8,7 @@
     <meta property="og:type" content="product">
     <meta property="product:modified_time" content="@Model.UpdatedDate">
     <meta name="keywords" property="product:tag" content="@Model.MetaKeywords">
-    <meta property="nastooh:publishDate" content="@Model.CreationDate.ToString("yyyy-MM-dd")">
+    <meta property="nastooh:publishDate" content="@Model.CreationDate.Value.ToString("yyyy-MM-dd")">
     <meta property="og:title" itemprop="headline" content="@Model.MetaTitle">
 }
 @section bodySection{

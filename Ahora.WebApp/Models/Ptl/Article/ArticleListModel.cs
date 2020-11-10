@@ -1,7 +1,7 @@
 ﻿using @Model = FM.Portal.Core.Model;
 using System.Collections.Generic;
 
-namespace Ahora.WebApp.Models.Ptl.Article
+namespace Ahora.WebApp.Models.Ptl
 {
     public class ArticleListModel
     {

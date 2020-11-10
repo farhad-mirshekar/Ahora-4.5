@@ -1,6 +1,5 @@
 ﻿using Ahora.WebApp.Models;
-using Ahora.WebApp.Models.Ptl.Events;
-using Ahora.WebApp.Models.Ptl.EventsComment;
+using Ahora.WebApp.Models.Ptl;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;

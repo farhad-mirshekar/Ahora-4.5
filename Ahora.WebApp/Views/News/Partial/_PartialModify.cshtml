@@ -1,4 +1,4 @@
-﻿@model Ahora.WebApp.Models.Ptl.NewsComment.NewsCommentModel
+﻿@model Ahora.WebApp.Models.Ptl.NewsCommentModel
 <div>
     <!--begin form-->
     @using (Ajax.BeginForm("AddNewsComment","News", new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddComment.onSuccess", LoadingElementId = "loadingMessage", LoadingElementDuration = 300 }, htmlAttributes: new { @class = "form-horizontal", id = "frmCommentReply" }))
