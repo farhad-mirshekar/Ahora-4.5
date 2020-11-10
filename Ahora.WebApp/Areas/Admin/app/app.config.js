@@ -18,7 +18,7 @@
             .when("/profile/change-password", { templateUrl: '/admin/profile/ChangePassword', controller: 'changePasswordController' })
             .when("/category/:state/:id?", { templateUrl: "/admin/category/index", controller: 'categoryController', reloadOnUrl: false })
             .when("/", { templateUrl: '/admin/home/main', controller: 'homeController' })
-            .when("/comment/:state/:id?", { templateUrl: '/admin/comment/index', controller: 'commentController', reloadOnUrl: false })
+            .when("/productComment/:state/:id?", { templateUrl: '/admin/ProductComment/index', controller: 'productCommentController', reloadOnUrl: false })
             .when("/category-portal/:state/:id?", { templateUrl: "/Admin/CategoryPortal/index", controller: 'categoryPortalController', reloadOnUrl: false })
             .when("/article/:state/:id?", { templateUrl: "/Admin/article/index", controller: 'articleController', reloadOnUrl: false })
             .when("/news/:state/:id?", { templateUrl: "/Admin/news/index", controller: 'newsController', reloadOnUrl: false })
@@ -44,6 +44,10 @@
             .when("/sales/:state/:id?", { templateUrl: "/Admin/Sales/index", controller: 'salesController', reloadOnUrl: false })
             .when('/init', { templateUrl: ('/Admin/Init/index'), controller: 'initController' })
             .when("/language/:state/:id?", { templateUrl: "/Admin/Language/index", controller: 'languageController', reloadOnUrl: false })
+            .when("/articleComment/:state/:id?", { templateUrl: '/admin/ArticleComment/index', controller: 'articleCommentController', reloadOnUrl: false })
+            .when("/newsComment/:state/:id?", { templateUrl: '/admin/NewsComment/index', controller: 'newsCommentController', reloadOnUrl: false })
+            .when("/eventsComment/:state/:id?", { templateUrl: '/admin/EventsComment/index', controller: 'eventsCommentController', reloadOnUrl: false })
+
             .when('/not-found', { templateUrl: ('./areas/admin/app/NotFound/not-found.html') })// add;
             .otherwise({
                 templateUrl: './areas/admin/app/NotFound/not-found.html'

@@ -673,6 +673,10 @@
     <Content Include="Areas\Admin\Views\Sales\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Init\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Language\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ProductComment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ArticleComment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\NewsComment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\EventsComment\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
@@ -1830,6 +1834,7 @@
     <Compile Include="Areas\Admin\Controllers\App\HomeController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\PaymentController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\ProductAttributeController.cs" />
+    <Compile Include="Areas\Admin\Controllers\App\ProductCommentController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\SalesController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\ShippingCostController.cs" />
@@ -1855,6 +1860,9 @@
     <Compile Include="Areas\Admin\Controllers\Ptl\GalleryController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\NewsController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\PagesPortalController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Ptl\NewsCommentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Ptl\ArticleCommentController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Ptl\EventsCommentController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\SliderController.cs" />
     <Compile Include="Areas\Admin\Controllers\Ptl\StaticPageController.cs" />
     <Compile Include="Areas\ApiClient\ApiClientAreaRegistration.cs" />
@@ -1866,6 +1874,7 @@
     <Compile Include="Areas\ApiClient\Controllers\app\FaqGroupController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\PaymentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductAttributeController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\app\ProductCommentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductMapAttributeController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\RelatedProductController.cs" />
@@ -1896,6 +1905,9 @@
     <Compile Include="Areas\ApiClient\Controllers\Ptl\GalleryController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\NewsController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\PagesPortalController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\Ptl\ArticleCommentController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\Ptl\NewsCommentController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\Ptl\EventsCommentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\SliderController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\Ptl\StaticPageController.cs" />
     <Compile Include="Areas\User\Controllers\AddressController.cs" />

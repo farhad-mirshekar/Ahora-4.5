@@ -1573,16 +1573,16 @@
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
-    app.controller('commentController', commentController);
-    commentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption'];
-    function commentController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
+    app.controller('productCommentController', productCommentController);
+    productCommentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'productCommentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption'];
+    function productCommentController($scope, $q, loadingService, $routeParams, productCommentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
         let comment = $scope;
         comment.Model = {};
         comment.state = '';
         comment.main = {};
         comment.search = [];
         comment.search.Model = {};
-        comment.search.Model = { ShowChildren: false, CommentForType: 6 };
+        comment.search.Model = { ShowChildren: false };
         comment.froalaOptionComment = froalaOption.comment;
         comment.main.changeState = {
             cartable: cartable,
@@ -1593,10 +1593,8 @@
         comment.grid = {
             bindingObject: comment
             , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },
-            { name: 'ProductName', displayName: 'نام محصول' },
-            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
-            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
-            , listService: commentService.list
+            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType }]
+            , listService: productCommentService.list
             , onEdit: comment.main.changeState.edit
             , globalSearch: true
             , showRemove: true
@@ -1616,7 +1614,7 @@
                         cartable();
                         break;
                     case 'edit':
-                        commentService.get($routeParams.id).then((result) => {
+                        productCommentService.get($routeParams.id).then((result) => {
                             edit(result);
                         })
                         break;
@@ -1629,7 +1627,7 @@
             loadingService.show();
             return $q.resolve().then(() => {
                 comment.state = 'cartable';
-                $location.path('/comment/cartable');
+                $location.path('/productComment/cartable');
             }).finally(loadingService.hide);
         }
         function edit(model) {
@@ -1637,29 +1635,26 @@
             return $q.resolve().then(() => {
                 comment.state = 'edit';
                 comment.Model = model;
-                $location.path(`/comment/edit/${model.ID}`);
+                $location.path(`/productComment/edit/${model.ID}`);
             }).finally(loadingService.hide);
         }
         function editComment() {
             loadingService.show();
             return $q.resolve().then(() => {
-                if (comment.Model.CommentType === 0) {
-                    loadingService.hide();
-                    toaster.pop('error', '', 'وضعیت نظر را تعیین نمایید');
-                } else {
-                    commentService.edit(comment.Model).then((result) => {
-                        loadingService.hide();
-                        comment.grid.getlist(false);
-                        $timeout(function () {
-                            toaster.pop('success', '', 'نظر ویرایش گردید');
-                            cartable();
+                if (comment.Model.CommentType === 0)
+                    return $q.reject('وضعیت نظر را تعیین نمایید');
 
-                        }, 1000);
-                    }).finally(loadingService.hide);
-                }
+                return productCommentService.edit(comment.Model);
+            }).then(() => {
+                $timeout(function () {
+                    comment.grid.getlist();
+                    toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
+                    comment.main.changeState.cartable();
+                }, 1000);
             }).catch((error) => {
-                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-            })
+                loadingService.hide();
+                toaster.pop('error', '', error || 'خطای ناشناخته');
+            }).finally(loadingService.hide);
         }
         function clear() {
             loadingService.show();
@@ -3297,115 +3292,6 @@
         }
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
-    app.controller('commentPortalController', commentPortalController);
-    commentPortalController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'commentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption'];
-    function commentPortalController($scope, $q, loadingService, $routeParams, commentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
-        let comment = $scope;
-        comment.Model = {};
-        comment.Model.Errors = [];
-
-        comment.search = [];
-        comment.search.Model = {};
-        comment.state = '';
-        comment.main = {};
-        comment.froalaOptionComment = angular.copy(froalaOption.comment);
-        comment.main.changeState = {
-            cartable: cartable,
-            edit: edit
-        }
-        comment.editComment = editComment;
-        comment.changeDrop = changeDrop;
-        comment.search.clear = clear;
-        comment.search.Model = { ShowChildren: false, OnlyProduct: 0 };
-        comment.grid = {
-            bindingObject: comment
-            , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },
-            { name: 'ProductName', displayName: 'عنوان' },
-            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType },
-            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
-            , listService: commentService.list
-            , onEdit: comment.main.changeState.edit
-            , globalSearch: true
-            , showRemove: true
-            , options: () => { return comment.search.Model; }
-            , initLoad: true
-        };
-
-        comment.selectCommentType = toolsService.arrayEnum(enumService.CommentType);
-        comment.selectCommentForType = toolsService.arrayEnum(enumService.CommentForType);
-        comment.search.selectCommentForType = [];
-        comment.selectCommentForType.map((item) => {
-            if (item.Model !== 6)
-                comment.search.selectCommentForType.push(item);
-        })
-        init();
-
-        function init() {
-            loadingService.show();
-            $q.resolve().then(() => {
-                switch ($routeParams.state) {
-                    case 'cartable':
-                        cartable();
-                        break;
-                    case 'edit':
-                        commentService.get($routeParams.id).then((result) => {
-                            edit(result);
-                        })
-                        break;
-                }
-            }).finally(loadingService.hide);
-
-        }
-
-        function cartable() {
-            loadingService.show();
-            return $q.resolve().then(() => {
-                comment.state = 'cartable';
-                $location.path('/comment-portal/cartable');
-            }).finally(loadingService.hide);
-        }
-        function edit(model) {
-            loadingService.show();
-            return $q.resolve().then(() => {
-                comment.state = 'edit';
-                comment.Model = model;
-                $location.path(`/comment-portal/edit/${model.ID}`);
-            }).finally(loadingService.hide);
-        }
-
-        function editComment() {
-            loadingService.show();
-            return $q.resolve().then(() => {
-                return commentService.edit(comment.Model)
-            }).then((result) => {
-                comment.grid.getlist(false);
-                loadingService.hide();
-                $timeout(function () {
-                    toaster.pop('success', '', 'نظر ویرایش گردید');
-                    cartable();
-
-                }, 1000);
-            }).catch((error) => {
-                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-            }).finally(loadingService.hide);
-        }
-        function changeDrop() {
-            loadingService.show();
-            return $q.resolve().then(() => {
-                comment.grid.getlist(false);
-            }).finally(loadingService.hide);
-
-        }
-        function clear() {
-            loadingService.show();
-            comment.search.Model = {};
-            comment.search.searchPanel = false;
-            comment.search.Model = { ShowChildren: false, OnlyProduct: 0 };
-            comment.grid.getlist();
-            loadingService.hide();
-        }
-    }
-    //-----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('paymentController', paymentController);
     paymentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'paymentService', '$location', 'toaster', '$timeout'];
     function paymentController($scope, $q, loadingService, $routeParams, paymentService, $location, toaster, $timeout) {
@@ -5460,6 +5346,282 @@
                     toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                     loadingService.hide();
                 }).finally(loadingService.hide);
+        }
+    }
+    //-------------------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('articleCommentController', articleCommentController);
+    articleCommentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'articleCommentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption'];
+    function articleCommentController($scope, $q, loadingService, $routeParams, articleCommentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
+        let comment = $scope;
+        comment.Model = {};
+        comment.state = '';
+        comment.main = {};
+        comment.search = [];
+        comment.search.Model = {};
+        comment.search.Model = { ShowChildren: false };
+        comment.froalaOptionComment = froalaOption.comment;
+        comment.main.changeState = {
+            cartable: cartable,
+            edit: edit
+        }
+        comment.editComment = editComment;
+        comment.search.clear = clear;
+        comment.grid = {
+            bindingObject: comment
+            , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },
+            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType }]
+            , listService: articleCommentService.list
+            , onEdit: comment.main.changeState.edit
+            , globalSearch: true
+            , showRemove: true
+            , options: () => {
+                return comment.search.Model;
+            }
+            , initLoad: true
+        };
+        comment.selectCommentType = toolsService.arrayEnum(enumService.CommentType);
+        init();
+
+        function init() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'edit':
+                        articleCommentService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+
+        }
+
+        function cartable() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                comment.state = 'cartable';
+                $location.path('/articleComment/cartable');
+            }).finally(loadingService.hide);
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                comment.state = 'edit';
+                comment.Model = model;
+                $location.path(`/articleComment/edit/${model.ID}`);
+            }).finally(loadingService.hide);
+        }
+        function editComment() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (comment.Model.CommentType === 0)
+                    return $q.reject('وضعیت نظر را تعیین نمایید');
+
+                return articleCommentService.edit(comment.Model);
+            }).then(() => {
+                $timeout(function () {
+                    comment.grid.getlist();
+                    toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
+                    comment.main.changeState.cartable();
+                }, 1000);
+            }).catch((error) => {
+                loadingService.hide();
+                toaster.pop('error', '', error || 'خطای ناشناخته');
+            }).finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            comment.search.Model = {};
+            comment.search.searchPanel = false;
+            comment.grid.getlist();
+            loadingService.hide();
+        }
+    }
+    //------------------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('newsCommentController', newsCommentController);
+    newsCommentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'newsCommentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption'];
+    function newsCommentController($scope, $q, loadingService, $routeParams, newsCommentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
+        let comment = $scope;
+        comment.Model = {};
+        comment.state = '';
+        comment.main = {};
+        comment.search = [];
+        comment.search.Model = {};
+        comment.search.Model = { ShowChildren: false };
+        comment.froalaOptionComment = froalaOption.comment;
+        comment.main.changeState = {
+            cartable: cartable,
+            edit: edit
+        }
+        comment.editComment = editComment;
+        comment.search.clear = clear;
+        comment.grid = {
+            bindingObject: comment
+            , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },
+            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType }]
+            , listService: newsCommentService.list
+            , onEdit: comment.main.changeState.edit
+            , globalSearch: true
+            , showRemove: true
+            , options: () => {
+                return comment.search.Model;
+            }
+            , initLoad: true
+        };
+        comment.selectCommentType = toolsService.arrayEnum(enumService.CommentType);
+        init();
+
+        function init() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'edit':
+                        newsCommentService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+
+        }
+
+        function cartable() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                comment.state = 'cartable';
+                $location.path('/newsComment/cartable');
+            }).finally(loadingService.hide);
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                comment.state = 'edit';
+                comment.Model = model;
+                $location.path(`/newsComment/edit/${model.ID}`);
+            }).finally(loadingService.hide);
+        }
+        function editComment() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (comment.Model.CommentType === 0)
+                    return $q.reject('وضعیت نظر را تعیین نمایید');
+
+                return newsCommentService.edit(comment.Model);
+            }).then(() => {
+                $timeout(function () {
+                    comment.grid.getlist();
+                    toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
+                    comment.main.changeState.cartable();
+                }, 1000);
+            }).catch((error) => {
+                loadingService.hide();
+                toaster.pop('error', '', error || 'خطای ناشناخته');
+            }).finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            comment.search.Model = {};
+            comment.search.searchPanel = false;
+            comment.grid.getlist();
+            loadingService.hide();
+        }
+    }
+    //------------------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('eventsCommentController', eventsCommentController);
+    eventsCommentController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsCommentService', '$location', 'toaster', '$timeout', 'toolsService', 'enumService', 'froalaOption'];
+    function eventsCommentController($scope, $q, loadingService, $routeParams, eventsCommentService, $location, toaster, $timeout, toolsService, enumService, froalaOption) {
+        let comment = $scope;
+        comment.Model = {};
+        comment.state = '';
+        comment.main = {};
+        comment.search = [];
+        comment.search.Model = {};
+        comment.search.Model = { ShowChildren: false };
+        comment.froalaOptionComment = froalaOption.comment;
+        comment.main.changeState = {
+            cartable: cartable,
+            edit: edit
+        }
+        comment.editComment = editComment;
+        comment.search.clear = clear;
+        comment.grid = {
+            bindingObject: comment
+            , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },
+            { name: 'CommentType', displayName: 'وضعیت نظر', type: 'enum', source: enumService.CommentType }]
+            , listService: eventsCommentService.list
+            , onEdit: comment.main.changeState.edit
+            , globalSearch: true
+            , showRemove: true
+            , options: () => {
+                return comment.search.Model;
+            }
+            , initLoad: true
+        };
+        comment.selectCommentType = toolsService.arrayEnum(enumService.CommentType);
+        init();
+
+        function init() {
+            loadingService.show();
+            $q.resolve().then(() => {
+                switch ($routeParams.state) {
+                    case 'cartable':
+                        cartable();
+                        break;
+                    case 'edit':
+                        eventsCommentService.get($routeParams.id).then((result) => {
+                            edit(result);
+                        })
+                        break;
+                }
+            }).finally(loadingService.hide);
+
+        }
+
+        function cartable() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                comment.state = 'cartable';
+                $location.path('/eventsComment/cartable');
+            }).finally(loadingService.hide);
+        }
+        function edit(model) {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                comment.state = 'edit';
+                comment.Model = model;
+                $location.path(`/eventsComment/edit/${model.ID}`);
+            }).finally(loadingService.hide);
+        }
+        function editComment() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                if (comment.Model.CommentType === 0)
+                    return $q.reject('وضعیت نظر را تعیین نمایید');
+
+                return eventsCommentService.edit(comment.Model);
+            }).then(() => {
+                $timeout(function () {
+                    comment.grid.getlist();
+                    toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
+                    comment.main.changeState.cartable();
+                }, 1000);
+            }).catch((error) => {
+                loadingService.hide();
+                toaster.pop('error', '', error || 'خطای ناشناخته');
+            }).finally(loadingService.hide);
+        }
+        function clear() {
+            loadingService.show();
+            comment.search.Model = {};
+            comment.search.searchPanel = false;
+            comment.grid.getlist();
+            loadingService.hide();
         }
     }
 })();

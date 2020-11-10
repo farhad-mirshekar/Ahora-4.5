@@ -1205,10 +1205,10 @@
         }
     }
 
-    app.factory('commentService', commentService);
-    commentService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
-    function commentService($http, callbackService, $q, authenticationService) {
-        var url = '/api/v1/comment/'
+    app.factory('productCommentService', productCommentService);
+    productCommentService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    function productCommentService($http, callbackService, $q, authenticationService) {
+        var url = '/api/v1/ProductComment/'
         var service = {
             add: add,
             edit: edit,
@@ -3762,6 +3762,252 @@
                 .catch(function (result) {
                     return callbackService.onError({ result: result });
                 })
+        }
+    }
+
+    app.factory('articleCommentService', articleCommentService);
+    articleCommentService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
+    function articleCommentService($http, callbackService, $q, authenticationService) {
+        var url = '/api/v1/ArticleComment/'
+        var service = {
+            add: add,
+            edit: edit,
+            get: get,
+            list: list
+
+        }
+        return service;
+
+        function add(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'Add',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function edit(model) {
+            model.Errors = [];
+            if (model.CommentType === 0)
+                model.Errors.push('لطفا وضعیت نظر را مشخص نمایید');
+            if (model.Errors.length)
+                return $q.reject();
+            return $http({
+                method: 'POST',
+                url: url + 'edit',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function list(model) {
+            return $http({
+                method: 'post',
+                url: url + 'list',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'list' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+    }
+
+    app.factory('eventsCommentService', eventsCommentService);
+    eventsCommentService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
+    function eventsCommentService($http, callbackService, $q, authenticationService) {
+        var url = '/api/v1/EventsComment/'
+        var service = {
+            add: add,
+            edit: edit,
+            get: get,
+            list: list
+
+        }
+        return service;
+
+        function add(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'Add',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function edit(model) {
+            model.Errors = [];
+            if (model.CommentType === 0)
+                model.Errors.push('لطفا وضعیت نظر را مشخص نمایید');
+            if (model.Errors.length)
+                return $q.reject();
+            return $http({
+                method: 'POST',
+                url: url + 'edit',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function list(model) {
+            return $http({
+                method: 'post',
+                url: url + 'list',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'list' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+    }
+
+    app.factory('newsCommentService', newsCommentService);
+    newsCommentService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
+    function newsCommentService($http, callbackService, $q, authenticationService) {
+        var url = '/api/v1/NewsComment/'
+        var service = {
+            add: add,
+            edit: edit,
+            get: get,
+            list: list
+
+        }
+        return service;
+
+        function add(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'Add',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function edit(model) {
+            model.Errors = [];
+            if (model.CommentType === 0)
+                model.Errors.push('لطفا وضعیت نظر را مشخص نمایید');
+            if (model.Errors.length)
+                return $q.reject();
+            return $http({
+                method: 'POST',
+                url: url + 'edit',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function list(model) {
+            return $http({
+                method: 'post',
+                url: url + 'list',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'list' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
         }
     }
 

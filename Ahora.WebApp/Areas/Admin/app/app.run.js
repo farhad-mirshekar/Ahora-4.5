@@ -53,7 +53,7 @@
                     { route: '#/attribute/cartable', title: 'ویژگی های محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-attribute') }, icon: 'fa-diamond' },
                     { route: '#/category/cartable', title: 'دسته بندی محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-category') }, icon: 'fa-archive' },
                     { route: '#/discount/cartable', title: 'کارتابل تخفیفات', hasShow: () => { return toolsService.checkPermission('pgdiscount') }, icon: 'fa-dollar' },
-                    { route: '#/comment/cartable', title: 'کارتابل نظرات', hasShow: () => { return toolsService.checkPermission('pgproduct-comment') }, icon: 'fa-comments-o' },
+                    { route: '#/productComment/cartable', title: 'کارتابل نظرات', hasShow: () => { return toolsService.checkPermission('pgproduct-comment') }, icon: 'fa-comments-o' },
                     { route: '#/delivery-date/cartable', title: 'زمان ارسال محصولات', hasShow: () => { return toolsService.checkPermission('pgproduct-cartable') }, icon: 'fa-folder-open-o' },
                 ]
             },
@@ -62,8 +62,11 @@
                 , subMenus: [
                     { route: '#/category-portal/cartable', title: 'دسته بندی اخبار', hasShow: () => { return toolsService.checkPermission('pgportal-category') }, icon: 'fa-archive' },
                     { route: '#/article/cartable', title: 'کارتابل مقالات', hasShow: () => { return toolsService.checkPermission('pg-article') }, icon: 'fa-newspaper-o' },
+                    { route: '#/articleComment/cartable', title: ' کارتابل نظرات مقالات', hasShow: () => { return toolsService.checkPermission('pgarticle-comment') }, icon: 'fa-comments-o' },
                     { route: '#/news/cartable', title: 'کارتابل اخبار', hasShow: () => { return toolsService.checkPermission('pgnews') }, icon: 'fa-newspaper-o' },
+                    { route: '#/newsComment/cartable', title: ' کارتابل نظرات اخبار', hasShow: () => { return toolsService.checkPermission('pgnews-comment') }, icon: 'fa-comments-o' },
                     { route: '#/events/cartable', title: 'کارتابل رویداد', hasShow: () => { return toolsService.checkPermission('pgevents') }, icon: 'fa-newspaper-o' },
+                    { route: '#/eventsComment/cartable', title: ' کارتابل نظرات رویداد', hasShow: () => { return toolsService.checkPermission('pevents-comment') }, icon: 'fa-comments-o' },
                     { route: '#/slider/cartable', title: 'کارتابل تصاویر کشویی', hasShow: () => { return toolsService.checkPermission('pgsliders') }, icon: 'fa-sliders' },
                     { route: '#/comment-portal/cartable', title: 'کارتابل نظرات', hasShow: () => { return toolsService.checkPermission('pgcomment-portal'); }, icon: 'fa-comments-o' },
                     { route: '#/pages-portal/', title: 'ساخت صفحات', hasShow: () => { return toolsService.checkPermission('pgcreate-page'); }, icon: 'fa-window-restore' },
