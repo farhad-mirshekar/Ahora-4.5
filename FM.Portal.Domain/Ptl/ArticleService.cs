@@ -13,12 +13,18 @@ namespace FM.Portal.Domain
     public class ArticleService : IArticleService
     {
         private readonly IArticleDataSource _dataSource;
-        private readonly ITagsService _tagsService; 
+        private readonly ITagsService _tagsService;
+        private readonly IActivityLogService _activityLogService;
+        private readonly ILocaleStringResourceService _localeStringResourceService;
         public ArticleService(IArticleDataSource dataSource
-                             ,ITagsService tagsService)
+                             , ITagsService tagsService
+                             , IActivityLogService activityLogService
+                             , ILocaleStringResourceService localeStringResourceService)
         {
             _dataSource = dataSource;
             _tagsService = tagsService;
+            _activityLogService = activityLogService;
+            _localeStringResourceService = localeStringResourceService;
         }
         public Result<Article> Add(Article model)
         {
@@ -60,7 +66,17 @@ namespace FM.Portal.Domain
                 _tagsService.Delete(model.ID);
             }
             model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
-            return _dataSource.Update(model);
+            var result = _dataSource.Update(model);
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.UpdateArticle").Data ?? "ویرایش مقاله",
+                EntityID = model.ID,
+                EntityName = model.GetType().Name,
+                IpAddress = "12",
+                SystemKeyword= "UpdateArticle"
+            });
+
+            return result;
         }
 
         public Result<Article> Get(Guid ID)

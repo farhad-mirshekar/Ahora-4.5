@@ -74,6 +74,8 @@
     <Compile Include="Org\IRoleService.cs" />
     <Compile Include="Org\IUserAddressService.cs" />
     <Compile Include="Org\IUserService.cs" />
+    <Compile Include="Pbl\IActivityLogService.cs" />
+    <Compile Include="Pbl\IActivityLogTypeService.cs" />
     <Compile Include="Pbl\IAttachmentService.cs" />
     <Compile Include="App\ICompareProductService.cs" />
     <Compile Include="Pbl\IContactService.cs" />

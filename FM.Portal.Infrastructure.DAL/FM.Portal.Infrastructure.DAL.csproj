@@ -79,6 +79,8 @@
     <Compile Include="DataSources\Org\RoleDataSource.cs" />
     <Compile Include="DataSources\Org\UserAddressDataSource.cs" />
     <Compile Include="DataSources\Org\UserDataSource.cs" />
+    <Compile Include="DataSources\Pbl\ActivityLogTypeDataSource.cs" />
+    <Compile Include="DataSources\Pbl\ActivityLogDataSource.cs" />
     <Compile Include="DataSources\Pbl\AttachmentDataSource.cs" />
     <Compile Include="DataSources\Pbl\ContactDataSource.cs" />
     <Compile Include="DataSources\Pbl\DocumentFlowDataSource.cs" />
@@ -222,6 +224,11 @@
     <Content Include="DataBaseScripts\Procedures\Pbl\Attachment\spModifyAttachment.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\BaseDocument\pbl.GetBaseDocument.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\BaseDocument\pbl.spModifyBaseDocument.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\ActivityLogType\pbl.GetsActivityLogType.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\ActivityLogType\pbl.spModifyActivityLogType.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\ActivityLog\pbl.GetActivityLog.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\ActivityLog\pbl.GetsActivityLog.sql" />
+    <Content Include="DataBaseScripts\Procedures\Pbl\ActivityLog\pbl.spActivityLog.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Contact\pbl.DeleteContact.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Contact\pbl.GetContact.sql" />
     <Content Include="DataBaseScripts\Procedures\Pbl\Contact\pbl.GetsContact.sql" />

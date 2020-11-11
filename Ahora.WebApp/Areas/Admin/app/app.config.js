@@ -47,6 +47,7 @@
             .when("/articleComment/:state/:id?", { templateUrl: '/admin/ArticleComment/index', controller: 'articleCommentController', reloadOnUrl: false })
             .when("/newsComment/:state/:id?", { templateUrl: '/admin/NewsComment/index', controller: 'newsCommentController', reloadOnUrl: false })
             .when("/eventsComment/:state/:id?", { templateUrl: '/admin/EventsComment/index', controller: 'eventsCommentController', reloadOnUrl: false })
+            .when("/activity-log/cartable", { templateUrl: '/admin/ActivityLog/index', controller: 'activityLogController' })
 
             .when('/not-found', { templateUrl: ('./areas/admin/app/NotFound/not-found.html') })// add;
             .otherwise({

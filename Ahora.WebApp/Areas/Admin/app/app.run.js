@@ -83,6 +83,13 @@
                 ]
 
             }
+            , {
+                name: 'sales', title: 'مدیریت لاگ', icon: 'fa-angle-down', hasShow: () => { return toolsService.checkPermission('mnuLogging'); }
+                , subMenus: [
+                    { route: '#/activity-log/cartable', title: 'کارتابل لاگ', hasShow: () => { return toolsService.checkPermission('pgactivitylog'); }, icon: 'fa fa-credit-card' },
+                ]
+
+            }
         ]
 
         $rootScope.$on('$locationChangeStart', locationChangeStart);

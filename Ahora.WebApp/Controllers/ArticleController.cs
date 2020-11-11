@@ -16,14 +16,20 @@ namespace Ahora.WebApp.Controllers
         private readonly IAttachmentService _attachmentService;
         private readonly IArticleCommentService _articleCommentService;
         private readonly IWorkContext _workContext;
+        private readonly IActivityLogService _activityLogService;
+        private readonly ILocaleStringResourceService _localeStringResourceService;
         public ArticleController(IArticleService service
                                 , IAttachmentService attachmentService
                                 , IArticleCommentService articleCommentService
-                                , IWorkContext workContext) : base(service)
+                                , IWorkContext workContext
+                                , IActivityLogService activityLogService
+                                , ILocaleStringResourceService localeStringResourceService) : base(service)
         {
             _attachmentService = attachmentService;
             _articleCommentService = articleCommentService;
             _workContext = workContext;
+            _activityLogService = activityLogService;
+            _localeStringResourceService = localeStringResourceService;
         }
 
         #region Article
@@ -154,6 +160,15 @@ namespace Ahora.WebApp.Controllers
             model.UserID = _workContext.User.ID;
 
             var result = _articleCommentService.Add(model.ToEntity());
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("").Data ?? $"افزودن نظر برای مقاله",
+                UserID = _workContext.User.ID,
+                IpAddress="23",
+                EntityID=result.Data.ID,
+                EntityName = model.GetType().Name,
+                SystemKeyword= "AddArticleComment"
+            });
             if (!result.Success)
                 return Json(new { show = "true" });
 

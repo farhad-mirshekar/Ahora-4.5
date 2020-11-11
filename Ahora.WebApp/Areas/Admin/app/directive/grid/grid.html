@@ -26,7 +26,7 @@
                     <tr class="text-center">
                         <th style="width: 70px">ردیف</th>
                         <th ng-repeat="row in obj.columns" st-sort="{{row.name}}">{{row.displayName}}</th>
-                        <th>عملیات</th>
+                        <th ng-show="obj.actions.length">عملیات</th>
                     </tr>
 
                 </thead>

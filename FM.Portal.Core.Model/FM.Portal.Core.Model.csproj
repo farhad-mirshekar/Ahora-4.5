@@ -129,6 +129,10 @@
     <Compile Include="Org\User\VM\LoginVM.cs" />
     <Compile Include="Org\User\VM\RegisterVM.cs" />
     <Compile Include="Org\User\VM\SetPasswordVM.cs" />
+    <Compile Include="Pbl\ActivityLogType\ActivityLogType.cs" />
+    <Compile Include="Pbl\ActivityLogType\VM\ActivityLogTypeListVM.cs" />
+    <Compile Include="Pbl\ActivityLog\ActivityLog.cs" />
+    <Compile Include="Pbl\ActivityLog\VM\ActivityLogListVM.cs" />
     <Compile Include="Pbl\Attachment\Attachment.cs" />
     <Compile Include="Pbl\Attachment\VM\DeleteAttachmentVM.cs" />
     <Compile Include="Pbl\Contact\Contact.cs" />

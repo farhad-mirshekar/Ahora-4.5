@@ -170,6 +170,12 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IProductCommentDataSource, ProductCommentDataSource>();
             container.RegisterType<IProductCommentService, ProductCommentService>();
 
+            container.RegisterType<IActivityLogTypeDataSource, ActivityLogTypeDataSource>();
+            container.RegisterType<IActivityLogTypeService, ActivityLogTypeService>();
+
+            container.RegisterType<IActivityLogDataSource, ActivityLogDataSource>();
+            container.RegisterType<IActivityLogService, ActivityLogService>();
+
             container.RegisterType<IWorkContext, WebWorkContext>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ICompareProductService, CompareProductService>();

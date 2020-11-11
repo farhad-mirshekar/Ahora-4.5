@@ -5624,4 +5624,26 @@
             loadingService.hide();
         }
     }
+    //------------------------------------------------------------------------------------------------------------------------------------------------
+    app.controller('activityLogController', activityLogController);
+    activityLogController.$inject = ['$scope', '$q', 'loadingService', 'activityLogService'];
+    function activityLogController($scope, $q, loadingService, activityLogService) {
+        let log = $scope;
+        log.search = {};
+        log.search.Model = {};
+        log.grid = {
+            bindingObject: log
+            , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },
+                { name: 'Comment', displayName: 'شرح لاگ'},
+                { name: 'IpAddress', displayName: 'آی پی' },
+                { name: 'CreationDatePersian', displayName:'تاریخ ایجاد'}]
+            , listService: activityLogService.list
+            , globalSearch: true
+            , options: () => {
+                return log.search.Model;
+            }
+            , initLoad: true
+            , actions:[]
+        };
+    }
 })();

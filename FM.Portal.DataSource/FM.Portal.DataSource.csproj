@@ -74,6 +74,8 @@
     <Compile Include="Org\IRoleDataSource.cs" />
     <Compile Include="Org\IUserAddressDataSource.cs" />
     <Compile Include="Org\IUserDataSource.cs" />
+    <Compile Include="Pbl\IActivityLogDataSource.cs" />
+    <Compile Include="Pbl\IActivityLogTypeDataSource.cs" />
     <Compile Include="Pbl\IAttachmentDataSource.cs" />
     <Compile Include="Pbl\IContactDataSource.cs" />
     <Compile Include="Pbl\IDocumentFlowDataSource.cs" />

@@ -4011,6 +4011,49 @@
         }
     }
 
+    app.factory('activityLogService', activityLogService);
+    activityLogService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
+    function activityLogService($http, callbackService, $q, authenticationService) {
+        var url = '/api/v1/ActivityLog/'
+        var service = {
+            get: get,
+            list: list
+
+        }
+        return service;
+
+        function get(model) {
+            return $http({
+                method: 'POST',
+                url: url + `Get/${model}`,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            })
+                .catch(function (result) {
+                    return callbackService.onError({ result: result });
+                })
+        }
+        function list(model) {
+            return $http({
+                method: 'post',
+                url: url + 'list',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then((result) => {
+                return callbackService.onSuccess({ result: result, request: url + 'list' });
+            }).catch((result) => {
+                return callbackService.onError({ result: result });
+            })
+        }
+    }
+
     app.factory('callbackService', callbackService);
     callbackService.$inject = ['$q', '$http', 'authenticationService'];
     function callbackService($q, $http, authenticationService) {

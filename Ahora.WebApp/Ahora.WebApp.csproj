@@ -677,6 +677,7 @@
     <Content Include="Areas\Admin\Views\ArticleComment\Index.cshtml" />
     <Content Include="Areas\Admin\Views\NewsComment\Index.cshtml" />
     <Content Include="Areas\Admin\Views\EventsComment\Index.cshtml" />
+    <Content Include="Areas\Admin\Views\ActivityLog\Index.cshtml" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\froala-editor\css\froala_editor.css" />
@@ -1838,6 +1839,7 @@
     <Compile Include="Areas\Admin\Controllers\App\ProductController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\SalesController.cs" />
     <Compile Include="Areas\Admin\Controllers\App\ShippingCostController.cs" />
+    <Compile Include="Areas\Admin\Controllers\Log\ActivityLogController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\CommandController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\DepartmentController.cs" />
     <Compile Include="Areas\Admin\Controllers\Org\PositionController.cs" />
@@ -1881,6 +1883,7 @@
     <Compile Include="Areas\ApiClient\Controllers\app\SalesController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ShippingCostController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ProductVariantAttributeController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\log\ActivityLogController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\CommandController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\DepartmentController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\PositionController.cs" />
