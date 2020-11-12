@@ -12,6 +12,7 @@ using FM.Portal.Core.Common;
 using FM.Portal.FrameWork.Email;
 using FM.Portal.Core.Common.Serializer;
 using Unity.Lifetime;
+using FM.Portal.Core.Infrastructure;
 
 namespace FM.Portal.FrameWork.Unity
 {
@@ -177,6 +178,7 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IActivityLogService, ActivityLogService>();
 
             container.RegisterType<IWorkContext, WebWorkContext>(new ContainerControlledLifetimeManager());
+            container.RegisterType<IWebHelper, WebHelper>(new ContainerControlledLifetimeManager());
             container.RegisterType<IEmailService, EmailService>();
             container.RegisterType<ICompareProductService, CompareProductService>();
             container.RegisterType<ICacheService, CacheService>();

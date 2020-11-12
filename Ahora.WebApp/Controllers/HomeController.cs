@@ -1,9 +1,6 @@
-﻿using Ahora.WebApp.Models;
-using FM.Portal.Core.Common;
-using FM.Portal.Core.Model;
+﻿using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
-using System.Linq;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
