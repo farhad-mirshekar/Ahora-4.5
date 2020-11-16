@@ -82,6 +82,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -91,6 +92,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Caching\CacheExtensions.cs" />
+    <Compile Include="Caching\ICacheManager.cs" />
+    <Compile Include="Caching\MemoryCacheManager.cs" />
     <Compile Include="Common\AppSetting\AppSetting.cs" />
     <Compile Include="Common\ConvertDataTableToList.cs" />
     <Compile Include="Common\CookieDefaults.cs" />
@@ -108,7 +112,9 @@
     <Compile Include="Extention\Category\CategoryPortalExtention.cs" />
     <Compile Include="Extention\ReadingTime\CalculateReadingTime.cs" />
     <Compile Include="Extention\ReadingTime\CalculateWordsCount.cs" />
+    <Compile Include="Infrastructure\AppDomainTypeFinder.cs" />
     <Compile Include="Infrastructure\IStartupTask.cs" />
+    <Compile Include="Infrastructure\ITypeFinder.cs" />
     <Compile Include="Infrastructure\IWebHelper.cs" />
     <Compile Include="LucenceSearch\Product\LucenceProductIndexSearch.cs" />
     <Compile Include="LucenceSearch\StronglyTyped.cs" />

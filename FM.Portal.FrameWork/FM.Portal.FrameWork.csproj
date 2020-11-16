@@ -118,7 +118,10 @@
     <Compile Include="Email\EmailService.cs" />
     <Compile Include="Email\IEmailService.cs" />
     <Compile Include="Email\Model\ViewEmail.cs" />
+    <Compile Include="Localization\LocalizedRoute.cs" />
+    <Compile Include="Localization\LocalizedRouteExtensions.cs" />
     <Compile Include="Localization\LocalizedString.cs" />
+    <Compile Include="Localization\LocalizedUrlExtenstions.cs" />
     <Compile Include="Localization\Localizer.cs" />
     <Compile Include="MVC\Controller\BaseController.cs" />
     <Compile Include="MVC\Helpers\AutoComplate\AutoCompleteSearchViewModel.cs" />
@@ -127,7 +130,12 @@
     <Compile Include="MVC\Helpers\Select\DropDownList.cs" />
     <Compile Include="MVC\Helpers\Select\ToSelectList.cs" />
     <Compile Include="MVC\Helpers\TreeView\TreeViewHelper.cs" />
+    <Compile Include="MVC\Routes\IRouteProvider.cs" />
+    <Compile Include="MVC\Routes\IRoutePublisher.cs" />
+    <Compile Include="MVC\Routes\RoutePublisher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Seo\GenericPathRoute.cs" />
+    <Compile Include="Seo\GenericPathRouteExtensions.cs" />
     <Compile Include="Seo\WwwRequirement.cs" />
     <Compile Include="Seo\WwwRequirementAttribute.cs" />
     <Compile Include="Unity\LoadServiceForMVC.cs" />

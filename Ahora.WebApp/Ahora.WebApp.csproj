@@ -1938,6 +1938,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\GenericUrlRouteProvider.cs" />
+    <Compile Include="Infrastructure\RouteProvider.cs" />
     <Compile Include="Models\App\ProductComment\ProductCommentModel.cs" />
     <Compile Include="Models\App\ProductComment\ProductCommentListModel.cs" />
     <Compile Include="Models\Error.cs" />
@@ -2002,6 +2004,7 @@
     <Content Include="Views\Product\Partial\_PartialError.cshtml" />
     <Content Include="Views\Product\Partial\_PartialModify.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\Farhad.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

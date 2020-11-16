@@ -3,6 +3,7 @@ using FM.Portal.DataSource;
 using FM.Portal.Domain;
 using FM.Portal.FrameWork.AutoMapper;
 using FM.Portal.FrameWork.Caching;
+using FM.Portal.FrameWork.MVC.Routes;
 using FM.Portal.FrameWork.Unity;
 using FM.Portal.Infrastructure.DAL;
 using System;
@@ -18,14 +19,30 @@ namespace Ahora.WebApp
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        public static void RegisterRoutes(RouteCollection routes)
+        {
+            routes.IgnoreRoute("favicon.ico");
+            routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+
+            //register custom routes (plugins, etc)
+            var routePublisher = (IRoutePublisher)DependencyResolver.Current.GetService(typeof(IRoutePublisher));
+            routePublisher.RegisterRoutes(routes);
+
+            routes.MapRoute(
+                "Default", // Route name
+                "{controller}/{action}/{id}", // URL with parameters
+                new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+                new[] { "Ahora.WebApp.Controllers" }
+            );
+        }
         protected void Application_Start(object sender, EventArgs e)
         {
+            UnityConfig.RegisterComponents();
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
-            RouteConfig.RegisterRoutes(RouteTable.Routes);
+            RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            UnityConfig.RegisterComponents();
             siteOption();
             var autoMapper = new AutoMapperStartupTask();
             autoMapper.Execute();
