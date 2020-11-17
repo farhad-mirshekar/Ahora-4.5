@@ -21,16 +21,13 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         @if (!Model.IsAdmin)
                         {
-                            <a class="dropdown-item" href="/user/home">
+                            <a class="dropdown-item" href="@Url.RouteUrl("User_Home")">
                                 <i class="fa fa-arrow-right"></i> ورود به پنل
                             </a>
                             <div class="dropdown-divider"></div>
-                            using (Html.BeginForm("SignOut", "Account", FormMethod.Post))
-                            {
-                                <button type="submit" class="dropdown-item" style="cursor:pointer">
-                                    <i class="fa fa-sign-out"></i> خروج
-                                </button>
-                            }
+                            <a href="@Url.RouteUrl("Logout")" class="dropdown-item" style="cursor:pointer">
+                                <i class="fa fa-sign-out"></i> خروج
+                            </a>
                         }
                         else
                         {
@@ -94,7 +91,7 @@
                 if (item.Url.ToLower() == "login")
                 {
                     <li class="nav-item">
-                        <a class='nav-link' href='@Url.RouteUrl(item.Url,new { returnurl = Request.Url.PathAndQuery },null)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                        <a class='nav-link' href='@Url.RouteUrl(item.Url)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
                     </li>
                 }
                 else

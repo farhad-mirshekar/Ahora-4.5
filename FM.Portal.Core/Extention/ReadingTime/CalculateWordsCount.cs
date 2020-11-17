@@ -40,9 +40,9 @@ namespace FM.Portal.Core.Extention.ReadingTime
         public static string CleanSeoUrl(string data)
         {
             data = CleanTags(data).Trim();
-            data = System.Text.RegularExpressions.Regex.Replace(data, @"[!*'();:@&=+$,/?%#]", "_"); // Remove all non valid chars          
+            data = System.Text.RegularExpressions.Regex.Replace(data, @"[!*'();:@&=+$,/?%#]", "-"); // Remove all non valid chars          
             data = System.Text.RegularExpressions.Regex.Replace(data, @"\s+", " ").Trim(); // convert multiple spaces into one space  
-            data = System.Text.RegularExpressions.Regex.Replace(data, @"\s", "_"); // //Replace spaces by dashes
+            data = System.Text.RegularExpressions.Regex.Replace(data, @"\s", "-"); // //Replace spaces by dashes
             return data;
         }
     }

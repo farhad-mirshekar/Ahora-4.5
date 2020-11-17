@@ -179,6 +179,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IActivityLogDataSource, ActivityLogDataSource>();
             container.RegisterType<IActivityLogService, ActivityLogService>();
 
+            container.RegisterType<IUrlRecordDataSource, UrlRecordDataSource>();
+            container.RegisterType<IUrlRecordService, UrlRecordService>();
+
             container.RegisterType<IWorkContext, WebWorkContext>(new ContainerControlledLifetimeManager());
             container.RegisterType<IWebHelper, WebHelper>(new ContainerControlledLifetimeManager());
             container.RegisterType<ITypeFinder, AppDomainTypeFinder>(new ContainerControlledLifetimeManager());

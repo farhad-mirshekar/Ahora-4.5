@@ -2005,6 +2005,7 @@
     <Content Include="Views\Product\Partial\_PartialModify.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Product\Farhad.cshtml" />
+    <Content Include="Views\Common\PageNotFound.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

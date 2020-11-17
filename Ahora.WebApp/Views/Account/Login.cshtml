@@ -50,8 +50,9 @@
             var loginform = $('#loginform');
             loginform.submit(function (e) {
                 e.preventDefault();
+                debugger
                 $.ajax({
-                    url: '/account/login',
+                    url: `@Url.RouteUrl("Login")`,
                     type: 'POST',
                     data: {
                         username: $('#Username').val(),
@@ -64,7 +65,7 @@
                                 if (data.url !== null)
                                     window.location.href = data.url;
                                 else
-                                    window.location.href = '/home/index';
+                                    window.location.href = `@Url.RouteUrl("Home")`;
                             } else {
                                 localStorage.setItem('authorizationData', data.authorizationData);
                                 localStorage.setItem('currentUserPosition', data.currentUserPosition);

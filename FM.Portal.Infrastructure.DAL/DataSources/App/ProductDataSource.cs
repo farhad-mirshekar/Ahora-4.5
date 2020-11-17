@@ -17,7 +17,7 @@ namespace FM.Portal.Infrastructure.DAL
             _requestInfo = requestInfo;
         }
 
-        private Result<Product> Modify(bool isNewRecord , Product model)
+        private Result<Product> Modify(bool isNewRecord, Product model)
         {
             try
             {
@@ -57,16 +57,16 @@ namespace FM.Portal.Infrastructure.DAL
                     param[25].Value = model.ShippingCostID.HasValue && model.ShippingCostID.Value != Guid.Empty ? model.ShippingCostID.Value : (object)DBNull.Value;
                     param[26] = new SqlParameter("@DeliveryDateID", SqlDbType.UniqueIdentifier);
                     param[26].Value = model.DeliveryDateID.HasValue && model.DeliveryDateID.Value != Guid.Empty ? model.DeliveryDateID.Value : (object)DBNull.Value;
-                    
+
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyProduct", param);
-                    if(result > 0)
-                        return Get(model.ID,null);
+                    if (result > 0)
+                        return Get(model.ID, null);
                     return Result<Product>.Failure(message: "خطا در درج یا ویرایش");
                 }
             }
             catch (Exception e) { throw; }
         }
-        public Result<Product> Get(Guid? ID,string TrackingCode)
+        public Result<Product> Get(Guid? ID, string TrackingCode)
         {
             try
             {
@@ -79,9 +79,9 @@ namespace FM.Portal.Infrastructure.DAL
                     param[0].Value = DBNull.Value;
 
                 param[1] = new SqlParameter("@TrackingCode", SqlDbType.NVarChar);
-                if (TrackingCode =="" || TrackingCode == null)
+                if (TrackingCode == "" || TrackingCode == null)
                     param[1].Value = DBNull.Value;
-                
+
                 else
                     param[1].Value = TrackingCode;
 
@@ -121,7 +121,7 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.DiscountName = SQLHelper.CheckStringNull(dr["DiscountName"]);
                             obj.DiscountAmount = SQLHelper.CheckDecimalNull(dr["DiscountAmount"]);
                             //obj.HasDiscountsApplied = SQLHelper.CheckBoolNull(dr["HasDiscountsApplied"]);
-                            obj.DiscountType =(DiscountType) SQLHelper.CheckByteNull(dr["DiscountType"]);
+                            obj.DiscountType = (DiscountType)SQLHelper.CheckByteNull(dr["DiscountType"]);
                             obj.DiscountTypes = (DiscountType)SQLHelper.CheckByteNull(dr["DiscountTypes"]);
                             obj.HasDiscount = SQLHelper.CheckBoolNull(dr["HasDiscount"]);
                             obj.IsDownload = SQLHelper.CheckBoolNull(dr["IsDownload"]);
@@ -140,10 +140,7 @@ namespace FM.Portal.Infrastructure.DAL
         }
 
         public Result<Product> Insert(Product model)
-        {
-            model.ID = Guid.NewGuid();
-            return Modify(true, model);
-        }
+        => Modify(true, model);
 
         public DataTable List(ProductListVM listVM)
         {

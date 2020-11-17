@@ -1,4 +1,5 @@
-﻿using Ahora.WebApp.Models.Pbl;
+﻿using Ahora.WebApp.Models;
+using Ahora.WebApp.Models.Pbl;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
@@ -155,6 +156,17 @@ namespace Ahora.WebApp.Controllers
         {
             //seems that no entity was found
             return InvokeHttp404();
+        }
+        //page not found
+        public virtual ActionResult PageNotFound()
+        {
+            this.Response.StatusCode = 404;
+            this.Response.TrySkipIisCustomErrors = true;
+            this.Response.ContentType = "text/html";
+            var error = new Error();
+            error.ErorrDescription = "صفحه مورد نظر یافت نشد";
+            error.ClassCss = "alert alert-dnager";
+            return View(error);
         }
         #endregion
 

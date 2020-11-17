@@ -1,11 +1,15 @@
-﻿using FM.Portal.FrameWork.Localization;
+﻿using FM.Portal.Core.Service;
+using FM.Portal.FrameWork.Localization;
+using FM.Portal.FrameWork.Unity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 using System.Web.Routing;
+using Unity;
 
 namespace FM.Portal.FrameWork.Seo
 {
@@ -14,6 +18,8 @@ namespace FM.Portal.FrameWork.Seo
     /// </summary>
     public partial class GenericPathRoute : LocalizedRoute
     {
+        private IUrlRecordService _urlRecordService;
+
         #region Constructors
 
         /// <summary>
@@ -77,17 +83,60 @@ namespace FM.Portal.FrameWork.Seo
         public override RouteData GetRouteData(HttpContextBase httpContext)
         {
             RouteData data = base.GetRouteData(httpContext);
+            if (_urlRecordService == null)
+            {
+                _urlRecordService = (IUrlRecordService)DependencyResolver.Current.GetService(typeof(IUrlRecordService));
+            }
+
             if (data != null)
             {
 
-                var urlRecord = "a";
+                var generic_se_name = data.Values["generic_se_name"] as string;
+                var urlRecordResult = _urlRecordService.Get(generic_se_name);
+                if (!urlRecordResult.Success)
+                {
+                    return data;
+                }
+                var urlRecord = urlRecordResult.Data;
+                if(urlRecord == null || urlRecord.ID == Guid.Empty)
+                {
+                    data.Values["controller"] = "Common";
+                    data.Values["action"] = "PageNotFound";
+                    return data;
+                }
                 //process URL
-                switch (urlRecord)
+                switch (urlRecord.EntityName.ToLowerInvariant())
                 {
                     case "product":
                         {
                             data.Values["controller"] = "Product";
-                            data.Values["action"] = "ProductDetails";
+                            data.Values["action"] = "Index";
+                            data.Values["ID"] = urlRecord.EntityID;
+                            data.Values["SeName"] = urlRecord.UrlDesc;
+                        }
+                        break;
+                    case "article":
+                        {
+                            data.Values["controller"] = "Article";
+                            data.Values["action"] = "Index";
+                            data.Values["ID"] = urlRecord.EntityID;
+                            data.Values["SeName"] = urlRecord.UrlDesc;
+                        }
+                        break;
+                    case "event":
+                        {
+                            data.Values["controller"] = "Event";
+                            data.Values["action"] = "Index";
+                            data.Values["ID"] = urlRecord.EntityID;
+                            data.Values["SeName"] = urlRecord.UrlDesc;
+                        }
+                        break;
+                    case "news":
+                        {
+                            data.Values["controller"] = "News";
+                            data.Values["action"] = "Index";
+                            data.Values["ID"] = urlRecord.EntityID;
+                            data.Values["SeName"] = urlRecord.UrlDesc;
                         }
                         break;
                     default:

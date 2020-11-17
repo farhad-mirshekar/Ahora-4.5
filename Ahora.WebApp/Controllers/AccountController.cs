@@ -32,12 +32,12 @@ namespace Ahora.WebApp.Controllers
         }
 
         #region Login / Register / SignOut
-        public ActionResult Login(string returnurl)
+        public ActionResult Login()
         {
             TempData["returnUrl"] = "";
-            if (returnurl != "" || returnurl != null)
-                TempData["returnUrl"] = returnurl;
-            ViewBag.Title = "صفحه ورود";
+            //if (returnurl != "" || returnurl != null)
+            //    TempData["returnUrl"] = returnurl;
+            //ViewBag.Title = "صفحه ورود";
             return View();
         }
         [HttpPost]
@@ -78,8 +78,7 @@ namespace Ahora.WebApp.Controllers
             }
         }
 
-        [Route("SignOut"), HttpPost]
-        public ActionResult SignOut(string type)
+        public ActionResult Logout(string type)
         {
             _authenticationService.SignOut();
             _workContext.User = null;

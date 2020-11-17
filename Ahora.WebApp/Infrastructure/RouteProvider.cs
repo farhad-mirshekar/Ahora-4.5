@@ -5,7 +5,7 @@ using System.Web.Routing;
 
 namespace Ahora.WebApp.Infrastructure
 {
-    public partial class RouteProvider:IRouteProvider
+    public partial class RouteProvider : IRouteProvider
     {
         public int Priority
         {
@@ -17,6 +17,13 @@ namespace Ahora.WebApp.Infrastructure
 
         public void RegisterRoutes(RouteCollection routes)
         {
+
+            routes.MapLocalizedRoute(
+                name: "Home",
+                url: "",
+                defaults: new { controller = "Home", action = "Index" },
+                namespaces: new[] { $"Ahora.WebApp.Controllers" }
+            );
 
             routes.MapLocalizedRoute(
               "ChangeLanguage",
@@ -235,12 +242,6 @@ namespace Ahora.WebApp.Infrastructure
                namespaces: new[] { $"Ahora.WebApp.Controllers" }
             );
             routes.MapLocalizedRoute(
-                "product",
-                "product/{TrackingCode}/{Title}",
-                new { controller = "Product", action = "Index", TrackingCode = UrlParameter.Optional, Title = UrlParameter.Optional },
-                namespaces: new[] { $"Ahora.WebApp.Controllers" }
-                );
-            routes.MapLocalizedRoute(
                 "SignUp",
                 "SignUp",
                 new { controller = "Account", action = "Create" },
@@ -248,16 +249,16 @@ namespace Ahora.WebApp.Infrastructure
                 );
             routes.MapLocalizedRoute(
                 "Login",
-                "Login",
+                "login",
                 new { controller = "Account", action = "Login" },
                 namespaces: new[] { $"Ahora.WebApp.Controllers" }
                 );
             routes.MapLocalizedRoute(
-               name: "Home",
-               url: "Home",
-               defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional },
+               "Logout",
+               "logout/",
+               new { controller = "Account", action = "Logout" },
                namespaces: new[] { $"Ahora.WebApp.Controllers" }
-           );
+               );
         }
     }
 }

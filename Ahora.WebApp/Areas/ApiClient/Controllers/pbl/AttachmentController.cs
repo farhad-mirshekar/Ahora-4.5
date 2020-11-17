@@ -121,7 +121,6 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             catch { throw; }
         }
 
-        [HttpPost]
         public virtual JsonResult List(Guid ParentID)
         {
             try

@@ -44,13 +44,9 @@ namespace Ahora.WebApp.Controllers
 
         #region Product
         // GET: Product
-        public ActionResult Farhad(Guid ID)
+        public ActionResult Index(Guid ID)
         {
-            return View();
-        }
-        public ActionResult Index(string TrackingCode, String Title)
-        {
-            var result = _service.Get(TrackingCode);
+            var result = _service.Get(ID);
             if (!result.Success)
                 RedirectToRoute("Home");
 

@@ -90,6 +90,7 @@
     <Compile Include="Pbl\ILinkDataSource.cs" />
     <Compile Include="Pbl\IPagesDataSource.cs" />
     <Compile Include="Pbl\ITagsDataSource.cs" />
+    <Compile Include="Pbl\IUrlRecordDataSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ptl\IEventsCommentDataSource.cs" />
     <Compile Include="Ptl\INewsCommentDataSource.cs" />

@@ -180,6 +180,9 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IActivityLogDataSource, ActivityLogDataSource>();
             _container.RegisterType<IActivityLogService, ActivityLogService>();
 
+            _container.RegisterType<IUrlRecordDataSource, UrlRecordDataSource>();
+            _container.RegisterType<IUrlRecordService, UrlRecordService>();
+
             _container.RegisterType<IWorkContext, WebWorkContext>(new ContainerControlledLifetimeManager());
             _container.RegisterType<ICacheService, CacheService>();
             _container.RegisterType<HttpContextBase>(new InjectionFactory(_ =>

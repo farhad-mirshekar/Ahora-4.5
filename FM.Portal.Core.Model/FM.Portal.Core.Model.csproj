@@ -161,6 +161,8 @@
     <Compile Include="Pbl\Pages\Pages.cs" />
     <Compile Include="Pbl\Tags\Tags.cs" />
     <Compile Include="Pbl\Tags\VM\TagsSearchListVM.cs" />
+    <Compile Include="Pbl\UrlRecord\UrlRecord.cs" />
+    <Compile Include="Pbl\UrlRecord\VM\UrlRecordListVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ptl\EventsComment\EventsComment.cs" />
     <Compile Include="Ptl\EventsComment\EventsComment_User_Mapping\EventsCommentMapUser.cs" />

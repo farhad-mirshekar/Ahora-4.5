@@ -50,6 +50,11 @@ namespace Ahora.WebApp.Areas.User
                 new { controller = "Home", action = "Orders", Page = UrlParameter.Optional }
             );
             context.MapRoute(
+                "User_Home",
+                "User/Home",
+                new { Controller="Home", action = "Index", id = UrlParameter.Optional }
+            );
+            context.MapRoute(
                 "User_default",
                 "User/{controller}/{action}/{id}",
                 new { action = "Index", id = UrlParameter.Optional }

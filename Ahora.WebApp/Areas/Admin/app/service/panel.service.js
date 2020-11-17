@@ -136,7 +136,7 @@
     app.factory('uploadService', uploadService);
     uploadService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
     function uploadService($http, $q, callbackService, authenticationService) {
-        var url = '/attachment'
+        var url = 'ApiClient/attachment'
         var service = {
             upload: upload
 
@@ -163,7 +163,7 @@
     app.factory('attachmentService', attachmentService);
     attachmentService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function attachmentService($http, callbackService, authenticationService) {
-        var url = '/attachment/';
+        var url = 'ApiClient/attachment/';
         var service = {
             add: add,
             list: list,

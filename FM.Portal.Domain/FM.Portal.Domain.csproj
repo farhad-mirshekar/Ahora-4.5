@@ -119,6 +119,7 @@
     <Compile Include="Pbl\PagesService.cs" />
     <Compile Include="Pbl\PdfService.cs" />
     <Compile Include="Pbl\TagsService.cs" />
+    <Compile Include="Pbl\UrlRecordService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Ptl\EventsCommentService.cs" />
     <Compile Include="Ptl\NewsCommentService.cs" />

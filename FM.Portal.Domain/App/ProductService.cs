@@ -7,6 +7,7 @@ using FM.Portal.DataSource;
 using System.Linq;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.LucenceSearch.Product;
+using FM.Portal.Core.Extention.ReadingTime;
 
 namespace FM.Portal.Domain
 {
@@ -18,12 +19,14 @@ namespace FM.Portal.Domain
         private readonly IDeliveryDateService _deliveryDateService;
         private readonly ICategoryService _categoryService;
         private readonly IAttachmentService _attachmentService;
+        private readonly IUrlRecordService _urlRecordService;
         public ProductService(IProductDataSource dataSource
                               , IRelatedProductService relatedProductService
                               , IShippingCostService shippingCostService
                               , IDeliveryDateService deliveryDateService
                               , ICategoryService categoryService
-                              , IAttachmentService attachmentService)
+                              , IAttachmentService attachmentService
+                              , IUrlRecordService urlRecordService)
         {
             _dataSource = dataSource;
             _relatedProductService = relatedProductService;
@@ -31,6 +34,7 @@ namespace FM.Portal.Domain
             _shippingCostService = shippingCostService;
             _categoryService = categoryService;
             _attachmentService = attachmentService;
+            _urlRecordService = urlRecordService;
         }
         public Result<Product> Add(Product model)
         {
@@ -38,7 +42,18 @@ namespace FM.Portal.Domain
             if (!validate.Success)
                 return Result<Product>.Failure(message: validate.Message);
 
+            model.ID = Guid.NewGuid();
             var result = _dataSource.Insert(model);
+            if (result.Success)
+            {
+                _urlRecordService.Add(new UrlRecord()
+                {
+                    UrlDesc = CalculateWordsCount.CleanSeoUrl(model.Name),
+                    EntityID = model.ID,
+                    EntityName = model.GetType().Name,
+                    Enabled = EnableMenuType.فعال
+                });
+            }
             //if (result.Success)
             //    LucenceSearch();
             return result;
@@ -51,6 +66,15 @@ namespace FM.Portal.Domain
                 return Result<Product>.Failure(message: validate.Message);
 
             var result = _dataSource.Update(model);
+            if (result.Success)
+            {
+                var urlRecordResult = _urlRecordService.Get(null, model.ID);
+                if (urlRecordResult.Success)
+                {
+                    urlRecordResult.Data.UrlDesc = CalculateWordsCount.CleanSeoUrl(model.Name);
+                    _urlRecordService.Edit(urlRecordResult.Data);
+                }
+            }
             //if (result.Success)
             //    LucenceSearch();
             return result;

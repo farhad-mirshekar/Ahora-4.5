@@ -34,7 +34,7 @@ namespace FM.Portal.Domain
                                   pc.GetMonth(dt).ToString();
             model.TrackingCode = trackingCode;
             model.ID = Guid.NewGuid();
-            if(model.Tags.Count > 0)
+            if(model.Tags != null && model.Tags.Count > 0)
             {
                 var tags =new List<Tags>();
                 foreach (var item in model.Tags)

@@ -146,6 +146,13 @@ namespace FM.Portal.Core.Common
             com.CommandType = commandtype;
             sqlconnection = OpenConnection(sqlconnection);
             if (parameters != null)
+                foreach (SqlParameter parm in parameters)
+                {
+                    object parm2 = parm.Value;
+                    if (parm2 == null)
+                        parm.Value = DBNull.Value;
+                }
+            if (parameters != null)
                 com.Parameters.AddRange(parameters);
             try
             {
