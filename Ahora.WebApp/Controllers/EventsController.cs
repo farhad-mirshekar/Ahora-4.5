@@ -17,7 +17,7 @@ namespace Ahora.WebApp.Controllers
         private readonly IEventsCommentService _eventsCommentService;
         private readonly IWorkContext _workContext;
         public EventsController(IEventsService service
-                                ,IAttachmentService attachmentService
+                                , IAttachmentService attachmentService
                                 , IEventsCommentService eventsCommentService
                                 , IWorkContext workContext) : base(service)
         {
@@ -54,31 +54,26 @@ namespace Ahora.WebApp.Controllers
 
             return View(eventsModel);
         }
-        [Route("EventsDetail/{TrackingCode}/{Seo}")]
-        public ActionResult Detail(string TrackingCode, string Seo)
+        public ActionResult Detail(Guid ID)
         {
-            if (!string.IsNullOrEmpty(TrackingCode))
+            var eventDetail = new EventModel();
+            var eventResult = _service.Get(ID);
+            if (!eventResult.Success)
+                return View("Error");
+
+            var events = eventResult.Data;
+            eventDetail = events.ToModel();
+
+            var attachmentsResult = _attachmentService.List(eventDetail.ID);
+            if (attachmentsResult.Success)
             {
-                var eventDetail = new EventModel();
-                var eventResult = _service.Get(TrackingCode);
-                if (!eventResult.Success)
-                    return View("Error");
-
-                var events = eventResult.Data;
-                eventDetail = events.ToModel();
-
-                var attachmentsResult = _attachmentService.List(eventDetail.ID);
-                if (attachmentsResult.Success)
-                {
-                    eventDetail.VideoAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.video).ToList();
-                    eventDetail.PictureAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.events).ToList();
-
-                }
-
-                return View(eventDetail);
+                eventDetail.VideoAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.video).ToList();
+                eventDetail.PictureAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.events).ToList();
 
             }
-            return View("Error");
+
+            return View(eventDetail);
+
         }
 
         #region Events Comment
@@ -93,7 +88,7 @@ namespace Ahora.WebApp.Controllers
                 events.CommentStatusType == CommentStatusType.نامشخص)
                 return Content("");
 
-            var commentsResult = _eventsCommentService.List(new EventsCommentListVM() { EventsID = EventsID, ShowChildren = true , CommentType = CommentType.تایید });
+            var commentsResult = _eventsCommentService.List(new EventsCommentListVM() { EventsID = EventsID, ShowChildren = true, CommentType = CommentType.تایید });
             if (!commentsResult.Success)
                 return Content("");
 

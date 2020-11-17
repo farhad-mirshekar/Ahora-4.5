@@ -92,6 +92,12 @@ namespace FM.Portal.FrameWork.Seo
             {
 
                 var generic_se_name = data.Values["generic_se_name"] as string;
+                if(generic_se_name.ToLowerInvariant() == "refreshtoken")
+                {
+                    data.Values["controller"] = "Account";
+                    data.Values["action"] = "RefreshToken";
+                    return data;
+                }
                 var urlRecordResult = _urlRecordService.Get(generic_se_name);
                 if (!urlRecordResult.Success)
                 {
@@ -118,7 +124,7 @@ namespace FM.Portal.FrameWork.Seo
                     case "article":
                         {
                             data.Values["controller"] = "Article";
-                            data.Values["action"] = "Index";
+                            data.Values["action"] = "Detail";
                             data.Values["ID"] = urlRecord.EntityID;
                             data.Values["SeName"] = urlRecord.UrlDesc;
                         }
@@ -126,7 +132,7 @@ namespace FM.Portal.FrameWork.Seo
                     case "event":
                         {
                             data.Values["controller"] = "Event";
-                            data.Values["action"] = "Index";
+                            data.Values["action"] = "Detail";
                             data.Values["ID"] = urlRecord.EntityID;
                             data.Values["SeName"] = urlRecord.UrlDesc;
                         }
@@ -134,7 +140,7 @@ namespace FM.Portal.FrameWork.Seo
                     case "news":
                         {
                             data.Values["controller"] = "News";
-                            data.Values["action"] = "Index";
+                            data.Values["action"] = "Detail";
                             data.Values["ID"] = urlRecord.EntityID;
                             data.Values["SeName"] = urlRecord.UrlDesc;
                         }

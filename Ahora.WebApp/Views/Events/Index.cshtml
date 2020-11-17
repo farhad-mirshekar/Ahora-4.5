@@ -1,4 +1,5 @@
 ﻿@model Ahora.WebApp.Models.Ptl.EventListModel
+@using FM.Portal.Core.Extention.ReadingTime;
 @{
     ViewBag.Title = ViewBag.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -28,7 +29,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="btn-group-justified pull-left">
-                            <a href="@Url.RouteUrl("EventsDetail",new { TrackingCode=item.TrackingCode , Seo=item.UrlDesc.Replace(" ","_").Replace(":","_")})" class="btn btn-outline-success btn-lg btn-block">
+                            <a href="@Url.RouteUrl("EventsDetail",new { SeName=CalculateWordsCount.CleanSeoUrl(item.UrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
                                 ادامه
                                 <i class="fa fa-arrow-left"></i>
                             </a>

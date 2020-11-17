@@ -11,7 +11,6 @@ namespace FM.Portal.DataSource
         Result<Events> Update(Events model);
         DataTable List(EventsListVM listVM);
         Result<Events> Get(Guid ID);
-        Result<Events> Get(string TrackingCode);
         Result<int> Delete(Guid ID);
     }
 }

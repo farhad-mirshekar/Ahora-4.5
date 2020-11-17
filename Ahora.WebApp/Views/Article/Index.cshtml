@@ -1,4 +1,5 @@
 ﻿@model Ahora.WebApp.Models.Ptl.ArticleListModel
+@using FM.Portal.Core.Extention.ReadingTime;
 @{
     ViewBag.Title = T("Article.List.Page.Title");
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,29 +12,29 @@
         <div class="card-body">
             @foreach (var item in Model.AvailableArticles)
             {
-            <section class="card">
-                @if (item.Attachments.Count > 0)
-                {
-                    <img src="~/Content/TemporaryFiles/@item.Path/@item.Attachments.Where(a=>a.PathType == PathType.article).FirstOrDefault()" class="card-img-top p-3 w-75 p-3 mx-auto" alt="@item.Title" />
-                }                    <div class="position-relative">
-                    <div class="pull-left text-center mr-3">
-                        <label class="text-info">@FM.Portal.Core.Common.Helper.GetPersianDay(item.CreationDate) @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(item.CreationDate))</label><br />
-                        <label class="text-info">@FM.Portal.Core.Common.Helper.GetPersianYear(item.CreationDate)</label>
+                <section class="card">
+                    @if (item.Attachments.Count > 0)
+                    {
+                        <img src="~/Content/TemporaryFiles/@item.Path/@item.Attachments.Where(a=>a.PathType == PathType.article).FirstOrDefault()" class="card-img-top p-3 w-75 p-3 mx-auto" alt="@item.Title" />
+                    }                    <div class="position-relative">
+                        <div class="pull-left text-center mr-3">
+                            <label class="text-info">@FM.Portal.Core.Common.Helper.GetPersianDay(item.CreationDate) @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(item.CreationDate))</label><br />
+                            <label class="text-info">@FM.Portal.Core.Common.Helper.GetPersianYear(item.CreationDate)</label>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <h3 class="card-title">@item.Title</h3>
-                    <p class="card-text">@item.Description</p>
-                </div>
-                <div class="card-footer">
-                    <div class="btn-group-justified pull-left">
-                        <a href="@Url.RouteUrl("ArticleDetail",new { TrackingCode=item.TrackingCode , Seo=item.UrlDesc.Replace(" ","_").Replace(':','_')})" class="btn btn-outline-success btn-lg btn-block">
-                            @T("Article.List.Button.More")
-                            <i class="fa fa-arrow-left"></i>
-                        </a>
+                    <div class="card-body">
+                        <h3 class="card-title">@item.Title</h3>
+                        <p class="card-text">@item.Description</p>
                     </div>
-                </div>
-            </section>
+                    <div class="card-footer">
+                        <div class="btn-group-justified pull-left">
+                            <a href="@Url.RouteUrl("ArticleDetail",new { SeName=CalculateWordsCount.CleanSeoUrl(item.UrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
+                                @T("Article.List.Button.More")
+                                <i class="fa fa-arrow-left"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
             }
         </div>
         <div class="card-footer">

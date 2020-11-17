@@ -5,8 +5,7 @@ IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('ptl.spGetA
 GO
 
 CREATE PROCEDURE ptl.spGetArticle
-@ID UNIQUEIDENTIFIER,
-@TrackingCode NVARCHAR(100)
+@ID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -22,7 +21,6 @@ BEGIN
 	LEFT JOIN 
 		pbl.Attachment attachment ON article.ID = attachment.ParentID
 	WHERE 
-		article.RemoverID IS NULL AND
-		(@ID IS NULL OR article.ID = @ID) AND
-		(@TrackingCode IS NULL OR article.TrackingCode = @TrackingCode)
+		article.RemoverID IS NULL
+		AND article.ID = @ID
 END

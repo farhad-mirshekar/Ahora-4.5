@@ -25,7 +25,6 @@ namespace FM.Portal.Core.Model
         public Guid CategoryID { get; set; }
         public Guid UserID { get; set; }
         public Guid? RemoverID { get; set; }
-        public string TrackingCode { get; set; }
         public List<String> Tags { get; set; }
         public string CreatorName { get; set; }
         public string FileName { get; set; }

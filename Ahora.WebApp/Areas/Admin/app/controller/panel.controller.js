@@ -2163,7 +2163,6 @@
             return $q.resolve().then(() => {
                 return fillDropCategory();
             }).then(() => {
-                news.attachment.reset();
                 return fillDropLanguage();
             }).then(() => {
                 news.Model = {};

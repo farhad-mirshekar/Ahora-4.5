@@ -60,30 +60,25 @@ namespace Ahora.WebApp.Controllers
         }
 
         //show detail article
-        public ActionResult Detail(string TrackingCode, string Seo)
+        public ActionResult Detail(Guid ID)
         {
-            if (!string.IsNullOrEmpty(TrackingCode))
+            var articleDetail = new ArticleModel();
+            var articleResult = _service.Get(ID);
+            if (!articleResult.Success)
+                return View("Error");
+
+            var article = articleResult.Data;
+            articleDetail = article.ToModel();
+
+            var attachmentsResult = _attachmentService.List(articleDetail.ID);
+            if (attachmentsResult.Success)
             {
-                var articleDetail = new ArticleModel();
-                var articleResult = _service.Get(TrackingCode);
-                if (!articleResult.Success)
-                    return View("Error");
-
-                var article = articleResult.Data;
-                articleDetail = article.ToModel();
-
-                var attachmentsResult = _attachmentService.List(articleDetail.ID);
-                if (attachmentsResult.Success)
-                {
-                    articleDetail.VideoAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.video).ToList();
-                    articleDetail.PictureAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.article).ToList();
-
-                }
-
-                return View(articleDetail);
+                articleDetail.VideoAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.video).ToList();
+                articleDetail.PictureAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.article).ToList();
 
             }
-            return View("Error");
+
+            return View(articleDetail);
         }
 
         #endregion
@@ -100,7 +95,7 @@ namespace Ahora.WebApp.Controllers
                 article.CommentStatusType == CommentStatusType.نامشخص)
                 return Content("");
 
-            var commentsResult = _articleCommentService.List(new ArticleCommentListVM() { ArticleID = ArticleID, ShowChildren = true , CommentType = CommentType.تایید });
+            var commentsResult = _articleCommentService.List(new ArticleCommentListVM() { ArticleID = ArticleID, ShowChildren = true, CommentType = CommentType.تایید });
             if (!commentsResult.Success)
                 return Content("");
 
@@ -164,10 +159,10 @@ namespace Ahora.WebApp.Controllers
             {
                 Comment = _localeStringResourceService.GetResource("").Data ?? $"افزودن نظر برای مقاله",
                 UserID = _workContext.User.ID,
-                IpAddress="23",
-                EntityID=result.Data.ID,
+                IpAddress = "23",
+                EntityID = result.Data.ID,
                 EntityName = model.GetType().Name,
-                SystemKeyword= "AddArticleComment"
+                SystemKeyword = "AddArticleComment"
             });
             if (!result.Success)
                 return Json(new { show = "true" });
@@ -189,7 +184,7 @@ namespace Ahora.WebApp.Controllers
                 return Json(new { result = "error", CommentID = CommentID });
 
 
-            return Json(new { result = "success", CommentID = CommentID, state = "like" , count = LikeResult.Data.LikeCount });
+            return Json(new { result = "success", CommentID = CommentID, state = "like", count = LikeResult.Data.LikeCount });
 
         }
         public JsonResult DisLike(Guid CommentID)
@@ -197,16 +192,16 @@ namespace Ahora.WebApp.Controllers
             if (_workContext.User == null)
                 return Json(new { result = "login", CommentID = CommentID });
 
-            var userCanLikeResult = _articleCommentService.UserCanLike(new ArticleCommentMapUser() {CommentID = CommentID ,  UserID = _workContext.User.ID});
+            var userCanLikeResult = _articleCommentService.UserCanLike(new ArticleCommentMapUser() { CommentID = CommentID, UserID = _workContext.User.ID });
             if (!userCanLikeResult.Success)
                 return Json(new { result = "duplicate", CommentID = CommentID });
 
-               var disLikeResult = _articleCommentService.DisLike(CommentID , _workContext.User.ID);
-                if(!disLikeResult.Success)
+            var disLikeResult = _articleCommentService.DisLike(CommentID, _workContext.User.ID);
+            if (!disLikeResult.Success)
                 return Json(new { result = "error", CommentID = CommentID });
 
 
-            return Json(new { result="success", CommentID = CommentID, state = "dislike" , count = disLikeResult.Data.DisLikeCount });
+            return Json(new { result = "success", CommentID = CommentID, state = "dislike", count = disLikeResult.Data.DisLikeCount });
 
         }
         #endregion

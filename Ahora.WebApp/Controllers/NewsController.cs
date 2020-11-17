@@ -19,7 +19,7 @@ namespace Ahora.WebApp.Controllers
         public NewsController(INewsService service
                              , IAttachmentService attachmentService
                              , INewsCommentService newsCommentService
-                             , IWorkContext workContext ) : base(service)
+                             , IWorkContext workContext) : base(service)
         {
             _attachmentService = attachmentService;
             _newsCommentService = newsCommentService;
@@ -51,30 +51,25 @@ namespace Ahora.WebApp.Controllers
 
             return View(articleList);
         }
-        public ActionResult Detail(string TrackingCode , string Seo)
+        public ActionResult Detail(Guid ID)
         {
-            if (!string.IsNullOrEmpty(TrackingCode))
+            var newsDetail = new NewsModel();
+            var newsResult = _service.Get(ID);
+            if (!newsResult.Success)
+                return View("Error");
+
+            var news = newsResult.Data;
+            newsDetail = news.ToModel();
+
+            var attachmentsResult = _attachmentService.List(newsDetail.ID);
+            if (attachmentsResult.Success)
             {
-                var newsDetail = new NewsModel();
-                var newsResult = _service.Get(TrackingCode);
-                if (!newsResult.Success)
-                    return View("Error");
-
-                var news = newsResult.Data;
-                newsDetail = news.ToModel();
-
-                var attachmentsResult = _attachmentService.List(newsDetail.ID);
-                if (attachmentsResult.Success)
-                {
-                    newsDetail.VideoAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.video).ToList();
-                    newsDetail.PictureAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.news).ToList();
-
-                }
-
-                return View(newsDetail);
+                newsDetail.VideoAttachments = attachmentsResult.Data.Where(a => a.PathType == PathType.video).ToList();
+                newsDetail.PictureAttachments = attachmentsResult.Data.Where(a => a.PathType == PathType.news).ToList();
 
             }
-            return View("Error");
+
+            return View(newsDetail);
         }
 
         #region News Comment
@@ -89,7 +84,7 @@ namespace Ahora.WebApp.Controllers
                 news.CommentStatusType == CommentStatusType.نامشخص)
                 return Content("");
 
-            var commentsResult = _newsCommentService.List(new NewsCommentListVM() { NewsID = NewsID, ShowChildren = true , CommentType = CommentType.تایید });
+            var commentsResult = _newsCommentService.List(new NewsCommentListVM() { NewsID = NewsID, ShowChildren = true, CommentType = CommentType.تایید });
             if (!commentsResult.Success)
                 return Content("");
 

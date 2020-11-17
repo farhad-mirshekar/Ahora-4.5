@@ -117,13 +117,8 @@ namespace Ahora.WebApp.Infrastructure
             routes.MapLocalizedRoute(
               "Events",
               "Events/{Page}",
-              new { controller = "Events", action = "Index", Page = UrlParameter.Optional },
-              namespaces: new[] { $"Ahora.WebApp.Controllers" }
-              );
-            routes.MapLocalizedRoute(
-              "EventsDetail",
-              "Events/{TrackingCode}/{Seo}",
-              new { controller = "Events", action = "Detail", TrackingCode = UrlParameter.Optional, Seo = UrlParameter.Optional },
+              new { controller = "Events", action = "Index"},
+              new { Page = @"\d+" },
               namespaces: new[] { $"Ahora.WebApp.Controllers" }
               );
             routes.MapLocalizedRoute(
@@ -153,13 +148,8 @@ namespace Ahora.WebApp.Infrastructure
             routes.MapLocalizedRoute(
               "News",
               "News/{Page}",
-              new { controller = "News", action = "Index", Page = UrlParameter.Optional },
-              namespaces: new[] { $"Ahora.WebApp.Controllers" }
-              );
-            routes.MapLocalizedRoute(
-              "NewsDetail",
-              "News/{TrackingCode}/{Seo}",
-              new { controller = "News", action = "Detail", TrackingCode = UrlParameter.Optional, Seo = UrlParameter.Optional },
+              new { controller = "News", action = "Index"},
+              new { Page = @"\d+" },
               namespaces: new[] { $"Ahora.WebApp.Controllers" }
               );
             routes.MapLocalizedRoute(
@@ -183,15 +173,10 @@ namespace Ahora.WebApp.Infrastructure
             routes.MapLocalizedRoute(
               "Article",
               "Article/{Page}",
-                new { controller = "Article", action = "Index", Page = UrlParameter.Optional },
+                new { controller = "Article", action = "Index"},
+                new { Page = @"\d+" },
                 namespaces: new[] { $"Ahora.WebApp.Controllers" }
              );
-            routes.MapLocalizedRoute(
-              "ArticleDetail",
-              "Article/{TrackingCode}/{Seo}",
-              new { controller = "Article", action = "Detail", TrackingCode = UrlParameter.Optional, Seo = UrlParameter.Optional },
-              namespaces: new[] { $"Ahora.WebApp.Controllers" }
-              );
 
             routes.MapLocalizedRoute(
                "Category",

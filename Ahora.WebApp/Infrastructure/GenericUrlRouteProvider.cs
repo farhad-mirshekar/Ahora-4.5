@@ -28,6 +28,23 @@ namespace Ahora.WebApp.Infrastructure
                                      new { controller = "Product", action = "Index" },
 
                                      new[] { $"Ahora.WebApp.Controllers" });
+
+            routes.MapLocalizedRoute("NewsDetail",
+                                     "News/{SeName}",
+                                     new { controller = "News", action = "Detail" },
+
+                                     new[] { $"Ahora.WebApp.Controllers" });
+
+            routes.MapLocalizedRoute("ArticleDetail",
+                                     "Article/{SeName}",
+                                     new { controller = "Article", action = "Detail" },
+
+                                     new[] { $"Ahora.WebApp.Controllers" });
+            routes.MapLocalizedRoute("EventsDetail",
+                                     "Events/{SeName}",
+                                     new { controller = "Events", action = "Detail" },
+
+                                     new[] { $"Ahora.WebApp.Controllers" });
         }
     }
 }

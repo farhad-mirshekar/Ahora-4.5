@@ -104,6 +104,7 @@ namespace Ahora.WebApp.Controllers
             else
                 return Json(true);
         }
+        [HttpPost]
         public async Task<JsonResult> RefreshToken(LoginVM model)
         {
             var result = await GetRefreshToken(new Token { grant_type = "refresh_token", RefreshToken = model.RefreshToken });

@@ -15,7 +15,6 @@ CREATE PROCEDURE ptl.spModifyArticle
 @ViewStatusType TINYINT,
 @CategoryID uniqueidentifier,
 @UserID uniqueidentifier,
-@TrackingCode nvarchar(100),
 @IsNewRecord bit,
 @ReadingTime NVARCHAR(200),
 @LanguageID UNIQUEIDENTIFIER
@@ -24,13 +23,10 @@ AS
 BEGIN
 	IF @IsNewRecord = 1 --insert
 		BEGIN
-
-			SET @TrackingCode = (select STR(FLOOR(RAND(CHECKSUM(NEWID()))*(9999999999-1000000000+1)+1000000000)))
-
 			INSERT INTO [ptl].[Article]
-				([ID],Body,CommentStatusType,CreationDate,[Description],DisLikeCount,ViewStatusType,LikeCount,MetaKeywords,ModifiedDate,RemoverID,Title,UrlDesc,UserID,VisitedCount , TrackingCode,CategoryID,ReadingTime,LanguageID)
+				([ID],Body,CommentStatusType,CreationDate,[Description],DisLikeCount,ViewStatusType,LikeCount,MetaKeywords,ModifiedDate,RemoverID,Title,UrlDesc,UserID,VisitedCount ,CategoryID,ReadingTime,LanguageID)
 			VALUES
-				(@ID , @Body  , @CommentStatusType , GETDATE() , @Description , 0,@ViewStatusType , 0 , @MetaKeywords , GETDATE() , null , @Title ,@UrlDesc, @UserID , 0 , @TrackingCode,@CategoryID,@ReadingTime,@LanguageID)
+				(@ID , @Body  , @CommentStatusType , GETDATE() , @Description , 0,@ViewStatusType , 0 , @MetaKeywords , GETDATE() , null , @Title ,@UrlDesc, @UserID , 0 ,@CategoryID,@ReadingTime,@LanguageID)
 		END
 	ELSE -- update
 		BEGIN

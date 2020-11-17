@@ -10,7 +10,6 @@ namespace FM.Portal.Core.Service
         Result<Article> Edit(Article model);
         Result<List<Article>> List(ArticleListVM listVM);
         Result<Article> Get(Guid ID);
-        Result<Article> Get(string TrackingCode);
         Result<int> Delete(Guid ID);
     }
 }

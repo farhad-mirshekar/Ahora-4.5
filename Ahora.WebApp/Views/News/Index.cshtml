@@ -1,4 +1,5 @@
 ﻿@model Ahora.WebApp.Models.Ptl.NewsListModel
+@using FM.Portal.Core.Extention.ReadingTime;
 @{
     ViewBag.Title = T("News.List.Page.Title");
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -27,7 +28,7 @@
                     </div>
                     <div class="card-footer">
                         <div class="btn-group-justified pull-left">
-                            <a href="@Url.RouteUrl("NewsDetail",new { TrackingCode=item.TrackingCode , Seo=item.UrlDesc.Replace(" ","_").Replace(':','_')})" class="btn btn-outline-success btn-lg btn-block">
+                            <a href="@Url.RouteUrl("NewsDetail",new { SeName=CalculateWordsCount.CleanSeoUrl(item.UrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
                                 @T("News.List.Button.More")
                                 <i class="fa fa-arrow-left"></i>
                             </a>

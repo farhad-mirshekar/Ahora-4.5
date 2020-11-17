@@ -39,10 +39,8 @@ namespace FM.Portal.Infrastructure.DAL
             try
             {
                 var obj = new Events();
-                SqlParameter[] param = new SqlParameter[2];
+                var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
-                param[1] = new SqlParameter("@TrackingCode", SqlDbType.NVarChar);
-                param[1].Value = DBNull.Value;
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
@@ -54,53 +52,6 @@ namespace FM.Portal.Infrastructure.DAL
             }
             catch (Exception e) { return Result<Events>.Failure(); }
         }
-
-        public Result<Events> Get(string TrackingCode)
-        {
-            try
-            {
-                var obj = new Events();
-                SqlParameter[] param = new SqlParameter[2];
-                param[0] = new SqlParameter("@ID", SqlDbType.UniqueIdentifier);
-                param[0].Value = DBNull.Value;
-                param[1] = new SqlParameter("@TrackingCode", TrackingCode);
-
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
-                {
-                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetEvents", param))
-                    {
-                        while (dr.Read())
-                        {
-                            obj.Body = SQLHelper.CheckStringNull(dr["Body"]);
-                            obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
-                            obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
-                            obj.CategoryID = SQLHelper.CheckGuidNull(dr["CategoryID"]);
-                            obj.CommentStatusType = (CommentStatusType)SQLHelper.CheckByteNull(dr["CommentStatusType"]);
-                            obj.Description = SQLHelper.CheckStringNull(dr["Description"]);
-                            obj.DisLikeCount = SQLHelper.CheckIntNull(dr["DisLikeCount"]);
-                            obj.ViewStatusType = (ViewStatusType)SQLHelper.CheckByteNull(dr["ViewStatusType"]);
-                            obj.LikeCount = SQLHelper.CheckIntNull(dr["LikeCount"]);
-                            obj.MetaKeywords = SQLHelper.CheckStringNull(dr["MetaKeywords"]);
-                            obj.ModifiedDate = SQLHelper.CheckDateTimeNull(dr["ModifiedDate"]);
-                            obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
-                            obj.TrackingCode = SQLHelper.CheckStringNull(dr["TrackingCode"]);
-                            obj.UrlDesc = SQLHelper.CheckStringNull(dr["UrlDesc"]);
-                            obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
-                            obj.VisitedCount = SQLHelper.CheckIntNull(dr["VisitedCount"]);
-                            obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
-                            obj.CreatorName = SQLHelper.CheckStringNull(dr["CreatorName"]);
-                            obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
-                            obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
-                            obj.ReadingTime = SQLHelper.CheckStringNull(dr["ReadingTime"]);
-                        }
-                    }
-
-                }
-                return Result<Events>.Successful(data: obj);
-            }
-            catch (Exception e) { return Result<Events>.Failure(); }
-        }
-
         public Result<Events> Insert(Events model)
             => Modify(true, model);
 
@@ -131,7 +82,7 @@ namespace FM.Portal.Infrastructure.DAL
                 {
                     lock (con)
                     {
-                        var param = new SqlParameter[14];
+                        var param = new SqlParameter[13];
                         param[0] = new SqlParameter("@ID", model.ID);
 
                         param[1] = new SqlParameter("@Body", model.Body);
@@ -144,9 +95,8 @@ namespace FM.Portal.Infrastructure.DAL
                         param[8] = new SqlParameter("@Title", model.Title);
                         param[9] = new SqlParameter("@UrlDesc", model.UrlDesc);
                         param[10] = new SqlParameter("@UserID", _requestInfo.UserId);
-                        param[11] = new SqlParameter("@TrackingCode", model.TrackingCode);
-                        param[12] = new SqlParameter("@ReadingTime", model.ReadingTime);
-                        param[13] = new SqlParameter("@LanguageID", model.LanguageID);
+                        param[11] = new SqlParameter("@ReadingTime", model.ReadingTime);
+                        param[12] = new SqlParameter("@LanguageID", model.LanguageID);
 
                        var result= SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyEvents", param);
                         if(result > 0)
@@ -177,7 +127,6 @@ namespace FM.Portal.Infrastructure.DAL
                     obj.MetaKeywords = SQLHelper.CheckStringNull(dr["MetaKeywords"]);
                     obj.ModifiedDate = SQLHelper.CheckDateTimeNull(dr["ModifiedDate"]);
                     obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
-                    obj.TrackingCode = SQLHelper.CheckStringNull(dr["TrackingCode"]);
                     obj.UrlDesc = SQLHelper.CheckStringNull(dr["UrlDesc"]);
                     obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
                     obj.VisitedCount = SQLHelper.CheckIntNull(dr["VisitedCount"]);

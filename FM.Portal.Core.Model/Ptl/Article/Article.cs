@@ -7,6 +7,10 @@ namespace FM.Portal.Core.Model
 {
    public class Article : Entity
     {
+        public Article()
+        {
+            Tags = new List<string>();
+        }
         public string Title { get; set; }
         public DateTime ModifiedDate { get; set; }
         public string Body { get; set; }
@@ -21,7 +25,6 @@ namespace FM.Portal.Core.Model
         public Guid CategoryID { get; set; }
         public Guid UserID { get; set; }
         public Guid? RemoverID { get; set; }
-        public string TrackingCode { get; set; }
         public List<String> Tags { get; set; }
         public string ReadingTime { get; set; }
         public Guid? LanguageID { get; set; }
