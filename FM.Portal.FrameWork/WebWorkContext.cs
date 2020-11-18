@@ -22,7 +22,10 @@ namespace FM.Portal.FrameWork
             get
             {
                 if (_cachedUser != null)
+                {
+                    _IsAdmin(_cachedUser);
                     return _cachedUser;
+                }
 
                 User user = null;
                 if (user == null ||!user.Enabled)
@@ -32,6 +35,7 @@ namespace FM.Portal.FrameWork
                         return null;
                     user = userResult.Data;
                     _cachedUser = user;
+                    _IsAdmin(_cachedUser);
                 }
 
                 return user;
@@ -42,5 +46,10 @@ namespace FM.Portal.FrameWork
             }
         }
         public bool IsAdmin { get; set; }
+        private void _IsAdmin(User user)
+        {
+            if (user != null && user.Type == UserType.کاربر_درون_سازمانی)
+                IsAdmin = true;
+        }
     }
 }

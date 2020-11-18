@@ -117,7 +117,7 @@ namespace Ahora.WebApp.Infrastructure
             routes.MapLocalizedRoute(
               "Events",
               "Events/{Page}",
-              new { controller = "Events", action = "Index"},
+              new { controller = "Events", action = "Index", Page = 1 },
               new { Page = @"\d+" },
               namespaces: new[] { $"Ahora.WebApp.Controllers" }
               );
@@ -148,7 +148,7 @@ namespace Ahora.WebApp.Infrastructure
             routes.MapLocalizedRoute(
               "News",
               "News/{Page}",
-              new { controller = "News", action = "Index"},
+              new { controller = "News", action = "Index", Page = 1 },
               new { Page = @"\d+" },
               namespaces: new[] { $"Ahora.WebApp.Controllers" }
               );
@@ -173,7 +173,7 @@ namespace Ahora.WebApp.Infrastructure
             routes.MapLocalizedRoute(
               "Article",
               "Article/{Page}",
-                new { controller = "Article", action = "Index"},
+                new { controller = "Article", action = "Index", Page = 1 },
                 new { Page = @"\d+" },
                 namespaces: new[] { $"Ahora.WebApp.Controllers" }
              );
