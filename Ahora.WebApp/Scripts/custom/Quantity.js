@@ -47,6 +47,7 @@ $('#stepFirstShopping').on('click', function (event) {
             if (!flag) {
                 var noty = window.noty({ text: 'آدرس را انتخاب کنید', type: 'error', timeout: 1000 });
             } else {
+                $('#load').css('display', 'block');
                 $.ajax({
                     type: 'POST',
                     data: { ID: item },
@@ -71,6 +72,7 @@ $('#stepFirstShopping').on('click', function (event) {
             }
 
             if (!flag) {
+                $('#load').css('display', 'block');
                 var model = { Address: Address, PostalCode: postalCode };
                 $.ajax({
                     type: 'POST',
@@ -104,20 +106,12 @@ $('.radio').children('input').on('click', function (event) {
 
 })
 ShoppingCart.success = function (data) {
+    $('#load').css('display', 'none');
     if (data.status) {
         window.location = data.url;
     }
-    else {
-        switch (data.type) {
-            case 1:
-                var noty = window.noty({ text: data.message, type: 'error', timeout: 1000 });
-                break;
-            case 2:
-                var noty = window.noty({ text: data.message, type: 'error', timeout: 1000 });
-                break;
-        }
-
-    }
+    else
+        var noty = window.noty({ text: data.Message, type: 'error', timeout: 1000 });
 }
 //////////////////////////////////////////////////
 var CartRemove = new Object();

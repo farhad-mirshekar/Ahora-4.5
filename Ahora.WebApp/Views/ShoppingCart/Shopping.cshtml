@@ -1,13 +1,14 @@
-﻿@model List<ShoppingItemVM>
+﻿@model Ahora.WebApp.Models.App.ShoppingCartItemListModel
 @{
-    ViewBag.Title = "سبد خرید";
+    ViewBag.Title = "تکمیل فرآیند خرید";
 }
 @section bodySection{
-    @if (Model != null && Model.Count > 0)
+    @if (Model.AvailableShoppingCartItem != null && Model.AvailableShoppingCartItem.Count > 0)
     {
+        <div id="load"></div>
         @Html.Partial("_PartialBasket", Model)
 
-        @Html.Partial("_PartialUserAddress")
+        @Html.Partial("_PartialUserAddress", Model)
     }
     else
     {
@@ -15,6 +16,6 @@
     }
 }
 
-    @section scripts{
-        <script src="~/scripts/custom/Quantity.js"></script>
-    }
+@section scripts{
+    <script src="~/scripts/custom/Quantity.js"></script>
+}

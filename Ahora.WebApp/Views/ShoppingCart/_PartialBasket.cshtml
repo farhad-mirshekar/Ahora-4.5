@@ -1,116 +1,117 @@
-﻿@model List<ShoppingItemVM>
-@using FM.Portal.Core.Common;
-@{
-    decimal amountBasket = 0;
-    var shippingCost = Model.Where(x=>x.Product.ShippingCost != null).OrderByDescending(x => x.Product.ShippingCost.Priority).Select(x => x.Product.ShippingCost).FirstOrDefault();
-}
-<div class="card">
-    <div class="card-header">
-        <label class="card-title">اطلاعات محصول</label>
-    </div>
-    <div class="card-body">
-        <section>
-            @foreach (var item in Model)
-            {
-                decimal temp1 = 0;
-                decimal temp2 = 0;
-                decimal attributePrice = 0;
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-2">
-                            <img class="img-fluid img-thumbnail" src="~/Content/TemporaryFiles/@item.ImageUrl" title="" />
-                        </div>
-                        <div class="col-md-10">
-                            <div class="container mt-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="pull-right">
-                                            <h6>@item.Product.Name</h6>
-                                            @if (item.Attribute.Count > 0)
-                                            {
-                                                foreach (var attribute in item.Attribute)
+﻿@model Ahora.WebApp.Models.App.ShoppingCartItemListModel
+@using FM.Portal.Core.Extention.ReadingTime;
+
+@if (Model.AvailableShoppingCartItem != null && Model.AvailableShoppingCartItem.Count > 0)
+{
+    <div class="card" id="cart">
+        <div class="card-header">
+            <label class="card-title">سبد خرید</label>
+            <label class="text-danger ml-2">
+                کالاهای موجود در سبد شما ثبت و رزرو نشده‌اند، برای ثبت سفارش مراحل بعدی را تکمیل کنید.
+            </label>
+        </div>
+        <div class="card-body">
+            <section>
+                @foreach (var item in Model.AvailableShoppingCartItem)
+                {
+                    decimal temp1 = 0;
+                    decimal temp2 = 0;
+                    decimal attributePrice = 0;
+                    <div class="container mb-3">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <img class="img-fluid img-thumbnail" src="~/Content/TemporaryFiles/@item.Path/@item.PictureAttachment.FileName" title="@CalculateWordsCount.CleanSeoUrl(item.Product.Name)" />
+                            </div>
+                            <div class="col-md-10">
+                                <div class="container mt-4">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="pull-right">
+                                                <h6>@item.Product.Name</h6>
+                                                @if (item.AttributeModel != null && item.AttributeModel.Count > 0)
                                                 {
-                                                    <label>@attribute.AttributeName : @attribute.Name</label>
-                                                    if (attribute.Price > 0)
+                                                    foreach (var attribute in item.AttributeModel)
                                                     {
-                                                        attributePrice = attribute.Price;
-                                                        <label>@string.Format("{0:C0} تومان", attribute.Price).Replace("$", "")</label>
+                                                        <label>@attribute.AttributeName : @attribute.Name</label>
+                                                        if (attribute.Price > 0)
+                                                        {
+                                                            attributePrice = attribute.Price;
+                                                            <label>@string.Format("{0:C0} تومان", attribute.Price).Replace("$", "")</label>
+                                                        }
                                                     }
                                                 }
-                                            }
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="pull-left">
-                                            <div class="container m-auto">
-                                                <div class="row">
-                                                    <div class="col-md-6">
-                                                        <label>قیمت واحد:</label>
-                                                        <label>@string.Format("{0:C0} تومان", item.Product.Price).Replace("$", "")</label>
-                                                        @{
-                                                            if (item.Product.HasDiscount)
-                                                            {
-                                                                if (item.Product.DiscountType == DiscountType.درصدی)
+                                        <div class="col-md-6">
+                                            <div class="pull-left">
+                                                <div class="container m-auto">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <label>قیمت واحد:</label>
+                                                            <label>@string.Format("{0:C0} تومان", item.Product.Price).Replace("$", "")</label>
+                                                            @{
+                                                                if (item.Product.HasDiscount == HasDiscountType.دارای_تخفیف)
                                                                 {
-                                                                    temp1 = (item.Product.Price * item.Product.Discount) / 100;
-                                                                    <label class="control-label">
-                                                                        تخفیف :
-                                                                    </label>
-                                                                    <label class="control-label text-danger">
-                                                                        @string.Format("{0:C0} درصد", item.Product.Discount).Replace("$", "")
-                                                                    </label>
+                                                                    if (item.Product.DiscountType == DiscountType.درصدی)
+                                                                    {
+                                                                        temp1 = (item.Product.Price * item.Product.Discount) / 100;
+                                                                        <label class="control-label">
+                                                                            تخفیف :
+                                                                        </label>
+                                                                        <label class="control-label text-danger">
+                                                                            @string.Format("{0:C0} درصد", item.Product.Discount).Replace("$", "")
+                                                                        </label>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        temp1 = item.Product.Discount;
+                                                                        <label class="control-label">
+                                                                            تخفیف :
+                                                                        </label>
+                                                                        <label class="control-label text-danger">
+                                                                            @string.Format("{0:C0} تومان", item.Product.Discount).Replace("$", "")
+                                                                        </label>
+                                                                    }
                                                                 }
-                                                                else
+                                                                if (item.Category != null && item.CategoryDiscount != null)
                                                                 {
-                                                                    temp1 = item.Product.DiscountAmount;
-                                                                    <label class="control-label">
-                                                                        تخفیف :
-                                                                    </label>
-                                                                    <label class="control-label text-danger">
-                                                                        @string.Format("{0:C0} تومان", item.Product.Discount).Replace("$", "")
-                                                                    </label>
-                                                                }
-                                                            }
-                                                            if (item.Product.Category.HasDiscountsApplied)
-                                                            {
-                                                                if (item.DiscountType == DiscountType.درصدی)
-                                                                {
-                                                                    temp2 = (item.Product.Price * item.DiscountAmount) / 100;
-                                                                    <label class="control-label">
-                                                                        تخفیف » @item.DiscountName :
-                                                                    </label>
-                                                                    <label class="control-label text-danger">
-                                                                        @string.Format("{0:C0} درصد", item.DiscountAmount).Replace("$", "")
-                                                                    </label>
-                                                                }
-                                                                else
-                                                                {
-                                                                    temp2 = item.DiscountAmount;
-                                                                    <label class="control-label">
-                                                                        تخفیف » @item.DiscountName :
-                                                                    </label>
-                                                                    <label class="control-label text-danger">
-                                                                        @string.Format("{0:C0} تومان", item.DiscountAmount).Replace("$", "")
-                                                                    </label>
-                                                                }
-                                                            }
-                                                        }
+                                                                    if (item.Category.HasDiscountsApplied)
+                                                                    {
 
-                                                    </div>
-                                                    @*<div class="col-md-6 quantity">
-                                                        <i class="fa fa-plus" data-href="@Url.Action("QuantityPlus", "ShoppingCart", new { ProductID = item.Product.ID })" style="color:blue;padding:10px"></i>
-                                                        <label>@item.Quantity</label>
-                                                        <i class="fa fa-minus" data-href="@Url.Action("QuantityMinus", "ShoppingCart", new { ProductID = item.Product.ID })" style="color:#ff0000;padding:10px"></i>
-                                                    </div>*@
-                                                    @{
-                                                        amountBasket += attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity;
-                                                    }
-                                                    <div class="col-md-12">
-                                                        <label>مبلغ :</label>
-                                                        <label>@string.Format("{0:C0} تومان", (attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
+                                                                        if (item.CategoryDiscount.DiscountType == DiscountType.درصدی)
+                                                                        {
+                                                                            temp2 = (item.Product.Price * item.CategoryDiscount.DiscountAmount) / 100;
+                                                                            <label class="control-label">
+                                                                                تخفیف » @item.CategoryDiscount.Name :
+                                                                            </label>
+                                                                            <label class="control-label text-danger">
+                                                                                @string.Format("{0:C0} درصد", item.CategoryDiscount.DiscountAmount).Replace("$", "")
+                                                                            </label>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            temp2 = item.CategoryDiscount.DiscountAmount;
+                                                                            <label class="control-label">
+                                                                                تخفیف » @item.CategoryDiscount.Name :
+                                                                            </label>
+                                                                            <label class="control-label text-danger">
+                                                                                @string.Format("{0:C0} تومان", item.CategoryDiscount.DiscountAmount).Replace("$", "")
+                                                                            </label>
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+
+                                                        </div>
+                                                        @{
+                                                            Model.AmountBasket += attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity;
+                                                        }
+                                                        <div class="col-md-12">
+                                                            <label>مبلغ :</label>
+                                                            <label>@string.Format("{0:C0} تومان", (attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
+                                                        </div>
                                                     </div>
                                                 </div>
-                                                @*<button type="button" class="btn btn-danger delete" data-href="@Url.Action("Delete", "ShoppingCart", new { ProductID = @item.Product.ID, ShoppingID = @item.ShoppingID })">حذف</button>*@
                                             </div>
                                         </div>
                                     </div>
@@ -118,11 +119,9 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-        </section>
-        @{ViewBag.amountBasket = amountBasket; }
-        @Html.Partial("~/Views/ShoppingCart/Partial/_PartialDeliveryDateAndShippingCost.cshtml", Model)
+                }
+            </section>
+            @Html.Partial("~/Views/ShoppingCart/Partial/_PartialDeliveryDateAndShippingCost.cshtml", Model)
+        </div>
     </div>
-</div>
-
+}

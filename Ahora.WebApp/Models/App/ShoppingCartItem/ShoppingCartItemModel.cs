@@ -8,6 +8,7 @@ namespace Ahora.WebApp.Models.App
     {
         public List<ShoppingCartItemModel> AvailableShoppingCartItem { get; set; }
         public Decimal AmountBasket { get; set; }
+        public List<UserAddress> UserAddress { get; set; }
     }
     public class ShoppingCartItemModel : EntityModel
     {

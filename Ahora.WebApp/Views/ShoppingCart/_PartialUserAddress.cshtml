@@ -1,15 +1,13 @@
-﻿@{
-    List<FM.Portal.Core.Model.UserAddress> drpAddress = ViewBag.drpAddress ?? null;
-}
+﻿@model Ahora.WebApp.Models.App.ShoppingCartItemListModel
 <div class="card">
     <div class="card-header">
         <label class="card-title">اطلاعات خریدار</label>
     </div>
     <div class="card-body" id="addressSection">
         @{
-            if (drpAddress != null && drpAddress.Count > 0)
+            if (Model.UserAddress != null && Model.UserAddress.Count > 0)
             {
-                foreach (var item in drpAddress)
+                foreach (var item in Model.UserAddress)
                 {
                     <div class="radio">
                         <input type="radio" name="radiobutton" id="@item.ID" value="@item.ID"><span style="margin-right:10px;">@item.Address</span>
@@ -40,7 +38,7 @@
         <div class="btn-group-justified">
 
         </div>
-        @if (drpAddress != null && drpAddress.Count > 0)
+        @if (Model.UserAddress != null && Model.UserAddress.Count > 0)
         {
             <div class="pull-left">
                 <button type="submit" id="stepFirstShopping" data-type="haveAddress" class="btn btn-success input-lg">تکمیل فرآیند خرید</button>
