@@ -188,4 +188,10 @@
         Hindi = 8,
         Chinese = 9
     }
+    public enum HasDiscountType : byte
+    {
+        نامشخص = 0,
+        دارای_تخفیف = 1,
+        بدون_تخفیف = 2
+    }
 }

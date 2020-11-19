@@ -92,12 +92,18 @@ namespace FM.Portal.FrameWork.Seo
             {
 
                 var generic_se_name = data.Values["generic_se_name"] as string;
-                if(generic_se_name.ToLowerInvariant() == "refreshtoken")
+                switch (generic_se_name.ToLowerInvariant())
                 {
-                    data.Values["controller"] = "Account";
-                    data.Values["action"] = "RefreshToken";
-                    return data;
+                    case "refreshtoken":
+                        data.Values["controller"] = "Account";
+                        data.Values["action"] = "RefreshToken";
+                        return data;
+                    case "cart":
+                        data.Values["controller"] = "ShoppingCart";
+                        data.Values["action"] = "Cart";
+                        return data;
                 }
+
                 var urlRecordResult = _urlRecordService.Get(generic_se_name);
                 if (!urlRecordResult.Success)
                 {

@@ -30,9 +30,9 @@
             else
                 var noty = window.noty({ text: response.message, type: 'warning', timeout: 1500 });
         }
-        if (response.redirect) {
+        if (response.url) {
             setTimeout(function () {
-                location.href = response.redirect;
+                location.href = response.url;
                 return true;
             }, 1000);
         }

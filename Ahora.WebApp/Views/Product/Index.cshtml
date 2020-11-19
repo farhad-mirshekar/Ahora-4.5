@@ -1,4 +1,4 @@
-﻿@model FM.Portal.Core.Model.Product
+﻿@model Ahora.WebApp.Models.App.ProductModel
 @{
     ViewBag.Title = Model.Name;
 }
@@ -24,7 +24,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-3">
-                        @Html.Partial("~/Views/product/Partial/_PartialCarousel.cshtml", Model.Attachments)
+                        @Html.Partial("~/Views/product/Partial/_PartialCarousel.cshtml", Model.PictureAttachments)
                     </div>
                     <div class="col-md-6 col-sm-7 col-xs-12">
                         <section>

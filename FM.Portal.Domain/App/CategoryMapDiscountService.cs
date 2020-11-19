@@ -14,6 +14,12 @@ namespace FM.Portal.Domain
             _dataSource = dataSource;
         }
         public Result<CategoryMapDiscount> Add(CategoryMapDiscount model)
-        => _dataSource.Create(model);
+        {
+            model.ID = Guid.NewGuid();
+            return _dataSource.Insert(model);
+        }
+
+        public Result<CategoryMapDiscount> Get(Guid? CategoryID, Guid? DiscountID)
+        => _dataSource.Get(CategoryID, DiscountID);
     }
 }

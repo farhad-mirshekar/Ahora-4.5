@@ -1,5 +1,7 @@
-﻿using Ahora.WebApp.Models;
+﻿using Ahora.WebApp.Factories;
+using Ahora.WebApp.Models;
 using Ahora.WebApp.Models.Pbl;
+using FM.Portal.Core.Caching;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
@@ -22,16 +24,18 @@ namespace Ahora.WebApp.Controllers
         private readonly IEventsService _eventsService;
         private readonly ILinkService _linkService;
         private readonly IProductService _Productservice;
+        private readonly ICommonModelFactory _commonModelFactory;
         private readonly string ComponentUrl = @"~/Views/Shared/Components/{0}/{1}";
         public CommonController(ILanguageService service
-                                , IWorkContext workContext,
-                                IProductService Productservice
-                             , IMenuItemService menuItemService
-                             , IArticleService articleService
-                             , INewsService newsService
-                             , ISliderService sliderService
-                             , IEventsService eventsService
-                             , ILinkService linkService) : base(service)
+                                , IWorkContext workContext
+                                , IProductService Productservice
+                                , IMenuItemService menuItemService
+                                , IArticleService articleService
+                                , INewsService newsService
+                                , ISliderService sliderService
+                                , IEventsService eventsService
+                                , ILinkService linkService
+                                , ICommonModelFactory commonModelFactory) : base(service)
         {
             _workContext = workContext;
             _menuItemService = menuItemService;
@@ -41,6 +45,7 @@ namespace Ahora.WebApp.Controllers
             _eventsService = eventsService;
             _linkService = linkService;
             _Productservice = Productservice;
+            _commonModelFactory = commonModelFactory;
         }
 
         #region Language
@@ -61,7 +66,7 @@ namespace Ahora.WebApp.Controllers
             var currentLanguageID = Helper.LanguageID;
             if (_workContext.WorkingLanguage != null)
                 currentLanguageID = _workContext.WorkingLanguage.ID;
-            
+
             var languageSelectorModel = new LanguageSelectorModel()
             {
                 AvailableLanguage = languageModel,
@@ -91,20 +96,21 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public virtual ActionResult TrendingProduct()
         {
-            var result = _Productservice.List(new ProductListVM() { SpecialOffer = true });
-            return PartialView(string.Format(ComponentUrl, "Product", "_PartialProduct.cshtml"), result.Data.Skip((1 - 1) * Helper.CountShowProduct).Take(Helper.CountShowProduct).ToList());
+            var trendingProduct = _commonModelFactory.TrendingProduct(null);
+            return PartialView(string.Format(ComponentUrl, "Product", "_PartialProduct.cshtml"), trendingProduct);
+
         }
         [ChildActionOnly]
-        public virtual ActionResult SaleProduct()
+        public virtual ActionResult HasDiscountProduct()
         {
-            var result = _Productservice.List(new ProductListVM() { HasDiscount = true });
-            return PartialView(string.Format(ComponentUrl, "Product", "_PartialProduct.cshtml"), result.Data.Skip((1 - 1) * Helper.CountShowProduct).Take(Helper.CountShowProduct).ToList());
+            var hasDiscountProduct = _commonModelFactory.HasDiscountProduct(null);
+            return PartialView(string.Format(ComponentUrl, "Product", "_PartialProduct.cshtml"), hasDiscountProduct);
         }
 
         [ChildActionOnly]
         public virtual ActionResult GetLastArticle()
         {
-            var result = _articleService.List(new ArticleListVM() { PageSize = Helper.CountShowArticle  , LanguageID = CurrentLanguageID() });
+            var result = _articleService.List(new ArticleListVM() { PageSize = Helper.CountShowArticle, LanguageID = CurrentLanguageID() });
             return PartialView(string.Format(ComponentUrl, "Article", "_PartialSideArticle.cshtml"), result.Data);
         }
         [ChildActionOnly]
@@ -116,7 +122,7 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public ActionResult RenderMenu()
         {
-            var menusResult = _menuItemService.List(new MenuItemListVM() {LanguageID = CurrentLanguageID() });
+            var menusResult = _menuItemService.List(new MenuItemListVM() { LanguageID = CurrentLanguageID() });
             if (!menusResult.Success)
                 return Content("");
             var menus = menusResult.Data;

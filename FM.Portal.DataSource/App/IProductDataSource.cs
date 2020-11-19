@@ -11,7 +11,7 @@ namespace FM.Portal.DataSource
         Result<Product> Update(Product model);
         DataTable List(ProductListVM listVM);
         DataTable List(Guid CategoryID);
-        Result<Product> Get(Guid? ID , string TrackingCode);
+        Result<Product> Get(Guid ID);
         DataTable ListAttributeForProduct(Guid ProductID);
         DataTable ListProductShowOnHomePage(int Count);
         DataTable ListProductVarientAttribute(Guid AttributeID);

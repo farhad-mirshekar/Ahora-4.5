@@ -1,9 +1,8 @@
-﻿@model List<ShoppingItemVM>
+﻿@model Ahora.WebApp.Models.App.ShoppingCartItemListModel
 @using FM.Portal.Core.Common;
 @{
-    var amountBasket = (decimal)ViewBag.amountBasket;
-    var shippingCost = Model.Where(x => x.Product.ShippingCost != null).Select(x => x.Product.ShippingCost).OrderByDescending(x=>x.Priority).FirstOrDefault();
-    var deliveryDate = Model.Where(x => x.Product.DeliveryDate != null).Select(x => x.Product.DeliveryDate).OrderByDescending(x => x.Priority).FirstOrDefault();
+    var shippingCost = Model.AvailableShoppingCartItem.Where(x => x.ShippingCost != null).Select(x => x.ShippingCost).OrderByDescending(x => x.Priority).FirstOrDefault();
+    var deliveryDate = Model.AvailableShoppingCartItem.Where(x => x.DeliveryDate != null).Select(x => x.DeliveryDate).OrderByDescending(x => x.Priority).FirstOrDefault();
 }
 <section class="mt-4">
     <div class="container">
@@ -18,7 +17,7 @@
                 }
                 else
                 {
-                    if (amountBasket < Helper.ShoppingCartRate)
+                    if (Model.AmountBasket < Helper.ShoppingCartRate)
                     {
 
                         <div class="col-md-4">
@@ -27,27 +26,27 @@
                         </div>
                     }
                 }
-                if (shippingCost != null && (shippingCost.Price > 0 || amountBasket < Helper.ShoppingCartRate || amountBasket > Helper.ShoppingCartRate))
+                if (shippingCost != null && (shippingCost.Price > 0 || Model.AmountBasket < Helper.ShoppingCartRate || Model.AmountBasket > Helper.ShoppingCartRate))
                 {
                     if (shippingCost.Price > 0)
                     {
                         <div class="col-md-4">
                             <label class="label label-default">قیمت نهایی :</label>
-                            <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.Price + amountBasket).Replace("$", "")</label>
+                            <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.Price + Model.AmountBasket).Replace("$", "")</label>
                         </div>
                     }
-                    else if (amountBasket < Helper.ShoppingCartRate)
+                    else if (Model.AmountBasket < Helper.ShoppingCartRate)
                     {
                         <div class="col-md-4">
                             <label class="label label-default">قیمت نهایی :</label>
-                            <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts + amountBasket).Replace("$", "")</label>
+                            <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts + Model.AmountBasket).Replace("$", "")</label>
                         </div>
                     }
                     else
                     {
                         <div class="col-md-4">
                             <label class="label label-default">قیمت نهایی :</label>
-                            <label class="label text-danger">@string.Format("{0:C0} تومان", amountBasket).Replace("$", "")</label>
+                            <label class="label text-danger">@string.Format("{0:C0} تومان", Model.AmountBasket).Replace("$", "")</label>
                         </div>
                     }
                 }

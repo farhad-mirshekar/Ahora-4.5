@@ -74,5 +74,12 @@ namespace FM.Portal.FrameWork.AutoMapper
             return Mapper.Map<ProductCommentModel, ProductComment>(model);
         }
         #endregion
+
+        #region Product
+        public static ProductModel ToModel(this Product entity)
+        {
+            return Mapper.Map<Product, ProductModel>(entity);
+        }
+        #endregion
     }
 }

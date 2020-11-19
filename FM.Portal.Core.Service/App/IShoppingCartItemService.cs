@@ -9,7 +9,7 @@ namespace FM.Portal.Core.Service
         Result<List<ShoppingCartItem>> Add(ShoppingCartItem model);
         Result<List<ShoppingCartItem>> Edit(ShoppingCartItem model);
         Result<List<ShoppingCartItem>> List(Guid ShoppingID);
-        Result<List<ShoppingCartItem>> Delete(DeleteCartItemVM model);
+        Result Delete(DeleteCartItemVM model);
         Result<ShoppingCartItem> Get(Guid ShoppingID , Guid ProductID);
         Result Delete(Guid ShoppingID);
     }

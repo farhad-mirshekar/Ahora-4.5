@@ -1,57 +1,45 @@
-﻿using model = FM.Portal.Core.Model;
+﻿using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;
 using System;
 using System.Web.Mvc;
-using System.Web;
 using FM.Portal.Core.Common;
 using System.Linq;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using Ahora.WebApp.Models;
-using FM.Portal.Core.Model;
 using Ahora.WebApp.Models.App;
 using FM.Portal.FrameWork.AutoMapper;
+using Ahora.WebApp.Factories;
 
 namespace Ahora.WebApp.Controllers
 {
     public class ProductController : BaseController<IProductService>
     {
-        private readonly IAttachmentService _attachmentService;
-        private readonly IShoppingCartItemService _shoppingCartService;
-        private readonly IProductMapAttributeService _productMapattributeService;
-        private readonly IProductVariantAttributeService _productVariantAttributeService;
         private readonly ICompareProductService _compareProductService;
         private readonly IWorkContext _workContext;
         private readonly IProductCommentService _productCommentService;
+        private readonly IProductModelFactory _productModelFactory;
         public ProductController(IProductService service
-                                 , IAttachmentService attachmentService
-                                 , IShoppingCartItemService shoppingCartService
-                                 , IProductMapAttributeService productMapattributeService
-                                 , IProductVariantAttributeService productVariantAttributeService
                                  , ICompareProductService compareProductService
                                  , IWorkContext workContext
-                                 , IProductCommentService productCommentService) : base(service)
+                                 , IProductCommentService productCommentService
+                                 , IProductModelFactory productModelFactory) : base(service)
         {
-            _attachmentService = attachmentService;
-            _shoppingCartService = shoppingCartService;
-            _productMapattributeService = productMapattributeService;
-            _productVariantAttributeService = productVariantAttributeService;
             _compareProductService = compareProductService;
             _workContext = workContext;
             _productCommentService = productCommentService;
+            _productModelFactory = productModelFactory;
         }
 
         #region Product
         // GET: Product
         public ActionResult Index(Guid ID)
         {
-            var result = _service.Get(ID);
-            if (!result.Success)
+            var productDetailResult = _productModelFactory.GetProduct(ID);
+            if (productDetailResult == null)
                 RedirectToRoute("Home");
 
             SetCookie("ShoppingID");
-            return View(result.Data);
+            return View(productDetailResult);
         }
 
         [HttpPost]
@@ -73,7 +61,6 @@ namespace Ahora.WebApp.Controllers
                     success = false,
                     message = "موجودی محصول تمام شده است"
                 });
-            //var attributes = _service.SelectAttributeForCustomer(ProductID);
 
             if (_workContext.User == null)
                 return Json(new
@@ -81,22 +68,28 @@ namespace Ahora.WebApp.Controllers
                     success = false,
                     message = "ابتدا باید وارد شوید"
                 });
-            JsonResult result = _AddToCart(product.Data, form);
+
+            var result = _AddToCart(product.Data, form);
             return result;
         }
 
-        private JsonResult _AddToCart(model.Product product, FormCollection form)
+        private JsonResult _AddToCart(Product product, FormCollection form)
         {
             try
             {
-                var attribute = product.Attributes;
-                if (attribute.Count > 0)
-                {
-                    return _AddToCartWithAttribute(product, form);
-                }
+                var jsonResultModel = new JsonResultModel();
+                var productModel = _productModelFactory.GetProduct(product.ID);
+                if (productModel.Attributes != null && productModel.Attributes.Count > 0)
+                    jsonResultModel = _productModelFactory.AddToCartWithAttribute(productModel, form);
                 else
-                    return _AddToCartWithOutAttribute(product);
+                    jsonResultModel = _productModelFactory.AddToCartWithNotAttribute(productModel);
 
+                return Json(new
+                {
+                    success = jsonResultModel.Success,
+                    message = jsonResultModel.Message,
+                    url = Url.RouteUrl(jsonResultModel.Url)
+                });
             }
             catch (Exception e)
             {
@@ -123,155 +116,6 @@ namespace Ahora.WebApp.Controllers
                 HttpContext.Response.Cookies[param].Value = Guid.NewGuid().ToString();
                 HttpContext.Response.Cookies[param].Expires = DateTime.Now.AddYears(50);
 
-            }
-        }
-        private JsonResult _AddToCartWithAttribute(model.Product product, FormCollection form)
-        {
-            try
-            {
-                var attributeChosen = new List<model.AttributeJsonVM>();
-                if (product.Attributes.Count > 0)
-                {
-                    foreach (var item in product.Attributes)
-                    {
-                        string controlId = string.Format("product_attribute_{0}_{1}_{2}_{3}", item.ProductID, item.AttributeID, item.ID, item.TextPrompt);
-
-                        switch (item.AttributeControlType)
-                        {
-                            case model.AttributeControlType.کشویی:
-                                {
-                                    var ctrlAttributes = form[controlId];
-                                    if (ctrlAttributes == "-1")
-                                    {
-                                        return Json(new
-                                        {
-                                            success = false,
-                                            message = $"{item.TextPrompt} را انتخاب نمایید"
-                                        });
-                                    }
-                                    if (!String.IsNullOrEmpty(ctrlAttributes))
-                                    {
-                                        var selectedAttributeId = SQLHelper.CheckGuidNull(ctrlAttributes);
-                                        var attributeMain = _productMapattributeService.Get(item.ID);
-                                        var attributeDetail = _productVariantAttributeService.Get(selectedAttributeId);
-                                        if (!attributeMain.Success || !attributeDetail.Success || attributeDetail.Data.ID == Guid.Empty || attributeDetail.Data == null)
-                                            return Json(new
-                                            {
-                                                success = false,
-                                                message = $"{item.TextPrompt} را انتخاب نمایید"
-                                            });
-
-                                        attributeChosen.Add(new model.AttributeJsonVM()
-                                        {
-                                            AttributeName = attributeMain.Data.TextPrompt,
-                                            ID = selectedAttributeId,
-                                            Name = attributeDetail.Data.Name,
-                                            Price = attributeDetail.Data.Price,
-                                            ProductVariantAttributeID = attributeMain.Data.ID
-                                        });
-                                    }
-                                    break;
-                                }
-                        }
-                    }
-
-                    var cart = new model.ShoppingCartItem();
-                    cart.ProductID = product.ID;
-                    cart.UserID = _workContext.User.ID;
-                    cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);
-                    if (attributeChosen.Count > 0)
-                        cart.AttributeJson = JsonConvert.SerializeObject(attributeChosen);
-                    else
-                        cart.AttributeJson = null;
-
-                    var shopResult = _shoppingCartService.Get(cart.ShoppingID, cart.ProductID);
-                    if (shopResult.Data != null && shopResult.Data.ID != Guid.Empty)
-                    {
-                        cart.Quantity = shopResult.Data.Quantity + 1;
-                        var result = _shoppingCartService.Edit(cart);
-                        if (!result.Success)
-                            return Json(new
-                            {
-                                success = false,
-                                message = result.Message
-                            });
-                    }
-                    else
-                    {
-                        cart.Quantity = 1;
-                        var result = _shoppingCartService.Add(cart);
-                        if (!result.Success)
-                            return Json(new
-                            {
-                                success = false,
-                                message = result.Message
-                            });
-                    }
-                }
-
-                return Json(new
-                {
-                    success = true,
-                    message = "محصول با موفقیت درج گردید",
-                    redirect = Url.RouteUrl("Cart")
-                });
-            }
-            catch (Exception e)
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = "خطایی اتفاق افتاده است. دوباره امتحان کنید"
-                });
-            }
-        }
-        private JsonResult _AddToCartWithOutAttribute(model.Product product)
-        {
-            try
-            {
-                var cart = new model.ShoppingCartItem();
-                cart.ProductID = product.ID;
-                cart.UserID = _workContext.User.ID;
-                cart.ShoppingID = SQLHelper.CheckGuidNull(Request.Cookies["ShoppingID"].Value);
-                cart.AttributeJson = null;
-                var shopResult = _shoppingCartService.Get(cart.ShoppingID, cart.ProductID);
-
-                if (shopResult.Data != null && shopResult.Data.ID != Guid.Empty)
-                {
-                    cart.Quantity = shopResult.Data.Quantity + 1;
-                    var result = _shoppingCartService.Edit(cart);
-                    if (!result.Success)
-                        return Json(new
-                        {
-                            success = false,
-                            message = result.Message
-                        });
-                }
-                else
-                {
-                    cart.Quantity = 1;
-                    var result = _shoppingCartService.Add(cart);
-                    if (!result.Success)
-                        return Json(new
-                        {
-                            success = false,
-                            message = result.Message
-                        });
-                }
-                return Json(new
-                {
-                    success = true,
-                    message = "محصول با موفقیت درج گردید",
-                    redirect = Url.RouteUrl("Cart")
-                });
-            }
-            catch (Exception e)
-            {
-                return Json(new
-                {
-                    success = false,
-                    message = "خطایی اتفاق افتاده است. دوباره امتحان کنید"
-                });
             }
         }
         #endregion

@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Caching\CacheExtensions.cs" />
+    <Compile Include="Caching\CacheParamExtention.cs" />
     <Compile Include="Caching\ICacheManager.cs" />
     <Compile Include="Caching\MemoryCacheManager.cs" />
     <Compile Include="Common\AppSetting\AppSetting.cs" />

@@ -1,4 +1,4 @@
-﻿@model FM.Portal.Core.Model.Product
+﻿@model Ahora.WebApp.Models.App.ProductModel
 @{
     decimal temp1 = 0;
     decimal temp2 = 0;
@@ -16,28 +16,28 @@
                 @{
                     if (Model.Category.HasDiscountsApplied)
                     {
-                        if (Model.DiscountTypes == DiscountType.درصدی)
+                        if (Model.CategoryDiscount != null && Model.CategoryDiscount.DiscountType == DiscountType.درصدی)
                         {
-                            temp1 = (Model.Price * Model.DiscountAmount) / 100;
+                            temp1 = (Model.Price * Model.CategoryDiscount.DiscountAmount) / 100;
                             <label class="control-label text-info">
-                                تخفیف » @Model.DiscountName :
+                                تخفیف » @Model.CategoryDiscount.Name
                             </label>
                             <label class="control-label text-danger">
-                                @string.Format("{0:C0} درصد", Model.DiscountAmount).Replace("$", "")
+                                @string.Format("{0:C0} درصد", Model.CategoryDiscount.DiscountAmount).Replace("$", "")
                             </label>
                         }
                         else
                         {
-                            temp1 = Model.DiscountAmount;
+                            temp1 = Model.CategoryDiscount.DiscountAmount;
                             <label class="control-label text-info">
-                                تخفیف » @Model.DiscountName :
+                                تخفیف » @Model.CategoryDiscount.Name :
                             </label>
                             <label class="control-label text-danger">
-                                @string.Format("{0:C0} تومان", Model.DiscountAmount).Replace("$", "")
+                                @string.Format("{0:C0} تومان", Model.CategoryDiscount.DiscountAmount).Replace("$", "")
                             </label>
                         }
                     }
-                    if (Model.HasDiscount)
+                    if (Model.HasDiscount == HasDiscountType.دارای_تخفیف)
                     {
                         if (Model.DiscountType == DiscountType.درصدی)
                         {
@@ -98,6 +98,7 @@
                                 </div>
                                 break;
                         }
+                        <div class="clearfix mb-2"></div>
                     }
                 </div>
             }

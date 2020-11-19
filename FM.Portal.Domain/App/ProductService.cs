@@ -81,160 +81,13 @@ namespace FM.Portal.Domain
         }
 
         public Result<Product> Get(Guid ID)
-        {
-            var result = _dataSource.Get(ID, null);
-            if (!result.Success)
-                return result;
-            var relatedProducts = _relatedProductService.List(new RelatedProductListVM { ProductID1 = result.Data.ID });
-            if (!relatedProducts.Success)
-                return Result<Product>.Failure(message: "خطا در بازیابی محصولات مرتبط");
+        => _dataSource.Get(ID);
 
-            result.Data.RelatedProducts = relatedProducts.Data;
-            if (result.Data.DeliveryDateID != null)
-            {
-                if (result.Data.DeliveryDateID.Value != Guid.Empty)
-                {
-                    var deliveryDateResult = _deliveryDateService.Get(result.Data.DeliveryDateID.Value);
-                    if (!deliveryDateResult.Success)
-                        return Result<Product>.Failure(message: "خطا در بازیابی زمان ارسال محصول");
-                    result.Data.DeliveryDate = deliveryDateResult.Data;
-                }
-            }
-
-            if (result.Data.ShippingCostID != null)
-            {
-                if (result.Data.ShippingCostID.Value != Guid.Empty)
-                {
-                    var shippingCostResult = _shippingCostService.Get(result.Data.ShippingCostID.Value);
-                    if (!shippingCostResult.Success)
-                        return Result<Product>.Failure(message: "خطا در بازیابی هزینه ارسال محصول");
-                    result.Data.ShippingCost = shippingCostResult.Data;
-                }
-            }
-            var categoryResult = _categoryService.Get(result.Data.CategoryID);
-            if (!categoryResult.Success)
-                return Result<Product>.Failure(message: "خطا در بازیابی دسته بندی محصول");
-
-            result.Data.Category = categoryResult.Data;
-
-            var attachmentResult = _attachmentService.List(result.Data.ID);
-            if (!attachmentResult.Success)
-                return Result<Product>.Failure(message: "خطا در بازیابی تصاویر محصول");
-            result.Data.Attachments = attachmentResult.Data;
-
-            var attributesResult = SelectAttributeForCustomer(result.Data.ID);
-            if (!attachmentResult.Success)
-                return Result<Product>.Failure(message: "خطا در بازیابی فیلدهای عمومی محصول");
-            result.Data.Attributes = attributesResult.Data;
-
-
-            return result;
-        }
-        public Result<Product> Get(string TrackingCode)
-        {
-            var result = _dataSource.Get(null, TrackingCode);
-            if (!result.Success)
-                return result;
-            var relatedProducts = _relatedProductService.List(new RelatedProductListVM { ProductID1 = result.Data.ID });
-            if (!relatedProducts.Success)
-                return Result<Product>.Failure(message: "خطا در بازیابی محصولات مرتبط");
-
-            result.Data.RelatedProducts = relatedProducts.Data;
-            if (result.Data.DeliveryDateID != null)
-            {
-                if (result.Data.DeliveryDateID.Value != Guid.Empty)
-                {
-                    var deliveryDateResult = _deliveryDateService.Get(result.Data.DeliveryDateID.Value);
-                    if (!deliveryDateResult.Success)
-                        return Result<Product>.Failure(message: "خطا در بازیابی زمان ارسال محصول");
-                    result.Data.DeliveryDate = deliveryDateResult.Data;
-                }
-            }
-
-            if (result.Data.ShippingCostID != null)
-            {
-                if (result.Data.ShippingCostID.Value != Guid.Empty)
-                {
-                    var shippingCostResult = _shippingCostService.Get(result.Data.ShippingCostID.Value);
-                    if (!shippingCostResult.Success)
-                        return Result<Product>.Failure(message: "خطا در بازیابی هزینه ارسال محصول");
-                    result.Data.ShippingCost = shippingCostResult.Data;
-                }
-            }
-
-            var categoryResult = _categoryService.Get(result.Data.CategoryID);
-            if (!categoryResult.Success)
-                return Result<Product>.Failure(message: "خطا در بازیابی دسته بندی محصول");
-
-            result.Data.Category = categoryResult.Data;
-
-            var attachmentResult = _attachmentService.List(result.Data.ID);
-            if (!attachmentResult.Success)
-                return Result<Product>.Failure(message: "خطا در بازیابی تصاویر محصول");
-            result.Data.Attachments = attachmentResult.Data;
-
-            var attributesResult = SelectAttributeForCustomer(result.Data.ID);
-            if (!attachmentResult.Success)
-                return Result<Product>.Failure(message: "خطا در بازیابی فیلدهای عمومی محصول");
-            result.Data.Attributes = attributesResult.Data;
-
-            return result;
-        }
         public Result<List<Product>> List(ProductListVM listVM)
         {
             var table = ConvertDataTableToList.BindList<Product>(_dataSource.List(listVM));
             if (table.Count > 0 || table.Count == 0)
-            {
-                if (table.Count > 0)
-                {
-                    foreach (var result in table)
-                    {
-                        var relatedProducts = _relatedProductService.List(new RelatedProductListVM { ProductID1 = result.ID });
-                        if (!relatedProducts.Success)
-                            return Result<List<Product>>.Failure(message: "خطا در بازیابی محصولات مرتبط");
-
-                        result.RelatedProducts = relatedProducts.Data;
-                        if (result.DeliveryDateID != null)
-                        {
-                            if (result.DeliveryDateID.Value != Guid.Empty)
-                            {
-                                var deliveryDateResult = _deliveryDateService.Get(result.DeliveryDateID.Value);
-                                if (!deliveryDateResult.Success)
-                                    return Result<List<Product>>.Failure(message: "خطا در بازیابی زمان ارسال محصول");
-                                result.DeliveryDate = deliveryDateResult.Data;
-                            }
-                        }
-
-                        if (result.ShippingCostID != null)
-                        {
-                            if (result.ShippingCostID.Value != Guid.Empty)
-                            {
-                                var shippingCostResult = _shippingCostService.Get(result.ShippingCostID.Value);
-                                if (!shippingCostResult.Success)
-                                    return Result<List<Product>>.Failure(message: "خطا در بازیابی هزینه ارسال محصول");
-                                result.ShippingCost = shippingCostResult.Data;
-                            }
-                        }
-
-                        var categoryResult = _categoryService.Get(result.CategoryID);
-                        if (!categoryResult.Success)
-                            return Result<List<Product>>.Failure(message: "خطا در بازیابی دسته بندی محصول");
-
-                        result.Category = categoryResult.Data;
-
-                        var attachmentResult = _attachmentService.List(result.ID);
-                        if (!attachmentResult.Success)
-                            return Result<List<Product>>.Failure(message: "خطا در بازیابی تصاویر محصول");
-                        result.Attachments = attachmentResult.Data;
-
-                        var attributesResult = SelectAttributeForCustomer(result.ID);
-                        if (!attachmentResult.Success)
-                            return Result<List<Product>>.Failure(message: "خطا در بازیابی فیلدهای عمومی محصول");
-                        result.Attributes = attributesResult.Data;
-                    }
-                }
                 return Result<List<Product>>.Successful(data: table);
-            }
             return Result<List<Product>>.Failure();
         }
 
@@ -308,7 +161,7 @@ namespace FM.Portal.Domain
                 Errors.Add("ارتفاع محصول را وارد نمایید .");
             if (model.StockQuantity == 0)
                 Errors.Add("موجودی محصول را مشخص نمایید");
-            if (model.HasDiscount)
+            if (model.HasDiscount != HasDiscountType.نامشخص)
             {
                 if (model.DiscountType == 0)
                 {
@@ -350,8 +203,8 @@ namespace FM.Portal.Domain
                     {
                         ID = product.ID,
                         Name = product.Name,
-                        TrackingCode = product.TrackingCode,
-                        CategoryName = product.CategoryName
+                        //TrackingCode = product.TrackingCode,
+                        //CategoryName = product.CategoryName
 
                     });
                 }

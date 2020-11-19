@@ -182,6 +182,9 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IUrlRecordDataSource, UrlRecordDataSource>();
             container.RegisterType<IUrlRecordService, UrlRecordService>();
 
+            container.RegisterType<IDiscountDataSource, DiscountDataSource>();
+            container.RegisterType<IDiscountService, DiscountService>();
+
             container.RegisterType<IWorkContext, WebWorkContext>(new ContainerControlledLifetimeManager());
             container.RegisterType<IWebHelper, WebHelper>(new ContainerControlledLifetimeManager());
             container.RegisterType<ITypeFinder, AppDomainTypeFinder>(new ContainerControlledLifetimeManager());
@@ -200,6 +203,8 @@ namespace FM.Portal.FrameWork.Unity
 
             container.RegisterType<IAuthenticationService, FormsAuthenticationService>();
             container.RegisterType<IPdfService, PdfService>();
+
+            FactoriesDependency.RegisterType(container);
 
             DependencyResolver.SetResolver(new Unity.UnityDependencyResolver(container));
         }

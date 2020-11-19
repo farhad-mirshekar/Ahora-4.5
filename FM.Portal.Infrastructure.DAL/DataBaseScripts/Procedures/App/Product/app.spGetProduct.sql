@@ -5,8 +5,7 @@ IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('app.spGetP
 GO
 
 CREATE PROCEDURE app.spGetProduct
-@ID UNIQUEIDENTIFIER,
-@TrackingCode NVARCHAR(20)
+@ID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -32,6 +31,5 @@ BEGIN
 	LEFT JOIN
 		[app].[DeliveryDate] DeliveryDate ON product.DeliveryDateID = DeliveryDate.ID
 	WHERE 
-		(@ID IS NULL OR product.ID = @ID) AND
-		(@TrackingCode IS NULL OR product.TrackingCode = @TrackingCode)
+		product.ID = @ID
 END

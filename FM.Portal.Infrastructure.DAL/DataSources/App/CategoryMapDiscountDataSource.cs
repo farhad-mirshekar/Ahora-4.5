@@ -10,37 +10,18 @@ namespace FM.Portal.Infrastructure.DAL
 {
     public class CategoryMapDiscountDataSource : ICategoryMapDiscountDataSource
     {
-        public Result<CategoryMapDiscount> Create(CategoryMapDiscount model)
-        {
-            try
-            {
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
-                {
-                    model.ID = Guid.NewGuid();
-                    SqlParameter[] param = new SqlParameter[7];
-                    param[0] = new SqlParameter("@ID", model.ID);
-                    param[1] = new SqlParameter("@IncludeInTopMenu", model.CategoryID);
-                    param[2] = new SqlParameter("@ParentID", model.DiscountID);
-                    param[3] = new SqlParameter("@isNewRecord", true);
-                    SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyCategoryMapDiscount", param);
-
-                    return Get(model.ID);
-                }
-            }
-            catch (Exception e) { throw; }
-        }
-
-        private Result<CategoryMapDiscount> Get(Guid ID)
+        public Result<CategoryMapDiscount> Get(Guid? CategoryID, Guid? DiscountID)
         {
             try
             {
                 var obj = new CategoryMapDiscount();
-                SqlParameter[] param = new SqlParameter[1];
-                param[0] = new SqlParameter("@ID", ID);
+                var param = new SqlParameter[2];
+                param[0] = new SqlParameter("@CategoryID", CategoryID);
+                param[1] = new SqlParameter("@DiscountID", DiscountID);
 
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetCategoryMapDiscount", param))
+                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetCategoryMapDiscount", param))
                     {
                         while (dr.Read())
                         {
@@ -59,5 +40,24 @@ namespace FM.Portal.Infrastructure.DAL
             catch (Exception e) { return Result<CategoryMapDiscount>.Failure(); }
         }
 
+        public Result<CategoryMapDiscount> Insert(CategoryMapDiscount model)
+        {
+            try
+            {
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    var param = new SqlParameter[4];
+                    param[0] = new SqlParameter("@ID", model.ID);
+                    param[1] = new SqlParameter("@CategoryID", model.CategoryID);
+                    param[2] = new SqlParameter("@DiscountID", model.DiscountID);
+                    param[3] = new SqlParameter("@IsNewRecord", true);
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyCategoryMapDiscount", param);
+                    if (result > 0)
+                        return Get(model.ID, null);
+                    return Result<CategoryMapDiscount>.Failure(message: "خطا در درج / ویرایش");
+                }
+            }
+            catch (Exception e) { throw; }
+        }
     }
 }

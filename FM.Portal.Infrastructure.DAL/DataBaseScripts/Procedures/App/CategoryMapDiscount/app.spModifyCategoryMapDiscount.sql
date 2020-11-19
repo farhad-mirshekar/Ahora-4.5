@@ -14,14 +14,16 @@ AS
 BEGIN
 	IF @IsNewRecord = 1 --insert
 		BEGIN
-			UPDATE [app].[Category_Discount_Mapping]
-			SET Active = 0
-			WHERE CategoryID =@CategoryID
+			BEGIN TRAN
+				UPDATE [app].[Category_Discount_Mapping]
+				SET Active = 0
+				WHERE CategoryID =@CategoryID
 			 
-			INSERT INTO [app].[Category_Discount_Mapping]
-				([ID],CategoryID,DiscountID,Active,CreationDate)
-			VALUES
-				(NEWID() , @CategoryID,@DiscountID,1,GETDATE())
+				INSERT INTO [app].[Category_Discount_Mapping]
+					([ID],CategoryID,DiscountID,Active,CreationDate)
+				VALUES
+					(@ID, @CategoryID,@DiscountID,1,GETDATE())
+			COMMIT
 		END
 	RETURN @@ROWCOUNT
 END

@@ -112,6 +112,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="DataBaseScripts\Procedures\App\CategoryMapDiscount\app.spGetCategoryMapDiscount.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spDeleteProductComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spDisLikeProductComment.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ProductComment\app.spGetProductComment.sql" />

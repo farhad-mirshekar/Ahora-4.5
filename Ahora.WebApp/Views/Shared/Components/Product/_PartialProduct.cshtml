@@ -1,4 +1,4 @@
-﻿@model List<Product>
+﻿@model List<Ahora.WebApp.Models.App.ProductOverviewModel>
 @using FM.Portal.Core.Extention.ReadingTime;
 <section class="col-md-12">
     <div class="card">
@@ -15,7 +15,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-6 d-flex align-items-stretch">
                             <div class="card">
                                 <div class="img-box-product">
-                                    <img src="~/Content/TemporaryFiles/@Enum.GetName(typeof(PathType), item.Attachments.Where(x=>x.Type == AttachmentType.اصلی).Select(x=>x.PathType).FirstOrDefault())/@item.Attachments.Where(x=>x.Type == AttachmentType.اصلی).Select(x=>x.FileName).FirstOrDefault()" alt="@item.Name.Replace(' ', '_')" class="card-img-top img-rounded" />
+                                    <img src="~/Content/TemporaryFiles/@item.Path/@item.PictureAttachment.FileName" alt="@CalculateWordsCount.CleanSeoUrl(item.Name)" class="card-img-top img-rounded" />
                                 </div>
                                 <div class="card-body">
                                     <h5 class="card-title">@(item.Name.Length > 20 ? item.Name.Substring(0, 19) + " ...." : item.Name)</h5>
@@ -26,7 +26,7 @@
                                         }
                                         else
                                         {
-                                            if (item.HasDiscount || item.DiscountType != DiscountType.نامشخص)
+                                            if (item.hasDiscount == HasDiscountType.دارای_تخفیف || item.DiscountType != DiscountType.نامشخص)
                                             {
                                                 <label class="control-label text-decoration-line-through">
                                                     قیمت اصلی : @string.Format("{0:C0} تومان", item.Price).Replace("$", "")
@@ -57,27 +57,27 @@
                                             }
                                             if (item.Category.HasDiscountsApplied)
                                             {
-                                                if (item.DiscountTypes != DiscountType.نامشخص)
+                                                if (item.CategoryDiscount.DiscountType != DiscountType.نامشخص)
                                                 {
-                                                    if (item.DiscountTypes == DiscountType.مبلغی)
+                                                    if (item.CategoryDiscount.DiscountType == DiscountType.مبلغی)
                                                     {
-                                                        temp2 = item.DiscountAmount;
-                                                        var text = $"تخفیف {item.DiscountName} : {string.Format("{0:C0} تومان", item.DiscountAmount).Replace("$", "")}";
+                                                        temp2 = item.CategoryDiscount.DiscountAmount;
+                                                        var text = $"تخفیف {item.CategoryDiscount.Name} : {string.Format("{0:C0} تومان", item.CategoryDiscount.DiscountAmount).Replace("$", "")}";
                                                         <label class="control-label text-danger">
                                                             @text
                                                         </label>
                                                     }
-                                                    else if (item.DiscountTypes == DiscountType.درصدی)
+                                                    else if (item.CategoryDiscount.DiscountType == DiscountType.درصدی)
                                                     {
-                                                        temp2 = (item.Price * item.DiscountAmount) / 100;
-                                                        var text = $"تخفیف {item.DiscountName} : {string.Format("{0:C0} درصد", item.DiscountAmount).Replace("$", "")}";
+                                                        temp2 = (item.Price * item.CategoryDiscount.DiscountAmount) / 100;
+                                                        var text = $"تخفیف {item.CategoryDiscount.Name} : {string.Format("{0:C0} درصد", item.CategoryDiscount.DiscountAmount).Replace("$", "")}";
                                                         <label class="control-label text-danger">
                                                             @text
                                                         </label>
                                                     }
                                                 }
                                             }
-                                            if (item.Category.HasDiscountsApplied || item.HasDiscount)
+                                            if (item.Category.HasDiscountsApplied || item.hasDiscount == HasDiscountType.دارای_تخفیف)
                                             {
                                                 var priceNew = item.Price - (temp1 + temp2);
                                                 <label class="control-label text-success">

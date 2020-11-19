@@ -51,39 +51,26 @@ namespace FM.Portal.Infrastructure.DAL
                     param[20] = new SqlParameter("@ShowOnHomePage", model.ShowOnHomePage);
                     param[21] = new SqlParameter("@StockQuantity", model.StockQuantity);
                     param[22] = new SqlParameter("@DiscountType", (byte)model.DiscountType);
-                    param[23] = new SqlParameter("@HasDiscount", model.HasDiscount);
+                    param[23] = new SqlParameter("@HasDiscount", (byte)model.HasDiscount);
                     param[24] = new SqlParameter("@IsDownload", model.IsDownload);
-                    param[25] = new SqlParameter("@ShippingCostID", SqlDbType.UniqueIdentifier);
-                    param[25].Value = model.ShippingCostID.HasValue && model.ShippingCostID.Value != Guid.Empty ? model.ShippingCostID.Value : (object)DBNull.Value;
-                    param[26] = new SqlParameter("@DeliveryDateID", SqlDbType.UniqueIdentifier);
-                    param[26].Value = model.DeliveryDateID.HasValue && model.DeliveryDateID.Value != Guid.Empty ? model.DeliveryDateID.Value : (object)DBNull.Value;
+                    param[25] = new SqlParameter("@ShippingCostID", model.ShippingCostID);
+                    param[26] = new SqlParameter("@DeliveryDateID", model.DeliveryDateID);
 
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyProduct", param);
                     if (result > 0)
-                        return Get(model.ID, null);
+                        return Get(model.ID);
                     return Result<Product>.Failure(message: "خطا در درج یا ویرایش");
                 }
             }
             catch (Exception e) { throw; }
         }
-        public Result<Product> Get(Guid? ID, string TrackingCode)
+        public Result<Product> Get(Guid ID)
         {
             try
             {
-                Product obj = new Product();
-                SqlParameter[] param = new SqlParameter[2];
-                param[0] = new SqlParameter("@ID", SqlDbType.UniqueIdentifier);
-                if (ID.HasValue)
-                    param[0].Value = ID;
-                else
-                    param[0].Value = DBNull.Value;
-
-                param[1] = new SqlParameter("@TrackingCode", SqlDbType.NVarChar);
-                if (TrackingCode == "" || TrackingCode == null)
-                    param[1].Value = DBNull.Value;
-
-                else
-                    param[1].Value = TrackingCode;
+                var obj = new Product();
+                var param = new SqlParameter[1];
+                param[0] = new SqlParameter("@ID", ID);
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
@@ -118,18 +105,11 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.Weight = SQLHelper.CheckDecimalNull(dr["Weight"]);
                             obj.Width = SQLHelper.CheckDecimalNull(dr["Width"]);
                             obj.StockQuantity = SQLHelper.CheckIntNull(dr["StockQuantity"]);
-                            obj.DiscountName = SQLHelper.CheckStringNull(dr["DiscountName"]);
-                            obj.DiscountAmount = SQLHelper.CheckDecimalNull(dr["DiscountAmount"]);
-                            //obj.HasDiscountsApplied = SQLHelper.CheckBoolNull(dr["HasDiscountsApplied"]);
                             obj.DiscountType = (DiscountType)SQLHelper.CheckByteNull(dr["DiscountType"]);
-                            obj.DiscountTypes = (DiscountType)SQLHelper.CheckByteNull(dr["DiscountTypes"]);
-                            obj.HasDiscount = SQLHelper.CheckBoolNull(dr["HasDiscount"]);
+                            obj.HasDiscount = (HasDiscountType)SQLHelper.CheckByteNull(dr["HasDiscount"]);
                             obj.IsDownload = SQLHelper.CheckBoolNull(dr["IsDownload"]);
                             obj.ShippingCostID = SQLHelper.CheckGuidNull(dr["ShippingCostID"]);
-                            //obj.ShippingCostName = SQLHelper.CheckStringNull(dr["ShippingCostName"]);
                             obj.DeliveryDateID = SQLHelper.CheckGuidNull(dr["DeliveryDateID"]);
-                            //obj.DeliveryDateName = SQLHelper.CheckStringNull(dr["DeliveryDateName"]);
-                            obj.CategoryName = SQLHelper.CheckStringNull(dr["CategoryName"]);
                         }
                     }
 
@@ -147,17 +127,10 @@ namespace FM.Portal.Infrastructure.DAL
             try
             {
                 var param = new SqlParameter[6];
-                param[0] = new SqlParameter("@CategoryID", SqlDbType.UniqueIdentifier);
-                param[0].Value = listVM?.CategoryID ?? (object)DBNull.Value;
-
-                param[1] = new SqlParameter("@HasDiscount", SqlDbType.Bit);
-                param[1].Value = listVM?.HasDiscount ?? (object)DBNull.Value;
-
-                param[2] = new SqlParameter("@ShowOnHomePage", SqlDbType.Bit);
-                param[2].Value = listVM?.ShowOnHomePage ?? (object)DBNull.Value;
-
-                param[3] = new SqlParameter("@SpecialOffer", SqlDbType.Bit);
-                param[3].Value = listVM?.SpecialOffer ?? (object)DBNull.Value;
+                param[0] = new SqlParameter("@CategoryID", listVM.CategoryID);
+                param[1] = new SqlParameter("@HasDiscount", listVM.HasDiscount);
+                param[2] = new SqlParameter("@ShowOnHomePage", listVM.ShowOnHomePage);
+                param[3] = new SqlParameter("@SpecialOffer", listVM.SpecialOffer);
 
                 param[4] = new SqlParameter("@PageSize", listVM.PageSize);
                 param[5] = new SqlParameter("@PageIndex", listVM.PageIndex);

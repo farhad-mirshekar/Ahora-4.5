@@ -27,6 +27,8 @@ namespace FM.Portal.FrameWork.AutoMapper
                 config.CreateMap<NewsCommentModel, NewsComment>();
                 config.CreateMap<EventsCommentModel, EventsComment>();
                 config.CreateMap<ProductCommentModel, ProductComment>();
+
+                config.CreateMap<Product, ProductModel>();
             });
         }
     }

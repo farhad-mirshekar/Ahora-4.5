@@ -11,9 +11,9 @@ $('.quantity').children('i').on('click', function (event) {
 })
 
 Quantity.success = function (data) {
-    if (data.error === 2) {
+    if (data.error === "2") {
         var noty = window.noty({ text: 'موجودی کالا از تعداد تقاضای شما کمتر می باشد', type: 'warning', timeout: 2500 });
-    } else if (data.error === 1){
+    } else if (data.error === "1") {
         var noty = window.noty({ text: 'موجودی کالا نمی تواند کمتر از یک باشد', type: 'warning', timeout: 2500 });
     }
     else {
@@ -74,9 +74,10 @@ $('#stepFirstShopping').on('click', function (event) {
                 var model = { Address: Address, PostalCode: postalCode };
                 $.ajax({
                     type: 'POST',
-                    data:model,
+                    data: model,
                     headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded'},
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
                     url: '/shoppingCart/Shopping',
                     success: ShoppingCart.success
                 });

@@ -35,9 +35,6 @@ CREATE PROCEDURE app.spModifyProduct
 --WITH ENCRYPTION
 AS
 BEGIN
-	DECLARE @Counts INT,@TrackingCode NVARCHAR(20)
-
-	SET @TrackingCode = 'DKP-'+ CAST((select STR(FLOOR(RAND(CHECKSUM(NEWID()))*(9999999999-1000000000+1)+1000000000))) AS NVARCHAR) 
 	IF @isNewRecord = 1 --insert
 		BEGIN
 			INSERT INTO [app].[Product]
@@ -67,7 +64,6 @@ BEGIN
 				[CategoryID],
 				[CreationDate],
 				[UpdatedDate],
-				[TrackingCode],
 				[StockQuantity],
 				[DiscountType],
 				[HasDiscount],
@@ -101,7 +97,6 @@ BEGIN
 				@CategoryID,
 				GETDATE(),
 				GETDATE(),
-				@TrackingCode,
 				@StockQuantity,
 				@DiscountType,
 				@HasDiscount,

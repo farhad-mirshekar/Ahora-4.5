@@ -10,16 +10,11 @@ CREATE PROCEDURE app.spDeleteShoppingCartItem
 --WITH ENCRYPTION
 AS
 BEGIN
-		DELETE FROM app.ShoppingCartItem 
-		WHERE
-			ShoppingID = @ShoppingID AND
-			ProductID = @ProductID 
+	SET NOCOUNT ON;
+	DELETE FROM app.ShoppingCartItem 
+	WHERE
+		ShoppingID = @ShoppingID 
+		AND ProductID = @ProductID 
 
-	;WITH main AS(
-		SELECT * FROM app.ShoppingCartItem WHERE ShoppingID = @ShoppingID
-	)
-
-	SELECT * 
-	FROM main
-	ORDER BY [CreationDate]
+	RETURN @@ROWCOUNT
 END

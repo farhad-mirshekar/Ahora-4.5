@@ -49,14 +49,18 @@ namespace FM.Portal.Infrastructure.DAL
             return Modify(false, model);
         }
 
-        public DataTable Delete(DeleteCartItemVM model)
+        public Result Delete(DeleteCartItemVM model)
         {
             try
             {
                 SqlParameter[] param = new SqlParameter[2];
                 param[0] = new SqlParameter("@ShoppingID", model.ShoppingID);
                 param[1] = new SqlParameter("@ProductID", model.ProductID);
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spDeleteShoppingCartItem", param);
+                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                {
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spDeleteShoppingCartItem", param);
+                    return Result.Successful();
+                }
             }
             catch { throw; }
         }
@@ -101,7 +105,7 @@ namespace FM.Portal.Infrastructure.DAL
                 {
                     SqlParameter[] param = new SqlParameter[1];
                     param[0] = new SqlParameter("@ShoppingID", ShoppingID);
-                    int result =  SQLHelper.ExecuteNonQuery(connection,CommandType.StoredProcedure, "app.spDeleteAllShoppingCartItem", param);
+                    int result = SQLHelper.ExecuteNonQuery(connection, CommandType.StoredProcedure, "app.spDeleteAllShoppingCartItem", param);
                     if (result > 0)
                         return Result.Successful();
                     else

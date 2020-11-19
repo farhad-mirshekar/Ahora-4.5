@@ -6,7 +6,7 @@ namespace FM.Portal.Core.Model
     {
         public Guid? CategoryID { get; set; }
         public bool? ShowOnHomePage { get; set; }
-        public bool? HasDiscount { get; set; }
+        public HasDiscountType HasDiscount { get; set; }
         public bool? SpecialOffer { get; set; }
     }
 }

@@ -7,7 +7,7 @@ GO
 CREATE PROCEDURE app.spGetsProduct
 @CategoryID UNIQUEIDENTIFIER,
 @ShowOnHomePage BIT,
-@HasDiscount BIT,
+@HasDiscount TINYINT,
 @SpecialOffer BIT,
 @PageSize INT,
 @PageIndex INT
@@ -48,7 +48,7 @@ BEGIN
 		WHERE
 			(@CategoryID IS NULL OR product.CategoryID = @CategoryID)
 		AND (@ShowOnHomePage IS NULL OR product.ShowOnHomePage = @ShowOnHomePage)
-		AND (@HasDiscount IS NULL OR product.HasDiscount = @HasDiscount)
+		AND (@HasDiscount < 1 OR product.HasDiscount = @HasDiscount)
 		AND (@SpecialOffer IS NULL OR product.SpecialOffer = @SpecialOffer)
 	), TempCount AS 
 	(

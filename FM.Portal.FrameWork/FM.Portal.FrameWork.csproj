@@ -138,6 +138,7 @@
     <Compile Include="Seo\GenericPathRouteExtensions.cs" />
     <Compile Include="Seo\WwwRequirement.cs" />
     <Compile Include="Seo\WwwRequirementAttribute.cs" />
+    <Compile Include="Unity\Factories\FactoriesDependency.cs" />
     <Compile Include="Unity\LoadServiceForMVC.cs" />
     <Compile Include="Unity\LoadServices.cs" />
     <Compile Include="Unity\UnityDependencyResolver.cs" />

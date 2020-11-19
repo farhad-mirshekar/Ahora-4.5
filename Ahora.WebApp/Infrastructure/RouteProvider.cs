@@ -1,5 +1,6 @@
 ﻿using FM.Portal.FrameWork.Localization;
 using FM.Portal.FrameWork.MVC.Routes;
+using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -242,6 +243,24 @@ namespace Ahora.WebApp.Infrastructure
                "Logout",
                "logout/",
                new { controller = "Account", action = "Logout" },
+               namespaces: new[] { $"Ahora.WebApp.Controllers" }
+               );
+            routes.MapLocalizedRoute(
+               "ShoppingCartQuantityPlus",
+               "QuantityPlus/{ProductID}",
+               new { controller = "ShoppingCart", action = "QuantityPlus", ProductID = UrlParameter.Optional },
+               namespaces: new[] { $"Ahora.WebApp.Controllers" }
+               );
+            routes.MapLocalizedRoute(
+               "ShoppingCartQuantityMinus",
+               "QuantityMinus/{ProductID}",
+               new { controller = "ShoppingCart", action = "QuantityMinus", ProductID = UrlParameter.Optional },
+               namespaces: new[] { $"Ahora.WebApp.Controllers" }
+               );
+            routes.MapLocalizedRoute(
+               "ShoppingCartItemDelete",
+               "ShoppingCartItemDelete/{ProductID}",
+               new { controller = "ShoppingCart", action = "Delete" , ProductID = UrlParameter.Optional },
                namespaces: new[] { $"Ahora.WebApp.Controllers" }
                );
         }
