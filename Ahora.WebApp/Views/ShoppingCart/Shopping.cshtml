@@ -6,9 +6,9 @@
     @if (Model.AvailableShoppingCartItem != null && Model.AvailableShoppingCartItem.Count > 0)
     {
         <div id="load"></div>
-        @Html.Partial("_PartialBasket", Model)
+        @Html.Partial("~/Views/ShoppingCart/Partial/_PartialBasket.cshtml", Model)
 
-        @Html.Partial("_PartialUserAddress", Model)
+        @Html.Partial("~/Views/ShoppingCart/Partial/_PartialUserAddress.cshtml", Model)
     }
     else
     {

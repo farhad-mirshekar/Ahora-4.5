@@ -48,7 +48,7 @@ namespace Ahora.WebApp.Controllers
 
         }
         #region Cart
-        [OutputCache(Location = System.Web.UI.OutputCacheLocation.None)]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult Index()
         {
             return View();
@@ -91,7 +91,7 @@ namespace Ahora.WebApp.Controllers
                 if (CartDetailResult == null || CartDetailResult.AvailableShoppingCartItem.Count == 0)
                     return View("~/Views/ShoppingCart/Partial/_PartialCartEmpty.cshtml");
 
-                return PartialView("_PartialCart", CartDetailResult);
+                return PartialView("~/Views/ShoppingCart/Partial/_PartialCart.cshtml", CartDetailResult);
             }
             catch (Exception e) { return View("error"); }
         }
@@ -110,6 +110,7 @@ namespace Ahora.WebApp.Controllers
         #endregion
 
         #region Shopping
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult Shopping()
         {
             try

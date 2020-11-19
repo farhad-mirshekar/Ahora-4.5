@@ -1816,8 +1816,8 @@
     <Content Include="Views\ShoppingCart\Partial\_PartialCartEmpty.cshtml" />
     <Content Include="Views\ShoppingCart\Index.cshtml" />
     <Content Include="Views\ShoppingCart\Shopping.cshtml" />
-    <Content Include="Views\ShoppingCart\_PartialBasket.cshtml" />
-    <Content Include="Views\ShoppingCart\_PartialUserAddress.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial\_PartialBasket.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial\_PartialUserAddress.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -1985,7 +1985,7 @@
     <Content Include="Views\Shared\Components\Events\_PartialSideEvents.cshtml" />
     <Content Include="Views\Events\Detail.cshtml" />
     <Content Include="Views\Product\Partial\_PartialMain.cshtml" />
-    <Content Include="Views\ShoppingCart\_PartialCart.cshtml" />
+    <Content Include="Views\ShoppingCart\Partial\_PartialCart.cshtml" />
     <Content Include="Views\Account\Create.cshtml" />
     <Content Include="Views\Tag\Index.cshtml" />
     <Content Include="Views\Redirect\Melli.cshtml" />
