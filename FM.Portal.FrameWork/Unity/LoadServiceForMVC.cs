@@ -45,14 +45,11 @@ namespace FM.Portal.FrameWork.Unity
             container.RegisterType<IShoppingCartItemDataSource, ShoppingCartItemDataSource>();
             container.RegisterType<IShoppingCartItemService, ShoppingCartItemService>();
 
-            container.RegisterType<IProductVariantAttributeDataSource, ProductVariantAttributeDataSource>();
-            container.RegisterType<IProductVariantAttributeService, ProductVariantAttributeService>();
+            container.RegisterType<IProductVariantAttributeValueDataSource, ProductVariantAttributeValueDataSource>();
+            container.RegisterType<IProductVariantAttributeValueService, ProductVariantAttributeValueService>();
 
             container.RegisterType<IProductMapAttributeDataSource, ProductMapAttributeDataSource>();
             container.RegisterType<IProductMapAttributeService, ProductMapAttributeService>();
-
-            container.RegisterType<IProductVariantAttributeDataSource, ProductVariantAttributeDataSource>();
-            container.RegisterType<IProductVariantAttributeService, ProductVariantAttributeService>();
 
             container.RegisterType<IOrderDataSource, OrderDataSource>();
             container.RegisterType<IOrderService, OrderService>();

@@ -1882,7 +1882,7 @@
     <Compile Include="Areas\ApiClient\Controllers\app\RelatedProductController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\SalesController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\app\ShippingCostController.cs" />
-    <Compile Include="Areas\ApiClient\Controllers\app\ProductVariantAttributeController.cs" />
+    <Compile Include="Areas\ApiClient\Controllers\app\ProductVariantAttributeValueController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\log\ActivityLogController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\CommandController.cs" />
     <Compile Include="Areas\ApiClient\Controllers\org\DepartmentController.cs" />

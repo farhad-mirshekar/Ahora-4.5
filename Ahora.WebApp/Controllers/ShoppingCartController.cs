@@ -13,36 +13,12 @@ namespace Ahora.WebApp.Controllers
 {
     public class ShoppingCartController : BaseController<IShoppingCartItemService>
     {
-        private readonly IProductService _productService;
-        private readonly IAttachmentService _attachmentService;
-        private readonly IProductVariantAttributeService _attributeService;
-        private readonly IPaymentService _paymentService;
-        private readonly IUserService _userService;
-        private readonly IOrderService _orderService;
-        private readonly IUserAddressService _addressService;
-        private readonly IBankService _bankService;
         private readonly IWorkContext _workContext;
         private readonly IShoppingCartModelFactory _shoppingCartModelFactory;
         public ShoppingCartController(IShoppingCartItemService service
-                                     , IProductService productService
-                                     , IAttachmentService attachmentService
-                                     , IProductVariantAttributeService attributeService
-                                     , IPaymentService paymentService
-                                     , IUserService userService
-                                     , IOrderService orderService
-                                     , IUserAddressService addressService
-                                     , IBankService bankService
                                      , IWorkContext workContext
                                      , IShoppingCartModelFactory shoppingCartModelFactory) : base(service)
         {
-            _productService = productService;
-            _attachmentService = attachmentService;
-            _attributeService = attributeService;
-            _paymentService = paymentService;
-            _userService = userService;
-            _orderService = orderService;
-            _addressService = addressService;
-            _bankService = bankService;
             _workContext = workContext;
             _shoppingCartModelFactory = shoppingCartModelFactory;
 

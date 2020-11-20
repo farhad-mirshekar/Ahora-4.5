@@ -1108,10 +1108,10 @@
         }
     }
 
-    app.factory('productVariantattributeService', productVariantattributeService);
-    productVariantattributeService.$inject = ['$http', 'callbackService','authenticationService'];
-    function productVariantattributeService($http, callbackService, authenticationService) {
-        var url = '/api/v1/ProductVariantAttribute/'
+    app.factory('productVariantAttributeValueService', productVariantAttributeValueService);
+    productVariantAttributeValueService.$inject = ['$http', 'callbackService','authenticationService'];
+    function productVariantAttributeValueService($http, callbackService, authenticationService) {
+        var url = '/api/v1/ProductVariantAttributeValue/'
         var service = {
             save: save,
             get: get,

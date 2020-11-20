@@ -94,8 +94,8 @@
     <Compile Include="App\Sales\VM\SalesListVM.cs" />
     <Compile Include="App\ShippingCost\ShippingCost.cs" />
     <Compile Include="App\ShippingCost\VM\ShippingCostListVM.cs" />
-    <Compile Include="App\ProductVariantAttribute\ProductVariantAttribute.cs" />
-    <Compile Include="App\ProductVariantAttribute\VM\AttributeJsonVM.cs" />
+    <Compile Include="App\ProductVariantAttributeValue\ProductVariantAttributeValue.cs" />
+    <Compile Include="App\ProductVariantAttributeValue\VM\AttributeJsonVM.cs" />
     <Compile Include="App\Product\Product.cs" />
     <Compile Include="App\Product\VM\ListAttributeForSelectCustomerVM.cs" />
     <Compile Include="App\Product\VM\ListProductByCategoryIDVM.cs" />

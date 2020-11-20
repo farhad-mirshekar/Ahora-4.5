@@ -15,7 +15,7 @@ namespace FM.Portal.Core.Model
         public string MetaDescription { get; set; }
         public string MetaTitle { get; set; }
         public bool AllowCustomerReviews { get; set; }
-        public int ApproveDRatingSum { get; set; }
+        public int ApprovedRatingSum { get; set; }
         public int NotApprovedRatingSum { get; set; }
         public int ApprovedTotalReviews { get; set; }
         public int NotApprovedTotalReviews { get; set; }

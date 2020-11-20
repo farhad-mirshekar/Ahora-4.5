@@ -21,7 +21,7 @@ namespace Ahora.WebApp.Factories
         private readonly IAttachmentService _attachmentService;
         private readonly ICategoryMapDiscountService _categoryMapDiscountService;
         private readonly IProductMapAttributeService _productMapAttributeService;
-        private readonly IProductVariantAttributeService _productVariantAttributeService;
+        private readonly IProductVariantAttributeValueService _productVariantAttributeValueService;
         private readonly IShoppingCartItemService _shoppingCartItemService;
         private readonly IWorkContext _workContext;
         private readonly IObjectSerializer _objectSerializer;
@@ -32,7 +32,7 @@ namespace Ahora.WebApp.Factories
                                   , IAttachmentService attachmentService
                                   , ICategoryMapDiscountService categoryMapDiscountService
                                   , IProductMapAttributeService productMapAttributeService
-                                  , IProductVariantAttributeService productVariantAttributeService
+                                  , IProductVariantAttributeValueService productVariantAttributeValueService
                                   , IShoppingCartItemService shoppingCartItemService
                                   , IWorkContext workContext
                                   , IObjectSerializer objectSerializer
@@ -44,7 +44,7 @@ namespace Ahora.WebApp.Factories
             _attachmentService = attachmentService;
             _categoryMapDiscountService = categoryMapDiscountService;
             _productMapAttributeService = productMapAttributeService;
-            _productVariantAttributeService = productVariantAttributeService;
+            _productVariantAttributeValueService = productVariantAttributeValueService;
             _shoppingCartItemService = shoppingCartItemService;
             _workContext = workContext;
             _objectSerializer = objectSerializer;
@@ -93,7 +93,7 @@ namespace Ahora.WebApp.Factories
                                     {
                                         var selectedAttributeId = SQLHelper.CheckGuidNull(ctrlAttributes);
                                         var attributeMain = _productMapAttributeService.Get(item.ID);
-                                        var attributeDetail = _productVariantAttributeService.Get(selectedAttributeId);
+                                        var attributeDetail = _productVariantAttributeValueService.Get(selectedAttributeId);
                                         if (!attributeMain.Success || !attributeDetail.Success || attributeDetail.Data.ID == Guid.Empty || attributeDetail.Data == null)
                                             return new JsonResultModel
                                             {

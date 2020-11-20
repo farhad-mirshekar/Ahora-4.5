@@ -69,7 +69,7 @@
     <Compile Include="DataSources\App\RelatedProductDataSource.cs" />
     <Compile Include="DataSources\App\SalesDataSource.cs" />
     <Compile Include="DataSources\App\ShippingCostDataSource.cs" />
-    <Compile Include="DataSources\App\ProductVariantAttributeDataSource.cs" />
+    <Compile Include="DataSources\App\ProductVariantAttributeValueDataSource.cs" />
     <Compile Include="DataSources\App\ShoppingCartItemDataSource.cs" />
     <Compile Include="DataSources\DataSource.cs" />
     <Compile Include="DataSources\Org\CommandDataSource.cs" />
@@ -170,10 +170,10 @@
     <Content Include="DataBaseScripts\Procedures\App\ShippingCost\app.spGetsShippingCost.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShippingCost\app.spModifyShippingCost.sql" />
     <Content Include="DataBaseScripts\Procedures\App\ShippingCost\app.spDeleteShippingCost.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spDeleteProductVariantAttribute.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spGetProductVariantAttribute.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spGetsProductVariantAttribute.sql" />
-    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttribute\app.spModifyProductVariantAttribute.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttributeValue\app.spDeleteProductVariantAttributeValue.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttributeValue\app.spGetProductVariantAttributeValue.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttributeValue\app.spGetsProductVariantAttributeValue.sql" />
+    <Content Include="DataBaseScripts\Procedures\App\ProductVariantAttributeValue\app.spModifyProductVariantAttributeValue.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Product\app.spGetProduct.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Product\app.spGetsProduct.sql" />
     <Content Include="DataBaseScripts\Procedures\App\Product\app.spGetsProductByCategoryID.sql" />

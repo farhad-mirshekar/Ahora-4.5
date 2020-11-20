@@ -79,7 +79,7 @@ namespace FM.Portal.Infrastructure.DAL
                         while (dr.Read())
                         {
                             obj.AllowCustomerReviews = SQLHelper.CheckBoolNull(dr["AllowCustomerReviews"]);
-                            obj.ApproveDRatingSum = SQLHelper.CheckIntNull(dr["ApproveDRatingSum"]);
+                            obj.ApprovedRatingSum = SQLHelper.CheckIntNull(dr["ApprovedRatingSum"]);
                             obj.ApprovedTotalReviews = SQLHelper.CheckIntNull(dr["ApprovedTotalReviews"]);
                             obj.CallForPrice = SQLHelper.CheckBoolNull(dr["CallForPrice"]);
                             obj.CategoryID = SQLHelper.CheckGuidNull(dr["CategoryID"]);

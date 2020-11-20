@@ -58,8 +58,8 @@ namespace FM.Portal.FrameWork.Unity
             _container.RegisterType<IProductMapAttributeDataSource, ProductMapAttributeDataSource>();
             _container.RegisterType<IProductMapAttributeService, ProductMapAttributeService>();
 
-            _container.RegisterType<IProductVariantAttributeDataSource, ProductVariantAttributeDataSource>();
-            _container.RegisterType<IProductVariantAttributeService, ProductVariantAttributeService>();
+            _container.RegisterType<IProductVariantAttributeValueDataSource, ProductVariantAttributeValueDataSource>();
+            _container.RegisterType<IProductVariantAttributeValueService, ProductVariantAttributeValueService>();
 
             _container.RegisterType<IArticleDataSource, ArticleDataSource>();
             _container.RegisterType<IArticleService, ArticleService>();

@@ -688,8 +688,8 @@
     }
     //---------------------------------------------------------------------------------------------------------------------------------------------
     app.controller('productController', productController);
-    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantattributeService', 'shippingCostService', 'toolsService', 'enumService', 'froalaOption', 'deliveryDateService', 'relatedProductService'];
-    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantattributeService, shippingCostService, toolsService, enumService, froalaOption, deliveryDateService, relatedProductService) {
+    productController.$inject = ['$scope', '$routeParams', 'loadingService', '$q', 'toaster', '$location', 'categoryService', 'productService', 'attachmentService', 'attributeService', 'productMapattributeService', 'productVariantAttributeValueService', 'shippingCostService', 'toolsService', 'enumService', 'froalaOption', 'deliveryDateService', 'relatedProductService'];
+    function productController($scope, $routeParams, loadingService, $q, toaster, $location, categoryService, productService, attachmentService, attributeService, productMapattributeService, productVariantAttributeValueService, shippingCostService, toolsService, enumService, froalaOption, deliveryDateService, relatedProductService) {
         var product = $scope;
         product.Model = {};
         product.Attribute = {};
@@ -777,7 +777,7 @@
             bindingObject: product.ProductVariant
             , columns: [{ name: 'Name', displayName: 'عنوان' },
             { name: 'Price', displayName: 'قیمت' }]
-            , listService: productVariantattributeService.list
+            , listService: productVariantAttributeValueService.list
             , options: () => {
                 return product.ProductVariant.search;
             }
@@ -795,7 +795,7 @@
                 , name: 'remove'
                 , title: 'حذف'
                 , onclick: (selected) => {
-                    productVariantattributeService.remove(selected.ID).then(() => {
+                    productVariantAttributeValueService.remove(selected.ID).then(() => {
                         product.ProductVariant.grid.getlist();
                         loadingService.hide();
                     })
@@ -1047,7 +1047,7 @@
         function addProductVarient() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return productVariantattributeService.save(product.ProductVariant.Model);
+                return productVariantAttributeValueService.save(product.ProductVariant.Model);
             }).then((result) => {
                 product.ProductVariant.Model = {};
                 $('#attribute-modal').modal('hide');

@@ -63,7 +63,7 @@
     <Compile Include="App\IRelatedProductService.cs" />
     <Compile Include="App\ISalesService.cs" />
     <Compile Include="App\IShippingCostService.cs" />
-    <Compile Include="App\IProductVariantAttributeService.cs" />
+    <Compile Include="App\IProductVariantAttributeValueService.cs" />
     <Compile Include="App\IShoppingCartItemService.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Org\IAuthenticationService.cs" />

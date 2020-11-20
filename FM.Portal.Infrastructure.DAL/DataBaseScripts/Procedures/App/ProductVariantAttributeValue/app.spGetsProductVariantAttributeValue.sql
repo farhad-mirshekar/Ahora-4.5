@@ -1,10 +1,10 @@
 USE [Ahora]
 GO
-IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('app.spGetsProductVariantAttribute'))
-	DROP PROCEDURE app.spGetsProductVariantAttribute
+IF EXISTS(SELECT 1 FROM SYS.PROCEDURES WHERE [object_id] = OBJECT_ID('app.spGetsProductVariantAttributeValue'))
+	DROP PROCEDURE app.spGetsProductVariantAttributeValue
 GO
 
-CREATE PROCEDURE app.spGetsProductVariantAttribute
+CREATE PROCEDURE app.spGetsProductVariantAttributeValue
 @ProductVariantAttributeID UniqueIdentifier
 --WITH ENCRYPTION
 AS

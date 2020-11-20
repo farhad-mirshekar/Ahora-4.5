@@ -8,9 +8,9 @@ using FM.Portal.Core.Common;
 
 namespace FM.Portal.Infrastructure.DAL
 {
-    public class ProductVariantAttributeDataSource : IProductVariantAttributeDataSource
+    public class ProductVariantAttributeValueDataSource : IProductVariantAttributeValueDataSource
     {
-        private Result<ProductVariantAttribute> Modify(bool IsNewRecord , ProductVariantAttribute model)
+        private Result<ProductVariantAttributeValue> Modify(bool IsNewRecord , ProductVariantAttributeValue model)
         {
             try
             {
@@ -25,24 +25,24 @@ namespace FM.Portal.Infrastructure.DAL
                     param[4] = new SqlParameter("@IsNewRecord", IsNewRecord);
                     param[5] = new SqlParameter("@Price", model.Price);
 
-                    SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyProductVariantAttribute", param);
+                    SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spModifyProductVariantAttributeValue", param);
 
                     return Get(model.ID);
                 }
             }
             catch (Exception e) { throw; }
         }
-        public Result<ProductVariantAttribute> Get(Guid ID)
+        public Result<ProductVariantAttributeValue> Get(Guid ID)
         {
             try
             {
-                ProductVariantAttribute obj = new ProductVariantAttribute();
+                var obj = new ProductVariantAttributeValue();
                 SqlParameter[] param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetProductVariantAttribute", param))
+                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "app.spGetProductVariantAttributeValue", param))
                     {
                         while (dr.Read())
                         {
@@ -56,14 +56,13 @@ namespace FM.Portal.Infrastructure.DAL
                     }
 
                 }
-                return Result<ProductVariantAttribute>.Successful(data: obj);
+                return Result<ProductVariantAttributeValue>.Successful(data: obj);
             }
-            catch (Exception e) { return Result<ProductVariantAttribute>.Failure(); }
+            catch (Exception e) { return Result<ProductVariantAttributeValue>.Failure(); }
         }
 
-        public Result<ProductVariantAttribute> Insert(ProductVariantAttribute model)
+        public Result<ProductVariantAttributeValue> Insert(ProductVariantAttributeValue model)
         {
-            model.ID = Guid.NewGuid();
             return Modify(true, model);
         }
 
@@ -73,12 +72,12 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 SqlParameter[] param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ProductVariantAttributeID", ProductVariantAttributeID);
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsProductVariantAttribute", param);
+                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "app.spGetsProductVariantAttributeValue", param);
             }
             catch (Exception e) { throw; }
         }
 
-        public Result<ProductVariantAttribute> Update(ProductVariantAttribute model)
+        public Result<ProductVariantAttributeValue> Update(ProductVariantAttributeValue model)
         {
             return Modify(false, model);
         }
@@ -91,7 +90,7 @@ namespace FM.Portal.Infrastructure.DAL
                 param[0] = new SqlParameter("@ID", ID);
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spDeleteProductVariantAttribute", param);
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "app.spDeleteProductVariantAttributeValue", param);
                     if (result > 0)
                         return Result.Successful();
                     else
