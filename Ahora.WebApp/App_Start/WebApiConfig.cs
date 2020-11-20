@@ -13,8 +13,8 @@ namespace Ahora.WebApp
             // Web API routes
             config.MapHttpAttributeRoutes();
             var container = new UnityContainer();
-            LoadServices load = new LoadServices(container);
-            config.DependencyResolver = new UnityResolver(load.Load());
+            var loadServices = new LoadServices(container);
+            config.DependencyResolver = new UnityResolver(loadServices.Load());
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}/{id}",
