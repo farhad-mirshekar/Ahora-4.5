@@ -1,6 +1,7 @@
 ﻿using Ahora.WebApp.Models.App;
 using Ahora.WebApp.Models.Pbl;
 using Ahora.WebApp.Models.Ptl;
+using Ahora.WebApp.Models.Org;
 using AutoMapper;
 using FM.Portal.Core.Model;
 
@@ -79,6 +80,13 @@ namespace FM.Portal.FrameWork.AutoMapper
         public static ProductModel ToModel(this Product entity)
         {
             return Mapper.Map<Product, ProductModel>(entity);
+        }
+        #endregion
+
+        #region Register
+        public static User ToEntity(this RegisterModel model)
+        {
+            return Mapper.Map<RegisterModel, User>(model);
         }
         #endregion
     }

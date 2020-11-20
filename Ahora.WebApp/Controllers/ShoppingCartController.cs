@@ -108,7 +108,7 @@ namespace Ahora.WebApp.Controllers
         public async Task<JsonResult> Shopping(UserAddress model)
         {
             var paymentResult = await _shoppingCartModelFactory.Payment(model);
-            return Json(paymentResult);
+            return Json(paymentResult,JsonRequestBehavior.AllowGet);
         }
 
         #endregion

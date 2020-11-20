@@ -11,14 +11,18 @@ namespace Ahora.WebApp.Areas.User.Controllers
 {
     public class AddressController : BaseController<IUserAddressService>
     {
-        public AddressController(IUserAddressService service) : base(service)
+        private readonly IWorkContext _workContext;
+
+        public AddressController(IUserAddressService service
+                                , IWorkContext workContext) : base(service)
         {
+            _workContext = workContext;
         }
 
         // GET: User/Address
         public ActionResult Index(int? page)
         {
-            var addressResult = _service.List(new UserAddressListVM() { UserID = SQLHelper.CheckGuidNull(User.Identity.Name) , PageSize = 3 , PageIndex = page });
+            var addressResult = _service.List(new UserAddressListVM() { UserID = _workContext.User.ID , PageSize = 3 , PageIndex = page });
             if (!addressResult.Success)
                 return View("Error");
             var addressList = addressResult.Data;

@@ -21,6 +21,7 @@ namespace Ahora.WebApp.Controllers
         private readonly IProductService _productService;
         private readonly ISalesService _salesService;
         private readonly IShoppingCartModelFactory _shoppingCartModelFactory;
+        private readonly IWorkContext _workContext;
         public RedirectController(IPaymentService service
                                  , IOrderService orderService
                                  , IShoppingCartItemService shoppingCartItemService
@@ -28,7 +29,8 @@ namespace Ahora.WebApp.Controllers
                                  , IAttachmentService attachmentService
                                  , IProductService productService
                                  , ISalesService salesService
-                                 , IShoppingCartModelFactory shoppingCartModelFactory) : base(service)
+                                 , IShoppingCartModelFactory shoppingCartModelFactory
+                                 , IWorkContext workContext) : base(service)
         {
             _orderService = orderService;
             _shoppingCartItemService = shoppingCartItemService;
@@ -37,6 +39,7 @@ namespace Ahora.WebApp.Controllers
             _productService = productService;
             _salesService = salesService;
             _shoppingCartModelFactory = shoppingCartModelFactory;
+            _workContext = workContext;
         }
 
         // GET: Redirect
@@ -234,11 +237,10 @@ namespace Ahora.WebApp.Controllers
         {
             try
             {
-                var shoppingID = HttpContext.Request.Cookies.Get("ShoppingID").Value;
-                _shoppingCartItemService.Delete(SQLHelper.CheckGuidNull(shoppingID));
+                _shoppingCartItemService.Delete(_workContext.ShoppingID.Value);
                 if (HttpContext.Request.Cookies[param] != null)
                 {
-                    var myCookie = new HttpCookie("ShoppingID", null);
+                    var myCookie = new HttpCookie(param, null);
                     myCookie.Expires = DateTime.Now.AddYears(-1);
                     HttpContext.Response.Cookies.Add(myCookie);
                 }
@@ -247,7 +249,7 @@ namespace Ahora.WebApp.Controllers
             {
                 if (HttpContext.Request.Cookies[param] != null)
                 {
-                    var myCookie = new HttpCookie("ShoppingID", null);
+                    var myCookie = new HttpCookie(param, null);
                     myCookie.Expires = DateTime.Now.AddYears(-1);
                     HttpContext.Response.Cookies.Add(myCookie);
                 }

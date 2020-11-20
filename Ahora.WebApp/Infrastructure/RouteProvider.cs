@@ -263,6 +263,12 @@ namespace Ahora.WebApp.Infrastructure
                new { controller = "ShoppingCart", action = "Delete" , ProductID = UrlParameter.Optional },
                namespaces: new[] { $"Ahora.WebApp.Controllers" }
                );
+            routes.MapLocalizedRoute(
+              "IsAlreadyUserName",
+              "Account/IsAlreadyUserName/{UserName}",
+              new { controller = "Account", action = "IsAlreadyUserName", UserName = UrlParameter.Optional },
+              namespaces: new[] { $"Ahora.WebApp.Controllers" }
+              );
         }
     }
 }

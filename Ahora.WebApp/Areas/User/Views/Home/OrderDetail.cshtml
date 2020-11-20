@@ -109,13 +109,13 @@
                                 var row = 1;
                                 foreach (var item in Model.Products)
                                 {
-                                    var sub = (item.Price - item.DiscountAmount);
+                                    var sub = (item.Price - item.CategoryDiscount.DiscountAmount);
                                     <tr>
                                         <td>@row</td>
                                         <td>@item.Name</td>
                                         <td>@item.Price.ToString().Split('.')[0]</td>
-                                        <td>@item.DiscountName</td>
-                                        <td>@item.DiscountAmount.ToString().Split('.')[0]</td>
+                                        <td>@item.CategoryDiscount.Name</td>
+                                        <td>@item.CategoryDiscount.DiscountAmount.ToString().Split('.')[0]</td>
                                         <td>@sub.ToString().Split('.')[0]</td>
                                     </tr>
                                 }

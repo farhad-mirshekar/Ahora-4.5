@@ -41,5 +41,11 @@ namespace FM.Portal.Core.Model
         //only show
         public int CountSelect { get; set; }
         public int Total { get; set; }
+
+        //only for print
+        public Category Category { get; set; }
+        public DeliveryDate DeliveryDate { get; set; }
+        public ShippingCost ShippingCost { get; set; }
+        public Discount CategoryDiscount { get; set; }
     }
 }

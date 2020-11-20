@@ -298,6 +298,10 @@ namespace Ahora.WebApp.Factories
                             StockQuantity = shoppingCart.Product.StockQuantity,
                             SpecialOffer = shoppingCart.Product.SpecialOffer,
                             IsDownload = shoppingCart.Product.IsDownload,
+                            Category = shoppingCart.Category,
+                            DeliveryDate = shoppingCart.DeliveryDate,
+                            ShippingCost = shoppingCart.ShippingCost,
+                            CategoryDiscount = shoppingCart.CategoryDiscount
                         });
                     }
                     else
@@ -320,6 +324,7 @@ namespace Ahora.WebApp.Factories
 
                 if (model.ID == Guid.Empty)
                 {
+                    model.UserID = _workContext.User.ID;
                     var userAddressResult = _userAddressService.Add(model);
                     if (!userAddressResult.Success)
                         return new JsonResultModel
@@ -520,7 +525,12 @@ namespace Ahora.WebApp.Factories
         {
             var _bankMelli = new BankMelli();
 
-            var bankResult = await _bankMelli.PaymentRequest((long)amount);
+            //var bankResult = await _bankMelli.PaymentRequest((long)amount);
+            var bankResult = new PayResultData
+            {
+                ResCode="0",
+                Token=$"Melli-{Guid.NewGuid()}"
+            };
             switch (bankResult.ResCode)
             {
                 case "0":
@@ -530,14 +540,16 @@ namespace Ahora.WebApp.Factories
                         var firstStep = _paymentService.FirstStepPayment(order, orderDetail, payment);
                         if (!firstStep.Success)
                         {
-                            return new JsonResultModel{Success = false,  Url = "Error" , Message="" };
+                            return new JsonResultModel { Success = false, Url = "Error", Message = "" };
                         }
                         else
                         {
-                            var merchantTerminalKeyCookie = new HttpCookie("Data", bankResult.Request);
-                            _httpContext.Response.Cookies.Add(merchantTerminalKeyCookie);
+                            //var merchantTerminalKeyCookie = new HttpCookie("Data", bankResult.Request);
+                            //_httpContext.Response.Cookies.Add(merchantTerminalKeyCookie);
 
-                            return new JsonResultModel { Success = true, Url = MelliPurchase(bankResult.Token) };
+                            return new JsonResultModel { Success = true, Url = "/" };
+
+                            //return new JsonResultModel { Success = true, Url = MelliPurchase(bankResult.Token) };
                         }
                     }
                 default:

@@ -42,4 +42,6 @@ BEGIN
 			WHERE
 				[ID] = @ID
 		END
+
+	RETURN @@ROWCOUNT
 END

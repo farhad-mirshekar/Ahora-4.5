@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Linq;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Common.Serializer;
+using Ahora.WebApp.Models.Org;
+using FM.Portal.FrameWork.AutoMapper;
 
 namespace Ahora.WebApp.Controllers
 {
@@ -54,23 +56,17 @@ namespace Ahora.WebApp.Controllers
             return View();
         }
         [HttpPost]
-        public ActionResult Create(RegisterVM registerVM)
+        public ActionResult Create(RegisterModel registerModel)
         {
             if (!ModelState.IsValid)
-                return View(registerVM);
-            var user = new User();
-            user.CellPhone = registerVM.CellPhone.Trim();
-            user.FirstName = registerVM.FirstName.Trim();
-            user.LastName = registerVM.LastName.Trim();
-            user.NationalCode = registerVM.NationalCode.Trim();
-            user.Password = registerVM.Password.Trim();
-            user.Username = registerVM.UserName.Trim();
-            user.Type = UserType.کاربر_برون_سازمانی;
+                return View(registerModel);
+            var user = registerModel.ToEntity();
             user.Enabled = true;
+            user.Type = UserType.کاربر_برون_سازمانی;
 
             var result = _service.Add(user);
             if (!result.Success)
-                return View(registerVM);
+                return View(registerModel);
             else
             {
                 _authenticationService.SignIn(result.Data, false);
@@ -98,11 +94,10 @@ namespace Ahora.WebApp.Controllers
         public JsonResult IsAlreadyUserName(string UserName)
         {
             var getUserResult = _service.Get(UserName.Trim(), null, null, UserType.کاربر_درون_سازمانی);
-            var user = getUserResult.Data;
-            if (user.ID != Guid.Empty)
-                return Json(false);
-            else
+            if (!getUserResult.Success)
                 return Json(true);
+            else
+                return Json(false);
         }
         [HttpPost]
         public async Task<JsonResult> RefreshToken(LoginVM model)

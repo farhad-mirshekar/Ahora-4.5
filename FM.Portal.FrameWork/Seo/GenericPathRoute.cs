@@ -157,6 +157,12 @@ namespace FM.Portal.FrameWork.Seo
                             data.Values["action"] = "Shopping";
                         }
                         break;
+                    case "melli":
+                        {
+                            data.Values["controller"] = "Redirect";
+                            data.Values["action"] = "Melli";
+                        }
+                        break;
                     default:
                         {
                             //no record found

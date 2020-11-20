@@ -107,8 +107,8 @@ $('.radio').children('input').on('click', function (event) {
 })
 ShoppingCart.success = function (data) {
     $('#load').css('display', 'none');
-    if (data.status) {
-        window.location = data.url;
+    if (data.Success) {
+        window.location = data.Url;
     }
     else
         var noty = window.noty({ text: data.Message, type: 'error', timeout: 1000 });

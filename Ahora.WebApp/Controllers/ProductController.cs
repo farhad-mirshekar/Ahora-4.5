@@ -88,7 +88,7 @@ namespace Ahora.WebApp.Controllers
                 {
                     success = jsonResultModel.Success,
                     message = jsonResultModel.Message,
-                    url = Url.RouteUrl(jsonResultModel.Url)
+                    url = !string.IsNullOrEmpty(jsonResultModel.Url) ? Url.RouteUrl(jsonResultModel.Url) : null
                 });
             }
             catch (Exception e)

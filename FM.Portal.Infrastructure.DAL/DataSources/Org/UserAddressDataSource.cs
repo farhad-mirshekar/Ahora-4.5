@@ -12,12 +12,7 @@ namespace FM.Portal.Infrastructure.DAL
 {
     public class UserAddressDataSource : IUserAddressDataSource
     {
-        private readonly IRequestInfo _requestInfo;
-        public UserAddressDataSource(IRequestInfo requestInfo)
-        {
-            _requestInfo = requestInfo;
-        }
-        private Result<UserAddress> Modify(bool IsNewRecord , UserAddress model)
+        private Result<UserAddress> Modify(bool IsNewRecord, UserAddress model)
         {
             try
             {
@@ -27,11 +22,13 @@ namespace FM.Portal.Infrastructure.DAL
                     param[0] = new SqlParameter("@IsNewRecord", IsNewRecord);
 
                     param[1] = new SqlParameter("@ID", model.ID);
-                    param[2] = new SqlParameter("@UserID", HttpContext.Current.User.Identity.Name);
+                    param[2] = new SqlParameter("@UserID", model.UserID);
                     param[3] = new SqlParameter("@Address", model.Address);
                     param[4] = new SqlParameter("@PostalCode", model.PostalCode);
-                    SQLHelper.ExecuteNonQuery(con, System.Data.CommandType.StoredProcedure, param, "org.spModifyUserAddress");
-                    return Get(model.ID);
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "org.spModifyUserAddress", param);
+                    if (result > 0)
+                        return Get(model.ID);
+                    return Result<UserAddress>.Failure(message: "خطا در درج / ویرایش");
                 }
 
             }
@@ -43,7 +40,7 @@ namespace FM.Portal.Infrastructure.DAL
         public Result<UserAddress> Insert(UserAddress model)
         {
             model.ID = Guid.NewGuid();
-            return Modify(true, model);   
+            return Modify(true, model);
         }
 
         public Result<UserAddress> Update(UserAddress model)
@@ -67,7 +64,7 @@ namespace FM.Portal.Infrastructure.DAL
                         {
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
-                            obj.Address= SQLHelper.CheckStringNull(dr["Address"]);
+                            obj.Address = SQLHelper.CheckStringNull(dr["Address"]);
                             obj.PostalCode = SQLHelper.CheckStringNull(dr["PostalCode"]);
                         }
                     }

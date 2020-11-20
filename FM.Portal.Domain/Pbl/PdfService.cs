@@ -48,7 +48,7 @@ namespace FM.Portal.Domain
 
                 paymentDetail.Order = order;
                 var trackingCode = order.TrackingCode.Split('-');
-                string fileName = string.Format("order_{0}.pdf", trackingCode[1].ToString());
+                string fileName = string.Format("order_{0}.pdf", order.ID);
                 string filePath = Path.Combine(FileHelper.MapPath("~/files/Pdf"), fileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
@@ -67,7 +67,7 @@ namespace FM.Portal.Domain
                 throw new ArgumentNullException("stream");
             if (payment == null)
                 throw new ArgumentNullException("payment detail");
-            
+
             var orderCount = payment.Products.Count;
             var pageSize = PageSize.LETTER;
             if (orderCount > 5)
@@ -123,6 +123,7 @@ namespace FM.Portal.Domain
 
             var creationDateCol = new PdfPTable(1);
             SetDefaultCell(creationDateCol);
+            creationDateCol.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
             creationDateCol.AddCell(new Paragraph($"{lng} : {Helper.GetPersianDate(payment.CreationDate.Value)}", font));
             headerTable.AddCell(creationDateCol);
 
@@ -185,164 +186,178 @@ namespace FM.Portal.Domain
             doc.Add(new Paragraph(" "));
             #endregion
 
-            //#region Product
-            //var productTable = new PdfPTable(6);
-            //productTable.WidthPercentage = 100f;
-            //productTable.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //productTable.DefaultCell.Border = Rectangle.BOX;
-            //productTable.SetWidths(new[] { 15,15,15,15,35,5});
+            #region Product
+            var productTable = new PdfPTable(6);
+            productTable.WidthPercentage = 100f;
+            productTable.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productTable.DefaultCell.Border = Rectangle.BOX;
+            productTable.SetWidths(new[] { 15, 15, 15, 15, 35, 5 });
 
-            //lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Title");
-            //lng = lngResult.Data;
-            //var headerProduct = new PdfPCell(new Phrase($"{lng}", titleFont));
-            //headerProduct.Colspan = 6;
-            //headerProduct.Padding = 6;
-            //headerProduct.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //productTable.AddCell(headerProduct);
+            lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Title");
+            lng = lngResult.Data;
+            var headerProduct = new PdfPCell(new Phrase($"{lng}", titleFont));
+            headerProduct.Colspan = 6;
+            headerProduct.Padding = 6;
+            headerProduct.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productTable.AddCell(headerProduct);
 
-            //lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.IndexRow");
-            //lng = lngResult.Data;
-            //var productCellItem = new PdfPCell(new Phrase($"{lng}", font));
-            //productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //productCellItem.Padding = 6;
-            //productTable.AddCell(productCellItem);
+            lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.IndexRow");
+            lng = lngResult.Data;
+            var productCellItem = new PdfPCell(new Phrase($"{lng}", font));
+            productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productCellItem.Padding = 6;
+            productTable.AddCell(productCellItem);
 
-            //lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Name");
-            //lng = lngResult.Data;
-            //productCellItem = new PdfPCell(new Phrase($"{lng}", font));
-            //productCellItem.Padding = 6;
-            //productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //productTable.AddCell(productCellItem);
+            lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Name");
+            lng = lngResult.Data;
+            productCellItem = new PdfPCell(new Phrase($"{lng}", font));
+            productCellItem.Padding = 6;
+            productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productTable.AddCell(productCellItem);
 
-            //lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Count");
-            //lng = lngResult.Data;
-            //productCellItem = new PdfPCell(new Phrase($"{lng}", font));
-            //productCellItem.Padding = 6;
-            //productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //productTable.AddCell(productCellItem);
+            lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Count");
+            lng = lngResult.Data;
+            productCellItem = new PdfPCell(new Phrase($"{lng}", font));
+            productCellItem.Padding = 6;
+            productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productTable.AddCell(productCellItem);
 
-            //lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Price");
-            //lng = lngResult.Data;
-            //productCellItem = new PdfPCell(new Phrase($"{lng}", font));
-            //productCellItem.Padding = 6;
-            //productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //productTable.AddCell(productCellItem);
+            lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Price");
+            lng = lngResult.Data;
+            productCellItem = new PdfPCell(new Phrase($"{lng}", font));
+            productCellItem.Padding = 6;
+            productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productTable.AddCell(productCellItem);
 
-            //lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Discount");
-            //lng = lngResult.Data;
-            //productCellItem = new PdfPCell(new Phrase($"{lng}", font));
-            //productCellItem.Padding = 6;
-            //productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //productTable.AddCell(productCellItem);
+            lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Discount");
+            lng = lngResult.Data;
+            productCellItem = new PdfPCell(new Phrase($"{lng}", font));
+            productCellItem.Padding = 6;
+            productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productTable.AddCell(productCellItem);
 
-            //lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.PriceSum");
-            //lng = lngResult.Data;
-            //productCellItem = new PdfPCell(new Phrase($"{lng}", font));
-            //productCellItem.Padding = 6;
-            //productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //productTable.AddCell(productCellItem);
-            //decimal totalSum = 0;
-            //foreach (var product in payment.Products)
-            //{
-            //    productCellItem = new PdfPCell(new Phrase($"{++orderNum}", font));
-            //    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //    productCellItem.Padding = 6;
-            //    productTable.AddCell(productCellItem);
-
-            //    var attributes = "";
-            //    decimal attributePrice = 0;
-            //    foreach (var userSelectedAttribute in payment.Attributes)
-            //    {
-            //        foreach (var forSelectCustomerVM in product.Attributes)
-            //        {
-            //            var attribute = forSelectCustomerVM.ProductVariantAttributeValue.Where(a => a.ID == userSelectedAttribute.ID).FirstOrDefault();
-            //            if (attribute != null)
-            //            {
-            //                if (userSelectedAttribute.Price > 0)
-            //                {
-            //                    attributePrice = userSelectedAttribute.Price;
-            //                    attributes += $"{userSelectedAttribute.AttributeName}:{userSelectedAttribute.Name} - {GetMoney(userSelectedAttribute.Price)} ";
-            //                }
-            //                else
-            //                   attributes += $" {userSelectedAttribute.AttributeName}:{userSelectedAttribute.Name} ";
-            //            }
-            //        }
-            //    }
-            //    productCellItem = new PdfPCell(new Phrase($"{product.Name} - {attributes}", font));
-            //    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //    productCellItem.Padding = 6;
-            //    productTable.AddCell(productCellItem);
-
-            //    productCellItem = new PdfPCell(new Phrase($"{product.CountSelect}", font));
-            //    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //    productCellItem.Padding = 6;
-            //    productTable.AddCell(productCellItem);
-
-            //    productCellItem = new PdfPCell(new Phrase(GetMoney(product.Price), font));
-            //    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //    productCellItem.Padding = 6;
-            //    productTable.AddCell(productCellItem);
-
-            //    decimal temp1 = 0, temp2 = 0;
-            //    var categoryDiscountName = "";
-            //    if (product.Category.HasDiscountsApplied)
-            //    {
-            //        categoryDiscountName = product.DiscountName;
-            //        switch (product.DiscountType)
-            //        {
-            //            case DiscountType.درصدی:
-            //                temp2 = (product.Price * product.DiscountAmount) / 100;
-            //                break;
-            //            case DiscountType.مبلغی:
-            //                temp2 = product.DiscountAmount;
-            //                break;
-            //        }
-            //    }
-
-            //    if (product.HasDiscount)
-            //    {
-            //        switch (product.DiscountTypes)
-            //        {
-            //            case DiscountType.درصدی:
-            //                temp1 = (product.Price * product.Discount) / 100;
-            //                break;
-            //            case DiscountType.مبلغی:
-            //                temp1 = product.Discount;
-            //                break;
-            //        }
-            //    }
-            //    productCellItem = new PdfPCell(new Phrase(string.Format("{0:C0}, {1}:{2:C0}",GetMoney(temp1),categoryDiscountName,GetMoney(temp2)), font));
-            //    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //    productCellItem.Padding = 6;
-            //    productTable.AddCell(productCellItem);
-
-            //   var amountBasket = attributePrice + (product.Price - (temp1 + temp2)) * product.CountSelect;
-            //    totalSum += amountBasket;
-            //    productCellItem = new PdfPCell(new Phrase(GetMoney(amountBasket), font));
-            //    productCellItem.Padding = 6;
-            //    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //    productTable.AddCell(productCellItem);
-
-            //}
+            lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.PriceSum");
+            lng = lngResult.Data;
+            productCellItem = new PdfPCell(new Phrase($"{lng}", font));
+            productCellItem.Padding = 6;
+            productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productTable.AddCell(productCellItem);
+            decimal totalSum = 0;
+            foreach (var product in payment.Products)
+            {
+                productCellItem = new PdfPCell(new Phrase($"{++orderNum}", font));
+                productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                productCellItem.Padding = 6;
+                productTable.AddCell(productCellItem);
 
 
-            //lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.TotalSum");
-            //lng = lngResult.Data;
-            //var footerProduct = new PdfPCell(new Phrase($"{lng}", titleFont));
-            //footerProduct.Colspan = 5;
-            //footerProduct.Padding = 6;
-            //footerProduct.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //footerProduct.HorizontalAlignment = Rectangle.ALIGN_LEFT;
-            //productTable.AddCell(footerProduct);
+                decimal attributePrice = 0;
+                var attributes =new List<string>();
+                if (payment.Attributes != null && payment.Attributes.Count > 0)
+                {
+                    foreach (var attribute in payment.Attributes)
+                    {
+                        if (attribute.ProductID == product.ID)
+                        {
+                            if (attribute.Price > 0)
+                            {
+                                attributePrice += attribute.Price;
+                                attributes.Add($"{attribute.AttributeName}:{attribute.Name} - {GetMoney(attribute.Price)}");
+                            }
+                            else
+                            {
+                                attributes.Add($"{attribute.AttributeName}:{attribute.Name}");
+                            }
+                        }
+                    }
 
-            //productCellItem = new PdfPCell(new Phrase(GetMoney(totalSum), font));
-            //productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-            //productTable.AddCell(productCellItem);
+                    productCellItem = new PdfPCell(new Phrase($"{product.Name} - {string.Join(",",attributes)}", font));
+                    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                    productCellItem.Padding = 6;
+                    productTable.AddCell(productCellItem);
+                }
+                else
+                {
+                    productCellItem = new PdfPCell(new Phrase($"{product.Name}", font));
+                    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                    productCellItem.Padding = 6;
+                    productTable.AddCell(productCellItem);
+                }
 
-            //doc.Add(productTable);
-            //doc.Add(new Paragraph(" "));
-            //doc.Add(new Paragraph(" "));
-            //#endregion
+                productCellItem = new PdfPCell(new Phrase($"{product.CountSelect}", font));
+                productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                productCellItem.Padding = 6;
+                productTable.AddCell(productCellItem);
+
+                productCellItem = new PdfPCell(new Phrase(GetMoney(product.Price), font));
+                productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                productCellItem.Padding = 6;
+                productTable.AddCell(productCellItem);
+
+                decimal temp1 = 0, temp2 = 0;
+                var categoryDiscountName = "";
+                if (product.Category != null && product.CategoryDiscount != null)
+                {
+                    if (product.Category.HasDiscountsApplied)
+                    {
+                        categoryDiscountName = product.CategoryDiscount.Name;
+                        switch (product.DiscountType)
+                        {
+                            case DiscountType.درصدی:
+                                temp2 = (product.Price * product.CategoryDiscount.DiscountAmount) / 100;
+                                break;
+                            case DiscountType.مبلغی:
+                                temp2 = product.CategoryDiscount.DiscountAmount;
+                                break;
+                        }
+                    }
+                }
+
+
+                if (product.HasDiscount == HasDiscountType.دارای_تخفیف)
+                {
+                    switch (product.DiscountType)
+                    {
+                        case DiscountType.درصدی:
+                            temp1 = (product.Price * product.Discount) / 100;
+                            break;
+                        case DiscountType.مبلغی:
+                            temp1 = product.Discount;
+                            break;
+                    }
+                }
+                productCellItem = new PdfPCell(new Phrase(string.Format("{0:C0}, {1}:{2:C0}", GetMoney(temp1), categoryDiscountName, GetMoney(temp2)), font));
+                productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                productCellItem.Padding = 6;
+                productTable.AddCell(productCellItem);
+
+                var amountBasket = attributePrice + (product.Price - (temp1 + temp2)) * product.CountSelect;
+                totalSum += amountBasket;
+                productCellItem = new PdfPCell(new Phrase(GetMoney(amountBasket), font));
+                productCellItem.Padding = 6;
+                productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                productTable.AddCell(productCellItem);
+
+            }
+
+
+            lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.TotalSum");
+            lng = lngResult.Data;
+            var footerProduct = new PdfPCell(new Phrase($"{lng}", titleFont));
+            footerProduct.Colspan = 5;
+            footerProduct.Padding = 6;
+            footerProduct.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            footerProduct.HorizontalAlignment = Rectangle.ALIGN_LEFT;
+            productTable.AddCell(footerProduct);
+
+            productCellItem = new PdfPCell(new Phrase(GetMoney(totalSum), font));
+            productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productTable.AddCell(productCellItem);
+
+            doc.Add(productTable);
+            doc.Add(new Paragraph(" "));
+            doc.Add(new Paragraph(" "));
+            #endregion
 
             #region Store
             var storTable = new PdfPTable(2);

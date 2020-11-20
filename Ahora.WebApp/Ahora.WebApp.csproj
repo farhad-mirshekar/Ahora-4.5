@@ -1954,11 +1954,12 @@
     <Compile Include="Models\App\ShoppingCartItem\ShoppingCartItemModel.cs" />
     <Compile Include="Models\EntityModel.cs" />
     <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\Org\User\RegisterModel.cs" />
     <Compile Include="Models\Pbl\Language\LanguageModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
     <Compile Include="Models\Pbl\Language\LanguageSelectorModel.cs" />
     <Compile Include="Models\Pbl\Menu\MemuModel.cs" />
-    <Compile Include="Models\Ptl\JsonResultModel.cs" />
+    <Compile Include="Models\JsonResultModel.cs" />
     <Compile Include="Models\Ptl\NewsComment\NewsCommentListModel.cs" />
     <Compile Include="Models\Ptl\NewsComment\NewsCommentModel.cs" />
     <Compile Include="Models\Ptl\EventsComment\EventsCommentListModel.cs" />

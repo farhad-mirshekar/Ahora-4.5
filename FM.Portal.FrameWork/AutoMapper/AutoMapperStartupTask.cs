@@ -1,4 +1,5 @@
 ﻿using Ahora.WebApp.Models.App;
+using Ahora.WebApp.Models.Org;
 using Ahora.WebApp.Models.Pbl;
 using Ahora.WebApp.Models.Ptl;
 using AutoMapper;
@@ -29,6 +30,7 @@ namespace FM.Portal.FrameWork.AutoMapper
                 config.CreateMap<ProductCommentModel, ProductComment>();
 
                 config.CreateMap<Product, ProductModel>();
+                config.CreateMap<RegisterModel, User>();
             });
         }
     }
