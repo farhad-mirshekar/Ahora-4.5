@@ -5,28 +5,27 @@ using Lucene.Net.Index;
 using Lucene.Net.QueryParsers;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
-using Lucene.Net.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
 using Version = Lucene.Net.Util.Version;
+
 namespace FM.Portal.Core.LucenceSearch.Product
 {
-   public static class LucenceProductIndexSearch
+    public static class LucenceProductIndexSearch
     {
         private const Version _version = Version.LUCENE_30;
 
         private static readonly string _luceneDir = HttpRuntime.AppDomainAppPath + @"App_Data\Lucene_Index";
 
-        public static void MapProductToLucence(Core.Model.Product model, IndexWriter writer)
+        public static void MapProductToLucence(Model.ProductLucenceVM model, IndexWriter writer)
         {
             var document = new Document();
             document.Add(new Field("ID", model.ID.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
             document.Add(new Field("Name", model.Name.ToString(), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS));
-            //document.Add(new Field("TrackingCode", model.TrackingCode.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
-            //document.Add(new Field("CategoryName", model.CategoryName.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED));
+            document.Add(new Field("CategoryName", model.CategoryName, Field.Store.YES, Field.Index.NOT_ANALYZED));
             // add entry to index
             writer.AddDocument(document);
         }
@@ -55,9 +54,9 @@ namespace FM.Portal.Core.LucenceSearch.Product
         {
             // init lucene
             var analyzer = new StandardAnalyzer(_version);
-            using (var writer = new IndexWriter(_directory, analyzer,false, IndexWriter.MaxFieldLength.UNLIMITED))
+            using (var writer = new IndexWriter(_directory, analyzer, false, IndexWriter.MaxFieldLength.UNLIMITED))
             {
-                var searchQuery = new TermQuery(new Term(StronglyTyped.PropertyName<Model.Product>(x => x.ID), ProductID.ToString()));
+                var searchQuery = new TermQuery(new Term(StronglyTyped.PropertyName<Model.ProductLucenceVM>(x => x.ID), ProductID.ToString()));
 
 
                 // remove older index entry
@@ -68,15 +67,15 @@ namespace FM.Portal.Core.LucenceSearch.Product
                 writer.Dispose();
             }
         }
-        public static void AddUpdateLuceneIndex(Model.Product modelData)
+        public static void AddUpdateLuceneIndex(Model.ProductLucenceVM modelData)
         {
-            AddUpdateLuceneIndex(new List<Model.Product> { modelData });
+            AddUpdateLuceneIndex(new List<Model.ProductLucenceVM> { modelData });
         }
-        public static void AddUpdateLuceneIndex(IEnumerable<Model.Product> modelData)
+        public static void AddUpdateLuceneIndex(IEnumerable<Model.ProductLucenceVM> modelData)
         {
             // init lucene
             var analyzer = new StandardAnalyzer(_version);
-            using (var writer = new IndexWriter(_directory, analyzer, false,IndexWriter.MaxFieldLength.UNLIMITED))
+            using (var writer = new IndexWriter(_directory, analyzer, false, IndexWriter.MaxFieldLength.UNLIMITED))
             {
                 // add data to lucene search index (replaces older entry if any)
                 foreach (var data in modelData)
@@ -89,10 +88,10 @@ namespace FM.Portal.Core.LucenceSearch.Product
                 writer.Dispose();
             }
         }
-        public static IEnumerable<Model.Product> Search(string input, params string[] fieldsName)
+        public static IEnumerable<Model.ProductLucenceVM> Search(string input, params string[] fieldsName)
         {
             if (string.IsNullOrEmpty(input))
-                return new List<Model.Product>();
+                return new List<Model.ProductLucenceVM>();
 
             IEnumerable<string> terms = input.Trim().Replace("-", " ").Split(' ')
                 .Where(x => !string.IsNullOrEmpty(x)).Select(x => x.Trim() + "*");
@@ -114,11 +113,11 @@ namespace FM.Portal.Core.LucenceSearch.Product
             }
             return query;
         }
-        private static IEnumerable<Core.Model.Product> _search(string searchQuery, string[] searchFields)
+        private static IEnumerable<Core.Model.ProductLucenceVM> _search(string searchQuery, string[] searchFields)
         {
             // validation
             if (string.IsNullOrEmpty(searchQuery.Replace("*", "").Replace("?", "")))
-                return new List<Core.Model.Product>();
+                return new List<Core.Model.ProductLucenceVM>();
 
             // set up lucene searcher
             using (var searcher = new IndexSearcher(_directory, false))
@@ -168,24 +167,23 @@ namespace FM.Portal.Core.LucenceSearch.Product
                 return directoryTemp;
             }
         }
-        private static IEnumerable<Core.Model.Product> _mapLuceneToDataList(IEnumerable<Document> hits)
+        private static IEnumerable<Model.ProductLucenceVM> _mapLuceneToDataList(IEnumerable<Document> hits)
         {
             return hits.Select(_mapLuceneDocumentToData).ToList();
         }
 
-        private static IEnumerable<Core.Model.Product> _mapLuceneToDataList(IEnumerable<ScoreDoc> hits,
+        private static IEnumerable<Model.ProductLucenceVM> _mapLuceneToDataList(IEnumerable<ScoreDoc> hits,
             IndexSearcher searcher)
         {
             return hits.Select(hit => _mapLuceneDocumentToData(searcher.Doc(hit.Doc))).ToList();
         }
-        private static Model.Product _mapLuceneDocumentToData(Document doc)
+        private static Model.ProductLucenceVM _mapLuceneDocumentToData(Document doc)
         {
-            return new Core.Model.Product
+            return new Core.Model.ProductLucenceVM
             {
-                ID = SQLHelper.CheckGuidNull(doc.Get(StronglyTyped.PropertyName<Model.Product>(x => x.ID))),
-                Name = SQLHelper.CheckStringNull(doc.Get(StronglyTyped.PropertyName<Model.Product>(x => x.Name))),
-                //TrackingCode = SQLHelper.CheckStringNull(doc.Get(StronglyTyped.PropertyName<Model.Product>(x => x.TrackingCode))),
-                //CategoryName = SQLHelper.CheckStringNull(doc.Get(StronglyTyped.PropertyName<Model.Product>(x => x.CategoryName))),
+                ID = SQLHelper.CheckGuidNull(doc.Get(StronglyTyped.PropertyName<Model.ProductLucenceVM>(x => x.ID))),
+                Name = SQLHelper.CheckStringNull(doc.Get(StronglyTyped.PropertyName<Model.ProductLucenceVM>(x => x.Name))),
+                CategoryName = SQLHelper.CheckStringNull(doc.Get(StronglyTyped.PropertyName<Model.ProductLucenceVM>(x => x.CategoryName))),
             };
         }
     }

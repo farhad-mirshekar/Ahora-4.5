@@ -25,7 +25,8 @@ BEGIN
 	;WITH MainSelect AS
 	(
 		SELECT
-			ArticleComment.*
+			ArticleComment.*,
+			CONCAT(CreatorComment.FirstName , ' ' , CreatorComment.LastName) AS CreatorName
 		FROM 
 			ptl.ArticleComment ArticleComment
 		INNER JOIN

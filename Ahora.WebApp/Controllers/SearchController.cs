@@ -26,16 +26,15 @@ namespace Ahora.WebApp.Controllers
             var items =
                LucenceProductIndexSearch.Search(term, "Name").Take(10).ToList();
 
-            //var productList = items.Select(item => new AutoCompleteSearchViewModel
-            //{
-            //    Label = item.Name,
-            //    Url = Url.RouteUrl("Product",new {TrackingCode = item.TrackingCode , Title = CalculateWordsCount.CleanSeoUrl(item.Name) }),
-            //    Category = item.CategoryName,
-            //    Image = null,
-            //}).ToList();
+            var productList = items.Select(item => new AutoCompleteSearchViewModel
+            {
+                Label = item.Name,
+                Url = Url.RouteUrl("Product", new { SeName = CalculateWordsCount.CleanSeoUrl(item.Name) }),
+                Category = item.CategoryName,
+                Image = null,
+            }).ToList();
 
-            //return Json(productList, JsonRequestBehavior.AllowGet);
-            return null;
+            return Json(productList.OrderBy(p=>p.Category), JsonRequestBehavior.AllowGet);
         }
     }
 }

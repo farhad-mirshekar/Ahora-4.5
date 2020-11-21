@@ -87,6 +87,7 @@
     <Compile Include="App\ProductComment\ProductComment_User_Mapping\ProductCommentMapUser.cs" />
     <Compile Include="App\ProductComment\VM\ProductCommentListVM.cs" />
     <Compile Include="App\Product\VM\ProductListVM.cs" />
+    <Compile Include="App\Product\VM\ProductLucenceVM.cs" />
     <Compile Include="App\RelatedProduct\RelatedProduct.cs" />
     <Compile Include="App\RelatedProduct\VM\RelatedProductListVM.cs" />
     <Compile Include="App\Sales\Sales.cs" />

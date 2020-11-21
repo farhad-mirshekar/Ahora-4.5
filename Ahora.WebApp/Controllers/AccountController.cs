@@ -34,20 +34,13 @@ namespace Ahora.WebApp.Controllers
         }
 
         #region Login / Register / SignOut
-        public ActionResult Login()
+        public ActionResult Login(string returnUrl)
         {
-            TempData["returnUrl"] = "";
-            //if (returnurl != "" || returnurl != null)
-            //    TempData["returnUrl"] = returnurl;
-            //ViewBag.Title = "صفحه ورود";
             return View();
         }
         [HttpPost]
-        public async Task<JsonResult> Login(LoginVM model)
+        public async Task<JsonResult> Login(LoginVM model , string returnUrl)
         {
-            var returnUrl = "";
-            if (TempData["returnUrl"] != null)
-                returnUrl = TempData["returnUrl"].ToString() ?? "";
             var result = await GetToken(new Token { username = model.UserName, password = model.Password }, returnUrl);
             return result;
         }
@@ -141,8 +134,8 @@ namespace Ahora.WebApp.Controllers
                                         return Json(new { status = 0, token = "" });
 
                                     _authenticationService.SignIn(user, false);
-                                    _workContext.User = user;
-                                    _workContext.IsAdmin = true;
+                                   // _workContext.User = user;
+                                    //_workContext.IsAdmin = true;
                                     return Json(new
                                     {
                                         status = 1,
@@ -160,8 +153,8 @@ namespace Ahora.WebApp.Controllers
                 else
                 {
                     _authenticationService.SignIn(user, false);
-                    _workContext.User = user;
-                    _workContext.IsAdmin = false;
+                    //_workContext.User = user;
+                    //_workContext.IsAdmin = false;
                     return Json(new { status = 1, token = "", userid = "", type = user.Type, url = returnUrl });
                 }
             }

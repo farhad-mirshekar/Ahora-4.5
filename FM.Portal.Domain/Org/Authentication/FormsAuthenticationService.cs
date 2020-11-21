@@ -77,6 +77,7 @@ namespace FM.Portal.Domain
                 }
 
                 _httpContext.Response.Cookies.Add(cookie);
+                _cachedUser = user;
                 return Result.Successful();
             }
             catch (Exception e) { return Result.Failure(); }
@@ -86,8 +87,8 @@ namespace FM.Portal.Domain
         {
             try
             {
-                FormsAuthentication.SignOut();
                 _cachedUser = null;
+                FormsAuthentication.SignOut();
                 return Result.Successful();
             }
             catch (Exception e) { return Result.Failure(); }

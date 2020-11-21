@@ -74,9 +74,10 @@ namespace FM.Portal.Domain
                     urlRecordResult.Data.UrlDesc = CalculateWordsCount.CleanSeoUrl(model.Name);
                     _urlRecordService.Edit(urlRecordResult.Data);
                 }
+
+                //LucenceSearch();
             }
-            //if (result.Success)
-            //    LucenceSearch();
+                
             return result;
         }
 
@@ -195,16 +196,24 @@ namespace FM.Portal.Domain
             try
             {
                 LucenceProductIndexSearch.ClearLuceneIndex();
+                var productsResult = List(new ProductListVM() { });
+                if (!productsResult.Success)
+                    return false;
+                var products = productsResult.Data;
 
-                foreach (var product in List(new ProductListVM() { }).Data)
+                foreach (var product in products)
                 {
+                    var categoryName = "";
+                    var categoryResult = _categoryService.Get(product.CategoryID);
+                    if (categoryResult.Success)
+                        categoryName = categoryResult.Data.Title;
+
                     LucenceProductIndexSearch.ClearLuceneIndexRecord(product.ID);
-                    LucenceProductIndexSearch.AddUpdateLuceneIndex(new Product
+                    LucenceProductIndexSearch.AddUpdateLuceneIndex(new ProductLucenceVM
                     {
                         ID = product.ID,
                         Name = product.Name,
-                        //TrackingCode = product.TrackingCode,
-                        //CategoryName = product.CategoryName
+                        CategoryName = categoryName
 
                     });
                 }

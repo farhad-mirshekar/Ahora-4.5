@@ -269,6 +269,12 @@ namespace Ahora.WebApp.Infrastructure
               new { controller = "Account", action = "IsAlreadyUserName", UserName = UrlParameter.Optional },
               namespaces: new[] { $"Ahora.WebApp.Controllers" }
               );
+            routes.MapLocalizedRoute(
+              "AutoCompleteSearch",
+              "Search/AutoCompleteSearch/{term}",
+              new { controller = "Search", action = "AutoCompleteSearch", term = UrlParameter.Optional },
+              namespaces: new[] { $"Ahora.WebApp.Controllers" }
+              );
         }
     }
 }
