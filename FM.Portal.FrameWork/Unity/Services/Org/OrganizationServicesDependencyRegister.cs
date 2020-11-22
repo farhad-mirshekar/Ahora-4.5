@@ -1,6 +1,7 @@
 ﻿using FM.Portal.Core.Service;
 using FM.Portal.Domain;
 using Unity;
+using Unity.Lifetime;
 
 namespace FM.Portal.FrameWork.Unity.Services
 {

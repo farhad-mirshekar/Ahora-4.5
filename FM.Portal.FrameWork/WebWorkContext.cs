@@ -25,6 +25,7 @@ namespace FM.Portal.FrameWork
         {
             get
             {
+                
                 if (_cachedUser != null)
                 {
                     _IsAdmin(_cachedUser);

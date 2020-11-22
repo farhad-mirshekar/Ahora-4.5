@@ -20,7 +20,7 @@ namespace FM.Portal.Domain
             _userService = userService;
         }
 
-        private User _cachedUser;
+        private static User _cachedUser;
 
         public Result<User> GetAuthenticatedCustomer()
         {
