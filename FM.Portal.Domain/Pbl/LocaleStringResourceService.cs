@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using FM.Portal.Core.Infrastructure;
+using FM.Portal.Core.Caching;
 
 namespace FM.Portal.Domain
 {
@@ -14,11 +15,14 @@ namespace FM.Portal.Domain
     {
         private readonly ILocaleStringResourceDataSource _dataSource;
         private readonly IWorkContext _workContext;
+        private readonly ICacheManager _cacheManager;
         public LocaleStringResourceService(ILocaleStringResourceDataSource dataSource
-                                          , IWorkContext workContext)
+                                          , IWorkContext workContext
+                                          , ICacheManager cacheManager)
         {
             _dataSource = dataSource;
             _workContext = workContext;
+            _cacheManager = cacheManager;
         }
         public Result<LocaleStringResource> Add(LocaleStringResource model)
         {
@@ -27,7 +31,10 @@ namespace FM.Portal.Domain
                 return Result<LocaleStringResource>.Failure(message: validateResult.Message);
 
             model.ID = Guid.NewGuid();
-            return _dataSource.Insert(model);
+            var result = _dataSource.Insert(model);
+            if (result.Success)
+                _cacheManager.Remove(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values);
+            return result;
         }
 
         public Result Delete(Guid ID)
@@ -39,7 +46,10 @@ namespace FM.Portal.Domain
             if (!validateResult.Success)
                 return Result<LocaleStringResource>.Failure(message: validateResult.Message);
 
-            return _dataSource.Update(model);
+            var result= _dataSource.Update(model);
+            if (result.Success)
+                _cacheManager.Remove(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values);
+            return result;
         }
 
         public Result<LocaleStringResource> Get(Guid ID)
@@ -54,7 +64,7 @@ namespace FM.Portal.Domain
                 languageID = _workContext.WorkingLanguage.ID;
             }
 
-           return GetResource(format, languageID);
+            return GetResource(format, languageID);
         }
 
         public Result<List<LocaleStringResource>> List(LocaleStringResourceListVM listVM)
@@ -83,29 +93,33 @@ namespace FM.Portal.Domain
 
             return Result.Successful();
         }
-        private Result<string> GetResource(string resourceKey , Guid LanguageID)
+        private Result<string> GetResource(string resourceKey, Guid LanguageID)
         {
-            string result = string.Empty;
-            if (resourceKey == null)
-                resourceKey = string.Empty;
-            resourceKey = resourceKey.Trim().ToLowerInvariant();
-            var resourcesResult = GetAllResourceValues(LanguageID);
-            if (!resourcesResult.Success)
-                return Result<string>.Failure(message: resourcesResult.Message);
-            
-            var resources = resourcesResult.Data;
-            if (resources.ContainsKey(resourceKey))
-            {
-                result = resources[resourceKey].Value;
-            }
+            string key = string.Format(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values, LanguageID);
+            return _cacheManager.Get(key, () =>
+             {
+                 string result = string.Empty;
+                 if (resourceKey == null)
+                     resourceKey = string.Empty;
+                 resourceKey = resourceKey.Trim().ToLowerInvariant();
+                 var resourcesResult = GetAllResourceValues(LanguageID);
+                 if (!resourcesResult.Success)
+                     return Result<string>.Failure(message: resourcesResult.Message);
 
-            return Result<string>.Successful(data: result);
+                 var resources = resourcesResult.Data;
+                 if (resources.ContainsKey(resourceKey))
+                 {
+                     result = resources[resourceKey].Value;
+                 }
+                 return Result<string>.Successful(data: result);
+             }
+             );
         }
-        private Result<Dictionary<string,KeyValuePair<Guid , string>>> GetAllResourceValues(Guid LanguageID)
+        private Result<Dictionary<string, KeyValuePair<Guid, string>>> GetAllResourceValues(Guid LanguageID)
         {
-            var listResult = List(new LocaleStringResourceListVM() {LanguageID = LanguageID });
+            var listResult = List(new LocaleStringResourceListVM() { LanguageID = LanguageID });
             if (!listResult.Success)
-                return Result<Dictionary<string, KeyValuePair<Guid, string>>>.Failure(message:listResult.Message);
+                return Result<Dictionary<string, KeyValuePair<Guid, string>>>.Failure(message: listResult.Message);
 
             var localeStringResources = listResult.Data;
             var dictionary = new Dictionary<string, KeyValuePair<Guid, string>>();

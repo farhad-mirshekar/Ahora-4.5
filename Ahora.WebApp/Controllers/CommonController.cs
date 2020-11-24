@@ -1,6 +1,7 @@
 ﻿using Ahora.WebApp.Factories;
 using Ahora.WebApp.Models;
 using Ahora.WebApp.Models.Pbl;
+using FM.Portal.Core.Caching;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Infrastructure;
 using FM.Portal.Core.Model;
@@ -24,6 +25,7 @@ namespace Ahora.WebApp.Controllers
         private readonly ILinkService _linkService;
         private readonly IProductService _Productservice;
         private readonly ICommonModelFactory _commonModelFactory;
+        private readonly ICacheManager _cacheManager;
         private readonly string ComponentUrl = @"~/Views/Shared/Components/{0}/{1}";
         public CommonController(ILanguageService service
                                 , IWorkContext workContext
@@ -34,7 +36,8 @@ namespace Ahora.WebApp.Controllers
                                 , ISliderService sliderService
                                 , IEventsService eventsService
                                 , ILinkService linkService
-                                , ICommonModelFactory commonModelFactory) : base(service)
+                                , ICommonModelFactory commonModelFactory
+                                , ICacheManager cacheManager) : base(service)
         {
             _workContext = workContext;
             _menuItemService = menuItemService;
@@ -45,6 +48,7 @@ namespace Ahora.WebApp.Controllers
             _linkService = linkService;
             _Productservice = Productservice;
             _commonModelFactory = commonModelFactory;
+            _cacheManager = cacheManager;
         }
 
         #region Language
@@ -84,6 +88,7 @@ namespace Ahora.WebApp.Controllers
             if (language != null)
             {
                 _workContext.WorkingLanguage = language;
+                _cacheManager.Remove(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values);
             }
 
             redirect = $"{HttpContext.Request.UrlReferrer.AbsoluteUri}";
