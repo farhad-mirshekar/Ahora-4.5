@@ -22,6 +22,11 @@ namespace Ahora.WebApp.Infrastructure
                                        new { controller = "Common", action = "GenericUrl" },
                                        new[] { "Ahora.WebApp.Controllers" });
 
+            routes.MapGenericPathRoute("GenericUrlPages",
+                                       "{generic_se_name}",
+                                       new { controller = "Common", action = "GenericUrl" },
+                                       new[] { "Ahora.WebApp.Controllers" });
+
             //define this routes to use in UI views (in case if you want to customize some of them later)
             routes.MapLocalizedRoute("Product",
                                      "Product/{SeName}",
@@ -45,6 +50,17 @@ namespace Ahora.WebApp.Infrastructure
                                      new { controller = "Events", action = "Detail" },
 
                                      new[] { $"Ahora.WebApp.Controllers" });
+
+            routes.MapGenericPathRoute("DynamicPage",
+                                       "{SeName}",
+                                       new { controller = "DynamicPage", action = "Index" },
+                                       new[] { "Ahora.WebApp.Controllers" });
+
+            routes.MapLocalizedRoute("DynamicPageDetail",
+                                    "{PageName}/{SeName}",
+                                    new { controller = "DynamicPage", action = "Detail" },
+                                    new[] { $"Ahora.WebApp.Controllers" });
+
         }
     }
 }

@@ -3,7 +3,7 @@
         .module('portal');
 
     app.factory('faqGroupService', faqGroupService);
-    faqGroupService.$inject = ['$http', 'callbackService','authenticationService'];
+    faqGroupService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function faqGroupService($http, callbackService, authenticationService) {
         var url = '/api/v1/faqgroup/';
         var service = {
@@ -18,7 +18,7 @@
             return $http({
                 method: 'POST',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -77,7 +77,7 @@
     }
 
     app.factory('faqService', faqService);
-    faqService.$inject = ['$http', 'callbackService','authenticationService'];
+    faqService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function faqService($http, callbackService, authenticationService) {
         var url = '/api/v1/faq/';
         var service = {
@@ -120,7 +120,7 @@
             return $http({
                 method: 'POST',
                 url: url + `list`,
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -134,7 +134,7 @@
     }
 
     app.factory('uploadService', uploadService);
-    uploadService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    uploadService.$inject = ['$http', '$q', 'callbackService', 'authenticationService'];
     function uploadService($http, $q, callbackService, authenticationService) {
         var url = 'ApiClient/attachment'
         var service = {
@@ -219,7 +219,7 @@
     }
 
     app.factory('profileService', profileService);
-    profileService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    profileService.$inject = ['$http', '$q', 'callbackService', 'authenticationService'];
     function profileService($http, $q, callbackService, authenticationService) {
         var url = '/api/v1/user/'
         var service = {
@@ -318,7 +318,7 @@
     }
 
     app.factory('commandService', commandService);
-    commandService.$inject = ['$http', 'callbackService','authenticationService'];
+    commandService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function commandService($http, callbackService, authenticationService) {
         var url = '/api/v1/command/'
         var service = {
@@ -470,7 +470,7 @@
     }
 
     app.factory('roleService', roleService);
-    roleService.$inject = ['$http', 'callbackService','authenticationService'];
+    roleService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function roleService($http, callbackService, authenticationService) {
         var url = '/api/v1/role/'
         var service = {
@@ -485,7 +485,7 @@
             return $http({
                 method: 'POST',
                 url: url + 'List',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -544,7 +544,7 @@
     }
 
     app.factory('attributeService', attributeService);
-    attributeService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    attributeService.$inject = ['$http', '$q', 'callbackService', 'authenticationService'];
     function attributeService($http, $q, callbackService, authenticationService) {
         var url = '/api/v1/ProductAttribute/'
         var service = {
@@ -614,7 +614,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -628,7 +628,7 @@
     }
 
     app.factory('positionService', positionService);
-    positionService.$inject = ['$http', 'callbackService','authenticationService'];
+    positionService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function positionService($http, callbackService, authenticationService) {
         var url = '/api/v1/position/'
         var service = {
@@ -636,7 +636,7 @@
             list: list,
             setDefault: setDefault,
             get: get,
-            edit:edit
+            edit: edit
         }
         return service;
 
@@ -723,7 +723,7 @@
     }
 
     app.factory('categoryService', CategoryService);
-    CategoryService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    CategoryService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function CategoryService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/category/'
         var service = {
@@ -820,7 +820,7 @@
     }
 
     app.factory('discountService', discountService);
-    discountService.$inject = ['$http', 'callbackService','authenticationService'];
+    discountService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function discountService($http, callbackService, authenticationService) {
         var url = '/api/v1/discount/'
         var service = {
@@ -883,7 +883,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -898,7 +898,7 @@
     }
 
     app.factory('productService', productService);
-    productService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    productService.$inject = ['$http', '$q', 'callbackService', 'authenticationService'];
     function productService($http, $q, callbackService, authenticationService) {
         var url = '/api/v1/product/'
         var service = {
@@ -1003,7 +1003,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -1017,7 +1017,7 @@
     }
 
     app.factory('productMapattributeService', productMapattributeService);
-    productMapattributeService.$inject = ['$http', 'callbackService','authenticationService'];
+    productMapattributeService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function productMapattributeService($http, callbackService, authenticationService) {
         var url = '/api/v1/productMapattribute/'
         var service = {
@@ -1109,7 +1109,7 @@
     }
 
     app.factory('productVariantAttributeValueService', productVariantAttributeValueService);
-    productVariantAttributeValueService.$inject = ['$http', 'callbackService','authenticationService'];
+    productVariantAttributeValueService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function productVariantAttributeValueService($http, callbackService, authenticationService) {
         var url = '/api/v1/ProductVariantAttributeValue/'
         var service = {
@@ -1206,7 +1206,7 @@
     }
 
     app.factory('productCommentService', productCommentService);
-    productCommentService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    productCommentService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function productCommentService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/ProductComment/'
         var service = {
@@ -1274,7 +1274,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -1288,7 +1288,7 @@
     }
 
     app.factory('categoryPortalService', categoryPortalService);
-    categoryPortalService.$inject = ['$http', 'callbackService','authenticationService'];
+    categoryPortalService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function categoryPortalService($http, callbackService, authenticationService) {
         var url = '/api/v1/categoryPortal/'
         var service = {
@@ -1379,7 +1379,7 @@
     }
 
     app.factory('articleService', articleService);
-    articleService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    articleService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function articleService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/article/'
         var service = {
@@ -1491,7 +1491,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -1505,7 +1505,7 @@
     }
 
     app.factory('categoryMapDiscountService', categoryMapDiscountService);
-    categoryMapDiscountService.$inject = ['$http', 'callbackService','authenticationService'];
+    categoryMapDiscountService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function categoryMapDiscountService($http, callbackService, authenticationService) {
         var url = '/api/v1/categoryMapDiscount/'
         var service = {
@@ -1533,7 +1533,7 @@
     }
 
     app.factory('newsService', newsService);
-    newsService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    newsService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function newsService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/news/'
         var service = {
@@ -1645,7 +1645,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -1659,7 +1659,7 @@
     }
 
     app.factory('pagesService', pagesService);
-    pagesService.$inject = ['$http', 'callbackService','authenticationService'];
+    pagesService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function pagesService($http, callbackService, authenticationService) {
         var url = '/api/v1/pages/'
         var service = {
@@ -1751,7 +1751,7 @@
     }
 
     app.factory('menuService', menuService);
-    menuService.$inject = ['$http', 'callbackService','authenticationService'];
+    menuService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function menuService($http, callbackService, authenticationService) {
         var url = '/api/v1/menu/'
         var service = {
@@ -1815,7 +1815,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -1844,7 +1844,7 @@
     }
 
     app.factory('sliderService', sliderService);
-    sliderService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    sliderService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function sliderService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/slider/'
         var service = {
@@ -1936,7 +1936,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -1950,7 +1950,7 @@
     }
 
     app.factory('generalSettingService', generalSettingService);
-    generalSettingService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    generalSettingService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function generalSettingService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/generalSetting/'
         var service = {
@@ -1994,7 +1994,7 @@
     }
 
     app.factory('eventsService', eventsService);
-    eventsService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    eventsService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function eventsService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/events/'
         var service = {
@@ -2106,7 +2106,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -2120,7 +2120,7 @@
     }
 
     app.factory('paymentService', paymentService);
-    paymentService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    paymentService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function paymentService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/Payment/'
         var service = {
@@ -2191,7 +2191,7 @@
     }
 
     app.factory('notificationService', notificationService);
-    notificationService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    notificationService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function notificationService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/notification/'
         var service = {
@@ -2205,7 +2205,7 @@
             return $http({
                 method: 'post',
                 url: url + `list`,
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -2261,7 +2261,7 @@
     }
 
     app.factory('departmentService', departmentService);
-    departmentService.$inject = ['$http', 'callbackService','authenticationService'];
+    departmentService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function departmentService($http, callbackService, authenticationService) {
         var url = '/api/v1/department/'
         var service = {
@@ -2366,7 +2366,7 @@
     }
 
     app.factory('userService', userService);
-    userService.$inject = ['$http', '$q', 'callbackService','authenticationService'];
+    userService.$inject = ['$http', '$q', 'callbackService', 'authenticationService'];
     function userService($http, $q, callbackService, authenticationService) {
         var url = '/api/v1/user/'
         var service = {
@@ -2453,7 +2453,7 @@
     }
 
     app.factory('pagesPortalService', pagesPortalService);
-    pagesPortalService.$inject = ['$http', 'callbackService','authenticationService'];
+    pagesPortalService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function pagesPortalService($http, callbackService, authenticationService) {
         var url = '/api/v1/pagesPortal/'
         var service = {
@@ -2546,7 +2546,7 @@
     }
 
     app.factory('contactService', contactService);
-    contactService.$inject = ['$http', 'callbackService','authenticationService'];
+    contactService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function contactService($http, callbackService, authenticationService) {
         var url = '/api/v1/contact/'
         var service = {
@@ -2560,7 +2560,7 @@
             return $http({
                 method: 'POST',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -2602,7 +2602,7 @@
     }
 
     app.factory('dynamicPageService', dynamicPageService);
-    dynamicPageService.$inject = ['$http', 'callbackService','authenticationService'];
+    dynamicPageService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function dynamicPageService($http, callbackService, authenticationService) {
         var url = '/api/v1/DynamicPage/'
         var service = {
@@ -2695,7 +2695,7 @@
     }
 
     app.factory('linkService', linkService);
-    linkService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    linkService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function linkService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/link/'
         var service = {
@@ -2809,7 +2809,7 @@
     }
 
     app.factory('staticPageService', staticPageService);
-    staticPageService.$inject = ['$http', 'callbackService','authenticationService'];
+    staticPageService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function staticPageService($http, callbackService, authenticationService) {
         var url = '/api/v1/StaticPage/'
         var service = {
@@ -2832,10 +2832,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -2856,7 +2855,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -2885,7 +2884,7 @@
     }
 
     app.factory('bannerService', bannerService);
-    bannerService.$inject = ['$http', 'callbackService','authenticationService'];
+    bannerService.$inject = ['$http', 'callbackService', 'authenticationService'];
     function bannerService($http, callbackService, authenticationService) {
         var url = '/api/v1/Banner/'
         var service = {
@@ -2978,7 +2977,7 @@
     }
 
     app.factory('galleryService', galleryService);
-    galleryService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    galleryService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function galleryService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/Gallery/'
         var service = {
@@ -3042,7 +3041,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
@@ -3071,7 +3070,7 @@
     }
 
     app.factory('shippingCostService', shippingCostService);
-    shippingCostService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    shippingCostService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function shippingCostService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/ShippingCost/'
         var service = {
@@ -3164,7 +3163,7 @@
     }
 
     app.factory('deliveryDateService', deliveryDateService);
-    deliveryDateService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    deliveryDateService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function deliveryDateService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/DeliveryDate/'
         var service = {
@@ -3257,7 +3256,7 @@
     }
 
     app.factory('relatedProductService', relatedProductService);
-    relatedProductService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    relatedProductService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function relatedProductService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/RelatedProduct/'
         var service = {
@@ -3350,7 +3349,7 @@
     }
 
     app.factory('documentFlowService', documentFlowService);
-    documentFlowService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    documentFlowService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function documentFlowService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/DocumentFlow/'
         var service = {
@@ -3376,7 +3375,7 @@
     }
 
     app.factory('salesService', salesService);
-    salesService.$inject = ['$http', 'callbackService', '$q','authenticationService'];
+    salesService.$inject = ['$http', 'callbackService', '$q', 'authenticationService'];
     function salesService($http, callbackService, $q, authenticationService) {
         var url = '/api/v1/Sales/'
         var service = {
@@ -3606,7 +3605,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
             })
                 .catch(function (result) {
-                   return callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function edit(model) {
@@ -3737,7 +3736,7 @@
             return $http({
                 method: 'post',
                 url: url + 'list',
-                data:model,
+                data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token

@@ -6,7 +6,6 @@ namespace FM.Portal.Core.Model.Ptl
 {
    public class Pages:Entity
     {
-        public string TrackingCode { get; set; }
         public string Name { get; set; }
         public PageType PageType { get; set; }
         public EnableMenuType Enabled { get; set; }

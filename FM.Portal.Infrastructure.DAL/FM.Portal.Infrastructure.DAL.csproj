@@ -71,7 +71,6 @@
     <Compile Include="DataSources\App\ShippingCostDataSource.cs" />
     <Compile Include="DataSources\App\ProductVariantAttributeValueDataSource.cs" />
     <Compile Include="DataSources\App\ShoppingCartItemDataSource.cs" />
-    <Compile Include="DataSources\DataSource.cs" />
     <Compile Include="DataSources\Org\CommandDataSource.cs" />
     <Compile Include="DataSources\Org\DepartmentDataSource.cs" />
     <Compile Include="DataSources\Org\PositionDataSource.cs" />

@@ -27,7 +27,7 @@
                             </div>
                             <div class="card-footer">
                                 <div class="btn-group-justified pull-left">
-                                    <a href="@Url.RouteUrl("PagesPriview",new { TrackingCode=item.TrackingCode , Seo=CalculateWordsCount.CleanSeoUrl(item.UrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
+                                    <a href="@Url.RouteUrl("DynamicPageDetail",new {PageName =CalculateWordsCount.CleanSeoUrl(item.PageName)  ,SeName=CalculateWordsCount.CleanSeoUrl(item.Name)})" class="btn btn-outline-success btn-lg btn-block">
                                         ادامه
                                         <i class="fa fa-arrow-left"></i>
                                     </a>

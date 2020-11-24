@@ -6,8 +6,7 @@ IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('ptl.spGetD
 GO
 
 CREATE PROCEDURE ptl.spGetDynamicPage
-	@ID UNIQUEIDENTIFIER,
-	@TrackingCode NVARCHAR(100)
+	@ID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -15,17 +14,16 @@ BEGIN
 
 	SELECT 
 		dpages.*,
-		pages.Name AS PageName,
-		Pages.TrackingCode AS TrackingCodeParent,
-		attachemnt.[FileName],
-		attachemnt.PathType
+		pages.[Name] AS PageName,
+		attachemnt.[FileName]
 	FROM ptl.DynamicPage dpages
 	INNER JOIN
 		ptl.Pages pages ON dpages.PageID = pages.ID
 	LEFT JOIN
 		pbl.Attachment attachemnt ON dpages.ID = attachemnt.ParentID
-	WHERE (@ID IS NULL OR dpages.ID = @ID)
-	AND (@TrackingCode IS NULL OR dpages.TrackingCode = @TrackingCode)
+	WHERE 
+		dpages.ID = @ID
+
 
 	RETURN @@ROWCOUNT
 END

@@ -7,7 +7,6 @@ GO
 
 CREATE PROCEDURE [ptl].spGetsStaticPage
 @Name NVARCHAR(100),
-@TrackingCode NVARCHAR(100),
 @PageSize INT,
 @PageIndex INT
 --WITH ENCRYPTION
@@ -25,13 +24,8 @@ BEGIN
 	(
 		SELECT 
 			staticPage.*,
-			pages.[Name],
-			pages.TrackingCode,
-			pages.UrlDesc,
-			pages.UserID,
-			pages.CreationDate,
-			attachemnt.[FileName],
-			attachemnt.PathType
+			pages.[Name] AS PageName,
+			pages.CreationDate
 		FROM ptl.StaticPage staticPage
 		INNER JOIN
 			ptl.Pages pages ON staticPage.ID = pages.ID
@@ -40,7 +34,6 @@ BEGIN
 		WHERE
 			pages.PageType = 2
 		AND (@Name IS NULL OR pages.[Name] LIKE CONCAT('%' , @Name , '%'))
-		AND (@TrackingCode IS NULL OR pages.TrackingCode LIKE CONCAT('%', @TrackingCode , '%'))
 	),TempCount AS
 	(
 		SELECT

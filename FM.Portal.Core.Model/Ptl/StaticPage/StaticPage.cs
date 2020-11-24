@@ -1,5 +1,4 @@
 ﻿using FM.Portal.BaseModel;
-using FM.Portal.Core.Common;
 using System;
 using System.Collections.Generic;
 
@@ -16,13 +15,7 @@ namespace FM.Portal.Core.Model
         public Guid AttachmentID { get; set; }
 
         //only show
-        public string Name { get; set; }
-        public string UrlDesc { get; set; }
-        public string FileName { get; set; }
-        public PathType PathType { get; set; }
-        public EnableMenuType Enabled { get; set; }
-        public Guid UserID { get; set; }
-        public string Path => PathType.ToString();
-        public string TrackingCode { get; set; }
+        public string PageName { get; set; }
+        public Model.Ptl.Pages Pages { get; set; }
     }
 }

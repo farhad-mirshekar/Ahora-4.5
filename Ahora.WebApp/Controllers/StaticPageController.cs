@@ -15,23 +15,23 @@ namespace Ahora.WebApp.Controllers
         }
 
         // GET: StaticPage
-        public ActionResult Index(string TrackingCode , string Seo)
-        {
-            if (string.IsNullOrEmpty(TrackingCode))
-                return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
+        //public ActionResult Index(string TrackingCode , string Seo)
+        //{
+        //    if (string.IsNullOrEmpty(TrackingCode))
+        //        return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
 
-            var staticPageResult = _service.Get(TrackingCode);
-            if (!staticPageResult.Success)
-                return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
-            var staticPage = staticPageResult.Data;
-            if(staticPage.BannerShow == FM.Portal.Core.Model.EnableMenuType.فعال)
-            {
-                var attachmentsResult = _attachmentService.List(staticPage.AttachmentID);
-                if (attachmentsResult.Success)
-                    ViewBag.attachments = attachmentsResult.Data;
-            }
-            ViewBag.Title = staticPage.Name;
-            return View(staticPage);
-        }
+        //    var staticPageResult = _service.Get(TrackingCode);
+        //    if (!staticPageResult.Success)
+        //        return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
+        //    var staticPage = staticPageResult.Data;
+        //    if(staticPage.BannerShow == FM.Portal.Core.Model.EnableMenuType.فعال)
+        //    {
+        //        var attachmentsResult = _attachmentService.List(staticPage.AttachmentID);
+        //        if (attachmentsResult.Success)
+        //            ViewBag.attachments = attachmentsResult.Data;
+        //    }
+        //    ViewBag.Title = staticPage.Name;
+        //    return View(staticPage);
+        //}
     }
 }

@@ -22,13 +22,10 @@ BEGIN
 
 	IF @IsNewRecord = 1 -- insert
 			BEGIN
-				DECLARE @TrackingCode Nvarchar(20)
-				SET @TrackingCode = (SELECT STR(FLOOR(RAND(CHECKSUM(NEWID()))*(9999999999-1000000000+1)+1000000000)))
-
 				INSERT INTO ptl.DynamicPage
-				(ID,[TrackingCode],[Body],[Description],[PageID],[MetaKeywords],[IsShow],[UserID],[UrlDesc],[CreationDate],[Name])
+				(ID,[Body],[Description],[PageID],[MetaKeywords],[IsShow],[UserID],[UrlDesc],[CreationDate],[Name])
 				VALUES
-				(@ID, @TrackingCode,@Body,@Description,@PageID,@MetaKeywords,@IsShow,@UserID,@UrlDesc,GETDATE(),@Name)
+				(@ID,@Body,@Description,@PageID,@MetaKeywords,@IsShow,@UserID,@UrlDesc,GETDATE(),@Name)
 			END
 			ELSE
 			BEGIN

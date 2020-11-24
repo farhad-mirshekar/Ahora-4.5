@@ -8,7 +8,6 @@ namespace FM.Portal.Core.Service
     {
         Result<StaticPage> Edit(StaticPage model);
         Result<StaticPage> Get(Guid ID);
-        Result<StaticPage> Get(string TrackingCode);
         Result<List<StaticPage>> List(StaticPageListVM listVM);
         Result Delete(Guid ID);
     }

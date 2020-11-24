@@ -20,10 +20,10 @@ namespace FM.Portal.Core.Common
                 return null;
             }
         }
-        public static void BatchExcute(SqlCommand[] commands)
+        public static bool BatchExcute(SqlCommand[] commands)
         {
             if (commands?.Length < 1)
-                return;
+                return false;
 
             using (SqlConnection sqlconnection = new SqlConnection(GetConnectionString()))
             {
@@ -40,11 +40,12 @@ namespace FM.Portal.Core.Common
                         }
 
                         tran.Commit();
+                        return true;
                     }
                     catch (Exception e)
                     {
                         tran.Rollback();
-                        throw e;
+                        return false;
                     }
                     finally
                     {

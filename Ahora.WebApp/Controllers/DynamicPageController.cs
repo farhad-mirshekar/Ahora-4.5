@@ -1,6 +1,7 @@
 ﻿using Ahora.WebApp.Models;
 using FM.Portal.Core.Service.Ptl;
 using FM.Portal.FrameWork.MVC.Controller;
+using System;
 using System.Web.Mvc;
 
 namespace Ahora.WebApp.Controllers
@@ -15,24 +16,21 @@ namespace Ahora.WebApp.Controllers
         }
 
         // GET: DynamicPage
-        public ActionResult Index(string TrackingCode , string Seo)
+        public ActionResult Index(Guid ID)
         {
-            var pageResult = _service.Get(TrackingCode);
+            var pageResult = _service.Get(ID);
             if (!pageResult.Success)
                 return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
             var page = pageResult.Data;
-            var dynamicPageResult = _dynamicPageService.List(new FM.Portal.Core.Model.DynamicPageListVM {PageID=page.ID });
+            var dynamicPageResult = _dynamicPageService.List(new FM.Portal.Core.Model.DynamicPageListVM { PageID = page.ID });
             if (!dynamicPageResult.Success)
                 return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
             ViewBag.Title = page.Name;
             return View(dynamicPageResult.Data);
         }
-        public ActionResult Detail(string TrackingCode, string Seo)
+        public ActionResult Detail(Guid ID)
         {
-            if(string.IsNullOrEmpty(TrackingCode))
-                return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
-
-            var dynamicPageResult = _dynamicPageService.Get(TrackingCode);
+            var dynamicPageResult = _dynamicPageService.Get(ID);
             if (!dynamicPageResult.Success)
                 return View("Error", new Error { ClassCss = "alert alert-dange", ErorrDescription = "صفحه مورد نظر یافت نشد" });
             var dynamicPage = dynamicPageResult.Data;

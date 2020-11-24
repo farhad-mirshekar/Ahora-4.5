@@ -25,7 +25,7 @@ namespace FM.Portal.Domain
             if (!validateResult.Success)
                 return Result<DynamicPage>.Failure(message: validateResult.Message);
             model.ID = Guid.NewGuid();
-            if (model.Tags.Count > 0)
+            if (model.Tags != null && model.Tags.Count > 0)
             {
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
@@ -79,26 +79,6 @@ namespace FM.Portal.Domain
             }
             return dynamicPageResult;
         }
-
-        public Result<DynamicPage> Get(string TrackingCode)
-        {
-            var dynamicPageResult = _dataSource.Get(TrackingCode);
-            if (dynamicPageResult.Success)
-            {
-                var resultTag = _tagsService.List(dynamicPageResult.Data.ID);
-                if (resultTag.Success)
-                {
-                    List<string> tags = new List<string>();
-                    foreach (var item in resultTag.Data)
-                    {
-                        tags.Add(item.Name);
-                    }
-                    dynamicPageResult.Data.Tags = tags;
-                }
-            }
-            return dynamicPageResult;
-        }
-
         public Result<List<DynamicPage>> List(DynamicPageListVM listVM)
         {
             var table = ConvertDataTableToList.BindList<DynamicPage>(_dataSource.List(listVM));

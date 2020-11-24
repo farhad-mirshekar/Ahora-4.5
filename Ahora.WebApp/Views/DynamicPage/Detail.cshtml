@@ -9,14 +9,14 @@
     <meta name="description" property="dc.description" content="@Model.Description">
     <meta property="og:type" content="article">
     <meta name="keywords" property="article:tag" content="@Model.MetaKeywords">
-    <meta property="nastooh:publishDate" content="@Model.CreationDate.ToString("yyyy-MM-dd")">
+    <meta property="nastooh:publishDate" content="@Model.CreationDate.Value.ToString("yyyy-MM-dd")">
     <meta property="og:title" itemprop="headline" content="@Model.Name">
 }
 @section BodySection{
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="@Url.RouteUrl("Home")">خانه</a></li>
-            <li class="breadcrumb-item"><a href="@Url.RouteUrl("DynamicPages",new { TrackingCode = Model.TrackingCodeParent , Seo=CalculateWordsCount.CleanSeoUrl(Model.PageName)})">@Model.PageName</a></li>
+            <li class="breadcrumb-item"><a href="@Url.RouteUrl("DynamicPage",new { SeName=CalculateWordsCount.CleanSeoUrl(Model.PageName)})">@Model.PageName</a></li>
             <li class="breadcrumb-item active">@Model.Name</li>
         </ol>
     </nav>

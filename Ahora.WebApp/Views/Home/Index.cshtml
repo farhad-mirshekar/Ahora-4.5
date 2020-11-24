@@ -1,4 +1,5 @@
-﻿@section BannerSection{
+﻿@using FM.Portal.Core.Extention.ReadingTime;
+@section BannerSection{
     @{Html.RenderAction("RenderSlide", "Common");}
 }
 @section SearchSection{
@@ -16,4 +17,5 @@
             @{ Html.RenderAction("GetLastEvents", "Common");}
         </div>
     </div>
+    <a href="@Url.RouteUrl("DynamicPage",new { SeName=CalculateWordsCount.CleanSeoUrl("آموزش-سایت")})">aaaaa</a>
 }

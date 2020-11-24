@@ -3851,7 +3851,6 @@
         pages.grid = {
             bindingObject: pages
             , columns: [{ name: 'Name', displayName: 'نام صفحه' },
-            { name: 'TrackingCode', displayName: 'کد پیگیری' },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: dynamicPageService.list
             , deleteService: dynamicPageService.remove
@@ -3932,7 +3931,7 @@
         function addDynamicPage() {
             loadingService.show();
             return $q.resolve().then(() => {
-                pages.Model.PageID = pages.Search.Model.PageID;
+                pages.Model.PageID = pages.search.Model.PageID;
                 return dynamicPageService.add(pages.Model);
             }).then((result) => {
                 pages.Model = result;
@@ -4152,8 +4151,7 @@
         }
         pages.grid = {
             bindingObject: pages
-            , columns: [{ name: 'Name', displayName: 'نام صفحه' },
-            { name: 'TrackingCode', displayName: 'کد پیگیری' },
+            , columns: [{ name: 'PageName', displayName: 'نام صفحه' },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: staticPageService.list
             , deleteService: staticPageService.remove

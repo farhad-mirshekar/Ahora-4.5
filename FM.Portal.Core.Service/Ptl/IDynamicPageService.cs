@@ -9,7 +9,6 @@ namespace FM.Portal.Core.Service
         Result<DynamicPage> Add(DynamicPage model);
         Result<DynamicPage> Edit(DynamicPage model);
         Result<DynamicPage> Get(Guid ID);
-        Result<DynamicPage> Get(string  TrackingCode);
         Result<List<DynamicPage>> List(DynamicPageListVM listVM);
         Result Delete(Guid ID);
     }

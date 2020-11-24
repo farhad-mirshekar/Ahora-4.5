@@ -7,8 +7,11 @@ namespace FM.Portal.Core.Model
 {
    public class DynamicPage:Entity
     {
+        public DynamicPage()
+        {
+            Tags = new List<string>();
+        }
         public string Name { get; set; }
-        public string TrackingCode { get; set; }
         public string Body { get; set; }
         public string Description { get; set; }
         public Guid PageID { get; set; }
@@ -21,10 +24,8 @@ namespace FM.Portal.Core.Model
 
         //show only
         public string PageName { get; set; }
-        public string TrackingCodeParent { get; set; }
         public string FileName { get; set; }
-        public PathType PathType { get; set; }
-        public string Path => PathType.ToString();
+        public string Path => "Pages";
         public int Total { get; set; }
     }
 }

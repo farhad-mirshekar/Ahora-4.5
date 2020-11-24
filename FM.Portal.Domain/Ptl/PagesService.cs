@@ -31,9 +31,6 @@ namespace FM.Portal.Domain.Ptl
         public Result<Pages> Get(Guid ID)
         => _dataSource.Get(ID);
 
-        public Result<Pages> Get(string TrackingCode)
-        => _dataSource.Get(TrackingCode);
-
         public Result<List<Pages>> List(PagesListVM listVM)
         {
             var table = ConvertDataTableToList.BindList<Pages>(_dataSource.List(listVM));

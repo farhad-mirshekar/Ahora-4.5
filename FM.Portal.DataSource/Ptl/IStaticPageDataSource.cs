@@ -9,7 +9,6 @@ namespace FM.Portal.DataSource
     {
         Result<StaticPage> Update(StaticPage model);
         Result<StaticPage> Get(Guid ID);
-        Result<StaticPage> Get(string TrackingCode);
         DataTable List(StaticPageListVM listVM);
         Result Delete(Guid ID);
     }

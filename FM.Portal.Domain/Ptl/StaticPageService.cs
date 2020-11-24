@@ -61,26 +61,6 @@ namespace FM.Portal.Domain
             }
             return dynamicPageResult;
         }
-
-        public Result<StaticPage> Get(string TrackingCode)
-        {
-            var dynamicPageResult = _dataSource.Get(TrackingCode);
-            if (dynamicPageResult.Success)
-            {
-                var resultTag = _tagsService.List(dynamicPageResult.Data.ID);
-                if (resultTag.Success)
-                {
-                    List<string> tags = new List<string>();
-                    foreach (var item in resultTag.Data)
-                    {
-                        tags.Add(item.Name);
-                    }
-                    dynamicPageResult.Data.Tags = tags;
-                }
-            }
-            return dynamicPageResult;
-        }
-
         public Result<List<StaticPage>> List(StaticPageListVM listVM)
         {
             var table = ConvertDataTableToList.BindList<StaticPage>(_dataSource.List(listVM));
@@ -96,7 +76,7 @@ namespace FM.Portal.Domain
                 errors.Add("متن اصلی را وارد نمایید");
             if (string.IsNullOrEmpty(model.Description))
                 errors.Add("توضیحات کوتاه را وارد نمایید");
-            if (string.IsNullOrEmpty(model.UrlDesc))
+            if (string.IsNullOrEmpty(model.Pages.UrlDesc))
                 errors.Add("متن مرورگر وارد نمایید");
             if (errors.Any())
                 return Result.Failure(message: string.Join("&&", errors));

@@ -24,8 +24,7 @@ BEGIN
 	(
 		SELECT 
 			dpages.*,
-			pages.Name AS PageName,
-			attachment.PathType,
+			pages.[Name] AS PageName,
 			attachment.[FileName]
 		FROM ptl.DynamicPage dpages
 		INNER JOIN

@@ -6,7 +6,8 @@ IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('ptl.spDele
 GO
 
 CREATE PROCEDURE ptl.spDeletePages
-	@ID UNIQUEIDENTIFIER
+	@ID UNIQUEIDENTIFIER,
+	@PageType TINYINT
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -14,9 +15,18 @@ BEGIN
 
 	BEGIN TRY
 		BEGIN TRAN
-		DELETE FROM ptl.DynamicPage WHERE PageID = @ID
+			IF @PageType = 1
+				BEGIN
+					DELETE FROM ptl.DynamicPage WHERE PageID = @ID
+				END
+			IF @PageType = 2
+				BEGIN
+					DELETE FROM ptl.StaticPage WHERE ID = @ID
+				END
+
 		DELETE FROM ptl.Pages
-		WHERE ID = @ID
+		WHERE 
+			ID = @ID
 	COMMIT
 		RETURN @@ROWCOUNT
 	END TRY

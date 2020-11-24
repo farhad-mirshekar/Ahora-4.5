@@ -14,7 +14,7 @@ namespace FM.Portal.Infrastructure.DAL
         => _Get(new UrlRecordVM() { UrlDesc = UrlDesc });
 
         public Result<UrlRecord> Get(Guid? ID, Guid? EntityID)
-        => _Get(new UrlRecordVM() {ID = ID , EntityID = EntityID});
+        => _Get(new UrlRecordVM() { ID = ID, EntityID = EntityID });
 
         public Result<UrlRecord> Insert(UrlRecord model)
         => Modify(true, model);
@@ -85,7 +85,10 @@ namespace FM.Portal.Infrastructure.DAL
                     }
 
                 }
-                return Result<UrlRecord>.Successful(data: obj);
+                if (obj.ID != Guid.Empty)
+                    return Result<UrlRecord>.Successful(data: obj);
+                else
+                    return Result<UrlRecord>.Successful(data: null);
             }
             catch (Exception e) { return Result<UrlRecord>.Failure(); }
         }

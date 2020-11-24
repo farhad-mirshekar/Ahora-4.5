@@ -91,8 +91,9 @@ namespace FM.Portal.FrameWork.Seo
             if (data != null)
             {
 
-                var generic_se_name = data.Values["generic_se_name"] as string;
-                var urlRecordResult = _urlRecordService.Get(generic_se_name);
+                var generic_se_names = data.Values["generic_se_name"] as string;
+                var generic_se_name = generic_se_names.Split('.');
+                var urlRecordResult = _urlRecordService.Get(generic_se_name[0]);
                 if (!urlRecordResult.Success)
                 {
                     return data;
@@ -161,6 +162,22 @@ namespace FM.Portal.FrameWork.Seo
                         {
                             data.Values["controller"] = "Redirect";
                             data.Values["action"] = "Melli";
+                        }
+                        break;
+                    case "dynamicpage":
+                        {
+                            data.Values["controller"] = "DynamicPage";
+                            data.Values["action"] = "Index";
+                            data.Values["ID"] = urlRecord.EntityID;
+                            data.Values["SeName"] = urlRecord.UrlDesc;
+                        }
+                        break;
+                    case "dynamicpagedetail":
+                        {
+                            data.Values["controller"] = "DynamicPage";
+                            data.Values["action"] = "Detail";
+                            data.Values["ID"] = urlRecord.EntityID;
+                            data.Values["SeName"] = urlRecord.UrlDesc;
                         }
                         break;
                     default:

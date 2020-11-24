@@ -12,11 +12,7 @@ CREATE PROCEDURE ptl.spModifyStaticPage
 	@Description NVARCHAR(1000),
 	@MetaKeywords NVARCHAR(1000),
 	@BannerShow TINYINT,
-	@AttachmentID UNIQUEIDENTIFIER,
-	@Name NVARCHAR(1000),
-	@UrlDesc NVARCHAR(1000),
-	@Enabled TINYINT,
-	@UserID UNIQUEIDENTIFIER
+	@AttachmentID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -28,14 +24,6 @@ BEGIN
 			[MetaKeywords] = @MetaKeywords,
 			[BannerShow] = @BannerShow,
 			[AttachmentID] = @AttachmentID
-		WHERE ID = @ID
-
-	    UPDATE ptl.[Pages]
-		SET 
-			[Name] = @Name,
-			[UrlDesc] = @UrlDesc,
-			[Enabled] = @Enabled,
-			[UserID] = @UserID
 		WHERE ID = @ID
 	COMMIT
 	RETURN @@ROWCOUNT
