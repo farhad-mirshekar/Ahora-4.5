@@ -3,7 +3,7 @@ using System.Web.Http;
 
 namespace FM.Portal.FrameWork.Api.Controller
 {
-    [FM.Portal.FrameWork.Attributes.Authorize.Authorize]
+    [Attributes.Authorize.Authorize]
    public class BaseApiController<T> : ApiController
         where T:IService
     {

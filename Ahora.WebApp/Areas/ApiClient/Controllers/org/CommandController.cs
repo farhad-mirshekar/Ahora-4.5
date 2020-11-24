@@ -58,19 +58,6 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             catch { throw; }
         }
 
-        [HttpPost, Route("CommandType")]
-        public IHttpActionResult CommandType()
-        {
-            try
-            {
-                var result = EnumExtensions.GetValues<CommandsType>();
-                if (result.Count > 0)
-                    return Ok(Result<List<EnumCast>>.Successful(data: result));
-                else
-                    return Ok(Result<List<EnumCast>>.Failure());
-            }
-            catch { return NotFound(); }
-        }
         [HttpPost,Route("Add")]
         public IHttpActionResult Add(Command model)
         {

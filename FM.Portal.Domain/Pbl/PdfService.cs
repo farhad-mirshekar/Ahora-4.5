@@ -1,5 +1,6 @@
 ﻿using FM.Portal.Core;
 using FM.Portal.Core.Common;
+using FM.Portal.Core.Infrastructure;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Helpers.Files;
@@ -8,7 +9,6 @@ using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace FM.Portal.Domain
 {
@@ -19,18 +19,21 @@ namespace FM.Portal.Domain
         private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly IWorkContext _workContext;
         private readonly IOrderService _orderService;
+        private readonly IWebHelper _webHelper;
 
         public PdfService(IPaymentService paymentService
                           , ILanguageService languageService
                           , IWorkContext workContext
                           , ILocaleStringResourceService localeStringResourceService
-                          , IOrderService orderService)
+                          , IOrderService orderService
+                          , IWebHelper webHelper)
         {
             _paymentService = paymentService;
             _languageService = languageService;
             _workContext = workContext;
             _localeStringResourceService = localeStringResourceService;
             _orderService = orderService;
+            _webHelper = webHelper;
         }
         public Result<string> PrintPaymentToPdf(Guid PaymentID, Guid LanguageID)
         {
@@ -49,7 +52,7 @@ namespace FM.Portal.Domain
                 paymentDetail.Order = order;
                 var trackingCode = order.TrackingCode.Split('-');
                 string fileName = string.Format("order_{0}.pdf", order.ID);
-                string filePath = Path.Combine(FileHelper.MapPath("~/files/Pdf"), fileName);
+                string filePath = Path.Combine(_webHelper.MapPath("~/files/Pdf"), fileName);
                 using (var fileStream = new FileStream(filePath, FileMode.Create))
                 {
                     PrintToPdf(fileStream, paymentDetail, LanguageID);
@@ -397,7 +400,7 @@ namespace FM.Portal.Domain
             //nopCommerce supports unicode characters
             //nopCommerce uses Free Serif font by default (~/App_Data/Pdf/FreeSerif.ttf file)
             //It was downloaded from http://savannah.gnu.org/projects/freefont
-            string fontPath = Path.Combine(FileHelper.MapPath("~/App_Data/Pdf/"), "IRANSansWeb.ttf");
+            string fontPath = Path.Combine(_webHelper.MapPath("~/App_Data/Pdf/"), "IRANSansWeb.ttf");
             var baseFont = BaseFont.CreateFont(fontPath, BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
             var font = new Font(baseFont, 10, Font.NORMAL);
             return font;

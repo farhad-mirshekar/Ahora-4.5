@@ -4,13 +4,14 @@ using System.Linq;
 using System.Web.Mvc;
 using Ahora.WebApp.Models;
 using FM.Portal.Core.Common;
+using FM.Portal.Core.Infrastructure;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.Attributes;
 using FM.Portal.FrameWork.MVC.Controller;
 
 namespace Ahora.WebApp.Areas.User.Controllers
 {
-    [UserAuthorizeAttribute(Roles ="User")]
+    [UserAuthorize(Roles ="User")]
     public class HomeController : BaseController<IPaymentService>
     {
         private readonly ISalesService _salesService;

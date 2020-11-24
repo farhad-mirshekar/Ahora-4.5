@@ -3,7 +3,7 @@ using FM.Portal.Core.Service;
 using System;
 using System.Collections.Generic;
 
-namespace FM.Portal.Core.Extention.Category
+namespace FM.Portal.Core.Tools.Extention.Category
 {
     public static class CategoryExtention
     {
@@ -19,7 +19,6 @@ namespace FM.Portal.Core.Extention.Category
 
             string result = string.Empty;
 
-            //used to prevent circular references
             var alreadyProcessedCategoryIds = new List<Guid>() { };
 
             while (category.ID != Guid.Empty &&  //not null

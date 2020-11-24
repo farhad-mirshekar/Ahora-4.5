@@ -1,5 +1,5 @@
 ﻿using Ahora.WebApp.Models;
-using FM.Portal.Core.Common;
+using FM.Portal.Core.Infrastructure;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.MVC.Controller;

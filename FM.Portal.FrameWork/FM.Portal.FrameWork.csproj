@@ -127,8 +127,6 @@
     <Compile Include="MVC\Helpers\AutoComplate\AutoCompleteSearchViewModel.cs" />
     <Compile Include="MVC\Helpers\File\FileHelper.cs" />
     <Compile Include="MVC\Helpers\Paging\PagingHelper.cs" />
-    <Compile Include="MVC\Helpers\Select\DropDownList.cs" />
-    <Compile Include="MVC\Helpers\Select\ToSelectList.cs" />
     <Compile Include="MVC\Helpers\TreeView\TreeViewHelper.cs" />
     <Compile Include="MVC\Routes\IRouteProvider.cs" />
     <Compile Include="MVC\Routes\IRoutePublisher.cs" />

@@ -1,10 +1,7 @@
-﻿using FM.Portal.Core.Common;
-using FM.Portal.Core.Model;
-using FM.Portal.Core;
+﻿using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.Api.Controller;
 using System;
-using System.Collections.Generic;
 using System.Web.Http;
 
 namespace Ahora.WebApp.Areas.ApiClient.Controllers
@@ -71,19 +68,6 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
             }
         }
 
-        [HttpPost, Route("TypeEnable")]
-        public IHttpActionResult TypeEnable()
-        {
-            try
-            {
-                var result = EnumExtensions.GetValues<EnableMenuType>();
-                if (result.Count > 0)
-                    return Ok(Result<List<EnumCast>>.Successful(data: result));
-                else
-                    return Ok(Result<List<EnumCast>>.Failure());
-            }
-            catch { return NotFound(); }
-        }
         [HttpPost, Route("Remove/{ID:guid}")]
         public IHttpActionResult Remove(Guid ID)
         {

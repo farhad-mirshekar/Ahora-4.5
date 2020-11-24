@@ -97,22 +97,19 @@
     <Compile Include="Caching\ICacheManager.cs" />
     <Compile Include="Caching\MemoryCacheManager.cs" />
     <Compile Include="Common\AppSetting\AppSetting.cs" />
-    <Compile Include="Common\ConvertDataTableToList.cs" />
+    <Compile Include="Common\DataBase\ConvertDataTableToList.cs" />
     <Compile Include="Common\CookieDefaults.cs" />
-    <Compile Include="Common\EnumExtensions.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\AppSetting\IAppSetting.cs" />
-    <Compile Include="Common\IWorkContext.cs" />
+    <Compile Include="Infrastructure\IWorkContext.cs" />
     <Compile Include="Common\Serializer\IObjectSerializer.cs" />
     <Compile Include="Common\Serializer\ObjectSerializer.cs" />
-    <Compile Include="Common\SqlHelper.cs" />
-    <Compile Include="Encryption\Authentication.cs" />
-    <Compile Include="Encryption\cTripleDES.cs" />
+    <Compile Include="Common\DataBase\SqlHelper.cs" />
     <Compile Include="Encryption\HashHelper.cs" />
-    <Compile Include="Extention\Category\CategoryExtention.cs" />
-    <Compile Include="Extention\Category\CategoryPortalExtention.cs" />
-    <Compile Include="Extention\ReadingTime\CalculateReadingTime.cs" />
-    <Compile Include="Extention\ReadingTime\CalculateWordsCount.cs" />
+    <Compile Include="Tools\Extention\Category\CategoryExtention.cs" />
+    <Compile Include="Tools\Extention\Category\CategoryPortalExtention.cs" />
+    <Compile Include="Tools\Extention\ReadingTime\CalculateReadingTime.cs" />
+    <Compile Include="Tools\Extention\ReadingTime\CalculateWordsCount.cs" />
     <Compile Include="Infrastructure\AppDomainTypeFinder.cs" />
     <Compile Include="Infrastructure\IStartupTask.cs" />
     <Compile Include="Infrastructure\ITypeFinder.cs" />
@@ -125,8 +122,7 @@
     <Compile Include="Owin\RequestInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result\Result.cs" />
-    <Compile Include="Security\Extensions.cs" />
-    <Compile Include="Tools\FileConverter.cs" />
+    <Compile Include="Encryption\Security\Extensions.cs" />
     <Compile Include="Tools\Validate.cs" />
   </ItemGroup>
   <ItemGroup>

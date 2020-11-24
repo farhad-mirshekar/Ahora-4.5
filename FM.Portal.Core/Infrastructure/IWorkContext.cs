@@ -1,7 +1,7 @@
 ﻿using FM.Portal.Core.Model;
 using System;
 
-namespace FM.Portal.Core.Common
+namespace FM.Portal.Core.Infrastructure
 {
    public interface IWorkContext
     {

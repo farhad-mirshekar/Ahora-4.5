@@ -1,11 +1,8 @@
 ﻿using FM.Portal.Core.Infrastructure;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 
@@ -88,21 +85,6 @@ namespace FM.Portal.FrameWork
             return result;
         }
 
-        public string GetStoreHost(bool useSsl)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetStoreLocation()
-        {
-            throw new NotImplementedException();
-        }
-
-        public string GetStoreLocation(bool useSsl)
-        {
-            throw new NotImplementedException();
-        }
-
         public string GetThisPageUrl(bool includeQueryString)
         {
             bool useSsl = IsCurrentConnectionSecured();
@@ -157,40 +139,18 @@ namespace FM.Portal.FrameWork
 
             return useSsl;
         }
-
-        public bool IsStaticResource(HttpRequest request)
-        {
-            throw new NotImplementedException();
-        }
-
         public string MapPath(string path)
         {
-            throw new NotImplementedException();
-        }
+            if (HostingEnvironment.IsHosted)
+            {
+                //hosted
+                return HostingEnvironment.MapPath(path);
+            }
 
-        public string ModifyQueryString(string url, string queryStringModification, string anchor)
-        {
-            throw new NotImplementedException();
-        }
-
-        public T QueryString<T>(string name)
-        {
-            throw new NotImplementedException();
-        }
-
-        public string RemoveQueryString(string url, string queryString)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RestartAppDomain(bool makeRedirect = false, string redirectUrl = "")
-        {
-            throw new NotImplementedException();
-        }
-
-        public string ServerVariables(string name)
-        {
-            throw new NotImplementedException();
+            //not hosted. For example, run in unit tests
+            string baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            path = path.Replace("~/", "").TrimStart('/').Replace('/', '\\');
+            return Path.Combine(baseDirectory, path);
         }
 
         #region Utilities

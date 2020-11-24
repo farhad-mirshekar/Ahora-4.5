@@ -71,13 +71,5 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
                 return NotFound();
             }
         }
-
-        [HttpPost, Route("DiscountType")]
-        public IHttpActionResult DiscountType()
-        {
-            var DiscountType = EnumExtensions.GetValues<DiscountType>();
-            var result = Result<List<EnumCast>>.Successful(data: DiscountType);
-            return Ok(result);
-        }
     }
 }

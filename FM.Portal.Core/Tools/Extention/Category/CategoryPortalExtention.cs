@@ -1,10 +1,9 @@
 ﻿using FM.Portal.Core.Common;
-using FM.Portal.Core;
 using FM.Portal.Core.Service.Ptl;
 using System;
 using System.Collections.Generic;
 
-namespace FM.Portal.Core.Extention.CategoryPortal
+namespace FM.Portal.Core.Tools.Extention.CategoryPortal
 {
     public static class CategoryPortalExtention
     {
@@ -20,7 +19,6 @@ namespace FM.Portal.Core.Extention.CategoryPortal
 
             string result = string.Empty;
 
-            //used to prevent circular references
             var alreadyProcessedCategoryIds = new List<Guid>() { };
 
             while (category.ID != Guid.Empty &&  //not null

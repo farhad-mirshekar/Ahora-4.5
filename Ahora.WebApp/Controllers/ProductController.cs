@@ -9,6 +9,7 @@ using Ahora.WebApp.Models;
 using Ahora.WebApp.Models.App;
 using FM.Portal.FrameWork.AutoMapper;
 using Ahora.WebApp.Factories;
+using FM.Portal.Core.Infrastructure;
 
 namespace Ahora.WebApp.Controllers
 {

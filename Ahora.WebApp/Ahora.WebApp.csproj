@@ -285,7 +285,7 @@
     <Content Include="Areas\Admin\app\directive\upload-video\upload-video.js" />
     <Content Include="Areas\Admin\app\directive\upload\upload.html" />
     <Content Include="Areas\Admin\app\directive\upload\upload.js" />
-    <Content Include="Areas\Admin\app\NotFound\not-found.html" />
+    <Content Include="Areas\Admin\app\not-found\not-found.html" />
     <Content Include="Areas\Admin\app\service\authenticationService.js" />
     <Content Include="Areas\Admin\app\service\enum.service.js">
       <AutoGen>True</AutoGen>
@@ -319,9 +319,6 @@
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.svg" />
     <Content Include="Areas\User\Content\img\logo.png" />
     <Content Include="Areas\User\Content\js\custom.js" />
-    <Content Include="Content\bootstrap3-rtl\bootstrap-rtl.css" />
-    <Content Include="Content\bootstrap3\bootstrap.css" />
-    <Content Include="Content\bootstrap3\bootstrap.min.css" />
     <Content Include="Content\bootstrap4-rtl\bootstrap4-rtl.css" />
     <Content Include="Content\bootstrap\bootstrap-grid.css" />
     <Content Include="Content\bootstrap\bootstrap-grid.min.css" />
@@ -584,7 +581,6 @@
     <Content Include="Areas\Admin\Views\CategoryPortal\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Category\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Command\Index.cshtml" />
-    <Content Include="Areas\Admin\Views\Comment\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Discount\Index.cshtml" />
     <Content Include="Areas\Admin\Views\FaqGroup\Index.cshtml" />
     <Content Include="Areas\Admin\Views\GeneralSetting\Index.cshtml" />
@@ -653,8 +649,6 @@
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.eot" />
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.ttf" />
     <Content Include="Areas\User\Content\fonts\yekannumbers-regular.woff" />
-    <Content Include="Areas\Admin\Views\Comment\ListForPortal.cshtml" />
-    <Content Include="Areas\Admin\Views\Payment\Index.cshtml" />
     <Content Include="Areas\Admin\Views\Notification\Index.cshtml" />
     <Content Include="Areas\User\Views\Home\OrderDetail.cshtml" />
     <Content Include="Areas\User\Views\Profile\Index.cshtml" />

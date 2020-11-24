@@ -1,5 +1,4 @@
-﻿
-using System.IO;
+﻿using System.IO;
 using System.Web;
 
 namespace FM.Portal.Core.Tools

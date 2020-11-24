@@ -1,4 +1,5 @@
 ﻿using FM.Portal.Core.Common;
+using FM.Portal.Core.Infrastructure;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using System;
