@@ -46,7 +46,7 @@ namespace FM.Portal.Domain
             if (!validateResult.Success)
                 return Result<LocaleStringResource>.Failure(message: validateResult.Message);
 
-            var result= _dataSource.Update(model);
+            var result = _dataSource.Update(model);
             if (result.Success)
                 _cacheManager.Remove(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values);
             return result;
@@ -95,43 +95,42 @@ namespace FM.Portal.Domain
         }
         private Result<string> GetResource(string resourceKey, Guid LanguageID)
         {
-            string key = string.Format(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values, LanguageID);
-            return _cacheManager.Get(key, () =>
-             {
-                 string result = string.Empty;
-                 if (resourceKey == null)
-                     resourceKey = string.Empty;
-                 resourceKey = resourceKey.Trim().ToLowerInvariant();
-                 var resourcesResult = GetAllResourceValues(LanguageID);
-                 if (!resourcesResult.Success)
-                     return Result<string>.Failure(message: resourcesResult.Message);
+            string result = string.Empty;
+            if (resourceKey == null)
+                resourceKey = string.Empty;
+            resourceKey = resourceKey.Trim().ToLowerInvariant();
+            var resourcesResult = GetAllResourceValues(LanguageID);
+            if (!resourcesResult.Success)
+                return Result<string>.Failure(message: resourcesResult.Message);
 
-                 var resources = resourcesResult.Data;
-                 if (resources.ContainsKey(resourceKey))
-                 {
-                     result = resources[resourceKey].Value;
-                 }
-                 return Result<string>.Successful(data: result);
-             }
-             );
+            var resources = resourcesResult.Data;
+            if (resources.ContainsKey(resourceKey))
+            {
+                result = resources[resourceKey].Value;
+            }
+            return Result<string>.Successful(data: result);
         }
         private Result<Dictionary<string, KeyValuePair<Guid, string>>> GetAllResourceValues(Guid LanguageID)
         {
-            var listResult = List(new LocaleStringResourceListVM() { LanguageID = LanguageID });
-            if (!listResult.Success)
-                return Result<Dictionary<string, KeyValuePair<Guid, string>>>.Failure(message: listResult.Message);
-
-            var localeStringResources = listResult.Data;
-            var dictionary = new Dictionary<string, KeyValuePair<Guid, string>>();
-
-            foreach (var locale in localeStringResources)
+            string key = string.Format(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values, LanguageID);
+            return _cacheManager.Get(key, () =>
             {
-                var resourceName = locale.ResourceName.ToLowerInvariant();
-                if (!dictionary.ContainsKey(resourceName))
-                    dictionary.Add(resourceName, new KeyValuePair<Guid, string>(locale.ID, locale.ResourceValue));
-            }
+                var listResult = List(new LocaleStringResourceListVM() { LanguageID = LanguageID });
+                if (!listResult.Success)
+                    return Result<Dictionary<string, KeyValuePair<Guid, string>>>.Failure(message: listResult.Message);
 
-            return Result<Dictionary<string, KeyValuePair<Guid, string>>>.Successful(data: dictionary);
+                var localeStringResources = listResult.Data;
+                var dictionary = new Dictionary<string, KeyValuePair<Guid, string>>();
+
+                foreach (var locale in localeStringResources)
+                {
+                    var resourceName = locale.ResourceName.ToLowerInvariant();
+                    if (!dictionary.ContainsKey(resourceName))
+                        dictionary.Add(resourceName, new KeyValuePair<Guid, string>(locale.ID, locale.ResourceValue));
+                }
+
+                return Result<Dictionary<string, KeyValuePair<Guid, string>>>.Successful(data: dictionary);
+            });
         }
     }
 }
