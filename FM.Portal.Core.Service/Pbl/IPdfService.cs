@@ -1,9 +1,10 @@
 ﻿using System;
+using System.IO;
 
 namespace FM.Portal.Core.Service
 {
    public interface IPdfService:IService
     {
-        Result<string> PrintPaymentToPdf(Guid PaymentID,Guid LanguageID);
+        Result PrintPaymentToPdf(Stream stream,Guid PaymentID,Guid LanguageID);
     }
 }

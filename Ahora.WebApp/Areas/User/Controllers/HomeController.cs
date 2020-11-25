@@ -11,7 +11,7 @@ using FM.Portal.FrameWork.MVC.Controller;
 
 namespace Ahora.WebApp.Areas.User.Controllers
 {
-    [UserAuthorize(Roles ="User")]
+    //[UserAuthorize(Roles ="User")]
     public class HomeController : BaseController<IPaymentService>
     {
         private readonly ISalesService _salesService;
@@ -79,11 +79,10 @@ namespace Ahora.WebApp.Areas.User.Controllers
             byte[] bytes = null;
             using (var stream = new MemoryStream())
             {
-                _pdfService.PrintPaymentToPdf(PaymentID, Helper.LanguageID);
+               var t= _pdfService.PrintPaymentToPdf(stream,PaymentID, Helper.LanguageID);
                 bytes = stream.ToArray();
             }
-            return null;
-            //return File(bytes, "application/pdf", string.Format("order_{0}.pdf",paymentDetailResult.Data.Payment.OrderID ));
+            return File(bytes, "application/pdf", string.Format("order_{0}.pdf", paymentDetailResult.Data.Payment.OrderID ));
         }
     }
 }

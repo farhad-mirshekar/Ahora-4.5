@@ -35,30 +35,26 @@ namespace FM.Portal.Domain
             _orderService = orderService;
             _webHelper = webHelper;
         }
-        public Result<string> PrintPaymentToPdf(Guid PaymentID, Guid LanguageID)
+        public Result PrintPaymentToPdf(Stream stream, Guid PaymentID, Guid LanguageID)
         {
             try
             {
                 var paymentDetailResult = _paymentService.GetDetail(PaymentID);
                 if (!paymentDetailResult.Success)
-                    return Result<string>.Failure(message: paymentDetailResult.Message);
+                    return Result.Failure(message: paymentDetailResult.Message);
                 var paymentDetail = paymentDetailResult.Data;
 
                 var orderResult = _orderService.Get(new GetOrderVM() { ID = paymentDetail.Payment.OrderID });
                 if (!orderResult.Success)
-                    return Result<string>.Failure(message: orderResult.Message);
+                    return Result.Failure(message: orderResult.Message);
                 var order = orderResult.Data;
 
                 paymentDetail.Order = order;
                 var trackingCode = order.TrackingCode.Split('-');
                 string fileName = string.Format("order_{0}.pdf", order.ID);
                 string filePath = Path.Combine(_webHelper.MapPath("~/files/Pdf"), fileName);
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    PrintToPdf(fileStream, paymentDetail, LanguageID);
-                }
-                return Result<string>.Successful(data: filePath);
-
+                PrintToPdf(stream, paymentDetail, LanguageID);
+                return Result.Successful();
             }
             catch (Exception e) { throw; }
         }
@@ -255,7 +251,7 @@ namespace FM.Portal.Domain
 
 
                 decimal attributePrice = 0;
-                var attributes =new List<string>();
+                var attributes = new List<string>();
                 if (payment.Attributes != null && payment.Attributes.Count > 0)
                 {
                     foreach (var attribute in payment.Attributes)
@@ -274,7 +270,7 @@ namespace FM.Portal.Domain
                         }
                     }
 
-                    productCellItem = new PdfPCell(new Phrase($"{product.Name} - {string.Join(",",attributes)}", font));
+                    productCellItem = new PdfPCell(new Phrase($"{product.Name} - {string.Join(",", attributes)}", font));
                     productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
                     productCellItem.Padding = 6;
                     productTable.AddCell(productCellItem);
