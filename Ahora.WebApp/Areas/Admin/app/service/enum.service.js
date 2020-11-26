@@ -136,6 +136,10 @@
 				'7': 'Arabic',
 				'8': 'Hindi',
 				'9': 'Chinese'
+			},
+			enumService.HasDiscountType = {
+				'1': 'دارای تخفیف',
+				'2': 'بدون تخفیف'
 			}
 
 		return enumService;

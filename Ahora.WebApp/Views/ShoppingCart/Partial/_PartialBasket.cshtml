@@ -103,9 +103,6 @@
                                                             }
 
                                                         </div>
-                                                        @{
-                                                            Model.AmountBasket += attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity;
-                                                        }
                                                         <div class="col-md-12">
                                                             <label>مبلغ :</label>
                                                             <label>@string.Format("{0:C0} تومان", (attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>

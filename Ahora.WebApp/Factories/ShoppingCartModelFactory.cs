@@ -74,7 +74,8 @@ namespace Ahora.WebApp.Factories
             {
                 return _cacheManager.Get(CacheParamExtention.Shopping_Cart_Item_Details, () =>
                 {
-
+                    var shoppingCartItemListModel = new ShoppingCartItemListModel();
+                    decimal amountBasket = 0;
                     var shoppingCartItemResult = _shoppingCartItemService.List(_workContext.ShoppingID.Value);
                     if (!shoppingCartItemResult.Success)
                         return null;
@@ -92,6 +93,10 @@ namespace Ahora.WebApp.Factories
                     {
                         foreach (var cartItem in shoppingCartItemModel)
                         {
+                            decimal temp1 = 0;
+                            decimal temp2 = 0;
+                            decimal attributePrice = 0;
+
                             var productResult = _productService.Get(cartItem.ProductID);
                             if (!productResult.Success)
                                 cartItem.Product = null;
@@ -100,6 +105,20 @@ namespace Ahora.WebApp.Factories
 
                             if (cartItem.Product != null)
                             {
+                                if(cartItem.Product.HasDiscount == HasDiscountType.دارای_تخفیف)
+                                {
+                                    switch (cartItem.Product.DiscountType)
+                                    {
+                                        case DiscountType.درصدی:
+                                            temp1 = (cartItem.Product.Price * cartItem.Product.Discount) / 100;
+                                            break;
+
+                                        case DiscountType.مبلغی:
+                                            temp1 = cartItem.Product.Discount;
+                                            break;
+                                    }
+                                }
+
                                 #region Category
                                 var categoryResult = _categoryService.Get(cartItem.Product.CategoryID);
                                 if (!categoryResult.Success)
@@ -119,6 +138,20 @@ namespace Ahora.WebApp.Factories
                                         var discountResult = _discountService.Get(categoryMapDiscountResult.Data.DiscountID);
                                         if (discountResult.Success)
                                             cartItem.CategoryDiscount = discountResult.Data;
+                                    }
+
+                                    if (cartItem.Category.HasDiscountsApplied)
+                                    {
+                                        switch (cartItem.CategoryDiscount.DiscountType)
+                                        {
+                                            case DiscountType.درصدی:
+                                                temp2 = (cartItem.Product.Price * cartItem.CategoryDiscount.DiscountAmount) / 100;
+                                                break;
+
+                                            case DiscountType.مبلغی:
+                                                temp2 = cartItem.CategoryDiscount.DiscountAmount;
+                                                break;
+                                        }
                                     }
                                 }
                                 #endregion
@@ -149,12 +182,28 @@ namespace Ahora.WebApp.Factories
                                 }
                                 #endregion
 
+                                #region Attributes
+                                if(cartItem.AttributeModel != null && cartItem.AttributeModel.Count > 0)
+                                {
+                                    foreach (var attribute in cartItem.AttributeModel)
+                                    {
+                                        if (attribute.Price > 0)
+                                            attributePrice = attribute.Price;
+                                    }
+                                }
+                                #endregion
+
+                                #region calculate basket
+                                amountBasket += (attributePrice + (cartItem.Product.Price - (temp1 + temp2)) * cartItem.Quantity);
+                                #endregion
+
                             }
                         }
 
                     }
-
-                    return new ShoppingCartItemListModel { AvailableShoppingCartItem = shoppingCartItemModel };
+                    shoppingCartItemListModel.AvailableShoppingCartItem = shoppingCartItemModel;
+                    shoppingCartItemListModel.AmountBasket = amountBasket;
+                    return shoppingCartItemListModel;
                 });
             }
             catch (Exception e)
@@ -237,76 +286,79 @@ namespace Ahora.WebApp.Factories
                 var attributeModel = new List<AttributeModel>();
                 var productList = new List<Product>();
 
-                foreach (var shoppingCart in shoppingCartDetail.AvailableShoppingCartItem)
+                if(shoppingCartDetail.AvailableShoppingCartItem != null && shoppingCartDetail.AvailableShoppingCartItem.Count > 0)
                 {
-                    if (CheckQuantity(shoppingCart))
+                    foreach (var shoppingCart in shoppingCartDetail.AvailableShoppingCartItem)
                     {
-                        decimal temp1 = 0;
-                        decimal temp2 = 0;
-                        decimal attributePrice = 0;
-
-                        var price = shoppingCart.Product.Price;
-                        if (shoppingCart.Product.HasDiscount == HasDiscountType.دارای_تخفیف)
+                        if (CheckQuantity(shoppingCart))
                         {
-                            if (shoppingCart.Product.DiscountType != DiscountType.نامشخص)
+                            decimal temp1 = 0;
+                            decimal temp2 = 0;
+                            decimal attributePrice = 0;
+
+                            var price = shoppingCart.Product.Price;
+                            if (shoppingCart.Product.HasDiscount == HasDiscountType.دارای_تخفیف)
                             {
-                                switch (shoppingCart.Product.DiscountType)
+                                if (shoppingCart.Product.DiscountType != DiscountType.نامشخص)
                                 {
-                                    case DiscountType.درصدی:
-                                        temp1 = (shoppingCart.Product.Price * shoppingCart.Product.Discount) / 100;
-                                        break;
-                                    case DiscountType.مبلغی:
-                                        temp1 = shoppingCart.Product.Discount;
-                                        break;
+                                    switch (shoppingCart.Product.DiscountType)
+                                    {
+                                        case DiscountType.درصدی:
+                                            temp1 = (shoppingCart.Product.Price * shoppingCart.Product.Discount) / 100;
+                                            break;
+                                        case DiscountType.مبلغی:
+                                            temp1 = shoppingCart.Product.Discount;
+                                            break;
+                                    }
                                 }
                             }
-                        }
-                        if (shoppingCart.Category != null && shoppingCart.CategoryDiscount != null)
-                        {
-                            if (shoppingCart.Category.HasDiscountsApplied)
+                            if (shoppingCart.Category != null && shoppingCart.CategoryDiscount != null)
                             {
-                                switch (shoppingCart.CategoryDiscount.DiscountType)
+                                if (shoppingCart.Category.HasDiscountsApplied)
                                 {
-                                    case DiscountType.درصدی:
-                                        temp2 = (shoppingCart.Product.Price * shoppingCart.CategoryDiscount.DiscountAmount) / 100;
-                                        break;
-                                    case DiscountType.مبلغی:
-                                        temp2 = shoppingCart.CategoryDiscount.DiscountAmount;
-                                        break;
+                                    switch (shoppingCart.CategoryDiscount.DiscountType)
+                                    {
+                                        case DiscountType.درصدی:
+                                            temp2 = (shoppingCart.Product.Price * shoppingCart.CategoryDiscount.DiscountAmount) / 100;
+                                            break;
+                                        case DiscountType.مبلغی:
+                                            temp2 = shoppingCart.CategoryDiscount.DiscountAmount;
+                                            break;
+                                    }
                                 }
                             }
-                        }
-                        if (shoppingCart.AttributeModel != null && shoppingCart.AttributeModel.Count > 0)
-                        {
-                            attributeModel.AddRange(shoppingCart.AttributeModel);
-                            foreach (var attribute in shoppingCart.AttributeModel)
+                            if (shoppingCart.AttributeModel != null && shoppingCart.AttributeModel.Count > 0)
                             {
-                                if (attribute.Price > 0)
-                                    attributePrice += attribute.Price;
+                                attributeModel.AddRange(shoppingCart.AttributeModel);
+                                foreach (var attribute in shoppingCart.AttributeModel)
+                                {
+                                    if (attribute.Price > 0)
+                                        attributePrice += attribute.Price;
+                                }
+
                             }
+                            shoppingCart.Product.CountSelect = shoppingCart.Quantity;
 
+                            amount += attributePrice + (price - (temp1 + temp2)) * shoppingCart.Quantity;
+                            productList.Add(new Product
+                            {
+                                ID = shoppingCart.Product.ID,
+                                Name = shoppingCart.Product.Name,
+                                Price = shoppingCart.Product.Price,
+                                Discount = shoppingCart.Product.Discount,
+                                DiscountType = shoppingCart.Product.DiscountType,
+                                StockQuantity = shoppingCart.Product.StockQuantity,
+                                SpecialOffer = shoppingCart.Product.SpecialOffer,
+                                IsDownload = shoppingCart.Product.IsDownload,
+                                Category = shoppingCart.Category,
+                                DeliveryDate = shoppingCart.DeliveryDate,
+                                ShippingCost = shoppingCart.ShippingCost,
+                                CategoryDiscount = shoppingCart.CategoryDiscount
+                            });
                         }
-                        shoppingCart.Product.CountSelect = shoppingCart.Quantity;
-
-                        amount += attributePrice + (price - (temp1 + temp2)) * shoppingCart.Quantity;
-                        productList.Add(new Product
-                        {
-                            ID = shoppingCart.Product.ID,
-                            Name = shoppingCart.Product.Name,
-                            Price = shoppingCart.Product.Price,
-                            Discount = shoppingCart.Product.Discount,
-                            DiscountType = shoppingCart.Product.DiscountType,
-                            StockQuantity = shoppingCart.Product.StockQuantity,
-                            SpecialOffer = shoppingCart.Product.SpecialOffer,
-                            IsDownload = shoppingCart.Product.IsDownload,
-                            Category = shoppingCart.Category,
-                            DeliveryDate = shoppingCart.DeliveryDate,
-                            ShippingCost = shoppingCart.ShippingCost,
-                            CategoryDiscount = shoppingCart.CategoryDiscount
-                        });
+                        else
+                            return new JsonResultModel { Success = false, Message = $"موجودی محصول {shoppingCart.Product.Name} به اتمام رسیده است" };
                     }
-                    else
-                        return new JsonResultModel { Success = false, Message = $"موجودی محصول {shoppingCart.Product.Name} به اتمام رسیده است" };
                 }
 
 
@@ -526,12 +578,7 @@ namespace Ahora.WebApp.Factories
         {
             var _bankMelli = new BankMelli();
 
-            //var bankResult = await _bankMelli.PaymentRequest((long)amount);
-            var bankResult = new PayResultData
-            {
-                ResCode="0",
-                Token=$"Melli-{Guid.NewGuid()}"
-            };
+            var bankResult = await _bankMelli.PaymentRequest((long)amount);
             switch (bankResult.ResCode)
             {
                 case "0":
@@ -545,12 +592,10 @@ namespace Ahora.WebApp.Factories
                         }
                         else
                         {
-                            //var merchantTerminalKeyCookie = new HttpCookie("Data", bankResult.Request);
-                            //_httpContext.Response.Cookies.Add(merchantTerminalKeyCookie);
+                            var merchantTerminalKeyCookie = new HttpCookie("Data", bankResult.Request);
+                            _httpContext.Response.Cookies.Add(merchantTerminalKeyCookie);
 
-                            return new JsonResultModel { Success = true, Url = "/" };
-
-                            //return new JsonResultModel { Success = true, Url = MelliPurchase(bankResult.Token) };
+                            return new JsonResultModel { Success = true, Url = MelliPurchase(bankResult.Token) };
                         }
                     }
                 default:

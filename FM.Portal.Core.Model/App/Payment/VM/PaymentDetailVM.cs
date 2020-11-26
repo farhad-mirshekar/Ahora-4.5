@@ -13,6 +13,7 @@ namespace FM.Portal.Core.Model
         public Payment Payment { get; set; }
         public List<SalesFlow> SalesFlows { get; set; }
         public Order Order { get; set; }
+        public List<ShoppingCartItem> shoppingCartItems { get; set; }
 
     }
 }

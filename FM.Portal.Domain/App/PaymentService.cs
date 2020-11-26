@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
+using FM.Portal.Core.Common.Serializer;
 
 namespace FM.Portal.Domain
 {
@@ -18,15 +19,18 @@ namespace FM.Portal.Domain
         private readonly IOrderDetailDataSource _orderDetailDataSource;
         private readonly IOrderDataSource _orderDataSource;
         private readonly IUserAddressDataSource _userAddressDataSource;
+        private readonly IObjectSerializer _objectSerializer;
         public PaymentService(IPaymentDataSource dataSource
                              , IOrderDetailDataSource orderDetailDataSource
                              , IUserAddressDataSource userAddressDataSource
-                             , IOrderDataSource orderDataSource)
+                             , IOrderDataSource orderDataSource
+                             , IObjectSerializer objectSerializer)
         {
             _dataSource = dataSource;
             _orderDetailDataSource = orderDetailDataSource;
             _userAddressDataSource = userAddressDataSource;
             _orderDataSource = orderDataSource;
+            _objectSerializer = objectSerializer;
         }
         public Result FirstStepPayment(Order order, OrderDetail detail, Payment payment)
         => _dataSource.FirstStepPayment(order, detail, payment);
@@ -50,26 +54,27 @@ namespace FM.Portal.Domain
             var orderDetail = orderDetailResult.Data;
 
             var orderResult = _orderDataSource.Get(new GetOrderVM { ID = orderDetail.OrderID });
-            if(!orderResult.Success)
+            if (!orderResult.Success)
                 return Result<PaymentDetailVM>.Failure();
             var order = orderResult.Data;
             var userAddressResult = _userAddressDataSource.Get(order.AddressID);
             var obj = new PaymentDetailVM
             {
-                Attributes=JsonConvert.DeserializeObject<List<AttributeJsonVM>>(orderDetail.AttributeJson),
-                ID=payment.ID,
-                CreationDate=payment.CreationDate,
-                Payment=payment,
-                Products=JsonConvert.DeserializeObject<List<Product>>(orderDetail.ProductJson),
-                User = JsonConvert.DeserializeObject<User>(orderDetail.UserJson),
-                UserAddress = userAddressResult.Data
+                Attributes = _objectSerializer.DeSerialize<List<AttributeJsonVM>>(orderDetail.AttributeJson),
+                ID = payment.ID,
+                CreationDate = payment.CreationDate,
+                Payment = payment,
+                Products = _objectSerializer.DeSerialize<List<Product>>(orderDetail.ProductJson),
+                User = _objectSerializer.DeSerialize<User>(orderDetail.UserJson),
+                UserAddress = userAddressResult.Data,
+                shoppingCartItems = _objectSerializer.DeSerialize<List<ShoppingCartItem>>(orderDetail.ShoppingCartJson)
             };
-            return Result<PaymentDetailVM>.Successful(data:obj);
+            return Result<PaymentDetailVM>.Successful(data: obj);
         }
 
         public Result<List<PaymentListVM>> List()
-        { 
-           var table = ConvertDataTableToList.BindList<PaymentListVM>(_dataSource.List());
+        {
+            var table = ConvertDataTableToList.BindList<PaymentListVM>(_dataSource.List());
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<PaymentListVM>>.Successful(data: table);
             return Result<List<PaymentListVM>>.Failure();
@@ -143,7 +148,7 @@ namespace FM.Portal.Domain
                 }
                 return Result<byte[]>.Successful(data: bytes);
             }
-            catch(Exception e) { throw; }
+            catch (Exception e) { throw; }
         }
     }
 }

@@ -78,6 +78,8 @@ namespace Ahora.WebApp.Controllers
                                     shoppingCart.Product.StockQuantity -= shoppingCart.Quantity;
                                     _productService.Edit(shoppingCart.Product);
                                 }
+
+                                AddSales(payment.ID);
                                 break;
                             }
                         case ResCodeVerify.مهلت_ارسال_تراکنش_به_پایان_رسیده_است:
@@ -203,21 +205,20 @@ namespace Ahora.WebApp.Controllers
                             }
                     }
                     _service.Edit(payment);
-                    AddSales(payment.ID);
                     ClearCookie("ShoppingID");
                     ClearCookie("Data");
-                    var detailResults = _service.GetDetail(SQLHelper.CheckGuidNull(payment.ID));
-                    var DownloadResults = await CreateDownload(detailResults.Data.Products, payment.ID);
-                    if (DownloadResults != null && DownloadResults.Count > 0)
-                        ViewBag.Download = DownloadResults;
+                    //var detailResults = _service.GetDetail(SQLHelper.CheckGuidNull(payment.ID));
+                    //var DownloadResults = await CreateDownload(detailResults.Data.Products, payment.ID);
+                    //if (DownloadResults != null && DownloadResults.Count > 0)
+                    //    ViewBag.Download = DownloadResults;
                     return View(paymentVerifyResult);
                 }
                 else
                 {
-                    var detailResult = _service.GetDetail(SQLHelper.CheckGuidNull(payment.ID));
-                    var DownloadResult = await CreateDownload(detailResult.Data.Products, payment.ID);
-                    if (DownloadResult != null && DownloadResult.Count > 0)
-                        ViewBag.Download = DownloadResult;
+                    //var detailResult = _service.GetDetail(SQLHelper.CheckGuidNull(payment.ID));
+                    //var DownloadResult = await CreateDownload(detailResult.Data.Products, payment.ID);
+                    //if (DownloadResult != null && DownloadResult.Count > 0)
+                    //    ViewBag.Download = DownloadResult;
 
                     var paymentVerifyResult = new VerifyResultData()
                     {

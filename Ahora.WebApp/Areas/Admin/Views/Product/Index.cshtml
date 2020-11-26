@@ -30,7 +30,7 @@
                 <li>{{row}}</li>
             </ul>
         </div>
-        <div class="alert alert-danger" ng-show="Model.HasDiscountsApplied">
+        <div class="alert alert-danger" ng-show="category.Model.HasDiscountsApplied">
             <span>این محصول دارای تخفیف بصورت گروهی می باشد</span>
         </div>
         <div class="form-horizontal">
@@ -147,7 +147,9 @@
                         <div class="row" style="margin-top:30px;">
                             <div class="form-group col-xs-12 col-sm-3 weight">
                                 <label>اعمال تخفیف</label>
-                                <input type="checkbox" class="form-control" ng-model="Model.HasDiscount" />
+                                <select class="form-control" ng-model="Model.HasDiscount">
+                                    <option ng-repeat="row in hasDiscountType" ng-value="row.Model">{{row.Name}}</option>
+                                </select>
                             </div>
                             <div class="form-group col-xs-12 col-sm-3 weight" ng-show="Model.HasDiscount">
                                 <label>نوع تخفیف</label>
@@ -257,9 +259,9 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab heading="ویژگی های برتر محصول" ng-show="state === 'edit'">
-                    <div class="alert alert-info">در حال پیاده سازی</div>
-                </uib-tab>
+                @*<uib-tab heading="ویژگی های برتر محصول" ng-show="state === 'edit'">
+                        <div class="alert alert-info">در حال پیاده سازی</div>
+                    </uib-tab>*@
                 <uib-tab heading="افزودن تصاویر محصول" ng-if="Model.ID && state === 'edit'">
                     <div class="container">
                         <div class="row">
@@ -269,24 +271,24 @@
                         </div>
                     </div>
                 </uib-tab>
-                <uib-tab heading="افزودن فایل محصول" ng-if="Model.ID && state === 'edit'">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="control-label">آیا این فایل برای دانلود پس از پرداخت می باشد ؟</label>
-                                    <div class="d-inline">
-                                        <input type="radio" ng-model="Model.IsDownload" ng-value="true"><span class="pad-radio">بله</span>
-                                        <input type="radio" ng-model="Model.IsDownload" ng-value="false"><span class="pad-radio">خیر</span>
+                @*<uib-tab heading="افزودن فایل محصول" ng-if="Model.ID && state === 'edit'">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="control-label">آیا این فایل برای دانلود پس از پرداخت می باشد ؟</label>
+                                        <div class="d-inline">
+                                            <input type="radio" ng-model="Model.IsDownload" ng-value="true"><span class="pad-radio">بله</span>
+                                            <input type="radio" ng-model="Model.IsDownload" ng-value="false"><span class="pad-radio">خیر</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-12">
-                                <portal-upload obj="file"></portal-upload>
+                                <div class="col-md-12">
+                                    <portal-upload obj="file"></portal-upload>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </uib-tab>
+                    </uib-tab>*@
             </uib-tabset>
         </div>
     </div>
@@ -370,7 +372,7 @@
                     <div class="form-group">
                         <label for="CategorySub" class="control-label">نام محصول</label>
                         <div class="col-md-10">
-                            <label class="control-label">{{relatedProduct.Model.ProductName2}}</label> 
+                            <label class="control-label">{{relatedProduct.Model.ProductName2}}</label>
                         </div>
                     </div>
                     <div class="form-group">
@@ -388,3 +390,5 @@
         </div>
     </div>
 </div>
+
+<toaster-container toaster-options="{'position-class': 'toast-top-center', 'newest-ontop': 'false'}"></toaster-container>

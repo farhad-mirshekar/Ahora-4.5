@@ -101,6 +101,8 @@
     <Compile Include="Common\CookieDefaults.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\AppSetting\IAppSetting.cs" />
+    <Compile Include="Encryption\Security\Authentication.cs" />
+    <Compile Include="Encryption\Security\cTripleDES.cs" />
     <Compile Include="Infrastructure\IWorkContext.cs" />
     <Compile Include="Common\Serializer\IObjectSerializer.cs" />
     <Compile Include="Common\Serializer\ObjectSerializer.cs" />

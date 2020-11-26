@@ -9,6 +9,7 @@ using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace FM.Portal.Domain
 {
@@ -186,16 +187,16 @@ namespace FM.Portal.Domain
             #endregion
 
             #region Product
-            var productTable = new PdfPTable(6);
+            var productTable = new PdfPTable(7);
             productTable.WidthPercentage = 100f;
             productTable.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
             productTable.DefaultCell.Border = Rectangle.BOX;
-            productTable.SetWidths(new[] { 15, 15, 15, 15, 35, 5 });
+            productTable.SetWidths(new[] { 15, 15, 10, 10, 10, 35, 5 });
 
             lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Title");
             lng = lngResult.Data;
             var headerProduct = new PdfPCell(new Phrase($"{lng}", titleFont));
-            headerProduct.Colspan = 6;
+            headerProduct.Colspan = 7;
             headerProduct.Padding = 6;
             headerProduct.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
             productTable.AddCell(headerProduct);
@@ -222,6 +223,13 @@ namespace FM.Portal.Domain
             productTable.AddCell(productCellItem);
 
             lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Price");
+            lng = lngResult.Data;
+            productCellItem = new PdfPCell(new Phrase($"{lng}", font));
+            productCellItem.Padding = 6;
+            productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+            productTable.AddCell(productCellItem);
+
+            lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.Discount");
             lng = lngResult.Data;
             productCellItem = new PdfPCell(new Phrase($"{lng}", font));
             productCellItem.Padding = 6;
@@ -283,7 +291,9 @@ namespace FM.Portal.Domain
                     productTable.AddCell(productCellItem);
                 }
 
-                productCellItem = new PdfPCell(new Phrase($"{product.CountSelect}", font));
+                var cartItem = payment.shoppingCartItems.Where(cart => cart.ProductID == product.ID).First();
+
+                productCellItem = new PdfPCell(new Phrase($"{cartItem.Quantity}", font));
                 productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
                 productCellItem.Padding = 6;
                 productTable.AddCell(productCellItem);
@@ -299,38 +309,63 @@ namespace FM.Portal.Domain
                 {
                     if (product.Category.HasDiscountsApplied)
                     {
+                        var categoryDiscountTypeName = "";
                         categoryDiscountName = product.CategoryDiscount.Name;
-                        switch (product.DiscountType)
+                        switch (product.CategoryDiscount.DiscountType)
                         {
                             case DiscountType.درصدی:
+                                categoryDiscountTypeName = $"{product.CategoryDiscount.DiscountAmount} درصد";
                                 temp2 = (product.Price * product.CategoryDiscount.DiscountAmount) / 100;
                                 break;
                             case DiscountType.مبلغی:
+                                categoryDiscountTypeName = $"{GetMoney(product.CategoryDiscount.DiscountAmount)}";
                                 temp2 = product.CategoryDiscount.DiscountAmount;
                                 break;
                         }
+
+                        productCellItem = new PdfPCell(new Phrase($"{categoryDiscountName}, {categoryDiscountTypeName}", font));
+                        productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                        productCellItem.Padding = 6;
+                        productTable.AddCell(productCellItem);
+                    }
+                    else
+                    {
+                        productCellItem = new PdfPCell(new Phrase($"---", font));
+                        productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                        productCellItem.Padding = 6;
+                        productTable.AddCell(productCellItem);
                     }
                 }
-
 
                 if (product.HasDiscount == HasDiscountType.دارای_تخفیف)
                 {
+                    var discountTypeName = "";
                     switch (product.DiscountType)
                     {
                         case DiscountType.درصدی:
+                            discountTypeName = $"{product.Discount} درصد";
                             temp1 = (product.Price * product.Discount) / 100;
                             break;
                         case DiscountType.مبلغی:
+                            discountTypeName = $"{GetMoney(product.Discount)}";
                             temp1 = product.Discount;
                             break;
                     }
-                }
-                productCellItem = new PdfPCell(new Phrase(string.Format("{0:C0}, {1}:{2:C0}", GetMoney(temp1), categoryDiscountName, GetMoney(temp2)), font));
-                productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
-                productCellItem.Padding = 6;
-                productTable.AddCell(productCellItem);
 
-                var amountBasket = attributePrice + (product.Price - (temp1 + temp2)) * product.CountSelect;
+                    productCellItem = new PdfPCell(new Phrase($"{discountTypeName}", font));
+                    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                    productCellItem.Padding = 6;
+                    productTable.AddCell(productCellItem);
+                }
+                else
+                {
+                    productCellItem = new PdfPCell(new Phrase($"---", font));
+                    productCellItem.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
+                    productCellItem.Padding = 6;
+                    productTable.AddCell(productCellItem);
+                }
+
+                var amountBasket = attributePrice + (product.Price - (temp1 + temp2)) * cartItem.Quantity;
                 totalSum += amountBasket;
                 productCellItem = new PdfPCell(new Phrase(GetMoney(amountBasket), font));
                 productCellItem.Padding = 6;
@@ -343,7 +378,7 @@ namespace FM.Portal.Domain
             lngResult = _localeStringResourceService.GetResource("PdfInvoice.Product.TotalSum");
             lng = lngResult.Data;
             var footerProduct = new PdfPCell(new Phrase($"{lng}", titleFont));
-            footerProduct.Colspan = 5;
+            footerProduct.Colspan = 6;
             footerProduct.Padding = 6;
             footerProduct.RunDirection = PdfWriter.RUN_DIRECTION_RTL;
             footerProduct.HorizontalAlignment = Rectangle.ALIGN_LEFT;

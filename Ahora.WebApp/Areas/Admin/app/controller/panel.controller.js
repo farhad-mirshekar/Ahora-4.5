@@ -695,6 +695,9 @@
         product.Attribute = {};
         product.Attribute.Model = {};
 
+        product.category = {};
+        product.category.Model = {};
+
         product.ProductVariant = {};
         product.ProductVariant.Model = {};
         product.Model.Errors = [];
@@ -726,6 +729,7 @@
         product.addRelatedProduct = addRelatedProduct;
         product.editRelatedProduct = editRelatedProduct;
         product.selectDiscountType = toolsService.arrayEnum(enumService.DiscountType);
+        product.hasDiscountType = toolsService.arrayEnum(enumService.HasDiscountType);
         product.Attribute.grid = {
             bindingObject: product.Attribute
             , columns: [{ name: 'Name', displayName: 'عنوان' }]
@@ -863,13 +867,13 @@
 
         function init() {
             loadingService.show();
-            $q.resolve().then(() => {
+            return $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'add':
                         add();
                         break;
                     case 'edit':
-                        productService.get($routeParams.id).then((result) => {
+                        return productService.get($routeParams.id).then((result) => {
                             edit(result);
                         })
                         break;
@@ -895,6 +899,9 @@
             product.Model = model;
             loadingService.show();
             return $q.resolve().then(() => {
+                return categoryService.get(product.Model.CategoryID);
+            }).then((result) => {
+                product.category.Model = angular.copy(result);
                 return categoryType();
             }).then(() => {
                 return listAttribute();
@@ -970,36 +977,28 @@
                     return attachmentService.add(product.pics);
                 }
                 return true;
-            }).then(() => {
-                if (product.file.list.length) {
-                    product.files = [];
-                    product.files.push({ ParentID: product.Model.ID, Type: 2, FileName: product.file.list[0], PathType: product.file.type });
-                    return attachmentService.add(product.files);
-                }
-                return true;
             }).then((result) => {
                 product.pics = [];
-                product.files = [];
+                //product.files = [];
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
                 product.pic.reset();
-                product.file.reset();
+               // product.file.reset();
 
                 product.pic.listUploaded = [];
-                product.file.listUploaded = [];
+               // product.file.listUploaded = [];
 
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
-                        if (result[i].PathType === 10)
-                            product.file.listUploaded.push(result[i]);
-                        else
+                        //if (result[i].PathType === 10)
+                        //    product.file.listUploaded.push(result[i]);
+                        //else
                             product.pic.listUploaded.push(result[i]);
                     }
                 }
                 toaster.pop('success', '', 'محصول جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
-            })
-                .catch((error) => {
+            }).catch((error) => {
                     if (!error) {
                         $('#content > div').animate({
                             scrollTop: $('#ProductError').offset().top - $('#ProductError').offsetParent().offset().top
@@ -1013,7 +1012,16 @@
                     }
 
                     toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                }).finally(loadingService.hide);
+            }).finally(loadingService.hide);
+
+            //.then(() => {
+            //    if (product.file.list.length) {
+            //        product.files = [];
+            //        product.files.push({ ParentID: product.Model.ID, Type: 2, FileName: product.file.list[0], PathType: product.file.type });
+            //        return attachmentService.add(product.files);
+            //    }
+            //    return true;
+            //})
         }
         function categoryType() {
             return categoryService.list('dropdown').then((result) => {

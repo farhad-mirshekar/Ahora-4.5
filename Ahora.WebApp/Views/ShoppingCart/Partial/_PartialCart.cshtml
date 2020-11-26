@@ -108,9 +108,6 @@
                                                             <label>@item.Quantity</label>
                                                             <i class="fa fa-minus" data-href="@Url.RouteUrl("ShoppingCartQuantityMinus",new {ProductID =item.Product.ID })" style="color:#ff0000;padding:10px"></i>
                                                         </div>
-                                                        @{
-                                                            Model.AmountBasket += attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity;
-                                                        }
                                                         <div class="col-md-12">
                                                             <label>مبلغ :</label>
                                                             <label>@string.Format("{0:C0} تومان", (attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
