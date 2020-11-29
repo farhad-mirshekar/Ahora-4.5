@@ -1288,8 +1288,8 @@
     }
 
     app.factory('categoryPortalService', categoryPortalService);
-    categoryPortalService.$inject = ['$http', 'callbackService', 'authenticationService'];
-    function categoryPortalService($http, callbackService, authenticationService) {
+    categoryPortalService.$inject = ['$http', 'callbackService', 'authenticationService', '$q'];
+    function categoryPortalService($http, callbackService, authenticationService, $q) {
         var url = '/api/v1/categoryPortal/'
         var service = {
             add: add,
@@ -1302,6 +1302,13 @@
         return service;
 
         function add(model) {
+            model.errors = [];
+            if (!model.Title)
+                model.errors.push('نام را وارد نمایید');
+
+            if (model.errors && model.errors.length > 0)
+                return $q.reject();
+
             return $http({
                 method: 'POST',
                 url: url + 'Add',
@@ -1312,12 +1319,18 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function edit(model) {
+            model.errors = [];
+            if (!model.Title)
+                model.errors.push('نام را وارد نمایید');
+
+            if (model.errors && model.errors.length > 0)
+                return $q.reject();
+
             return $http({
                 method: 'POST',
                 url: url + 'edit',
@@ -1330,7 +1343,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -1393,22 +1406,23 @@
         return service;
 
         function add(model) {
-            model.Errors = [];
+            model.errors = [];
             if (!model.Title || model.Title === '')
-                model.Errors.push('عنوان مقاله الزامی می باشد');
+                model.errors.push('عنوان مقاله الزامی می باشد');
             if (!model.Description || model.Description === '')
-                model.Errors.push('توضیحات کوتاه الزامی می باشد');
+                model.errors.push('توضیحات کوتاه الزامی می باشد');
             if (!model.Body || model.Body === '')
-                model.Errors.push('متن اصلی مقاله الزامی می باشد');
+                model.errors.push('متن اصلی مقاله الزامی می باشد');
             if (!model.MetaKeywords || model.MetaKeywords === '')
-                model.Errors.push('متاتگ الزامی می باشد');
+                model.errors.push('متاتگ الزامی می باشد');
             if (!model.UrlDesc || model.UrlDesc === '')
-                model.Errors.push('سئو الزامی می باشد');
+                model.errors.push('سئو الزامی می باشد');
             if (!model.CategoryID || model.CategoryID === '')
-                model.Errors.push('انتخاب موضوع الزامی می باشد');
+                model.errors.push('انتخاب موضوع الزامی می باشد');
 
-            if (model.Errors && model.Errors.length > 0)
+            if (model.errors && model.errors.length > 0)
                 return $q.reject();
+
             return $http({
                 method: 'POST',
                 url: url + 'Add',
@@ -1425,19 +1439,19 @@
                 })
         }
         function edit(model) {
-            model.Errors = [];
+            model.errors = [];
             if (!model.Title || model.Title === '')
-                model.Errors.push('عنوان مقاله الزامی می باشد');
+                model.errors.push('عنوان مقاله الزامی می باشد');
             if (!model.Description || model.Description === '')
-                model.Errors.push('توضیحات کوتاه الزامی می باشد');
+                model.errors.push('توضیحات کوتاه الزامی می باشد');
             if (!model.Body || model.Body === '')
-                model.Errors.push('متن اصلی مقاله الزامی می باشد');
+                model.errors.push('متن اصلی مقاله الزامی می باشد');
             if (!model.MetaKeywords || model.MetaKeywords === '')
-                model.Errors.push('متاتگ الزامی می باشد');
+                model.errors.push('متاتگ الزامی می باشد');
             if (!model.UrlDesc || model.UrlDesc === '')
-                model.Errors.push('سئو الزامی می باشد');
+                model.errors.push('سئو الزامی می باشد');
             if (!model.CategoryID || model.CategoryID === '')
-                model.Errors.push('انتخاب موضوع الزامی می باشد');
+                model.errors.push('انتخاب موضوع الزامی می باشد');
 
             if (model.Errors && model.Errors.length > 0)
                 return $q.reject();
@@ -1454,7 +1468,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -1547,21 +1561,21 @@
         return service;
 
         function add(model) {
-            model.Errors = [];
+            model.errors = [];
             if (!model.Title || model.Title === '')
-                model.Errors.push('عنوان مقاله الزامی می باشد');
+                model.errors.push('عنوان مقاله الزامی می باشد');
             if (!model.Description || model.Description === '')
-                model.Errors.push('توضیحات کوتاه الزامی می باشد');
+                model.errors.push('توضیحات کوتاه الزامی می باشد');
             if (!model.Body || model.Body === '')
-                model.Errors.push('متن اصلی مقاله الزامی می باشد');
+                model.errors.push('متن اصلی مقاله الزامی می باشد');
             if (!model.MetaKeywords || model.MetaKeywords === '')
-                model.Errors.push('متاتگ الزامی می باشد');
+                model.errors.push('متاتگ الزامی می باشد');
             if (!model.UrlDesc || model.UrlDesc === '')
-                model.Errors.push('سئو الزامی می باشد');
+                model.errors.push('سئو الزامی می باشد');
             if (!model.CategoryID || model.CategoryID === '')
-                model.Errors.push('انتخاب موضوع الزامی می باشد');
+                model.errors.push('انتخاب موضوع الزامی می باشد');
 
-            if (model.Errors && model.Errors.length > 0)
+            if (model.errors && model.errors.length > 0)
                 return $q.reject();
             return $http({
                 method: 'POST',
@@ -1579,21 +1593,21 @@
                 })
         }
         function edit(model) {
-            model.Errors = [];
+            model.errors = [];
             if (!model.Title || model.Title === '')
-                model.Errors.push('عنوان مقاله الزامی می باشد');
+                model.errors.push('عنوان مقاله الزامی می باشد');
             if (!model.Description || model.Description === '')
-                model.Errors.push('توضیحات کوتاه الزامی می باشد');
+                model.errors.push('توضیحات کوتاه الزامی می باشد');
             if (!model.Body || model.Body === '')
-                model.Errors.push('متن اصلی مقاله الزامی می باشد');
+                model.errors.push('متن اصلی مقاله الزامی می باشد');
             if (!model.MetaKeywords || model.MetaKeywords === '')
-                model.Errors.push('متاتگ الزامی می باشد');
+                model.errors.push('متاتگ الزامی می باشد');
             if (!model.UrlDesc || model.UrlDesc === '')
-                model.Errors.push('سئو الزامی می باشد');
+                model.errors.push('سئو الزامی می باشد');
             if (!model.CategoryID || model.CategoryID === '')
-                model.Errors.push('انتخاب موضوع الزامی می باشد');
+                model.errors.push('انتخاب موضوع الزامی می باشد');
 
-            if (model.Errors && model.Errors.length > 0)
+            if (model.errors && model.errors.length > 0)
                 return $q.reject();
 
             return $http({
@@ -1608,7 +1622,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -2008,21 +2022,21 @@
         return service;
 
         function add(model) {
-            model.Errors = [];
+            model.errors = [];
             if (!model.Title || model.Title === '')
-                model.Errors.push('عنوان رویداد الزامی می باشد');
+                model.errors.push('عنوان رویداد الزامی می باشد');
             if (!model.Description || model.Description === '')
-                model.Errors.push('توضیحات کوتاه الزامی می باشد');
+                model.errors.push('توضیحات کوتاه الزامی می باشد');
             if (!model.Body || model.Body === '')
-                model.Errors.push('متن اصلی رویداد الزامی می باشد');
+                model.errors.push('متن اصلی رویداد الزامی می باشد');
             if (!model.MetaKeywords || model.MetaKeywords === '')
-                model.Errors.push('متاتگ الزامی می باشد');
+                model.errors.push('متاتگ الزامی می باشد');
             if (!model.UrlDesc || model.UrlDesc === '')
-                model.Errors.push('سئو الزامی می باشد');
-            //if (!model.CategoryID || model.CategoryID === '')
-            //    model.Errors.push('انتخاب موضوع الزامی می باشد');
+                model.errors.push('سئو الزامی می باشد');
+            if (!model.CategoryID || model.CategoryID === '')
+                model.errors.push('انتخاب موضوع الزامی می باشد');
 
-            if (model.Errors && model.Errors.length > 0)
+            if (model.errors && model.errors.length > 0)
                 return $q.reject();
             return $http({
                 method: 'POST',
@@ -2040,21 +2054,21 @@
                 })
         }
         function edit(model) {
-            model.Errors = [];
+            model.errors = [];
             if (!model.Title || model.Title === '')
-                model.Errors.push('عنوان رویداد الزامی می باشد');
+                model.errors.push('عنوان رویداد الزامی می باشد');
             if (!model.Description || model.Description === '')
-                model.Errors.push('توضیحات کوتاه الزامی می باشد');
+                model.errors.push('توضیحات کوتاه الزامی می باشد');
             if (!model.Body || model.Body === '')
-                model.Errors.push('متن اصلی رویداد الزامی می باشد');
+                model.errors.push('متن اصلی رویداد الزامی می باشد');
             if (!model.MetaKeywords || model.MetaKeywords === '')
-                model.Errors.push('متاتگ الزامی می باشد');
+                model.errors.push('متاتگ الزامی می باشد');
             if (!model.UrlDesc || model.UrlDesc === '')
-                model.Errors.push('سئو الزامی می باشد');
-            //if (!model.CategoryID || model.CategoryID === '')
-            //    model.Errors.push('انتخاب موضوع الزامی می باشد');
+                model.errors.push('سئو الزامی می باشد');
+            if (!model.CategoryID || model.CategoryID === '')
+                model.errors.push('انتخاب موضوع الزامی می باشد');
 
-            if (model.Errors && model.Errors.length > 0)
+            if (model.errors && model.errors.length > 0)
                 return $q.reject();
 
             return $http({
@@ -2069,7 +2083,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -4082,21 +4096,17 @@
         function refreshToken() {
             let counter = 1;
             return $q.resolve().then(() => {
-                if (localStorage.refresh_token) {
-                    const Refresh_Token = localStorage.refresh_token;
+                if (localStorage.authorizationData) {
+                    const token = JSON.parse(localStorage.authorizationData);
                     return $http({
                         method: 'POST'
-                        , url: '/account/RefreshToken'
-                        , data: { RefreshToken: Refresh_Token }
+                        , url: '/Account/RefreshToken'
+                        , data: { RefreshToken: token.Refresh_Token }
                     }).then((result) => {
-                        authenticationService.setCredentials(result.data);
-                    }).catch((error) => {
+                        authenticationService.setCredentials(result.data.authorizationData);
+                        window.location.reload();
+                    }).catch(() => {
                         window.location.href = '/account/login';
-                        counter++;
-                        if (counter < 10)
-                            authenticationService.setCredentials({ status: 0 });
-                        else
-                            window.location.reload();
                     });
                 }
             });

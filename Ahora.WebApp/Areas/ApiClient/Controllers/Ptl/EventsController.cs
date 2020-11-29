@@ -15,70 +15,25 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         public EventsController(IEventsService service) : base(service)
         {
         }
+
         [HttpPost, Route("Add")]
-        public IHttpActionResult Add(Events model)
-        {
-            try
-            {
-                var result = _service.Add(model);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<Events> Add(Events model)
+         => _service.Add(model);
 
         [HttpPost, Route("Edit")]
-        public IHttpActionResult Edit(Events model)
-        {
-            try
-            {
-                var result = _service.Edit(model);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<Events> Edit(Events model)
+         => _service.Edit(model);
 
         [HttpPost, Route("List")]
-        public IHttpActionResult List(EventsListVM listVM)
-        {
-            try
-            {
-                var result = _service.List(listVM);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<List<Events>> List(EventsListVM listVM)
+         => _service.List(listVM);
 
         [HttpPost, Route("Get/{ID:guid}")]
-        public IHttpActionResult Get(Guid ID)
-        {
-            try
-            {
-                var result = _service.Get(ID);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<Events> Get(Guid ID)
+         => _service.Get(ID);
+
         [HttpPost, Route("Remove/{ID:guid}")]
-        public IHttpActionResult Remove(Guid ID)
-        {
-            try
-            {
-                var result = _service.Delete(ID);
-                return Ok(result);
-            }
-            catch { return NotFound(); }
-        }
+        public Result Remove(Guid ID)
+         => _service.Delete(ID);
     }
 }

@@ -1,5 +1,4 @@
-﻿using FM.Portal.Core.Common;
-using FM.Portal.Core.Model;
+﻿using FM.Portal.Core.Model;
 using FM.Portal.Core;
 using FM.Portal.Core.Service;
 using FM.Portal.FrameWork.Api.Controller;
@@ -15,71 +14,25 @@ namespace Ahora.WebApp.Areas.ApiClient.Controllers
         public NewsController(INewsService service) : base(service)
         {
         }
+
         [HttpPost, Route("Add")]
-        public IHttpActionResult Add(News model)
-        {
-            try
-            {
-                var result = _service.Add(model);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<News> Add(News model)
+         => _service.Add(model);
 
         [HttpPost, Route("Edit")]
-        public IHttpActionResult Edit(News model)
-        {
-            try
-            {
-                var result = _service.Edit(model);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<News> Edit(News model)
+         => _service.Edit(model);
 
         [HttpPost, Route("List")]
-        public IHttpActionResult List(NewsListVM listVM)
-        {
-            try
-            {
-                var result = _service.List(listVM);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<List<News>> List(NewsListVM listVM)
+         => _service.List(listVM);
 
         [HttpPost, Route("Get/{ID:guid}")]
-        public IHttpActionResult Get(Guid ID)
-        {
-            try
-            {
-                var result = _service.Get(ID);
-                return Ok(result);
-            }
-            catch (Exception e)
-            {
-                return NotFound();
-            }
-        }
+        public Result<News> Get(Guid ID)
+         => _service.Get(ID);
 
         [HttpPost, Route("Remove/{ID:guid}")]
-        public IHttpActionResult Remove(Guid ID)
-        {
-            try
-            {
-                var result = _service.Delete(ID);
-                return Ok(result);
-            }
-            catch { return NotFound(); }
-        }
+        public Result Remove(Guid ID)
+         => _service.Delete(ID);
     }
 }

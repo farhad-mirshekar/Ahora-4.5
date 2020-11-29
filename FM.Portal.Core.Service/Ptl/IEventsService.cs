@@ -10,7 +10,7 @@ namespace FM.Portal.Core.Service
         Result<Events> Edit(Events model);
         Result<List<Events>> List(EventsListVM listVM);
         Result<Events> Get(Guid ID);
-        Result<int> Delete(Guid ID);
+        Result Delete(Guid ID);
 
     }
 }

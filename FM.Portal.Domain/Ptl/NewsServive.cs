@@ -7,6 +7,7 @@ using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Extention.ReadingTime;
 using FM.Portal.FrameWork.MVC.Helpers.Files;
+using System.Linq;
 
 namespace FM.Portal.Domain
 {
@@ -28,8 +29,12 @@ namespace FM.Portal.Domain
         }
         public Result<News> Add(News model)
         {
+            var validateResult = ValidationModel(model);
+            if (!validateResult.Success)
+                return Result<News>.Failure(message: validateResult.Message);
+
             model.ID = Guid.NewGuid();
-            if (model.Tags.Count > 0)
+            if (model.Tags != null && model.Tags.Count > 0)
             {
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
@@ -53,24 +58,35 @@ namespace FM.Portal.Domain
             return result;
         }
 
-        public Result<int> Delete(Guid ID)
+        public Result Delete(Guid ID)
         {
-            var attachment = _attachmentService.List(ID);
-            _tagsService.Delete(ID);
-            if (attachment.Data.Count > 0)
+            var attachmentsRsult = _attachmentService.List(ID);
+            if (!attachmentsRsult.Success)
+                return Result.Failure();
+
+            var attachments = attachmentsRsult.Data;
+
+            if (attachments.Count > 0)
             {
-                foreach (var item in attachment.Data)
+                _tagsService.Delete(ID);
+
+                foreach (var item in attachments)
                 {
                     string path = $"{Enum.GetName(typeof(PathType), item.PathType)}/{item.FileName}";
                     _attachmentService.Delete(item.ID);
                     FileHelper.DeleteFile(path);
                 }
             }
+
             return _dataSource.Delete(ID);
         }
         public Result<News> Edit(News model)
         {
-            if (model.Tags.Count > 0)
+            var validateResult = ValidationModel(model);
+            if (!validateResult.Success)
+                return Result<News>.Failure(message: validateResult.Message);
+
+            if (model.Tags != null && model.Tags.Count > 0)
             {
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
@@ -122,6 +138,38 @@ namespace FM.Portal.Domain
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<News>>.Successful(data: table);
             return Result<List<News>>.Failure();
+        }
+
+        private Result ValidationModel(News news)
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(news.Body))
+                errors.Add("متن اصلی خبر الزامی می باشد");
+
+            if (string.IsNullOrEmpty(news.Description))
+                errors.Add("توضیحات کوتاه خبر الزامی می باشد");
+
+            if (string.IsNullOrEmpty(news.Title))
+                errors.Add("عنوان خبر الزامی می باشد");
+
+            if (string.IsNullOrEmpty(news.UrlDesc))
+                errors.Add("سئو خبر الزامی می باشد");
+
+            if (string.IsNullOrEmpty(news.MetaKeywords))
+                errors.Add("متاتگ خبر الزامی می باشد");
+
+            if (news.CategoryID == Guid.Empty)
+                errors.Add("انتخاب موضوع خبر الزامی می باشد");
+
+            if (news.LanguageID == null || news.LanguageID == Guid.Empty)
+                errors.Add("انتخاب زبان خبر الزامی می باشد");
+
+
+            if (errors.Any())
+                return Result.Failure(message: string.Join("&&", errors));
+
+            return Result.Successful();
         }
     }
 }

@@ -983,35 +983,35 @@
                 return attachmentService.list({ ParentID: product.Model.ID });
             }).then((result) => {
                 product.pic.reset();
-               // product.file.reset();
+                // product.file.reset();
 
                 product.pic.listUploaded = [];
-               // product.file.listUploaded = [];
+                // product.file.listUploaded = [];
 
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         //if (result[i].PathType === 10)
                         //    product.file.listUploaded.push(result[i]);
                         //else
-                            product.pic.listUploaded.push(result[i]);
+                        product.pic.listUploaded.push(result[i]);
                     }
                 }
                 toaster.pop('success', '', 'محصول جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
             }).catch((error) => {
-                    if (!error) {
-                        $('#content > div').animate({
-                            scrollTop: $('#ProductError').offset().top - $('#ProductError').offsetParent().offset().top
-                        }, 'slow');
-                    } else {
-                        var listError = error.split('&&');
-                        product.Model.Errors = [].concat(listError);
-                        $('#content > div').animate({
-                            scrollTop: $('#ProductError').offset().top - $('#ProductError').offsetParent().offset().top
-                        }, 'slow');
-                    }
+                if (!error) {
+                    $('#content > div').animate({
+                        scrollTop: $('#ProductError').offset().top - $('#ProductError').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    var listError = error.split('&&');
+                    product.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#ProductError').offset().top - $('#ProductError').offsetParent().offset().top
+                    }, 'slow');
+                }
 
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
 
             //.then(() => {
@@ -1769,29 +1769,45 @@
         function addCategory() {
             loadingService.show();
             return $q.resolve().then(() => {
-                categoryPortalService.add(category.Model).then((result) => {
-                    toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
-                    $('#category-portal-modal').modal('hide');
-                    category.changeState.cartable();
-                    loadingService.hide();
-                })
+                return categoryPortalService.add(category.Model);
+            }).then((result) => {
+                toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
+                $('#category-portal-modal').modal('hide');
+                category.changeState.cartable();
+                loadingService.hide();
             }).catch((error) => {
+                if (category.Model.errors.length === 0) {
+                    category.Model.errors = error.split('&&');
+                }
+
+                $('#content > div').animate({
+                    scrollTop: $('#category-portal-modal').offset().top - $('#category-portal-modal').offsetParent().offset().top
+                }, 'slow');
                 toaster.pop('error', '', 'خطای ناشناخته');
+                loadingService.hide();
             }).finally(loadingService.hide);
         }
         function editCategory() {
             loadingService.show();
             return $q.resolve().then(() => {
-                categoryPortalService.edit(category.Model).then((result) => {
-                    toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
-                    loadingService.hide();
-                    $('#category-portal-modal').modal('hide');
-                    category.changeState.cartable();
-                })
+                return categoryPortalService.edit(category.Model);
+            }).then((result) => {
+                toaster.pop('success', '', 'دسته بندی جدید با موفقیت اضافه گردید');
+                loadingService.hide();
+                $('#category-portal-modal').modal('hide');
+                category.changeState.cartable();
             }).catch((error) => {
+                if (category.Model.errors.length === 0) {
+                    category.Model.errors = error.split('&&');
+                }
+
+                $('#content > div').animate({
+                    scrollTop: $('#category-portal-modal').offset().top - $('#category-portal-modal').offsetParent().offset().top
+                }, 'slow');
                 toaster.pop('error', '', 'خطای ناشناخته');
             }).finally(loadingService.hide);
         }
+
         function addSubCategory(parent) {
             category.changeState.add(parent);
         }
@@ -1830,7 +1846,7 @@
         article.main = {};
         article.search = [];
         article.search.Model = {};
-        article.Model.Errors = [];
+
         article.languageList = [];
         article.pic = { type: '4', allowMultiple: false, validTypes: 'image/jpeg' };
         article.pic.list = [];
@@ -1855,7 +1871,6 @@
         article.grid = {
             bindingObject: article
             , columns: [{ name: 'Title', displayName: 'عنوان مقاله' },
-            { name: 'TrackingCode', displayName: 'کد پیگیری' },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: articleService.list
             , deleteService: articleService.remove
@@ -1986,17 +2001,12 @@
                 loadingService.hide();
                 article.main.changeState.cartable();
             }).catch((error) => {
-                if (!error) {
-                    $('#content > div').animate({
-                        scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    var listError = error.split('&&');
-                    article.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
-                    }, 'slow');
-                }
+                if (article.Model.errors.length === 0)
+                    article.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
+                }, 'slow');
 
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
@@ -2043,17 +2053,12 @@
                 loadingService.hide();
                 article.main.changeState.cartable();
             }).catch((error) => {
-                if (!error) {
-                    $('#content > div').animate({
-                        scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    var listError = error.split('&&');
-                    article.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
-                    }, 'slow');
-                }
+                if (article.Model.errors.length === 0)
+                    article.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#articleSection').offset().top - $('#articleSection').offsetParent().offset().top
+                }, 'slow');
 
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
@@ -2116,7 +2121,6 @@
             edit: edit,
             add: add
         }
-        news.Model.Errors = [];
         news.state = '';
         news.froalaOption = angular.copy(froalaOption.main);
         news.addNews = addNews;
@@ -2127,7 +2131,6 @@
         news.grid = {
             bindingObject: news
             , columns: [{ name: 'Title', displayName: 'عنوان خبر' },
-            { name: 'TrackingCode', displayName: 'کد پیگیری' },
             { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: newsService.list
             , deleteService: newsService.remove
@@ -2239,17 +2242,12 @@
                     cartable();
                 }, 1000);//return cartable
             }).catch((error) => {
-                if (!error) {
-                    var listError = error.split('&&');
-                    news.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    $('#content > div').animate({
-                        scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
-                    }, 'slow');
-                }
+                if (news.Model.errors.length === 0)
+                    news.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
+                }, 'slow');
 
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
@@ -2276,27 +2274,20 @@
                     news.pic.listUploaded = [].concat(result);
                 news.pic.reset();
                 news.grid.getlist(false);
-                toaster.pop('success', '', 'خبر جدید با موفقیت ویرایش گردید');
+                toaster.pop('success', '', 'خبر با موفقیت ویرایش گردید');
                 loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 1000);//return cartable
             }).catch((error) => {
-                if (!error) {
-                    var listError = error.split('&&');
-                    news.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    $('#content > div').animate({
-                        scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
-                    }, 'slow');
-                }
+                if (news.Model.errors.length === 0)
+                    news.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#newsSection').offset().top - $('#newsSection').offsetParent().offset().top
+                }, 'slow');
 
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
         }
+
         function fillDropCategory() {
             categoryPortalService.list('dropdown').then((result) => {
                 news.typecategory = [];
@@ -2498,7 +2489,7 @@
     }
     //-----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('menuController', menuController);
-    menuController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'menuService', '$location', '$timeout', 'toolsService', 'enumService', 'toaster', 'languageService','menuItemService'];
+    menuController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'menuService', '$location', '$timeout', 'toolsService', 'enumService', 'toaster', 'languageService', 'menuItemService'];
     function menuController($scope, $q, loadingService, $routeParams, menuService, $location, toaster, toolsService, enumService, toaster, languageService, menuItemService) {
         let menu = $scope;
         menu.Model = {};
@@ -2714,34 +2705,6 @@
                 loadingService.hide();
             })
                 .catch((error) => {
-                if (!error) {
-                    var listError = error.split('&&');
-                    menu.menuItem.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#menuSection').offset().top - $('#menuSection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    $('#content > div').animate({
-                        scrollTop: $('#menuSection').offset().top - $('#menuSection').offsetParent().offset().top
-                    }, 'slow');
-                }
-
-                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                loadingService.hide();
-            })
-        }
-        function editMenuItem() {
-            loadingService.hide();
-            return $q.resolve().then(() => {
-                return menuItemService.edit(menu.menuItem.Model);
-            }).then((result) => {
-                if (result)
-                    return menuItemService.list({ MenuID: $routeParams.id });
-            }).then((result) => {
-                setTreeObject(result);
-                $('.menu-item-modal').modal('hide');
-                loadingService.hide();
-            }).catch((error) => {
                     if (!error) {
                         var listError = error.split('&&');
                         menu.menuItem.Model.Errors = [].concat(listError);
@@ -2757,6 +2720,34 @@
                     toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                     loadingService.hide();
                 })
+        }
+        function editMenuItem() {
+            loadingService.hide();
+            return $q.resolve().then(() => {
+                return menuItemService.edit(menu.menuItem.Model);
+            }).then((result) => {
+                if (result)
+                    return menuItemService.list({ MenuID: $routeParams.id });
+            }).then((result) => {
+                setTreeObject(result);
+                $('.menu-item-modal').modal('hide');
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    var listError = error.split('&&');
+                    menu.menuItem.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#menuSection').offset().top - $('#menuSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    $('#content > div').animate({
+                        scrollTop: $('#menuSection').offset().top - $('#menuSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            })
         }
         function removeMenuItem(model) {
             loadingService.show();
@@ -2875,89 +2866,86 @@
         function addSlider() {
             loadingService.show();
             return $q.resolve().then(() => {
-                sliderService.add(slider.Model).then((result) => {
-                    slider.Model = result;
-                    if (slider.pic.list.length) {
-                        slider.pics = [];
-                        if (slider.pic.listUploaded.length === 0) {
-                            slider.pics.push({ ParentID: slider.Model.ID, Type: 2, FileName: slider.pic.list[0], PathType: slider.pic.type });
-                        }
-                        return attachmentService.add(slider.pics);
-                    }
-                    return true;
-                }).then((result) => {
+                return sliderService.add(slider.Model);
+            }).then((result) => {
+                slider.Model = result;
+                if (slider.pic.list.length) {
                     slider.pics = [];
-                    return attachmentService.list({ ParentID: slider.Model.ID });
-                }).then((result) => {
-                    if (result && result.length > 0)
-                        slider.pic.listUploaded = [].concat(result);
-
-                    slider.pic.reset();
-                    slider.grid.getlist();
-                    toaster.pop('success', '', 'اسلایدر جدید با موفقیت اضافه گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 1000);//return cartable
-                }).catch((error) => {
-                    if (error && error.length > 0) {
-                        var listError = error.split('&&');
-                        slider.Model.Errors = [].concat(listError);
-                        $('#content > div').animate({
-                            scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
-                        }, 'slow');
-                    } else {
-                        $('#content > div').animate({
-                            scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
-                        }, 'slow');
+                    if (slider.pic.listUploaded.length === 0) {
+                        slider.pics.push({ ParentID: slider.Model.ID, Type: 2, FileName: slider.pic.list[0], PathType: slider.pic.type });
                     }
+                    return attachmentService.add(slider.pics);
+                }
+                return true;
+            }).then((result) => {
+                slider.pics = [];
+                return attachmentService.list({ ParentID: slider.Model.ID });
+            }).then((result) => {
+                if (result && result.length > 0)
+                    slider.pic.listUploaded = [].concat(result);
 
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                }).finally(loadingService.hide);
-            })
+                slider.pic.reset();
+                slider.grid.getlist();
+                toaster.pop('success', '', 'تصویر کشویی جدید با موفقیت اضافه گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    cartable();
+                }, 1000);//return cartable
+            }).catch((error) => {
+                if (error && error.length > 0) {
+                    var listError = error.split('&&');
+                    slider.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    $('#content > div').animate({
+                        scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
+                    }, 'slow');
+                }
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
         }
         function editSlider() {
             loadingService.show();
             return $q.resolve().then(() => {
-                sliderService.edit(slider.Model).then((result) => {
-                    if (slider.pic.list.length) {
-                        slider.pics = [];
-                        if (slider.pic.listUploaded.length === 0) {
-                            slider.pics.push({ ParentID: slider.Model.ID, Type: 2, FileName: slider.pic.list[0], PathType: slider.pic.type });
-                        }
-                        return attachmentService.add(slider.pics);
-                    }
-                    slider.Model = result;
-                    return true;
-                }).then((result) => {
+                return sliderService.edit(slider.Model);
+            }).then((result) => {
+                if (slider.pic.list.length) {
                     slider.pics = [];
-                    return attachmentService.list({ ParentID: slider.Model.ID });
-                }).then((result) => {
-                    if (result && result.length > 0)
-                        slider.pic.listUploaded = [].concat(result);
-                    slider.pic.reset();
-                    slider.grid.getlist();
-                    toaster.pop('success', '', 'اسلایدر جدید با موفقیت اضافه گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 1000);//return cartable
-                }).catch((error) => {
-                    if (!error) {
-                        var listError = error.split('&&');
-                        slider.Model.Errors = [].concat(listError);
-                        $('#content > div').animate({
-                            scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
-                        }, 'slow');
-                    } else {
-                        $('#content > div').animate({
-                            scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
-                        }, 'slow');
+                    if (slider.pic.listUploaded.length === 0) {
+                        slider.pics.push({ ParentID: slider.Model.ID, Type: 2, FileName: slider.pic.list[0], PathType: slider.pic.type });
                     }
+                    return attachmentService.add(slider.pics);
+                }
+                slider.Model = result;
+                return true;
+            }).then((result) => {
+                slider.pics = [];
+                return attachmentService.list({ ParentID: slider.Model.ID });
+            }).then((result) => {
+                if (result && result.length > 0)
+                    slider.pic.listUploaded = [].concat(result);
+                slider.pic.reset();
+                slider.grid.getlist();
+                toaster.pop('success', '', 'تصویر کشویی جدید با موفقیت اضافه گردید');
+                loadingService.hide();
+            }).catch((error) => {
+                if (!error) {
+                    var listError = error.split('&&');
+                    slider.Model.Errors = [].concat(listError);
+                    $('#content > div').animate({
+                        scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
+                    }, 'slow');
+                } else {
+                    $('#content > div').animate({
+                        scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
+                    }, 'slow');
+                }
 
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                }).finally(loadingService.hide);
-            })
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
         }
         function clear() {
             loadingService.show();
@@ -3023,9 +3011,6 @@
         events.Model = {};
         events.languageList = [];
 
-        events.Model.Errors = [];
-        events.languageList = [];
-
         events.pic = { type: '8', allowMultiple: false, validTypes: 'image/jpeg' };
         events.pic.list = [];
         events.pic.listUploaded = [];
@@ -3053,8 +3038,7 @@
         events.grid = {
             bindingObject: events
             , columns: [{ name: 'Title', displayName: 'عنوان رویداد' },
-            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },
-            { name: 'TrackingCode', displayName: 'کد پیگیری رویداد' }]
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' },]
             , listService: eventsService.list
             , deleteService: eventsService.remove
             , onEdit: events.main.changeState.edit
@@ -3143,122 +3127,109 @@
         function addEvents() {
             loadingService.show();
             return $q.resolve().then(() => {
-                eventsService.add(events.Model).then((result) => {
-                    events.Model = angular.copy(result);
-                    if (events.pic.list.length) {
-                        events.pics = [];
-                        if (events.pic.listUploaded.length === 0) {
-                            events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
-                            return attachmentService.add(events.pics);
-                        }
-                    }
-                    return true;
-                }).then(() => {
-                    if (events.video.list.length) {
-                        events.videos = [];
-                        if (events.video.listUploaded.length === 0) {
-                            events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
-                            return attachmentService.add(events.videos);
-                        }
-                    }
-                }).then((result) => {
+                return eventsService.add(events.Model);
+            }).then((result) => {
+                events.Model = angular.copy(result);
+                if (events.pic.list.length) {
                     events.pics = [];
+                    if (events.pic.listUploaded.length === 0) {
+                        events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
+                        return attachmentService.add(events.pics);
+                    }
+                }
+                return true;
+            }).then(() => {
+                if (events.video.list.length) {
                     events.videos = [];
-                    return attachmentService.list({ ParentID: events.Model.ID });
-                }).then((result) => {
-                    events.pic.reset();
-                    events.video.reset();
-                    if (result && result.length > 0) {
-                        for (var i = 0; i < result.length; i++) {
-                            if (result[i].PathType === 8)
-                                events.pic.listUploaded = [].concat(result[i]);
-                            if (result[i].PathType === 7)
-                                events.video.listUploaded = [].concat(result[i]);
-                        }
+                    if (events.video.listUploaded.length === 0) {
+                        events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
+                        return attachmentService.add(events.videos);
                     }
-                    events.grid.getlist(false);
-                    toaster.pop('success', '', 'رویداد جدید با موفقیت اضافه گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        events.main.changeState.cartable();
-                    }, 1000);//return cartable
-                }).catch((error) => {
-                    if (!error) {
-                        var listError = error.split('&&');
-                        events.Model.Errors = [].concat(listError);
-                        $('#content > div').animate({
-                            scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
-                        }, 'slow');
-                    } else {
-                        $('#content > div').animate({
-                            scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
-                        }, 'slow');
+                }
+            }).then((result) => {
+                events.pics = [];
+                events.videos = [];
+                return attachmentService.list({ ParentID: events.Model.ID });
+            }).then((result) => {
+                events.pic.reset();
+                events.video.reset();
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 8)
+                            events.pic.listUploaded = [].concat(result[i]);
+                        if (result[i].PathType === 7)
+                            events.video.listUploaded = [].concat(result[i]);
                     }
+                }
+                events.grid.getlist(false);
+                toaster.pop('success', '', 'رویداد جدید با موفقیت اضافه گردید');
+                loadingService.hide();
+                $timeout(function () {
+                    events.main.changeState.cartable();
+                }, 1000);//return cartable
+            }).catch((error) => {
+                if (events.Model.errors.length === 0)
+                    events.Model.errors = error.split('&&');
 
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                }).finally(loadingService.hide);
-            })
+                $("html, body").animate({
+                    scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
+                }, 'slow');
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
         }
         function editEvents() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return eventsService.edit(events.Model)
+                return eventsService.edit(events.Model);
             }).then((result) => {
-                    events.Model = angular.copy(result);
-                    if (events.pic.list.length) {
-                        events.pics = [];
-                        if (events.pic.listUploaded.length === 0) {
-                            events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
-                            return attachmentService.add(events.pics);
-                        }
-                    }
-                    return true;
-                }).then(() => {
-                    if (events.video.list.length) {
-                        events.videos = [];
-                        if (events.video.listUploaded.length === 0) {
-                            events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
-                            return attachmentService.add(events.videos);
-                        }
-                    }
-                    return true;
-                }).then((result) => {
+                events.Model = angular.copy(result);
+                if (events.pic.list.length) {
                     events.pics = [];
+                    if (events.pic.listUploaded.length === 0) {
+                        events.pics.push({ ParentID: events.Model.ID, Type: 2, FileName: events.pic.list[0], PathType: events.pic.type });
+                        return attachmentService.add(events.pics);
+                    }
+                }
+                return true;
+            }).then(() => {
+                if (events.video.list.length) {
                     events.videos = [];
-                    return attachmentService.list({ ParentID: events.Model.ID });
-                }).then((result) => {
-                    if (result && result.length > 0) {
-                        for (var i = 0; i < result.length; i++) {
-                            if (result[i].PathType === 8)
-                                events.pic.listUploaded = [].concat(result[i]);
-                            if (result[i].PathType === 7)
-                                events.video.listUploaded = [].concat(result[i]);
-                        }
+                    if (events.video.listUploaded.length === 0) {
+                        events.videos.push({ ParentID: events.Model.ID, Type: 2, FileName: events.video.list[0], PathType: events.video.type });
+                        return attachmentService.add(events.videos);
                     }
-
-                    events.pic.reset();
-                    events.video.reset();
-                    events.grid.getlist(false);
-                    toaster.pop('success', '', 'رویداد جدید با موفقیت ویرایش گردید');
-                    loadingService.hide();
-                    $timeout(function () {
-                        cartable();
-                    }, 1000);//return cartable
-                }).catch((error) => {
-                    if (!error) {
-                        var listError = error.split('&&');
-                        events.Model.Errors = [].concat(listError);
-                        $('#content > div').animate({
-                            scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
-                        }, 'slow');
-                    } else {
-                        $('#content > div').animate({
-                            scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
-                        }, 'slow');
+                }
+                return true;
+            }).then((result) => {
+                events.pics = [];
+                events.videos = [];
+                return attachmentService.list({ ParentID: events.Model.ID });
+            }).then((result) => {
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 8)
+                            events.pic.listUploaded = [].concat(result[i]);
+                        if (result[i].PathType === 7)
+                            events.video.listUploaded = [].concat(result[i]);
                     }
+                }
 
-                    toaster.pop('error', '', 'خطایی اتفاق افتاده است');
-                }).finally(loadingService.hide);
+                events.pic.reset();
+                events.video.reset();
+                events.grid.getlist(false);
+                toaster.pop('success', '', 'رویداد جدید با موفقیت ویرایش گردید');
+                loadingService.hide();
+            }).catch((error) => {
+                if (events.Model.errors.length === 0)
+                    events.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#eventsSection').offset().top - $('#eventsSection').offsetParent().offset().top
+                }, 'slow');
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+            }).finally(loadingService.hide);
         }
 
         function fillDropCategory() {
@@ -3692,6 +3663,7 @@
             }).finally(loadingService.hide);
 
         }
+
         function addPages() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -3890,7 +3862,6 @@
                 pages.grid.getlist(false);
                 toaster.pop('success', '', 'صفحه با موفقیت ویرایش گردید');
                 pages.pic.reset();
-                pages.main.changeState.cartable();
                 loadingService.hide();
             }).catch((error) => {
                 if (!error) {
@@ -3970,6 +3941,7 @@
             }).finally(loadingService.hide);
 
         }
+
         function addLink() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -4002,7 +3974,7 @@
             return $q.resolve().then(() => {
                 return linkService.edit(link.Model)
             }).then((result) => {
-                toaster.pop('success', '', 'صفحه جدید با موفقیت ویرایش گردید');
+                toaster.pop('success', '', 'پیوند با موفقیت ویرایش گردید');
                 link.Model = {};
                 link.grid.getlist();
                 $('#link-modal').modal('hide');
@@ -4143,7 +4115,6 @@
                 pages.grid.getlist(false);
                 toaster.pop('success', '', 'صفحه با موفقیت ویرایش گردید');
                 pages.pic.reset();
-                pages.main.changeState.cartable();
                 loadingService.hide();
             }).catch((error) => {
                 if (!error) {
@@ -4341,8 +4312,6 @@
                 banner.grid.getlist(false);
                 toaster.pop('success', '', 'بنر با موفقیت ویرایش گردید');
                 banner.pic.reset();
-                debugger
-                banner.main.changeState.cartable();
                 loadingService.hide();
             }).catch((error) => {
                 if (!error) {
@@ -4358,8 +4327,6 @@
                     }, 'slow');
                     toaster.pop('error', '', 'خطایی اتفاق افتاده است');
                 }
-
-
             }).finally(loadingService.hide);
         }
         function clearModel() {
@@ -4562,7 +4529,6 @@
                 }
                 toaster.pop('success', '', 'گالری جدید با موفقیت ویرایش گردید');
                 gallery.grid.getlist();
-                gallery.main.changeState.cartable();
                 loadingService.hide();
             }).catch((error) => {
                 if (!error) {
@@ -4708,10 +4674,10 @@
             return $q.resolve().then(() => {
                 return shippingCostService.edit(shipping.Model)
             }).then((result) => {
+                shipping.Model = angular.copy(result);
                 shipping.grid.getlist(false);
                 toaster.pop('success', '', 'با موفقیت ویرایش گردید');
                 loadingService.hide();
-                shipping.main.changeState.cartable();
             }).catch((error) => {
                 if (!error) {
                     $('#content > div').animate({
@@ -4849,10 +4815,10 @@
             return $q.resolve().then(() => {
                 return deliveryDateService.edit(delivery.Model)
             }).then((result) => {
+                delivery.Model = angular.copy(result);
                 delivery.grid.getlist(false);
                 toaster.pop('success', '', 'با موفقیت ویرایش گردید');
                 loadingService.hide();
-                delivery.main.changeState.cartable();
             }).catch((error) => {
                 if (!error) {
                     $('#content > div').animate({
@@ -5510,11 +5476,8 @@
 
                 return eventsCommentService.edit(comment.Model);
             }).then(() => {
-                $timeout(function () {
-                    comment.grid.getlist();
-                    toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
-                    comment.main.changeState.cartable();
-                }, 1000);
+                comment.grid.getlist();
+                toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
             }).catch((error) => {
                 loadingService.hide();
                 toaster.pop('error', '', error || 'خطای ناشناخته');
@@ -5538,16 +5501,16 @@
         log.grid = {
             bindingObject: log
             , columns: [{ name: 'CreatorName', displayName: 'نام کاربر' },
-                { name: 'Comment', displayName: 'شرح لاگ'},
-                { name: 'IpAddress', displayName: 'آی پی' },
-                { name: 'CreationDatePersian', displayName:'تاریخ ایجاد'}]
+            { name: 'Comment', displayName: 'شرح لاگ' },
+            { name: 'IpAddress', displayName: 'آی پی' },
+            { name: 'CreationDatePersian', displayName: 'تاریخ ایجاد' }]
             , listService: activityLogService.list
             , globalSearch: true
             , options: () => {
                 return log.search.Model;
             }
             , initLoad: true
-            , actions:[]
+            , actions: []
         };
     }
 })();

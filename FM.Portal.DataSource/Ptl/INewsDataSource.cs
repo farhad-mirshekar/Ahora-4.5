@@ -11,7 +11,7 @@ namespace FM.Portal.DataSource
         Result<News> Update(News model);
         DataTable List(NewsListVM listVM);
         Result<News> Get(Guid ID);
-        Result<int> Delete(Guid ID);
+        Result Delete(Guid ID);
 
     }
 }

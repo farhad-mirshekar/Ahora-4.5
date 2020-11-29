@@ -17,7 +17,7 @@ namespace FM.Portal.Infrastructure.DAL
             _requestInfo = requestInfo;
         }
 
-        public Result<int> Delete(Guid ID)
+        public Result Delete(Guid ID)
         {
             try
             {
@@ -26,7 +26,10 @@ namespace FM.Portal.Infrastructure.DAL
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteArticle", param);
-                    return Result<int>.Successful(data: result);
+                    if(result > 0)
+                        return Result.Successful();
+
+                    return Result.Failure();
                 }
 
             }
@@ -71,7 +74,10 @@ namespace FM.Portal.Infrastructure.DAL
                     }
 
                 }
-                return Result<Article>.Successful(data: obj);
+                if (obj.ID != Guid.Empty)
+                    return Result<Article>.Successful(data: obj);
+
+                return Result<Article>.Successful(data: null);
             }
             catch (Exception e) { return Result<Article>.Failure(); }
         }

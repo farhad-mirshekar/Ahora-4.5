@@ -45,7 +45,6 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
         }
         public Result<Category> Insert(Category model)
         {
-            model.ID = Guid.NewGuid();
             return Modify(true, model);
         }
         public Result<Category> Update(Category model)

@@ -6,6 +6,8 @@ using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Extention.ReadingTime;
+using System.Linq;
+using FM.Portal.FrameWork.MVC.Helpers.Files;
 
 namespace FM.Portal.Domain
 {
@@ -16,29 +18,36 @@ namespace FM.Portal.Domain
         private readonly IActivityLogService _activityLogService;
         private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly IUrlRecordService _urlRecordService;
+        private readonly IAttachmentService _attachmentService;
         public ArticleService(IArticleDataSource dataSource
                              , ITagsService tagsService
                              , IActivityLogService activityLogService
                              , ILocaleStringResourceService localeStringResourceService
-                             , IUrlRecordService urlRecordService)
+                             , IUrlRecordService urlRecordService
+                             , IAttachmentService attachmentService)
         {
             _dataSource = dataSource;
             _tagsService = tagsService;
             _activityLogService = activityLogService;
             _localeStringResourceService = localeStringResourceService;
             _urlRecordService = urlRecordService;
+            _attachmentService = attachmentService;
         }
         public Result<Article> Add(Article model)
         {
+            var validateResult = ValidationModel(model);
+            if (!validateResult.Success)
+                return Result<Article>.Failure(message: validateResult.Message);
+
             model.ID = Guid.NewGuid();
-            if(model.Tags != null && model.Tags.Count > 0)
+            if (model.Tags != null && model.Tags.Count > 0)
             {
-                var tags =new List<Tags>();
+                var tags = new List<Tags>();
                 foreach (var item in model.Tags)
                 {
                     tags.Add(new Tags { Name = item });
                 }
-                _tagsService.Insert(tags,model.ID);
+                _tagsService.Insert(tags, model.ID);
             }
             model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
             var result = _dataSource.Insert(model);
@@ -55,19 +64,43 @@ namespace FM.Portal.Domain
             return result;
         }
 
-        public Result<int> Delete(Guid ID)
-        => _dataSource.Delete(ID);
+        public Result Delete(Guid ID)
+        {
+            var attachmentsRsult = _attachmentService.List(ID);
+            if (!attachmentsRsult.Success)
+                return Result.Failure();
+
+            var attachments = attachmentsRsult.Data;
+
+            if (attachments.Count > 0)
+            {
+                _tagsService.Delete(ID);
+
+                foreach (var item in attachments)
+                {
+                    string path = $"{Enum.GetName(typeof(PathType), item.PathType)}/{item.FileName}";
+                    _attachmentService.Delete(item.ID);
+                    FileHelper.DeleteFile(path);
+                }
+            }
+
+            return _dataSource.Delete(ID);
+        }
 
         public Result<Article> Edit(Article model)
         {
-            if (model.Tags.Count > 0)
+            var validateResult = ValidationModel(model);
+            if (!validateResult.Success)
+                return Result<Article>.Failure(message: validateResult.Message);
+
+            if (model.Tags != null && model.Tags.Count > 0)
             {
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
                 {
                     tags.Add(new Tags { Name = item });
                 }
-                _tagsService.Insert(tags,model.ID);
+                _tagsService.Insert(tags, model.ID);
             }
             else
             {
@@ -81,7 +114,7 @@ namespace FM.Portal.Domain
                 EntityID = model.ID,
                 EntityName = model.GetType().Name,
                 IpAddress = "12",
-                SystemKeyword= "UpdateArticle"
+                SystemKeyword = "UpdateArticle"
             });
             if (result.Success)
             {
@@ -120,6 +153,38 @@ namespace FM.Portal.Domain
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<Article>>.Successful(data: table);
             return Result<List<Article>>.Failure();
+        }
+
+        private Result ValidationModel(Article article)
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(article.Body))
+                errors.Add("متن اصلی مقاله الزامی می باشد");
+
+            if (string.IsNullOrEmpty(article.Description))
+                errors.Add("توضیحات کوتاه مقاله الزامی می باشد");
+
+            if (string.IsNullOrEmpty(article.Title))
+                errors.Add("عنوان مقاله الزامی می باشد");
+
+            if (string.IsNullOrEmpty(article.UrlDesc))
+                errors.Add("سئو مقاله الزامی می باشد");
+
+            if (string.IsNullOrEmpty(article.MetaKeywords))
+                errors.Add("متاتگ مقاله الزامی می باشد");
+
+            if (article.CategoryID == Guid.Empty)
+                errors.Add("انتخاب موضوع مقاله الزامی می باشد");
+
+            if (article.LanguageID == null || article.LanguageID == Guid.Empty)
+                errors.Add("انتخاب زبان مقاله الزامی می باشد");
+
+
+            if (errors.Any())
+                return Result.Failure(message: string.Join("&&", errors));
+
+            return Result.Successful();
         }
     }
 }

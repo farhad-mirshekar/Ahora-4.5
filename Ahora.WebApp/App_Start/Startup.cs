@@ -22,9 +22,9 @@ namespace Ahora
 
         public void ConfigureOAuth(IAppBuilder app)
         {
-            var accessTokenExpireTimeSpan = 60;
+            var accessTokenExpireTimeSpan = 1;
             if (System.Web.Configuration.WebConfigurationManager.AppSettings["AccessTokenExpireTimeSpan"] != null)
-                accessTokenExpireTimeSpan = 60;
+                accessTokenExpireTimeSpan = 1;
 
             OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
             {

@@ -7,6 +7,7 @@ using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
 using FM.Portal.FrameWork.MVC.Helpers.Files;
 using FM.Portal.Core.Extention.ReadingTime;
+using System.Linq;
 
 namespace FM.Portal.Domain
 {
@@ -28,8 +29,12 @@ namespace FM.Portal.Domain
         }
         public Result<Events> Add(Events model)
         {
+            var validateResult = ValidationModel(model);
+            if (!validateResult.Success)
+                return Result<Events>.Failure(message: validateResult.Message);
+
             model.ID = Guid.NewGuid();
-            if (model.Tags.Count > 0)
+            if (model.Tags != null && model.Tags.Count > 0)
             {
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
@@ -53,24 +58,35 @@ namespace FM.Portal.Domain
             return result;
         }
 
-        public Result<int> Delete(Guid ID)
+        public Result Delete(Guid ID)
         {
-            var attachment = _attachmentService.List(ID);
-            _tagsService.Delete(ID);
-            if(attachment.Data.Count > 0)
+            var attachmentsRsult = _attachmentService.List(ID);
+            if (!attachmentsRsult.Success)
+                return Result.Failure();
+
+            var attachments = attachmentsRsult.Data;
+
+            if (attachments.Count > 0)
             {
-                foreach (var item in attachment.Data)
+                _tagsService.Delete(ID);
+
+                foreach (var item in attachments)
                 {
                     string path = $"{Enum.GetName(typeof(PathType), item.PathType)}/{item.FileName}";
                     _attachmentService.Delete(item.ID);
                     FileHelper.DeleteFile(path);
                 }
             }
-           return _dataSource.Delete(ID);
+
+            return _dataSource.Delete(ID);
         }
         public Result<Events> Edit(Events model)
         {
-            if (model.Tags.Count > 0)
+            var validateResult = ValidationModel(model);
+            if (!validateResult.Success)
+                return Result<Events>.Failure(message: validateResult.Message);
+
+            if (model.Tags != null && model.Tags.Count > 0)
             {
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
@@ -122,6 +138,38 @@ namespace FM.Portal.Domain
             if (table.Count > 0 || table.Count == 0)
                 return Result<List<Events>>.Successful(data: table);
             return Result<List<Events>>.Failure();
+        }
+
+        private Result ValidationModel(Events events)
+        {
+            var errors = new List<string>();
+
+            if (string.IsNullOrEmpty(events.Body))
+                errors.Add("متن اصلی رویداد الزامی می باشد");
+
+            if (string.IsNullOrEmpty(events.Description))
+                errors.Add("توضیحات کوتاه رویداد الزامی می باشد");
+
+            if (string.IsNullOrEmpty(events.Title))
+                errors.Add("عنوان رویداد الزامی می باشد");
+
+            if (string.IsNullOrEmpty(events.UrlDesc))
+                errors.Add("سئو رویداد الزامی می باشد");
+
+            if (string.IsNullOrEmpty(events.MetaKeywords))
+                errors.Add("متاتگ رویداد الزامی می باشد");
+
+            if (events.CategoryID == Guid.Empty)
+                errors.Add("انتخاب موضوع رویداد الزامی می باشد");
+
+            if (events.LanguageID == null || events.LanguageID == Guid.Empty)
+                errors.Add("انتخاب زبان رویداد الزامی می باشد");
+
+
+            if (errors.Any())
+                return Result.Failure(message: string.Join("&&", errors));
+
+            return Result.Successful();
         }
     }
 }
