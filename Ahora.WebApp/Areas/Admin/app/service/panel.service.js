@@ -149,11 +149,9 @@
                     withCredentials: true,
                     headers: { 'Content-Type': undefined },
                     transformRequest: angular.identity
-                })
-                .then(function (result) {
+                }).then(function (result) {
                     return callbackService.onSuccess({ result: result, request: `${url}/upload?type=${model.type}` });
-                })
-                .catch(function () {
+                }).catch(function () {
                     return callbackService.onError({ result: result });
                 });
         }
@@ -275,11 +273,10 @@
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
-                callbackService.onSuccess({ result: result, url: url + 'setpassword' })
+                return callbackService.onSuccess({ result: result, url: url + 'setpassword' })
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function searchByNationalCode(model) {
             model.Errors = [];
@@ -417,10 +414,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function edit(model) {
             return $http({
@@ -433,10 +429,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function getPermission() {
             return $http({
@@ -448,10 +443,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'GetPermission' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function remove(model) {
             return $http({
@@ -574,26 +568,31 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function edit(model) {
+            model.Errors = [];
+            if (!model.Name)
+                model.Errors.push('نام را وارد نمایید');
+
+            if (model.Errors && model.Errors.length > 0)
+                return $q.reject();
+
             return $http({
                 method: 'POST',
-                url: url + 'edit',
+                url: url + 'Edit',
                 data: model,
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then(function (result) {
-                return result;
+                return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return result;
-                })
         }
         function get(model) {
             return $http({
@@ -605,10 +604,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Get' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function list(model) {
             return $http({
@@ -651,10 +649,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function list(model) {
             return $http({
@@ -667,10 +664,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'list' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function setDefault(model) {
             return $http({
@@ -683,10 +679,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `setDefault/${model.PositionID}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -699,10 +694,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function edit(model) {
             return $http({
@@ -715,10 +709,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
     }
 
@@ -747,10 +740,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function edit(model) {
             model.errors = [];
@@ -770,10 +762,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -843,10 +834,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function edit(model) {
             return $http({
@@ -859,10 +849,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -874,10 +863,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function list(model) {
             return $http({
@@ -933,10 +921,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            }).catch(function (result) {
+                return callbackService.onError(result);
             })
-                .catch(function (result) {
-                    return callbackService.onError(result);
-                })
         }
         function edit(model) {
             model.Errors = [];
@@ -979,10 +966,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -994,10 +980,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function list(model) {
             return $http({
@@ -1041,10 +1026,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function edit(model) {
             return $http({
@@ -1057,10 +1041,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -1072,10 +1055,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function list(model) {
             return $http({
@@ -1101,10 +1083,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `delete/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
     }
 
@@ -1138,10 +1119,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function edit(model) {
             return $http({
@@ -1154,10 +1134,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -1169,10 +1148,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function list(model) {
             return $http({
@@ -1198,10 +1176,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `delete/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
     }
 
@@ -1229,10 +1206,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Add' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function edit(model) {
             model.Errors = [];
@@ -1250,10 +1226,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -1265,10 +1240,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + `Get/${model}` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function list(model) {
             return $http({
@@ -1715,7 +1689,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -1807,7 +1781,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -1913,7 +1887,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -2002,7 +1976,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
     }
@@ -2509,7 +2483,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -2658,7 +2632,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -2772,7 +2746,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -2924,7 +2898,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function edit(model) {
@@ -2940,7 +2914,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -3017,7 +2991,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function edit(model) {
@@ -3033,7 +3007,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -3110,7 +3084,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function edit(model) {
@@ -3126,7 +3100,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -3203,7 +3177,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function edit(model) {
@@ -3219,7 +3193,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -3296,7 +3270,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function edit(model) {
@@ -3312,7 +3286,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -3383,7 +3357,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'setAsRead' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
     }
@@ -3416,7 +3390,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'add' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function edit(model) {
@@ -3432,7 +3406,7 @@
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
         function get(model) {
@@ -3494,7 +3468,7 @@
                 return callbackService.onSuccess({ result: result, request: url + `listFlow/${model}` });
             })
                 .catch(function (result) {
-                    callbackService.onError({ result: result });
+                    return callbackService.onError({ result: result });
                 })
         }
     }
@@ -3726,10 +3700,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
