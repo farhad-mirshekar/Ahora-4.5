@@ -3,9 +3,20 @@
     <portal-grid obj="grid"></portal-grid>
 </section>
 
-<section ng-show="['add','edit'].indexOf(state) !== -1">
+<section ng-show="['add','edit'].indexOf(state) !== -1" id="eventsCommentSection">
     <h2 class="main-title" ng-show="state ==='add'">افزودن</h2>
     <h2 class="main-title" ng-show="state ==='edit'">ویرایش</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div ng-show="Model.errors.length" class="alert alert-danger">
+                    <ul ng-repeat="row in Model.errors">
+                        <li>{{row}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="card-body form-horizontal">
         <div class="form-group">
             <div class="col-md-10">

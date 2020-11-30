@@ -18,6 +18,10 @@ namespace FM.Portal.Domain
         }
         public Result<NewsComment> Add(NewsComment model)
         {
+            var validateResult = ValidateModel(model);
+            if (!validateResult.Success)
+                return Result<NewsComment>.Failure(message: validateResult.Message);
+
             model.ID = Guid.NewGuid();
             return _dataSource.Insert(model);
         }
@@ -30,6 +34,10 @@ namespace FM.Portal.Domain
 
         public Result<NewsComment> Edit(NewsComment model)
         {
+            var validateResult = ValidateModel(model);
+            if (!validateResult.Success)
+                return Result<NewsComment>.Failure(message: validateResult.Message);
+
             return _dataSource.Update(model);
         }
 

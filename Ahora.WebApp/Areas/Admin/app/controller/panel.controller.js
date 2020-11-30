@@ -5284,6 +5284,7 @@
                 $location.path(`/articleComment/edit/${model.ID}`);
             }).finally(loadingService.hide);
         }
+
         function editComment() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -5291,15 +5292,19 @@
                     return $q.reject('وضعیت نظر را تعیین نمایید');
 
                 return articleCommentService.edit(comment.Model);
-            }).then(() => {
-                $timeout(function () {
-                    comment.grid.getlist();
-                    toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
-                    comment.main.changeState.cartable();
-                }, 1000);
+            }).then((result) => {
+                comment.Model = angular.copy(result);
+                comment.grid.getlist();
+                toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
             }).catch((error) => {
-                loadingService.hide();
-                toaster.pop('error', '', error || 'خطای ناشناخته');
+                if (comment.Model.errors.length === 0)
+                    comment.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#articleCommentSection').offset().top - $('#articleCommentSection').offsetParent().offset().top
+                }, 'slow');
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
         }
         function clear() {
@@ -5376,6 +5381,7 @@
                 $location.path(`/newsComment/edit/${model.ID}`);
             }).finally(loadingService.hide);
         }
+
         function editComment() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -5383,15 +5389,19 @@
                     return $q.reject('وضعیت نظر را تعیین نمایید');
 
                 return newsCommentService.edit(comment.Model);
-            }).then(() => {
-                $timeout(function () {
-                    comment.grid.getlist();
-                    toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
-                    comment.main.changeState.cartable();
-                }, 1000);
+            }).then((result) => {
+                comment.Model = angular.copy(result);
+                comment.grid.getlist();
+                toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
             }).catch((error) => {
-                loadingService.hide();
-                toaster.pop('error', '', error || 'خطای ناشناخته');
+                if (comment.Model.errors.length === 0)
+                    comment.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#newsCommentSection').offset().top - $('#newsCommentSection').offsetParent().offset().top
+                }, 'slow');
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
         }
         function clear() {
@@ -5468,6 +5478,7 @@
                 $location.path(`/eventsComment/edit/${model.ID}`);
             }).finally(loadingService.hide);
         }
+
         function editComment() {
             loadingService.show();
             return $q.resolve().then(() => {
@@ -5475,12 +5486,19 @@
                     return $q.reject('وضعیت نظر را تعیین نمایید');
 
                 return eventsCommentService.edit(comment.Model);
-            }).then(() => {
+            }).then((result) => {
+                comment.Model = angular.copy(result);
                 comment.grid.getlist();
                 toaster.pop('success', '', 'دیدگاه مورد نظر با موفقیت ویرایش گردید');
             }).catch((error) => {
-                loadingService.hide();
-                toaster.pop('error', '', error || 'خطای ناشناخته');
+                if (comment.Model.errors.length === 0)
+                    comment.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#eventsCommentSection').offset().top - $('#eventsCommentSection').offsetParent().offset().top
+                }, 'slow');
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
         }
         function clear() {

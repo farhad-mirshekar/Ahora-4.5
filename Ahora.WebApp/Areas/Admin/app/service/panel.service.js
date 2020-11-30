@@ -3781,11 +3781,16 @@
                 })
         }
         function edit(model) {
-            model.Errors = [];
+            model.errors = [];
+
             if (model.CommentType === 0)
-                model.Errors.push('لطفا وضعیت نظر را مشخص نمایید');
+                model.errors.push('لطفا وضعیت نظر را مشخص نمایید');
+            if (!model.Body || model.Body === '')
+                model.errors.push('متن نظر را وارد نمایید');
+
             if (model.Errors.length)
                 return $q.reject();
+
             return $http({
                 method: 'POST',
                 url: url + 'edit',
@@ -3796,10 +3801,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -3863,9 +3867,13 @@
                 })
         }
         function edit(model) {
-            model.Errors = [];
+            model.errors = [];
+
             if (model.CommentType === 0)
-                model.Errors.push('لطفا وضعیت نظر را مشخص نمایید');
+                model.errors.push('لطفا وضعیت نظر را مشخص نمایید');
+            if (!model.Body || model.Body === '')
+                model.errors.push('متن نظر را وارد نمایید');
+
             if (model.Errors.length)
                 return $q.reject();
             return $http({
@@ -3878,10 +3886,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
             })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
         }
         function get(model) {
             return $http({
@@ -3945,11 +3952,16 @@
                 })
         }
         function edit(model) {
-            model.Errors = [];
+            model.errors = [];
+
             if (model.CommentType === 0)
-                model.Errors.push('لطفا وضعیت نظر را مشخص نمایید');
-            if (model.Errors.length)
+                model.errors.push('لطفا وضعیت نظر را مشخص نمایید');
+            if (!model.Body || model.Body === '')
+                model.errors.push('متن نظر را وارد نمایید');
+
+            if (model.errors.length)
                 return $q.reject();
+
             return $http({
                 method: 'POST',
                 url: url + 'edit',
@@ -3960,10 +3972,9 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'Edit' });
-            })
-                .catch(function (result) {
-                    return callbackService.onError({ result: result });
-                })
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+             })
         }
         function get(model) {
             return $http({

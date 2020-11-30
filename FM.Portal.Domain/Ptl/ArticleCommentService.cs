@@ -3,6 +3,7 @@ using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Math;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +13,19 @@ namespace FM.Portal.Domain
     public class ArticleCommentService : IArticleCommentService
     {
         private readonly IArticleCommentDataSource _dataSource;
-        public ArticleCommentService(IArticleCommentDataSource dataSource)
+        private readonly ILocaleStringResourceService _localeStringResourceService;
+        public ArticleCommentService(IArticleCommentDataSource dataSource
+                                    , ILocaleStringResourceService localeStringResourceService)
         {
             _dataSource = dataSource;
+            _localeStringResourceService = localeStringResourceService;
         }
         public Result<ArticleComment> Add(ArticleComment model)
         {
+            var validateResult = ValidateModel(model);
+            if (!validateResult.Success)
+                return Result<ArticleComment>.Failure(message: validateResult.Message);
+
             model.ID = Guid.NewGuid();
             return _dataSource.Insert(model);
         }
@@ -30,6 +38,10 @@ namespace FM.Portal.Domain
 
         public Result<ArticleComment> Edit(ArticleComment model)
         {
+            var validateResult = ValidateModel(model);
+            if (!validateResult.Success)
+                return Result<ArticleComment>.Failure(message: validateResult.Message);
+
             return _dataSource.Update(model);
         }
 
@@ -69,8 +81,15 @@ namespace FM.Portal.Domain
         {
             var errors = new List<string>();
             if (string.IsNullOrEmpty(comment.Body))
-                errors.Add("متن نظر را نشخص نمایید");
+            {
+                var lngResult = _localeStringResourceService.GetResource("ArticleComment.Field.Body");
+                var lng = lngResult.Data;
 
+                errors.Add(lng);
+            }
+
+            if (errors.Any())
+                return Result.Failure(message: string.Join("&&", errors));
             return Result.Successful();
         }
     }

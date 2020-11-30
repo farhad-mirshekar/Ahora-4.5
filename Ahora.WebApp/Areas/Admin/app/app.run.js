@@ -68,7 +68,6 @@
                     { route: '#/events/cartable', title: 'کارتابل رویداد', hasShow: () => { return toolsService.checkPermission('pgevents') }, icon: 'fa-newspaper-o' },
                     { route: '#/eventsComment/cartable', title: ' کارتابل نظرات رویداد', hasShow: () => { return toolsService.checkPermission('pevents-comment') }, icon: 'fa-comments-o' },
                     { route: '#/slider/cartable', title: 'کارتابل تصاویر کشویی', hasShow: () => { return toolsService.checkPermission('pgsliders') }, icon: 'fa-sliders' },
-                    { route: '#/comment-portal/cartable', title: 'کارتابل نظرات', hasShow: () => { return toolsService.checkPermission('pgcomment-portal'); }, icon: 'fa-comments-o' },
                     { route: '#/pages-portal/', title: 'ساخت صفحات', hasShow: () => { return toolsService.checkPermission('pgcreate-page'); }, icon: 'fa-window-restore' },
                     { route: '#/dynamic-page/cartable', title: 'کارتابل صفحات داینامیک', hasShow: () => { return toolsService.checkPermission('pgdynamic-page'); }, icon: 'fa-sticky-note-o' },
                     { route: '#/static-page/cartable', title: 'کارتابل صفحات استاتیک', hasShow: () => { return toolsService.checkPermission('pgstatic-page'); }, icon: 'fa-sticky-note' },
