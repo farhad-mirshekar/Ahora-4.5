@@ -11,12 +11,10 @@ AddComment.onSuccess = function (data) {
         var message = '<div id="alert" class="alert alert-success"><button type="button" class="close" data-dismiss="alert">×</button>دیدگاه شما ثبت شد و پس از تایید،نمایش داده خواهد شد</div>';
         $('#addCommentResult').html(message);
         $('#frmCommentReply').html('');
-    } else if (data.show == "true") {
-        $('#addCommentResult').html(Messsage.login);
     }
     else {
         $('#commentReply').html(data);
-        validateForm('frmCommentReply');
+        AjaxForm.ValidateForm('frmCommentReply');
     }
 
 };
@@ -79,4 +77,48 @@ CommentReply.onBegin = function () {
     $('.comment-reply-container').slideUp().html('');
     $('.comment-reply-container').css('display', '');
     $('#addComment').slideUp().html('');
+};
+////////////////////////////////////////////////////////////////////////////////////////////
+var AjaxForm = new Object();
+AjaxForm.EnableAjaxFormvalidate = function (formId) {
+    $.validator.unobtrusive.parse('#' + formId);
+};
+
+AjaxForm.ValidateForm = function (formId) {
+    var val = $('#' + formId).validate();
+    val.form();
+    return val.valid();
+};
+AjaxForm.EnablePostbackValidation = function () {
+    $('form').each(function () {
+        $(this).find('div.form-group').each(function () {
+            if ($(this).find('span.field-validation-error').length > 0) {
+                $(this).addClass('has-error');
+            }
+        });
+    });
+};
+
+AjaxForm.EnableBootstrapStyleValidation = function () {
+    $.validator.setDefaults({
+        highlight: function (element, errorClass, validClass) {
+            if (element.type === 'radio') {
+                this.findByName(element.name).addClass(errorClass).removeClass(validClass);
+            } else {
+                $(element).addClass(errorClass).removeClass(validClass);
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-error');
+
+            }
+            $(element).trigger('highlited');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+            if (element.type === 'radio') {
+                this.findByName(element.name).removeClass(errorClass).addClass(validClass);
+            } else {
+                $(element).removeClass(errorClass).addClass(validClass);
+                $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+            }
+            $(element).trigger('unhighlited');
+        }
+    });
 };

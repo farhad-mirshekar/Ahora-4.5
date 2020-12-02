@@ -1,11 +1,12 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-
+﻿using FM.Portal.FrameWork.Attributes;
+using System;
+using DataAnnotations = System.ComponentModel.DataAnnotations;
 namespace Ahora.WebApp.Models.App
 {
     public class ProductCommentModel
     {
-        [Required(ErrorMessage ="متن نظر را وارد نمایید")]
+        [DataAnnotations.Required(ErrorMessage ="{0}")]
+        [DisplayName("Product.Comment.Body")]
         public string Body { get; set; }
         public Guid ID { get; set; }
         public Guid? ParentID { get; set; }

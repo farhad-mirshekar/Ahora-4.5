@@ -6,8 +6,9 @@
         @Html.AntiForgeryToken()
         @Html.Hidden("ParentID",Model.ParentID)
         @Html.Hidden("ID", Model.ID)
+
         <div class="form-group">
-            <label class="control-label">دیدگاه خود را وارد نمایید</label>
+            @Html.LabelFor(c => c.Body)
             <div class="col-md-12">
                 @Html.TextAreaFor(c => c.Body, new { @class = "form-control", cols = "10", placeholder = "دیدگاه خود را بنویسید ...." })
                 @Html.ValidationMessageFor(c => c.Body, null, new { @class = "text-danger" })
@@ -20,3 +21,11 @@
     <!--end form-->
     <div class="clear"></div>
 </div>
+
+<script>
+    $(function () {
+        AjaxForm.EnableAjaxFormvalidate('frmCommentReply');
+        AjaxForm.EnablePostbackValidation();
+        AjaxForm.EnableBootstrapStyleValidation();
+    })
+</script>
