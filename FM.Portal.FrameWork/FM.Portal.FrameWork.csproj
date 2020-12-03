@@ -112,6 +112,7 @@
     <Compile Include="Attributes\Authorize\AuthorizeAttribute.cs" />
     <Compile Include="Attributes\Authorize\UserAuthorizeAttribute.cs" />
     <Compile Include="Attributes\DisplayNameAttribute.cs" />
+    <Compile Include="Attributes\RequiredAttribute.cs" />
     <Compile Include="AutoMapper\AutoMapperStartupTask.cs" />
     <Compile Include="AutoMapper\MappingExtentions.cs" />
     <Compile Include="Caching\CacheManager.cs" />

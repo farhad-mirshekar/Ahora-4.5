@@ -1,11 +1,10 @@
 ﻿using FM.Portal.FrameWork.Attributes;
 using System;
-using DataAnnotations = System.ComponentModel.DataAnnotations;
 namespace Ahora.WebApp.Models.App
 {
     public class ProductCommentModel
     {
-        [DataAnnotations.Required(ErrorMessage ="{0}")]
+        [Required("Product.Comment.Body.ErrorMessage")]
         [DisplayName("Product.Comment.Body")]
         public string Body { get; set; }
         public Guid ID { get; set; }

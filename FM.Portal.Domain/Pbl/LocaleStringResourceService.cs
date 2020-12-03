@@ -33,7 +33,7 @@ namespace FM.Portal.Domain
             model.ID = Guid.NewGuid();
             var result = _dataSource.Insert(model);
             if (result.Success)
-                _cacheManager.Remove(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values);
+                _cacheManager.Remove(string.Format(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values, model.LanguageID));
             return result;
         }
 
@@ -48,7 +48,7 @@ namespace FM.Portal.Domain
 
             var result = _dataSource.Update(model);
             if (result.Success)
-                _cacheManager.Remove(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values);
+                _cacheManager.Remove(string.Format(CacheParamExtention.Locale_String_Resource_Get_All_Resource_Values, model.LanguageID));
             return result;
         }
 
