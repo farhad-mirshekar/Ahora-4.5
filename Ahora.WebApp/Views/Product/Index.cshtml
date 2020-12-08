@@ -14,8 +14,8 @@
 @section bodySection{
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Home")">خانه</a></li>
-            <li class="breadcrumb-item"><a href="#">محصولات</a></li>
+            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Home")">@T("Breadcrumb.Home")</a></li>
+            <li class="breadcrumb-item"><a href="#">@T("Breadcrumb.Product")</a></li>
             <li class="breadcrumb-item active">@Model.Name</li>
         </ol>
     </nav>

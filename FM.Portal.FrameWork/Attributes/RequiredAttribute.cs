@@ -30,7 +30,7 @@ namespace FM.Portal.FrameWork.Attributes
             }
 
             var resourceResult = _resourceService.GetResource(_resourceKey);
-            if (resourceResult.Success)
+            if (resourceResult.Success && !string.IsNullOrEmpty(resourceResult.Data))
                 return string.Format("{0}", resourceResult.Data);
 
             return string.Format("{0}", "*");

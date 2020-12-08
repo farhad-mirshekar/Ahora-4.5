@@ -11,7 +11,7 @@
         @if (!Model.CallForPrice)
         {
             <div class="col-md-12 text-center">
-                <label class="text-info">قیمت محصول : </label>
+                <label class="text-info">@T("Product.Field.Price")</label>
                 <label class="text-danger">@string.Format("{0:C0} تومان", Model.Price).Replace("$", "")</label>
                 @{
                     if (Model.Category.HasDiscountsApplied)
@@ -20,7 +20,7 @@
                         {
                             temp1 = (Model.Price * Model.CategoryDiscount.DiscountAmount) / 100;
                             <label class="control-label text-info">
-                                تخفیف » @Model.CategoryDiscount.Name
+                                @T("Product.Field.CategoryDiscount") » @Model.CategoryDiscount.Name
                             </label>
                             <label class="control-label text-danger">
                                 @string.Format("{0:C0} درصد", Model.CategoryDiscount.DiscountAmount).Replace("$", "")
@@ -30,7 +30,7 @@
                         {
                             temp1 = Model.CategoryDiscount.DiscountAmount;
                             <label class="control-label text-info">
-                                تخفیف » @Model.CategoryDiscount.Name :
+                                @T("Product.Field.CategoryDiscount") » @Model.CategoryDiscount.Name :
                             </label>
                             <label class="control-label text-danger">
                                 @string.Format("{0:C0} تومان", Model.CategoryDiscount.DiscountAmount).Replace("$", "")
@@ -43,7 +43,7 @@
                         {
                             temp2 = (Model.Price * Model.Discount) / 100;
                             <label class="control-label text-info">
-                                تخفیف محصول :
+                                @T("Product.Field.Discount")
                             </label>
                             <label class="control-label text-danger">
                                 @string.Format("{0:C0} درصد", Model.Discount).Replace("$", "")
@@ -53,7 +53,7 @@
                         {
                             temp2 = Model.Discount;
                             <label class="control-label text-info">
-                                تخفیف محصول :
+                                @T("Product.Field.Discount")
                             </label>
                             <label class="control-label text-danger">
                                 @string.Format("{0:C0} تخفیف", Model.Discount).Replace("$", "")
@@ -63,7 +63,7 @@
                 }
 
                 <hr />
-                <label class="text-info">مبلغ نهایی : </label>
+                <label class="text-info">@T("Product.Field.Sum")</label>
                 <label class="text-danger">@string.Format("{0:C0} تومان", (Model.Price - (temp1 + temp2))).Replace("$", "")</label>
             </div>
             if (Model.Attributes.Count > 0)
@@ -103,12 +103,12 @@
                 </div>
             }
             <div class="col-md-12 text-center mt-2">
-                <button type="button" class="btn btn-danger" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddToCart", new { productId = Model.ID })', '#product-details-form');return false;">افزودن به سبد خرید</button>
+                <button type="button" class="btn btn-danger" onclick="AjaxCart.addproducttocart_details('@Url.RouteUrl("AddToCart", new { productId = Model.ID })', '#product-details-form');return false;">@T("Product.Button.AddToCart")</button>
             </div>
         }
         else
         {
-            <label class="text-danger control-label text-center mt-3">جهت اطلاع از آخرین قیمت، تماس حاصل فرمایید</label>
+            <label class="text-danger control-label text-center mt-3">@T("Product.Error.CallForPrice")</label>
         }
     </div>
 

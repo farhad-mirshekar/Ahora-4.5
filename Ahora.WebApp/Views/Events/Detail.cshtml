@@ -1,13 +1,23 @@
 ﻿@model Ahora.WebApp.Models.Ptl.EventModel
+@using System.Linq;
 @{
     ViewBag.Title = Model.Title;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section Metatag{
+    <meta itemprop="name" name="twitter:title" property="dc.title" content="@Model.Title">
+    <meta name="description" property="dc.description" content="@Model.Description">
+    <meta property="og:type" content="article">
+    <meta property="article:modified_time" content="@Model.ModifiedDate">
+    <meta name="keywords" property="article:tag" content="@Model.MetaKeywords">
+    <meta property="nastooh:publishDate" content="@Model.CreationDate.Value.ToString("yyyy-MM-dd")">
+    <meta property="og:title" itemprop="headline" content="@Model.Title">
+}
 @section BodySection{
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Home")">خانه</a></li>
-            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Events")">رویدادها</a></li>
+            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Home")">@T("Breadcrumb.Home")</a></li>
+            <li class="breadcrumb-item"><a href="@Url.RouteUrl("Events")">@T("Breadcrumb.Events")</a></li>
             <li class="breadcrumb-item active">@Model.Title</li>
         </ol>
     </nav>
@@ -16,11 +26,10 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <label class="control-label">کد رویداد : </label> <label class="control-label">@Model.TrackingCode</label> -
-                        <label class="control-label">تاریخ انتشار :</label> <label class="control-label">@FM.Portal.Core.Common.Helper.GetPersianDay(Model.CreationDate) - @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(Model.CreationDate)) - @FM.Portal.Core.Common.Helper.GetPersianYear(Model.CreationDate)</label>
+                        <label class="control-label">@T("Events.DetailPage.CreationDate") :</label> <label class="control-label">@FM.Portal.Core.Common.Helper.GetPersianDay(Model.CreationDate) - @FM.Portal.Core.Common.Helper.GetPersianMonthName(FM.Portal.Core.Common.Helper.GetPersianMonth(Model.CreationDate)) - @FM.Portal.Core.Common.Helper.GetPersianYear(Model.CreationDate)</label>
                         <label class="control-label pull-left">
                             <i class="fa fa-clock-o"></i>
-                            <span>تخمین مدت زمان مطالعه رویداد: </span>
+                            <span>@T("Events.DetailPage.EstimateTheDurationOfTheArticleStudy"): </span>
                             <span>@Model.ReadingTime</span>
                         </label>
                     </div>
@@ -34,26 +43,13 @@
                     <p>@Model.Description</p>
                 </div>
                 <hr />
-                <p class="mb-0 text-dark">@Html.Raw(Model.Body)</p>
+                <div class="p-1 text-dark">@Html.Raw(Model.Body)</div>
             </div>
-            @if (Model.VideoAttachments.Count > 0)
-            {
-
-                foreach (var attachment in Model.VideoAttachments)
-                {
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <video controls>
-                            <source src="~/Content/TemporaryFiles/@attachment.Path/@attachment.FileName" type="video/mp4" />
-                        </video>
-                    </div>
-                }
-
-            }
         </div>
         @if (Model.Tags != null && Model.Tags.Count > 0)
         {
             <div class="card-footer">
-                <label>برچسب ها :</label>
+                <label>@T("Events.DetailPage.Labels") :</label>
                 @{
                     var lastitem = Model.Tags.Last();
                     foreach (var item in Model.Tags)
@@ -76,7 +72,7 @@
         <div class="card-header">
             <h5 class="card-title">
                 <i class="fa fa-comments-o"></i>
-                دیدگاه ها
+                @T("Events.DetailPage.Comment.Card.Title")
             </h5>
             <div class="card-body">
                 @Html.Action("Comment", "Events", new { EventsID = Model.ID })

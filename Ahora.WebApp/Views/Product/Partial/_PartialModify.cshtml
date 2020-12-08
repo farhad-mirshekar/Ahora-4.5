@@ -10,10 +10,10 @@
         <div class="form-group">
             <div class="col-md-12">
                 @Html.TextAreaFor(c => c.Body, new { @class = "form-control", cols = "10", placeholder = $"{T("Product.Comment.Body")}" })
-                @Html.ValidationMessageFor(c => c.Body, null, new { @class = "text-danger mt-2" })
+                @Html.ValidationMessageFor(c => c.Body, null, new { @class = "text-danger" })
             </div>
         </div>
-        <button type="submit" class="btn btn-success pull-left">ارسال</button>
+        <button type="submit" class="btn btn-success pull-left">@T("Product.Comment.Button.Submit")</button>
     }
     <div class="clearfix"></div>
     <div id="addCommentResult" class="text-center mt-3"></div>

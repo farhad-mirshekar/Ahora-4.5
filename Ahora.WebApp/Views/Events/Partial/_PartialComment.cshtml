@@ -4,7 +4,7 @@
 @using FM.Portal.Core.Common;
 @{ var pc = new PersianCalendar();}
 @(Html.TreeView(Model.AvailableComments)
-.EmptyContent("<i>اولین نفری باشید که نظر می دهید</i>")
+.EmptyContent($"<i>{T("Events.Comment.FirstComment")}</i>")
 .Children(c => c.Children)
 .HtmlAttributes(new { id = "tree" })
 .ChildrenHtmlAttributes(new { @class = "subItem" })
@@ -15,11 +15,11 @@
             <div class="card-header">
                 <div class="d-inline">
                     <div class="mr-2 d-inline">
-                         <span><i class="fa fa-calendar text-success"></i> تاریخ : </span>
+                         <span><i class="fa fa-calendar text-success"></i>@T("Events.Comment.Field.Date")</span>
                          <span>@($"{Helper.GetPersianYear(item.CreationDate)}/{Helper.GetPersianMonth(item.CreationDate)}/{Helper.GetPersianDay(item.CreationDate)}")</span>
                     </div>
                     <div class="mr-2 d-inline">
-                         <span><i class="fa fa-dashboard text-info"></i> زمان : </span>
+                         <span><i class="fa fa-dashboard text-info"></i>@T("Events.Comment.Field.Time")</span>
                          <span>@($"{pc.GetHour(item.CreationDate.Value)}:{pc.GetMinute(item.CreationDate.Value)}")</span>
                     </div>
                     <div class="pull-left">
@@ -35,26 +35,25 @@
             <div class="card-body">
                 <div class="col-md-12" id="body_comment">
                     @Html.Raw(item.Body)
-
                 </div>
             </div>
             <div class="card-footer clearfix">
                 <div class="pull-right">
-                    <div class="comment-like-link btn btn-success" title="موافقم">
+                    <div class="comment-like-link btn btn-success" title="@T("Events.Comment.Field.Like")">
                         <span><i class="fa fa-thumbs-up" style="top: 4px;"></i></span>
-                        <span data-href="@Url.RouteUrl("LikeEventsComment", new {CommentID=@item.ID })" data-comment-id="@item.ID">موافقم</span>
+                        <span data-href="@Url.RouteUrl("LikeEventsComment", new {CommentID=@item.ID })" data-comment-id="@item.ID">@T("Events.Comment.Field.Like")</span>
                     </div>
 
-                    <div class="comment-like comment-like-link btn btn-danger" title="مخالف">
+                    <div class="comment-like comment-like-link btn btn-danger" title="@T("Events.Comment.Field.DisLike")">
                         <span><i class="fa fa-thumbs-down" style="top: 4px;"></i></span>
-                        <span data-href="@Url.RouteUrl("DisLikeEventsComment",new {CommentID=@item.ID })" data-comment-id="@item.ID">مخالفم</span>
+                        <span data-href="@Url.RouteUrl("DisLikeEventsComment",new {CommentID=@item.ID })" data-comment-id="@item.ID">@T("Events.Comment.Field.DisLike")</span>
                     </div>
                     <div id="comment-like-result-@(item.ID)" class="mt-2"></div>
                 </div>
-                @if (Model.Article.CommentStatusType == CommentStatusType.باز)
+                @if (Model.Events.CommentStatusType == CommentStatusType.باز)
                 {
                     <div class="pull-left">
-                        @Ajax.ActionLink("پاسخ دادن", "AddEventsComment", "Events", new { DocumentID = Model.Events.ID, ParentID = @item.ID  }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comment-reply-" + @item.ID, OnBegin = "CommentReply.onBegin" }, new { rel = "nofollow",@class="btn btn-primary" })
+                        @Ajax.ActionLink(T("Events.Comment.Button.Reply").ToString(), "AddEventsComment", "Events", new { DocumentID = Model.Events.ID, ParentID = @item.ID  }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "comment-reply-" + @item.ID, OnBegin = "CommentReply.onBegin" }, new { rel = "nofollow",@class="btn btn-primary" })
                     </div>
                 }
 
@@ -68,7 +67,7 @@
 @if (Model.Events.CommentStatusType == CommentStatusType.باز && Model.User != null)
 {
     <div style="text-align: center;" class="comment-reply-container">
-        @Ajax.ActionLink("ارسال دیدگاه", "AddEventsComment", "Events", new { EventsID = Model.Events.ID }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "addComment", OnSuccess = "AddComment.slideToggle", LoadingElementDuration = 300, LoadingElementId = "loadingMessage" }, new { @class = "btn btn-success", style = "width:80%;", rel = "nofollow" })
+        @Ajax.ActionLink(T("Events.Comment.Button.PostComment").ToString(), "AddEventsComment", "Events", new { EventsID = Model.Events.ID }, new AjaxOptions { HttpMethod = "Get", InsertionMode = InsertionMode.Replace, UpdateTargetId = "addComment", OnSuccess = "AddComment.slideToggle", LoadingElementDuration = 300, LoadingElementId = "loadingMessage" }, new { @class = "btn btn-success", style = "width:80%;", rel = "nofollow" })
     </div>
 }
 else
@@ -76,13 +75,13 @@ else
     if (Model.User == null)
     {
         <div class="alert alert-info text-center">
-            <span>مهمان گرامی! برای ارسال نظر نیاز است وارد سایت شوید</span>
+            <span>@T("Events.Comment.Error.YouMustBeLoggedIn")</span>
         </div>
     }
     else
     {
         <div class="alert alert-info text-center">
-            <span>افزودن نظر برای این رویداد توسط مدیریت، بسته شده است</span>
+            <span>@T("Events.Comment.Error.CommentsAreClosed")</span>
         </div>
     }
 }

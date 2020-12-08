@@ -84,19 +84,20 @@ namespace Ahora.WebApp.Controllers
             if (!eventsResult.Success)
                 return Content("");
 
+            var eventsCommentListModel = new EventsCommentListModel();
+            eventsCommentListModel.User = _workContext.User;
+
             var events = eventsResult.Data;
             if (events.CommentStatusType == CommentStatusType.بسته ||
                 events.CommentStatusType == CommentStatusType.نامشخص)
-                return Content("");
+                return PartialView("~/Views/Events/Partial/_PartialComment.cshtml", eventsCommentListModel);
 
             var commentsResult = _eventsCommentService.List(new EventsCommentListVM() { EventsID = EventsID, ShowChildren = true, CommentType = CommentType.تایید });
             if (!commentsResult.Success)
                 return Content("");
 
             var comments = commentsResult.Data;
-            var eventsCommentListModel = new EventsCommentListModel();
             eventsCommentListModel.AvailableComments = comments;
-            eventsCommentListModel.User = _workContext.User;
             eventsCommentListModel.Events = events;
 
             return PartialView("~/Views/Events/Partial/_PartialComment.cshtml", eventsCommentListModel);

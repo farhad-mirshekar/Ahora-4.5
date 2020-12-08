@@ -91,19 +91,19 @@ namespace Ahora.WebApp.Controllers
             if (!articleResult.Success)
                 return Content("");
 
+            var articleCommentListModel = new ArticleCommentListModel();
+            articleCommentListModel.User = _workContext.User;
             var article = articleResult.Data;
             if (article.CommentStatusType == CommentStatusType.بسته ||
                 article.CommentStatusType == CommentStatusType.نامشخص)
-                return Content("");
+                return PartialView("~/Views/Article/Partial/_PartialComment.cshtml", articleCommentListModel);
 
             var commentsResult = _articleCommentService.List(new ArticleCommentListVM() { ArticleID = ArticleID, ShowChildren = true, CommentType = CommentType.تایید });
             if (!commentsResult.Success)
                 return Content("");
 
             var comments = commentsResult.Data;
-            var articleCommentListModel = new ArticleCommentListModel();
             articleCommentListModel.AvailableComments = comments;
-            articleCommentListModel.User = _workContext.User;
             articleCommentListModel.Article = article;
 
             return PartialView("~/Views/Article/Partial/_PartialComment.cshtml", articleCommentListModel);

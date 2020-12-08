@@ -50,7 +50,6 @@
             var loginform = $('#loginform');
             loginform.submit(function (e) {
                 e.preventDefault();
-                debugger
                 $.ajax({
                     url: `@Url.RouteUrl("Login")`,
                     type: 'POST',

@@ -1,13 +1,13 @@
 ﻿@model Ahora.WebApp.Models.Ptl.EventListModel
 @using FM.Portal.Core.Extention.ReadingTime;
 @{
-    ViewBag.Title = ViewBag.Title;
+    ViewBag.Title = T("Events.List.Page.Title");
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section BodySection{
     <section class="card">
         <div class="card-header">
-            <span class="card-title">لیست رویداد ها</span>
+            <span class="card-title">@T("Events.List.Card.Header.Title")</span>
         </div>
         <div class="card-body">
             @foreach (var item in Model.AvailableEvents)
@@ -30,7 +30,7 @@
                     <div class="card-footer">
                         <div class="btn-group-justified pull-left">
                             <a href="@Url.RouteUrl("EventsDetail",new { SeName=CalculateWordsCount.CleanSeoUrl(item.UrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
-                                ادامه
+                                @T("Events.List.Button.More")
                                 <i class="fa fa-arrow-left"></i>
                             </a>
                         </div>

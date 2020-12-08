@@ -1,22 +1,30 @@
 ﻿@model Ahora.WebApp.Models.Ptl.NewsCommentModel
 <div>
     <!--begin form-->
-    @using (Ajax.BeginForm("AddNewsComment","News", new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddComment.onSuccess", LoadingElementId = "loadingMessage", LoadingElementDuration = 300 }, htmlAttributes: new { @class = "form-horizontal", id = "frmCommentReply" }))
+    @using (Ajax.BeginForm("AddNewsComment", "News", new AjaxOptions { HttpMethod = "POST", OnSuccess = "AddComment.onSuccess", LoadingElementId = "loadingMessage", LoadingElementDuration = 300 }, htmlAttributes: new { @class = "form-horizontal", id = "frmCommentReply" }))
     {
         @Html.AntiForgeryToken()
         @Html.Hidden("ParentID", Model.ParentID)
         @Html.Hidden("ID", Model.ID)
+
         <div class="form-group">
-            <label class="control-label">نظر خود را وارد نمایید</label>
             <div class="col-md-12">
-                @Html.TextAreaFor(c => c.Body, new { @class = "form-control", cols = "10", placeholder = "دیدگاه خود را بنویسید ...." })
+                @Html.TextAreaFor(c => c.Body, new { @class = "form-control", cols = "10", placeholder = $"{T("News.Comment.Body")}" })
                 @Html.ValidationMessageFor(c => c.Body, null, new { @class = "text-danger" })
             </div>
         </div>
-        <button type="submit" class="btn btn-success pull-left">ارسال</button>
+        <button type="submit" class="btn btn-success pull-left">@T("News.Comment.Button.Submit")</button>
     }
     <div class="clearfix"></div>
     <div id="addCommentResult" class="text-center mt-3"></div>
     <!--end form-->
     <div class="clear"></div>
 </div>
+
+<script>
+    $(function () {
+        AjaxForm.EnableAjaxFormvalidate('frmCommentReply');
+        AjaxForm.EnablePostbackValidation();
+        AjaxForm.EnableBootstrapStyleValidation();
+    })
+</script>

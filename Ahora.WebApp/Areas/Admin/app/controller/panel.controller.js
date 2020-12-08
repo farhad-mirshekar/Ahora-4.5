@@ -2051,7 +2051,6 @@
                 article.grid.getlist(false);
                 toaster.pop('success', '', 'مقاله موفقیت ویرایش گردید');
                 loadingService.hide();
-                article.main.changeState.cartable();
             }).catch((error) => {
                 if (article.Model.errors.length === 0)
                     article.Model.errors = error.split('&&');
@@ -2087,7 +2086,6 @@
         }
         function fillDropLanguage() {
             loadingService.show();
-            article.languageList = [];
             return $q.resolve().then(() => {
                 return languageService.list({});
             }).then((result) => {

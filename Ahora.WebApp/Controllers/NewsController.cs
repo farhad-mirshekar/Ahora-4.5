@@ -27,7 +27,7 @@ namespace Ahora.WebApp.Controllers
             _workContext = workContext;
         }
 
-        // GET: News
+        #region News
         public ActionResult Index(int? page)
         {
             var newsResult = _service.List(new FM.Portal.Core.Model.NewsListVM() { PageSize = Helper.CountShowNews, PageIndex = page });
@@ -72,6 +72,7 @@ namespace Ahora.WebApp.Controllers
 
             return View(newsDetail);
         }
+        #endregion
 
         #region News Comment
         public ActionResult Comment(Guid NewsID)
@@ -80,19 +81,20 @@ namespace Ahora.WebApp.Controllers
             if (!newsResult.Success)
                 return Content("");
 
+            var newsCommentListModel = new NewsCommentListModel();
+            newsCommentListModel.User = _workContext.User;
+
             var news = newsResult.Data;
             if (news.CommentStatusType == CommentStatusType.بسته ||
                 news.CommentStatusType == CommentStatusType.نامشخص)
-                return Content("");
+                return PartialView("~/Views/News/Partial/_PartialComment.cshtml", newsCommentListModel);
 
             var commentsResult = _newsCommentService.List(new NewsCommentListVM() { NewsID = NewsID, ShowChildren = true, CommentType = CommentType.تایید });
             if (!commentsResult.Success)
                 return Content("");
 
             var comments = commentsResult.Data;
-            var newsCommentListModel = new NewsCommentListModel();
             newsCommentListModel.AvailableComments = comments;
-            newsCommentListModel.User = _workContext.User;
             newsCommentListModel.News = news;
 
             return PartialView("~/Views/News/Partial/_PartialComment.cshtml", newsCommentListModel);
