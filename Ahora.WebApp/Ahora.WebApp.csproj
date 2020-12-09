@@ -1981,7 +1981,7 @@
     <Content Include="Views\Events\Detail.cshtml" />
     <Content Include="Views\Product\Partial\_PartialMain.cshtml" />
     <Content Include="Views\ShoppingCart\Partial\_PartialCart.cshtml" />
-    <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Tag\Index.cshtml" />
     <Content Include="Views\Redirect\Melli.cshtml" />
     <Content Include="Views\Redirect\_PartialDownload.cshtml" />

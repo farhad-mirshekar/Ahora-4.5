@@ -70,15 +70,19 @@ namespace Ahora.WebApp.Controllers
                 return result;
             }
         }
-        public ActionResult Create()
+        public ActionResult Register()
         {
-            return View();
+            var register = new RegisterModel();
+            register.UserName = null;
+            register.Password = null;
+            return View(register);
         }
         [HttpPost]
-        public ActionResult Create(RegisterModel registerModel)
+        public ActionResult Register(RegisterModel registerModel)
         {
             if (!ModelState.IsValid)
                 return View(registerModel);
+
             var user = registerModel.ToEntity();
             user.Enabled = true;
             user.Type = UserType.کاربر_برون_سازمانی;

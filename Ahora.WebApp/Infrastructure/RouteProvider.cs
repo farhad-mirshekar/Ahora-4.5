@@ -230,7 +230,7 @@ namespace Ahora.WebApp.Infrastructure
             routes.MapLocalizedRoute(
                 "SignUp",
                 "SignUp",
-                new { controller = "Account", action = "Create" },
+                new { controller = "Account", action = "Register" },
                 namespaces: new[] { $"Ahora.WebApp.Controllers" }
                 );
             routes.MapLocalizedRoute(
