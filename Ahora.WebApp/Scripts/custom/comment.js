@@ -122,3 +122,36 @@ AjaxForm.EnableBootstrapStyleValidation = function () {
         }
     });
 };
+//////////////////////////////////////////////////////////////////////////////////////////////////
+var login = new Object();
+login.onSuccess = function (data) {
+    debugger
+    if (data.status) {
+        switch (data.userType) {
+            case 1:
+                localStorage.setItem('authorizationData', data.authorizationData);
+                localStorage.setItem('currentUserPosition', data.currentUserPosition);
+                localStorage.setItem('currentUserPositions', data.currentUserPositions);
+                window.location.href = '/admin';
+                break;
+            case 2:
+                if (data.ReturnUrl !== null)
+                    window.location.href = data.ReturnUrl;
+                else
+                    window.location.href = `/`;
+                break;
+        }
+    } else {
+        if (data.ShowCaptcha) {
+            $('#captchaBox').css('display', 'block');
+            var captcha = $('img#captcha');
+            captcha.attr("src", `data:image/png;base64,${data.Captcha}`);
+            $('#ShowCaptcha').val(true);
+
+            var noty = window.noty({ text: data.ErrorText, type: 'warning', timeout: 1500 });
+        }
+    }
+}
+
+login.onError = function (data) {
+}

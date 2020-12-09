@@ -91,7 +91,7 @@
                 if (item.Url.ToLower() == "login")
                 {
                     <li class="nav-item">
-                        <a class='nav-link' href='@Url.RouteUrl(item.Url)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
+                        <a class='nav-link' href='@Url.RouteUrl(item.Url,new { returnurl = Request.Url.PathAndQuery },null)' id='@item.ID'><i class='@item.IconText mr-1'></i>@item.Name</a>
                     </li>
                 }
                 else

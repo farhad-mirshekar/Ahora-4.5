@@ -1,4 +1,7 @@
-﻿@model FM.Portal.Core.Model.LoginVM
+﻿@model Ahora.WebApp.Models.Org.LoginModel
+    @{ 
+        ViewBag.Title = T("Account.Login.Title");
+    }
 <!--================login_part Area =================-->
 @section BodySection{
     <section class="row">
@@ -9,18 +12,32 @@
                         <div class="card card-signin my-5">
                             <div class="card-body">
                                 <h5 class="card-title text-center">@T("Account.Login.Title")</h5>
-                                <form class="form-horizontal" id="loginform">
+                                @using (Ajax.BeginForm("Login", "Account", new AjaxOptions { HttpMethod = "POST", OnSuccess = "login.onSuccess", LoadingElementId = "loading", LoadingElementDuration = 300 }, new { @class = "form-horizontal", id = "frmLogin" }))
+                                {
+                                    @Html.HiddenFor(l => l.ShowCaptcha)
+                                    @Html.HiddenFor(l => l.ReturnUrl)
                                     <div class="form-group">
-                                        <label for="Title" class="control-label">@T("Account.Login.Field.Username")</label>
+                                        @Html.LabelFor(l => l.Username, new { @class = "control-label" })
                                         <div class="col-md-12">
-                                            <input type="text" class="form-control" id="Username" required value="" placeholder="@T("Account.Login.Field.Username.Placeholder")">
+                                            @Html.TextBoxFor(l => l.Username, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(l => l.Username, null, new { @class = "text-danger" })
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="Title" class="control-label">@T("Account.Login.Field.Password")</label>
+                                        @Html.LabelFor(l => l.Password, new { @class = "control-label" })
                                         <div class="col-md-12">
-                                            <input type="password" class="form-control" id="Password" required value="" placeholder="@T("Account.Login.Field.Password.Placeholder")">
+                                            @Html.PasswordFor(l => l.Password, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(l => l.Password, null, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group" id="captchaBox" style="display:none;">
+                                        <div class="col-md-12">
+                                            <img id="captcha" style="height: 100%; width: 100%;" />
+                                        </div>
+                                        <div class="col-md-12">
+                                            <label class="">@T("Account.Login.FillCaptcha")</label>
+                                            @Html.TextBoxFor(l => l.CaptchaText, new { @class = "form-control" })
                                         </div>
                                     </div>
                                     <button class="btn btn-lg btn-primary btn-block text-uppercase" type="submit">@T("Account.Login.LoginButton")</button>
@@ -28,59 +45,36 @@
                                         <i class="fa fa-user"></i>
                                         @T("Account.Login.Newuser")
                                     </a>
-
-                                </form>
+                                }
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
         <div class="col-md-5">
             <img src="~/Content/img/login.jpg" class="img-responsive w-100" />
         </div>
     </section>
+    <div id="loading" style="display: none">
+        <div class="showbox">
+            <div class="loader">
+                <svg class="circular" viewBox="25 25 50 50">
+                    <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+                </svg>
+            </div>
+        </div>
+    </div>
 }
 <!--================login_part end =================-->
-
-
 @section scripts{
+    <script src="~/Scripts/custom/comment.js"></script>
     <script>
-        (() => {
-            var loginform = $('#loginform');
-            loginform.submit(function (e) {
-                e.preventDefault();
-                $.ajax({
-                    url: `@Url.RouteUrl("Login")`,
-                    type: 'POST',
-                    data: {
-                        username: $('#Username').val(),
-                        password: $('#Password').val()
-                    },
-
-                    success: function (data) {
-                        if (data.status) {
-                            if (data.type == 2) {
-                                if (data.url !== null)
-                                    window.location.href = data.url;
-                                else
-                                    window.location.href = `@Url.RouteUrl("Home")`;
-                            } else {
-                                localStorage.setItem('authorizationData', data.authorizationData);
-                                localStorage.setItem('currentUserPosition', data.currentUserPosition);
-                                localStorage.setItem('currentUserPositions', data.currentUserPositions);
-                                window.location.href = '/admin';
-                            }
-
-                        }
-                        else
-                            alert('خطا');
-                    },
-                    error: function () {
-                        alert("خطا در ورود");
-                    }
-                });
-            })
-        })();
+        $(function () {
+            AjaxForm.EnableAjaxFormvalidate('frmLogin');
+            AjaxForm.EnablePostbackValidation();
+            AjaxForm.EnableBootstrapStyleValidation();
+        })
     </script>
 }

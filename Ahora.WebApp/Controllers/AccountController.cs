@@ -12,6 +12,7 @@ using FM.Portal.Core.Infrastructure;
 using FM.Portal.Core.Common.Serializer;
 using Ahora.WebApp.Models.Org;
 using FM.Portal.FrameWork.AutoMapper;
+using FM.Portal.FrameWork.MVC.Helpers.Captcha;
 
 namespace Ahora.WebApp.Controllers
 {
@@ -21,28 +22,53 @@ namespace Ahora.WebApp.Controllers
         private readonly IAuthenticationService _authenticationService;
         private readonly IWorkContext _workContext;
         private readonly IObjectSerializer _objectSerializer;
+        private readonly ILocaleStringResourceService _localeStringResourceService;
         public AccountController(IUserService service
                                  , IPositionService positionService
                                  , IAuthenticationService authenticationService
                                  , IWorkContext workContext
-                                 , IObjectSerializer objectSerializer) : base(service)
+                                 , IObjectSerializer objectSerializer
+                                 , ILocaleStringResourceService localeStringResourceService) : base(service)
         {
             _positionService = positionService;
             _authenticationService = authenticationService;
             _workContext = workContext;
             _objectSerializer = objectSerializer;
+            _localeStringResourceService = localeStringResourceService;
         }
 
         #region Login / Register / SignOut
         public ActionResult Login(string returnUrl)
         {
-            return View();
+            var login = new LoginModel();
+            login.ReturnUrl = returnUrl;
+            return View(login);
         }
         [HttpPost]
-        public async Task<JsonResult> Login(LoginVM model , string returnUrl)
+        public async Task<JsonResult> Login(LoginModel login)
         {
-            var result = await GetToken(new Token { username = model.UserName, password = model.Password }, returnUrl);
-            return result;
+            if (login.ShowCaptcha)
+            {
+                if (!string.IsNullOrEmpty(login.CaptchaText) && string.Equals(login.CaptchaText, Session["tokenCaptcha"].ToString(), StringComparison.CurrentCultureIgnoreCase) == true)
+                {
+                    var result = await GetToken(login);
+                    return result;
+                }
+                else
+                {
+                    login.status = false;
+                    login.Captcha = new Captcha().Generate("tokenCaptcha");
+                    Session["toknCaptcha"] = login.Captcha;
+                    login.ErrorText = _localeStringResourceService.GetResource("Account.Login.Captcha.ErrorMessage").Data;
+                    login.ShowCaptcha = true;
+                    return Json(login);
+                }
+            }
+            else
+            {
+                var result = await GetToken(login);
+                return result;
+            }
         }
         public ActionResult Create()
         {
@@ -78,7 +104,7 @@ namespace Ahora.WebApp.Controllers
                     return Json(new { Success = true, Data = true });
                 default:
                     return RedirectToAction("Index", "Home");
-            }     
+            }
         }
         #endregion
 
@@ -99,13 +125,20 @@ namespace Ahora.WebApp.Controllers
             return result;
         }
 
-        private async Task<JsonResult> GetToken(Token model, string returnUrl)
+        private async Task<JsonResult> GetToken(LoginModel model)
         {
             try
             {
-                var userResult = _service.Get(model.username, model.password, null, UserType.Unknown);
+                var userResult = _service.Get(model.Username, model.Password, null, UserType.Unknown);
                 if (!userResult.Success)
-                    return Json(new { status = 0, token = "" });
+                {
+                    model.status = false;
+                    model.ShowCaptcha = true;
+                    model.Captcha = new Captcha().Generate("tokenCaptcha");
+                    Session["toknCaptcha"] = model.Captcha;
+                    model.ErrorText = _localeStringResourceService.GetResource("Account.Login.NotFindUser.ErrorMessage").Data;
+                    return Json(model);
+                }
 
                 var user = userResult.Data;
                 if (user.Type == UserType.کاربر_درون_سازمانی)
@@ -118,8 +151,8 @@ namespace Ahora.WebApp.Controllers
                         //setup login data
                         var formContent = new FormUrlEncodedContent(new[]
                         {  new KeyValuePair<string, string>("grant_type", "password"),
-                                new KeyValuePair<string, string>("username", model.username),
-                                new KeyValuePair<string, string>("password", model.password),
+                                new KeyValuePair<string, string>("username", model.Username),
+                                new KeyValuePair<string, string>("password", model.Password),
                             });
                         //send request
                         HttpResponseMessage responseMessage = await client.PostAsync("/Token", formContent);
@@ -134,28 +167,34 @@ namespace Ahora.WebApp.Controllers
                                         return Json(new { status = 0, token = "" });
 
                                     _authenticationService.SignIn(user, false);
-                                   // _workContext.User = user;
-                                    //_workContext.IsAdmin = true;
-                                    return Json(new
-                                    {
-                                        status = 1,
-                                        type = 1,
-                                        authorizationData = _objectSerializer.Serialize(tokenvm),
-                                        currentUserPositions = _objectSerializer.Serialize(positionsResult.Data),
-                                        currentUserPosition = _objectSerializer.Serialize(positionsResult.Data.Where(x => x.Default == true).First())
-                                    });
+
+                                    model.status = true;
+                                    model.userType = 1;
+                                    model.authorizationData = _objectSerializer.Serialize(tokenvm);
+                                    model.currentUserPositions = _objectSerializer.Serialize(positionsResult.Data);
+                                    model.currentUserPosition = _objectSerializer.Serialize(positionsResult.Data.Where(x => x.Default == true).First());
+
+                                    return Json(model);
                                 }
                             default:
-                                return Json(new { status = 0, token = "" });
+                                {
+                                    model.status = false;
+                                    model.ShowCaptcha = true;
+                                    model.Captcha = new Captcha().Generate("tokenCaptcha");
+                                    Session["toeknCaptcha"] = model.Captcha;
+                                    model.ErrorText = "خطا";
+                                    return Json(model);
+                                }
                         }
                     }
                 }
                 else
                 {
                     _authenticationService.SignIn(user, false);
-                    //_workContext.User = user;
-                    //_workContext.IsAdmin = false;
-                    return Json(new { status = 1, token = "", userid = "", type = user.Type, url = returnUrl });
+                    model.status = true;
+                    model.userType = 2;
+
+                    return Json(model);
                 }
             }
             catch (Exception e) { throw; }

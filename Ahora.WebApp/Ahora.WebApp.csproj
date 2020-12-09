@@ -308,7 +308,6 @@
     <Content Include="Areas\Admin\Content\css\loader\loader.css" />
     <Content Include="Areas\Admin\Content\css\select2\select2.min.css" />
     <Content Include="Areas\Admin\Content\img\avatar_11_tn.png" />
-    <Content Include="Areas\Admin\Content\img\loading.gif" />
     <Content Include="Areas\Admin\Content\img\logo.png" />
     <Content Include="Areas\Admin\Content\js\bootstrap.min.js" />
     <Content Include="Areas\Admin\Content\js\checkbox.js" />
@@ -1948,6 +1947,7 @@
     <Compile Include="Models\App\ShoppingCartItem\ShoppingCartItemModel.cs" />
     <Compile Include="Models\EntityModel.cs" />
     <Compile Include="Models\Error.cs" />
+    <Compile Include="Models\Org\User\LoginModel.cs" />
     <Compile Include="Models\Org\User\RegisterModel.cs" />
     <Compile Include="Models\Pbl\Language\LanguageModel.cs" />
     <Compile Include="Models\PagingInfo.cs" />
@@ -2012,7 +2012,6 @@
     <Content Include="Views\Product\Partial\_PartialModify.cshtml" />
     <Content Include="Views\Product\Index.cshtml" />
     <Content Include="Views\Common\PageNotFound.cshtml" />
-    <Content Include="Views\Product\f.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

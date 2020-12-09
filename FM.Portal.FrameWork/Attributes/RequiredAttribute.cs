@@ -20,6 +20,12 @@ namespace FM.Portal.FrameWork.Attributes
         {
             _resourceKey = resourceKey;
         }
+        public override bool IsValid(object value)
+        {
+            if (value == null)
+                return false;
+            return true;
+        }
         public override string FormatErrorMessage(string name)
         {
             if (_resourceService == null)
