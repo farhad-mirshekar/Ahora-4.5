@@ -21,12 +21,13 @@ namespace FM.Portal.FrameWork
             _httpContext = httpContext;
         }
         private User _cachedUser;
+        private int _cachedShoppingCartItemCount = 0;
         public Language WorkingLanguage { get; set; }
         public User User
         {
             get
             {
-                
+
                 if (_cachedUser != null)
                 {
                     _IsAdmin(_cachedUser);
@@ -59,6 +60,21 @@ namespace FM.Portal.FrameWork
                 if (_httpContext.Request.Cookies["ShoppingID"] != null)
                     return SQLHelper.CheckGuidNull(_httpContext.Request.Cookies["ShoppingID"].Value);
                 return null;
+            }
+        }
+
+        public int ShoppingCartItemCount
+        {
+            get
+            {
+                if (_cachedShoppingCartItemCount > 0)
+                    return _cachedShoppingCartItemCount;
+
+                return 0;
+            }
+            set
+            {
+                _cachedShoppingCartItemCount = value;
             }
         }
 

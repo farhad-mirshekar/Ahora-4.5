@@ -161,6 +161,10 @@ namespace Ahora.WebApp.Controllers
             var linkResult = _linkService.List(new LinkListVM() { PageIndex = 0 });
             return PartialView(string.Format(ComponentUrl, "Footer", "_PartialFooter.cshtml"), linkResult.Data);
         }
+        public ActionResult ShoppingCartItemCount()
+        {
+            return PartialView("_PartialShoppingCartItemCount",_workContext.ShoppingCartItemCount.ToString());
+        }
 
         public virtual ActionResult GenericUrl()
         {

@@ -8,5 +8,6 @@ namespace Ahora.WebApp.Models.Pbl
         public List<MenuItem> AvailableMenu { get; set; }
         public User User { get; set; }
         public bool IsAdmin { get; set; }
+        public int ShoppingCartItemCount { get; set; }
     }
 }

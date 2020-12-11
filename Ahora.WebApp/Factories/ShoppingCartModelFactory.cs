@@ -232,6 +232,7 @@ namespace Ahora.WebApp.Factories
                     };
 
                 _cacheManager.Remove(CacheParamExtention.Shopping_Cart_Item_Details);
+                _workContext.ShoppingCartItemCount -= 1;
                 return new JsonResultModel
                 {
                     Success = true,

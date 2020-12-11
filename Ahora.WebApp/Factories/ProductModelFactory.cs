@@ -148,6 +148,7 @@ namespace Ahora.WebApp.Factories
                                 Success = false,
                                 Message = result.Message
                             };
+                        _workContext.ShoppingCartItemCount += 1;
                     }
                 }
 
@@ -211,6 +212,7 @@ namespace Ahora.WebApp.Factories
                             Success = false,
                             Message = result.Message
                         };
+                    _workContext.ShoppingCartItemCount += 1;
                 }
                 _cacheManager.Remove(CacheParamExtention.Shopping_Cart_Item_Details);
                 return new JsonResultModel

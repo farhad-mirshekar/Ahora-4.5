@@ -9,5 +9,6 @@ namespace FM.Portal.Core.Infrastructure
         User User { get; set; }
         bool IsAdmin { get; set; }
         Guid? ShoppingID { get; }
+        int ShoppingCartItemCount { get; set; }
     }
 }
