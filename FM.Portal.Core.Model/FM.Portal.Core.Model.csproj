@@ -161,7 +161,8 @@
     <Compile Include="Pbl\Notification\VM\NotificationListVM.cs" />
     <Compile Include="Pbl\Pages\Pages.cs" />
     <Compile Include="Pbl\Tags\Tags.cs" />
-    <Compile Include="Pbl\Tags\VM\TagsSearchListVM.cs" />
+    <Compile Include="Pbl\Tags\VM\TagSearchVM.cs" />
+    <Compile Include="Pbl\Tags\VM\TagsListVM.cs" />
     <Compile Include="Pbl\UrlRecord\UrlRecord.cs" />
     <Compile Include="Pbl\UrlRecord\VM\UrlRecordListVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

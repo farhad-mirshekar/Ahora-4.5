@@ -6,92 +6,130 @@ IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('pbl.spGets
 GO
 
 CREATE PROCEDURE pbl.spGetsTagsByName
-	@Name NVARCHAR(MAX)
+	@Name NVARCHAR(MAX),
+	@PageIndex INT,
+	@PageSize INT
 --WITH ENCRYPTION
 AS
 BEGIN
+	IF @PageIndex = 0 
+	BEGIN
+		SET @PageSize = 10000000
+		SET @PageIndex = 1
+	END
 
-	DECLARE @NewName NVARCHAR(MAX) = LTRIM(RTRIM(@Name)) 
 	;WITH Article AS
 	(
 		SELECT
-			ID,
-			Title,
-			UrlDesc,
-			TrackingCode
-		FROM ptl.Article
-		WHERE RemoverID IS NULL
+			Article.[Description],
+			Article.[Title],
+			UrlRecord.EntityID,
+			UrlRecord.EntityName,
+			UrlRecord.UrlDesc
+		FROM 
+			ptl.Article Article
+		INNER JOIN 
+			pbl.UrlRecord UrlRecord ON Article.ID = UrlRecord.EntityID
+		WHERE 
+			Article.RemoverID IS NULL
 	),
 	News AS
 	(
 		SELECT
-			ID,
-			Title,
-			UrlDesc,
-			TrackingCode
-		FROM ptl.News
-		WHERE RemoverID IS NULL
+			News.[Description],
+			News.[Title],
+			UrlRecord.EntityID,
+			UrlRecord.EntityName,
+			UrlRecord.UrlDesc
+		FROM 
+			ptl.News News
+		INNER JOIN 
+			pbl.UrlRecord UrlRecord ON News.ID = UrlRecord.EntityID
+		WHERE 
+			News.RemoverID IS NULL
 	),
-	Events AS
+	[Events] AS
 	(
 		SELECT
-			ID,
-			Title,
-			UrlDesc,
-			TrackingCode
-		FROM ptl.Events
-		WHERE RemoverID IS NULL
+			[Events].[Description],
+			[Events].[Title],
+			UrlRecord.EntityID,
+			UrlRecord.EntityName,
+			UrlRecord.UrlDesc
+		FROM 
+			ptl.[Events] [Events]
+		INNER JOIN 
+			pbl.UrlRecord UrlRecord ON [Events].ID = UrlRecord.EntityID
+		WHERE 
+			[Events].RemoverID IS NULL
 	),
 	Product AS
 	(
 		SELECT
-			ID,
-			Name,
-			MetaTitle,
-			TrackingCode
-		FROM app.Product
-		WHERE RemoverID IS NULL
+			Product.ShortDescription,
+			Product.[Name],
+			UrlRecord.EntityID,
+			UrlRecord.EntityName,
+			UrlRecord.UrlDesc
+		FROM 
+			app.Product Product
+		INNER JOIN 
+			pbl.UrlRecord UrlRecord ON Product.ID = UrlRecord.EntityID
+		WHERE 
+			Product.RemoverID IS NULL
 	),
 	DynamicPage AS
 	(
 		SELECT
-			ID,
-			MetaKeywords,
-			TrackingCode,
-			Name,
-			UrlDesc
-		FROM ptl.DynamicPage
+			DynamicPage.[Description],
+			DynamicPage.[Name],
+			UrlRecord.EntityID,
+			UrlRecord.EntityName,
+			UrlRecord.UrlDesc,
+			Pages.Name AS PageName
+		FROM 
+			ptl.DynamicPage DynamicPage
+		INNER JOIN 
+			pbl.UrlRecord UrlRecord ON DynamicPage.ID = UrlRecord.EntityID
+		INNER JOIN
+			ptl.Pages Pages ON DynamicPage.PageID = Pages.ID
 	)
-	
-	SELECT 
-		tag.[Name],
-		COALESCE(news.ID,events.ID,article.ID , product.ID,dynamicPage.ID) AS DocumentID,
-		COALESCE(news.TrackingCode,events.TrackingCode,article.TrackingCode , product.TrackingCode,dynamicPage.TrackingCode) AS TrackingCode,
-		COALESCE(news.Title,events.Title,article.Title , product.[Name],dynamicPage.[Name]) AS DocumentTitle,
-		COALESCE(news.UrlDesc,events.UrlDesc,article.UrlDesc , product.MetaTitle,dynamicPage.UrlDesc) AS DocumentUrlDesc,
-		CAST((
-				CASE 
-					WHEN dynamicPage.ID IS NOT NULL THEN 1
-					WHEN news.ID IS NOT NULL THEN 3
-					WHEN events.ID IS NOT NULL THEN 8
-					WHEN article.ID IS NOT NULL THEN 4
-					WHEN product.ID IS NOT NULL THEN 6
-					ELSE 0 END
-			)AS TINYINT) AS DocumentType
-	FROM 
-		pbl.Tags tag
-	INNER JOIN 
-		pbl.Tags_Mapping map ON tag.ID = map.TagID
-	LEFT JOIN 
-		Events events ON map.DocumentID = events.ID
-	LEFT JOIN 
-		News news ON map.DocumentID = news.ID
-	LEFT JOIN
-		 Article article ON map.DocumentID = article.ID
-	LEFT JOIN
-		 Product product ON map.DocumentID = product.ID
-	LEFT JOIN
-		 DynamicPage dynamicPage ON map.DocumentID = dynamicPage.ID
-	WHERE
-		tag.Name LIKE CONCAT('%', @NewName,'%')
+	,MainSelect AS
+	(
+		SELECT 
+			Tags.[Name],
+			COALESCE(News.Title,[Events].Title,Article.Title , Product.[Name],DynamicPage.[Name]) AS DocumentTitle,
+			COALESCE(News.[Description],[Events].[Description],Article.[Description] , Product.ShortDescription,DynamicPage.[Description]) AS DocumentDescription,
+			COALESCE(News.EntityID,[Events].EntityID,Article.EntityID , Product.EntityID,DynamicPage.EntityID) AS DocumentID,
+			COALESCE(News.UrlDesc,[Events].UrlDesc,Article.UrlDesc , Product.UrlDesc,DynamicPage.UrlDesc) AS DocumentUrlDesc,
+			COALESCE(News.EntityName,[Events].EntityName,Article.EntityName , Product.EntityName,DynamicPage.EntityName) AS EntityName,
+			ISNULL(DynamicPage.PageName , '') AS PageName
+		FROM 
+			pbl.Tags Tags 
+		INNER JOIN	
+			pbl.Tags_Mapping Tags_Mapping ON Tags.ID = Tags_Mapping.TagID
+		LEFT JOIN
+			Article Article ON Tags_Mapping.DocumentID = Article.EntityID
+		LEFT JOIN
+			News News ON Tags_Mapping.DocumentID = News.EntityID
+		LEFT JOIN
+			[Events] [Events] ON Tags_Mapping.DocumentID = [Events].EntityID
+		LEFT JOIN
+			Product Product ON Tags_Mapping.DocumentID = Product.EntityID
+		LEFT JOIN
+			DynamicPage DynamicPage ON Tags_Mapping.DocumentID = DynamicPage.EntityID 
+		WHERE
+			Tags.[Name] LIKE CONCAT('%',@Name,'%') 
+	),TempCount AS
+	(
+		SELECT
+			COUNT(*) AS Total
+		FROM MainSelect
+	)
+
+	SELECT *
+	FROM MainSelect,TempCount
+	ORDER BY [DocumentTitle] DESC
+	OFFSET ((@PageIndex - 1) * @PageSize) ROWS FETCH NEXT @PageSize ROWS ONLY
+	OPTION(RECOMPILE)
 END

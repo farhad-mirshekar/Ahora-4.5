@@ -1954,6 +1954,7 @@
     <Compile Include="Models\Pbl\Language\LanguageSelectorModel.cs" />
     <Compile Include="Models\Pbl\Menu\MemuModel.cs" />
     <Compile Include="Models\JsonResultModel.cs" />
+    <Compile Include="Models\Pbl\Tags\TagsListModel.cs" />
     <Compile Include="Models\Ptl\NewsComment\NewsCommentListModel.cs" />
     <Compile Include="Models\Ptl\NewsComment\NewsCommentModel.cs" />
     <Compile Include="Models\Ptl\EventsComment\EventsCommentListModel.cs" />

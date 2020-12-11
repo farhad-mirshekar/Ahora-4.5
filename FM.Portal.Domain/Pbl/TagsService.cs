@@ -24,18 +24,18 @@ namespace FM.Portal.Domain
             return Result<List<Tags>>.Failure();
         }
 
-        public Result Insert(List<Tags> model,Guid DocumentID)
-        => _dataSource.Add(model,DocumentID);
+        public Result Add(List<Tags> model)
+        => _dataSource.Insert(model);
 
-        public Result<int> Delete(Guid DocumentID)
+        public Result Delete(Guid DocumentID)
         => _dataSource.Delete(DocumentID);
 
-        public Result<List<TagsSearchListVM>> SearchByName(string Name)
+        public Result<List<TagSearchVM>> List(TagsListVM listVM)
         {
-            var table = ConvertDataTableToList.BindList<TagsSearchListVM>(_dataSource.SearchByName(Name.Trim()));
+            var table = ConvertDataTableToList.BindList<TagSearchVM>(_dataSource.SearchByName(listVM));
             if (table.Count > 0 || table.Count == 0)
-                return Result<List<TagsSearchListVM>>.Successful(data: table);
-            return Result<List<TagsSearchListVM>>.Failure();
+                return Result<List<TagSearchVM>>.Successful(data: table);
+            return Result<List<TagSearchVM>>.Failure();
         }
     }
 }

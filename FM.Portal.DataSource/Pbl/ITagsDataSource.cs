@@ -8,9 +8,9 @@ namespace FM.Portal.DataSource
 {
    public interface ITagsDataSource:IDataSource
     {
-        Result Add(List<Tags> model,Guid DocumentID);
+        Result Insert(List<Tags> model);
         DataTable List(Guid DocumnetID);
-        Result<int> Delete(Guid DocumnetID);
-        DataTable SearchByName(string Name);
+        Result Delete(Guid DocumnetID);
+        DataTable SearchByName(TagsListVM listVM);
     }
 }

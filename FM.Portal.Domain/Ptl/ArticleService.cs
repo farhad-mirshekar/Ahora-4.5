@@ -45,9 +45,9 @@ namespace FM.Portal.Domain
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
                 {
-                    tags.Add(new Tags { Name = item });
+                    tags.Add(new Tags { Name = item , DocumentID = model.ID });
                 }
-                _tagsService.Insert(tags, model.ID);
+                _tagsService.Add(tags);
             }
             model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
             var result = _dataSource.Insert(model);
@@ -98,9 +98,9 @@ namespace FM.Portal.Domain
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
                 {
-                    tags.Add(new Tags { Name = item });
+                    tags.Add(new Tags { Name = item , DocumentID = model.ID });
                 }
-                _tagsService.Insert(tags, model.ID);
+                _tagsService.Add(tags);
             }
             else
             {

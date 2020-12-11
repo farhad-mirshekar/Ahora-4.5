@@ -30,9 +30,9 @@ namespace FM.Portal.Domain
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
                 {
-                    tags.Add(new Tags { Name = item });
+                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
                 }
-                _tagsService.Insert(tags, model.ID);
+                _tagsService.Add(tags);
             }
             return _dataSource.Insert(model);
         }
@@ -45,14 +45,14 @@ namespace FM.Portal.Domain
             var validateResult = ValidateModel(model);
             if (!validateResult.Success)
                 return Result<DynamicPage>.Failure(message: validateResult.Message);
-            if (model.Tags.Count > 0)
+            if (model.Tags != null && model.Tags.Count > 0)
             {
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
                 {
-                    tags.Add(new Tags { Name = item });
+                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
                 }
-                _tagsService.Insert(tags, model.ID);
+                _tagsService.Add(tags);
             }
             else
             {
