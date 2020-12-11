@@ -88,8 +88,8 @@ namespace Ahora.WebApp.Infrastructure
                namespaces: new[] { $"Ahora.WebApp.Controllers" });
             routes.MapLocalizedRoute(
                 "Tag",
-                "Tag/{Name}",
-                new { controller = "Tag", action = "Index", Name = UrlParameter.Optional },
+                "Tag/{Name}/{Page}",
+                new { controller = "Tag", action = "Index", Name = UrlParameter.Optional , Page = UrlParameter.Optional },
                 namespaces: new[] { $"Ahora.WebApp.Controllers" });
             routes.MapLocalizedRoute(
             "Faq",

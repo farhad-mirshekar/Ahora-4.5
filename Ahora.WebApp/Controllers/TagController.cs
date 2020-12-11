@@ -18,7 +18,7 @@ namespace Ahora.WebApp.Controllers
         // GET: Tag
         public ActionResult Index(string Name, int? page)
         {
-            var tagsResult =_service.List(new TagsListVM {TagName = Name.Replace("_"," ") , PageSize = 5 });
+            var tagsResult =_service.List(new TagsListVM {TagName = Name.Replace("_"," ") , PageSize = 5 , PageIndex = page });
             if(!tagsResult.Success)
             {
                 var error = new Error() {ClassCss="alert alert-info" , ErorrDescription="خطا در بازیابی داده" };
@@ -27,14 +27,19 @@ namespace Ahora.WebApp.Controllers
             var tags = tagsResult.Data;
 
             var tagsListModel = new TagsListModel();
-            tagsListModel.AvailableTags = tags;
+            if(tags.Count > 0)
+            {
+                tagsListModel.AvailableTags = tags;
 
-            var pageInfo = new PagingInfo();
-            pageInfo.CurrentPage = page ?? 1;
-            pageInfo.TotalItems = tags.Select(x => x.Total).First();
-            pageInfo.ItemsPerPage = 5;
+                var pageInfo = new PagingInfo();
+                pageInfo.CurrentPage = page ?? 1;
+                pageInfo.TotalItems = tags.Select(x => x.Total).First();
+                pageInfo.ItemsPerPage = 5;
 
-            tagsListModel.PagingInfo = pageInfo;
+                tagsListModel.PagingInfo = pageInfo;
+            }
+
+            tagsListModel.TagNameSearch = Name;
 
             return View(tagsListModel);
         }

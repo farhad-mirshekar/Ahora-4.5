@@ -1,95 +1,104 @@
 ﻿@model Ahora.WebApp.Models.Pbl.TagsListModel
 @using FM.Portal.Core.Extention.ReadingTime;
 @{
-    ViewBag.Title = $"{T("Tags.Title")} z";
+    ViewBag.Title = $"{T("Tags.Page.Title")} - {Model.TagNameSearch}";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @section BodySection{
-    <div class="row">
-        <div class="col-md-9 mt-2">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">نتیجه جست و جو</h3>
-                </div>
-                <div class="card-body">
-                    @foreach (var item in Model.AvailableTags)
-                    {
-                        <section class="card">
-                            <div class="card-body">
-                                <h3 class="card-title">@item.DocumentTitle</h3>
-                                <p class="card-text">@item.DocumentDescription</p>
-                            </div>
-                            <div class="card-footer">
-                                <div class="btn-group-justified pull-left">
-                                    @switch (item.EntityName.ToLowerInvariant())
-                                    {
-                                        case "product":
-                                            {
-                                                <a href="@Url.RouteUrl("Product",new { SeName=item.DocumentUrlDesc})" class="btn btn-outline-success btn-lg btn-block">
-                                                    ادامه
-                                                    <i class="fa fa-arrow-left"></i>
-                                                </a>
-                                                break;
-                                            }
-                                        case "article":
-                                            {
-                                                <a href="@Url.RouteUrl("ArticleDetail" , new { SeName=CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
-                                                    ادامه
-                                                    <i class="fa fa-arrow-left"></i>
-                                                </a>
-                                                break;
-                                            }
-                                        case "event":
-                                            {
-                                                <a href="@Url.RouteUrl("EventsDetail" , new { SeName=CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
-                                                    ادامه
-                                                    <i class="fa fa-arrow-left"></i>
-                                                </a>
-                                                break;
-                                            }
-                                        case "news":
-                                            {
-                                                <a href="@Url.RouteUrl("NewsDetail" , new { SeName=CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
-                                                    ادامه
-                                                    <i class="fa fa-arrow-left"></i>
-                                                </a>
-                                                break;
-                                            }
-                                        case "dynamicpage":
-                                            {
-                                                <a href="@Url.RouteUrl("dynamicpage" , new { SeName=CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
-                                                    ادامه
-                                                    <i class="fa fa-arrow-left"></i>
-                                                </a>
-                                                break;
-                                            }
-                                        case "dynamicpagedetail":
-                                            {
-                                                <a href="@Url.RouteUrl("DynamicPageDetail",new {PageName =CalculateWordsCount.CleanSeoUrl(item.PageName)  ,SeName=item.DocumentUrlDesc})" class="btn btn-outline-success btn-lg btn-block">
-                                                    ادامه
-                                                    <i class="fa fa-arrow-left"></i>
-                                                </a>
-                                                break;
-                                            }
-                                    }
+    @if (Model.AvailableTags != null && Model.AvailableTags.Count > 0)
+    {
+        <div class="row">
+            <div class="col-md-9 mt-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">نتیجه جست و جو</h3>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var item in Model.AvailableTags)
+                        {
+                            <section class="card">
+                                <div class="card-body">
+                                    <h3 class="card-title">@item.DocumentTitle</h3>
+                                    <p class="card-text">@item.DocumentDescription</p>
                                 </div>
-                            </div>
-                        </section>
-                    }
-                </div>
-                <div class="card-footer">
-                    <div class="d-flex justify-content-center" dir="ltr">
-                        <ul class="pagination">
-                            @Html.PageLinks((PagingInfo)Model.PagingInfo, x => Url.RouteUrl("Tag", new { Page = x }))
-                        </ul>
+                                <div class="card-footer">
+                                    <div class="btn-group-justified pull-left">
+                                        @switch (item.EntityName.ToLowerInvariant())
+                                        {
+                                            case "product":
+                                                {
+                                                    <a href="@Url.RouteUrl("Product",new { SeName=item.DocumentUrlDesc})" class="btn btn-outline-success btn-lg btn-block">
+                                                        ادامه
+                                                        <i class="fa fa-arrow-left"></i>
+                                                    </a>
+                                                    break;
+                                                }
+                                            case "article":
+                                                {
+                                                    <a href="@Url.RouteUrl("ArticleDetail" , new { SeName=CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
+                                                        ادامه
+                                                        <i class="fa fa-arrow-left"></i>
+                                                    </a>
+                                                    break;
+                                                }
+                                            case "event":
+                                                {
+                                                    <a href="@Url.RouteUrl("EventsDetail" , new { SeName=CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
+                                                        ادامه
+                                                        <i class="fa fa-arrow-left"></i>
+                                                    </a>
+                                                    break;
+                                                }
+                                            case "news":
+                                                {
+                                                    <a href="@Url.RouteUrl("NewsDetail" , new { SeName=CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
+                                                        ادامه
+                                                        <i class="fa fa-arrow-left"></i>
+                                                    </a>
+                                                    break;
+                                                }
+                                            case "dynamicpage":
+                                                {
+                                                    <a href="@Url.RouteUrl("dynamicpage" , new { SeName=CalculateWordsCount.CleanSeoUrl(item.DocumentUrlDesc)})" class="btn btn-outline-success btn-lg btn-block">
+                                                        ادامه
+                                                        <i class="fa fa-arrow-left"></i>
+                                                    </a>
+                                                    break;
+                                                }
+                                            case "dynamicpagedetail":
+                                                {
+                                                    <a href="@Url.RouteUrl("DynamicPageDetail",new {PageName =CalculateWordsCount.CleanSeoUrl(item.PageName)  ,SeName=item.DocumentUrlDesc})" class="btn btn-outline-success btn-lg btn-block">
+                                                        ادامه
+                                                        <i class="fa fa-arrow-left"></i>
+                                                    </a>
+                                                    break;
+                                                }
+                                        }
+                                    </div>
+                                </div>
+                            </section>
+                        }
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-center" dir="ltr">
+                            <ul class="pagination">
+                                @Html.PageLinks((PagingInfo)Model.PagingInfo, x => Url.RouteUrl("Tag", new { Page = x }))
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
+            <div class="col-md-3 mt-2">
+                @{ Html.RenderAction("GetLastArticle", "Common");}
+                @{ Html.RenderAction("GetLastNews", "Common");}
+                @{ Html.RenderAction("GetLastEvents", "Common");}
+            </div>
         </div>
-        <div class="col-md-3 mt-2">
-            @{ Html.RenderAction("GetLastArticle", "Common");}
-            @{ Html.RenderAction("GetLastNews", "Common");}
-            @{ Html.RenderAction("GetLastEvents", "Common");}
+    }
+    else
+    {
+        <div class="alert alert-info">
+            <span class="text-danger">@string.Format(T("Tags.Page.NotResultSearch").Text,Model.TagNameSearch)</span>
         </div>
-    </div>
+    }
 }

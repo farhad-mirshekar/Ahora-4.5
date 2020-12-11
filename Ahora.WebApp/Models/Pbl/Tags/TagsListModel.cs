@@ -7,5 +7,6 @@ namespace Ahora.WebApp.Models.Pbl
     {
         public List<TagSearchVM> AvailableTags { get; set; }
         public PagingInfo PagingInfo { get; set; }
+        public string TagNameSearch { get; set; }
     }
 }
