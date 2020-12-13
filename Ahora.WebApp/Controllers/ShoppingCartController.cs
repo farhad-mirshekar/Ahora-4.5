@@ -95,7 +95,12 @@ namespace Ahora.WebApp.Controllers
 
                 var CartDetailResult = _shoppingCartModelFactory.ShoppingCartDetail();
                 if (CartDetailResult == null || CartDetailResult.AvailableShoppingCartItem.Count == 0)
-                    return View("~/Views/ShoppingCart/Partial/_PartialCartEmpty.cshtml");
+                {
+                    if (_workContext.User == null)
+                        return RedirectToRoute("login", new { returnUrl = "Shopping" });
+                    else
+                        return RedirectToAction("CartEmpty");
+                }
 
                 return View(CartDetailResult);
             }
@@ -107,7 +112,7 @@ namespace Ahora.WebApp.Controllers
         public async Task<JsonResult> Shopping(UserAddress model)
         {
             var paymentResult = await _shoppingCartModelFactory.Payment(model);
-            return Json(paymentResult,JsonRequestBehavior.AllowGet);
+            return Json(paymentResult, JsonRequestBehavior.AllowGet);
         }
 
         #endregion

@@ -12,13 +12,16 @@ namespace FM.Portal.FrameWork
         private readonly ILanguageService _languageService;
         private readonly IAuthenticationService _authenticationService;
         private readonly HttpContextBase _httpContext;
+        private readonly IShoppingCartItemService _shoppingCartItemService;
         public WebWorkContext(ILanguageService languageService
                              , IAuthenticationService authenticationService
-                             , HttpContextBase httpContext)
+                             , HttpContextBase httpContext
+                             , IShoppingCartItemService shoppingCartItemService)
         {
             _languageService = languageService;
             _authenticationService = authenticationService;
             _httpContext = httpContext;
+            _shoppingCartItemService = shoppingCartItemService;
         }
         private User _cachedUser;
         private int _cachedShoppingCartItemCount = 0;
@@ -69,8 +72,17 @@ namespace FM.Portal.FrameWork
             {
                 if (_cachedShoppingCartItemCount > 0)
                     return _cachedShoppingCartItemCount;
+                if (ShoppingID != null)
+                {
+                    var shoppingCartItemsResult = _shoppingCartItemService.List(ShoppingID.Value);
+                    if (!shoppingCartItemsResult.Success)
+                        return 0;
+                    var shoppingCartItems = shoppingCartItemsResult.Data;
 
-                return 0;
+                    _cachedShoppingCartItemCount = shoppingCartItems.Count;
+                }
+
+                return _cachedShoppingCartItemCount;
             }
             set
             {

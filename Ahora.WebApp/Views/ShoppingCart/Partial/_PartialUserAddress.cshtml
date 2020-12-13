@@ -1,7 +1,7 @@
 ﻿@model Ahora.WebApp.Models.App.ShoppingCartItemListModel
 <div class="card">
     <div class="card-header">
-        <label class="card-title">اطلاعات خریدار</label>
+        <label class="card-title">@T("Shopping.Page.UserInfoAddress")</label>
     </div>
     <div class="card-body" id="addressSection">
         @{
@@ -18,13 +18,13 @@
             {
                 <div class="form-horizontal">
                     <div class="form-group">
-                        <label for="postalCode" class="col-md-1 control-label">کد پستی</label>
+                        <label for="postalCode" class="col-md-1 control-label">@T("Shopping.Page.User.Field.PostalCode")</label>
                         <div class="col-md-9">
                             <input type="text" class="form-control" id="PostalCode" name="PostalCode" />
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="Address" class="col-md-1 control-label">آدرس</label>
+                        <label for="Address" class="col-md-1 control-label">@T("Shopping.Page.User.Field.Address")</label>
                         <div class="col-md-9">
                             <textarea class="form-control" id="Address" name="Address" style="resize:none;"></textarea>
                         </div>
@@ -41,13 +41,13 @@
         @if (Model.UserAddress != null && Model.UserAddress.Count > 0)
         {
             <div class="pull-left">
-                <button type="submit" id="stepFirstShopping" data-type="haveAddress" class="btn btn-success input-lg">تکمیل فرآیند خرید</button>
+                <button type="submit" id="stepFirstShopping" data-type="haveAddress" class="btn btn-success input-lg">@T("Shopping.Page.Button.Submit")</button>
             </div>
         }
         else
         {
             <div class="pull-left">
-                <button type="submit" id="stepFirstShopping" data-type="notHaveAddress" class="btn btn-success input-lg">تکمیل فرآیند خرید</button>
+                <button type="submit" id="stepFirstShopping" data-type="notHaveAddress" class="btn btn-success input-lg">@T("Shopping.Page.Button.Submit")</button>
             </div>
         }
 

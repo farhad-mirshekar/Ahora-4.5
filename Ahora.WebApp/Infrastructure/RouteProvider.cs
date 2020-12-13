@@ -275,6 +275,12 @@ namespace Ahora.WebApp.Infrastructure
               new { controller = "Search", action = "AutoCompleteSearch", term = UrlParameter.Optional },
               namespaces: new[] { $"Ahora.WebApp.Controllers" }
               );
+            routes.MapLocalizedRoute(
+                "ShoppingCartItemCount",
+                "ShoppingCartItemCount",
+                new { controller = "Common", action = "ShoppingCartItemCount" },
+                namespaces: new[] { $"Ahora.WebApp.Controllers" }
+                );
         }
     }
 }

@@ -11,7 +11,7 @@
                 if (shippingCost != null && shippingCost.Price > 0)
                 {
                     <div class="col-md-4">
-                        <label class="label label-default">هزینه ارسال محصول (@shippingCost.Name) : </label>
+                        <label class="label label-default">@T("Cart.Page.shippingCost") (@shippingCost.Name) : </label>
                         <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.Price).Replace("$", "")</label>
                     </div>
                 }
@@ -21,7 +21,7 @@
                     {
 
                         <div class="col-md-4">
-                            <label class="label label-default">هزینه ارسال محصول : </label>
+                            <label class="label label-default">@T("Cart.Page.shippingCost") </label>
                             <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts).Replace("$", "")</label>
                         </div>
                     }
@@ -31,21 +31,21 @@
                     if (shippingCost.Price > 0)
                     {
                         <div class="col-md-4">
-                            <label class="label label-default">قیمت نهایی :</label>
+                            <label class="label label-default">@T("Cart.Page.Sum")</label>
                             <label class="label text-danger">@string.Format("{0:C0} تومان", shippingCost.Price + Model.AmountBasket).Replace("$", "")</label>
                         </div>
                     }
                     else if (Model.AmountBasket < Helper.ShoppingCartRate)
                     {
                         <div class="col-md-4">
-                            <label class="label label-default">قیمت نهایی :</label>
+                            <label class="label label-default">@T("Cart.Page.Sum")</label>
                             <label class="label text-danger">@string.Format("{0:C0} تومان", Helper.ShippingCosts + Model.AmountBasket).Replace("$", "")</label>
                         </div>
                     }
                     else
                     {
                         <div class="col-md-4">
-                            <label class="label label-default">قیمت نهایی :</label>
+                            <label class="label label-default">@T("Cart.Page.Sum")</label>
                             <label class="label text-danger">@string.Format("{0:C0} تومان", Model.AmountBasket).Replace("$", "")</label>
                         </div>
                     }
@@ -55,7 +55,7 @@
                     <div class="col-md-4">
                         <label class="label label-default">
                             <i class="fa fa-calendar text-success"></i>
-                            زمان ارسال محصول :
+                            @T("Cart.Page.DeliveryDate")
                         </label>
                         <label class="label text-danger">@deliveryDate.Name</label>
                     </div>

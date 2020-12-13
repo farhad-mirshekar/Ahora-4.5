@@ -5,10 +5,11 @@
 {
     <div class="card" id="cart">
         <div class="card-header">
-            <label class="card-title">سبد خرید</label>
+            <label class="card-title">@T("Cart.Page.Title")</label>
             <label class="text-danger ml-2">
-                کالاهای موجود در سبد شما ثبت و رزرو نشده‌اند، برای ثبت سفارش مراحل بعدی را تکمیل کنید.
+                @T("Cart.Page.AlertReserve")
             </label>
+            <a href="@Url.RouteUrl("Cart")" class="pull-left">@T("Shopping.Page.Button.BackCart")</a>
         </div>
         <div class="card-body">
             <section>
@@ -46,8 +47,8 @@
                                             <div class="pull-left">
                                                 <div class="container m-auto">
                                                     <div class="row">
-                                                        <div class="col-md-6">
-                                                            <label>قیمت واحد:</label>
+                                                        <div class="col-md-7">
+                                                            <label>@T("Product.Field.Price")</label>
                                                             <label>@string.Format("{0:C0} تومان", item.Product.Price).Replace("$", "")</label>
                                                             @{
                                                                 if (item.Product.HasDiscount == HasDiscountType.دارای_تخفیف)
@@ -56,7 +57,7 @@
                                                                     {
                                                                         temp1 = (item.Product.Price * item.Product.Discount) / 100;
                                                                         <label class="control-label">
-                                                                            تخفیف :
+                                                                            @T("Product.Field.Discount")
                                                                         </label>
                                                                         <label class="control-label text-danger">
                                                                             @string.Format("{0:C0} درصد", item.Product.Discount).Replace("$", "")
@@ -66,7 +67,7 @@
                                                                     {
                                                                         temp1 = item.Product.Discount;
                                                                         <label class="control-label">
-                                                                            تخفیف :
+                                                                            @T("Product.Field.Discount")
                                                                         </label>
                                                                         <label class="control-label text-danger">
                                                                             @string.Format("{0:C0} تومان", item.Product.Discount).Replace("$", "")
@@ -82,7 +83,7 @@
                                                                         {
                                                                             temp2 = (item.Product.Price * item.CategoryDiscount.DiscountAmount) / 100;
                                                                             <label class="control-label">
-                                                                                تخفیف » @item.CategoryDiscount.Name :
+                                                                                @T("Product.Field.CategoryDiscount") » @item.CategoryDiscount.Name :
                                                                             </label>
                                                                             <label class="control-label text-danger">
                                                                                 @string.Format("{0:C0} درصد", item.CategoryDiscount.DiscountAmount).Replace("$", "")
@@ -92,7 +93,7 @@
                                                                         {
                                                                             temp2 = item.CategoryDiscount.DiscountAmount;
                                                                             <label class="control-label">
-                                                                                تخفیف » @item.CategoryDiscount.Name :
+                                                                                @T("Product.Field.CategoryDiscount") » @item.CategoryDiscount.Name :
                                                                             </label>
                                                                             <label class="control-label text-danger">
                                                                                 @string.Format("{0:C0} تومان", item.CategoryDiscount.DiscountAmount).Replace("$", "")
@@ -104,7 +105,7 @@
 
                                                         </div>
                                                         <div class="col-md-12">
-                                                            <label>مبلغ :</label>
+                                                            <label>@T("Product.Field.Sum")</label>
                                                             <label>@string.Format("{0:C0} تومان", (attributePrice + (item.Product.Price - (temp1 + temp2)) * item.Quantity)).Replace("$", "")</label>
                                                         </div>
                                                     </div>

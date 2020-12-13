@@ -2,7 +2,7 @@
 $('.quantity').children('i').on('click', function (event) {
     event.preventDefault();
     var $this = $(this);
-    $('#load').css('display', 'block');
+    $('#loading').show();
     $.ajax({
         type: "POST",
         url: $this.attr('data-href'),
@@ -19,8 +19,17 @@ Quantity.success = function (data) {
     else {
         $('#cart').empty();
         $('#cart').html(data);
+        $.ajax({
+            type: "POST",
+            url: `/ShoppingCartItemCount`,
+            success: function (data) {
+                $('#shoppingCartItemCount').empty();
+                $('#shoppingCartItemCount').html(data);
+            }
+        });
     }
-    $('#load').css('display', 'none');
+    $('#loading', window.parent.document).hide();
+    $('#loading', window.parent.document).css('display', 'none !important');
 }
 
 //////////////////////////////////////////////////
@@ -47,7 +56,7 @@ $('#stepFirstShopping').on('click', function (event) {
             if (!flag) {
                 var noty = window.noty({ text: 'آدرس را انتخاب کنید', type: 'error', timeout: 1000 });
             } else {
-                $('#load').css('display', 'block');
+                $('#loading').show();
                 $.ajax({
                     type: 'POST',
                     data: { ID: item },
@@ -72,7 +81,7 @@ $('#stepFirstShopping').on('click', function (event) {
             }
 
             if (!flag) {
-                $('#load').css('display', 'block');
+                $('#loading').show();
                 var model = { Address: Address, PostalCode: postalCode };
                 $.ajax({
                     type: 'POST',
@@ -106,7 +115,7 @@ $('.radio').children('input').on('click', function (event) {
 
 })
 ShoppingCart.success = function (data) {
-    $('#load').css('display', 'none');
+    $('#loading').hide();
     if (data.Success) {
         window.location = data.Url;
     }
@@ -119,7 +128,7 @@ $('.delete').on('click', function (event) {
     event.preventDefault();
     event.preventDefault();
     var $this = $(this);
-    $('#load').css('display', 'block');
+    $('#loading').show();
     $.ajax({
         type: "POST",
         url: $this.attr('data-href'),
@@ -128,6 +137,14 @@ $('.delete').on('click', function (event) {
 });
 CartRemove.success = function (data) {
     $('#cart').empty();
-    $('#load').css('display', 'none');
     $('#cart').html(data);
+    $.ajax({
+        type: "POST",
+        url: `/ShoppingCartItemCount`,
+        success: function (data) {
+            $('#shoppingCartItemCount').empty();
+            $('#shoppingCartItemCount').html(data);
+        }
+    });
+    $('#loading').hide();
 }
