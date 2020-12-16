@@ -8,6 +8,7 @@ using FM.Portal.Core.Common;
 using FM.Portal.Core.Extention.ReadingTime;
 using System.Linq;
 using FM.Portal.FrameWork.MVC.Helpers.Files;
+using FM.Portal.Core.Infrastructure;
 
 namespace FM.Portal.Domain
 {
@@ -19,12 +20,14 @@ namespace FM.Portal.Domain
         private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly IUrlRecordService _urlRecordService;
         private readonly IAttachmentService _attachmentService;
+        private readonly IWebHelper _webHelper;
         public ArticleService(IArticleDataSource dataSource
                              , ITagsService tagsService
                              , IActivityLogService activityLogService
                              , ILocaleStringResourceService localeStringResourceService
                              , IUrlRecordService urlRecordService
-                             , IAttachmentService attachmentService)
+                             , IAttachmentService attachmentService
+                             , IWebHelper webHelper)
         {
             _dataSource = dataSource;
             _tagsService = tagsService;
@@ -32,6 +35,7 @@ namespace FM.Portal.Domain
             _localeStringResourceService = localeStringResourceService;
             _urlRecordService = urlRecordService;
             _attachmentService = attachmentService;
+            _webHelper = webHelper;
         }
         public Result<Article> Add(Article model)
         {
@@ -40,17 +44,10 @@ namespace FM.Portal.Domain
                 return Result<Article>.Failure(message: validateResult.Message);
 
             model.ID = Guid.NewGuid();
-            if (model.Tags != null && model.Tags.Count > 0)
-            {
-                var tags = new List<Tags>();
-                foreach (var item in model.Tags)
-                {
-                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
-                }
-                _tagsService.Add(tags);
-            }
             model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
+
             var result = _dataSource.Insert(model);
+
             if (result.Success)
             {
                 _urlRecordService.Add(new UrlRecord()
@@ -60,7 +57,27 @@ namespace FM.Portal.Domain
                     EntityName = model.GetType().Name,
                     Enabled = EnableMenuType.فعال
                 });
+
+                if (model.Tags != null && model.Tags.Count > 0)
+                {
+                    var tags = new List<Tags>();
+                    foreach (var item in model.Tags)
+                    {
+                        tags.Add(new Tags { Name = item, DocumentID = model.ID });
+                    }
+                    _tagsService.Add(tags);
+                }
             }
+
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.AddArticle").Data ?? "افزودن مقاله",
+                EntityID = model.ID,
+                EntityName = model.GetType().Name,
+                IpAddress = _webHelper.GetCurrentIpAddress(),
+                SystemKeyword = "AddArticle"
+            });
+
             return result;
         }
 
@@ -84,6 +101,15 @@ namespace FM.Portal.Domain
             //    }
             //}
 
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.DeleteArticle").Data ?? "حذف مقاله",
+                EntityID = ID,
+                EntityName = "Article",
+                IpAddress = _webHelper.GetCurrentIpAddress(),
+                SystemKeyword = "DeleteArticle"
+            });
+
             return _dataSource.Delete(ID);
         }
 
@@ -93,29 +119,8 @@ namespace FM.Portal.Domain
             if (!validateResult.Success)
                 return Result<Article>.Failure(message: validateResult.Message);
 
-            if (model.Tags != null && model.Tags.Count > 0)
-            {
-                var tags = new List<Tags>();
-                foreach (var item in model.Tags)
-                {
-                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
-                }
-                _tagsService.Add(tags);
-            }
-            else
-            {
-                _tagsService.Delete(model.ID);
-            }
             model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
             var result = _dataSource.Update(model);
-            _activityLogService.Add(new ActivityLog()
-            {
-                Comment = _localeStringResourceService.GetResource("ActivityLog.UpdateArticle").Data ?? "ویرایش مقاله",
-                EntityID = model.ID,
-                EntityName = model.GetType().Name,
-                IpAddress = "12",
-                SystemKeyword = "UpdateArticle"
-            });
             if (result.Success)
             {
                 var urlRecordResult = _urlRecordService.Get(null, model.ID);
@@ -124,7 +129,31 @@ namespace FM.Portal.Domain
                     urlRecordResult.Data.UrlDesc = model.UrlDesc;
                     _urlRecordService.Edit(urlRecordResult.Data);
                 }
+
+                if (model.Tags != null && model.Tags.Count > 0)
+                {
+                    var tags = new List<Tags>();
+                    foreach (var item in model.Tags)
+                    {
+                        tags.Add(new Tags { Name = item, DocumentID = model.ID });
+                    }
+                    _tagsService.Add(tags);
+                }
+                else
+                {
+                    _tagsService.Delete(model.ID);
+                }
             }
+
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.UpdateArticle").Data ?? "ویرایش مقاله",
+                EntityID = model.ID,
+                EntityName = model.GetType().Name,
+                IpAddress = _webHelper.GetCurrentIpAddress(),
+                SystemKeyword = "UpdateArticle"
+            });
+
             return result;
         }
 

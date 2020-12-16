@@ -1829,7 +1829,7 @@
         let article = $scope;
         article.Model = {};
         article.main = {};
-        article.search = [];
+        article.search = {};
         article.search.Model = {};
 
         article.languageList = [];
@@ -1841,10 +1841,10 @@
         article.video.list = [];
         article.video.listUploaded = [];
 
-        article.state = '';
         article.addArticle = addArticle;
         article.editArticle = editArticle;
         article.search.clear = clear;
+
         article.ViewStatusType = toolsService.arrayEnum(enumService.ViewStatusType);
         article.CommentStatusType = toolsService.arrayEnum(enumService.CommentStatusType);
         init();
@@ -1853,6 +1853,7 @@
             edit: edit,
             cartable: cartable
         }
+
         article.grid = {
             bindingObject: article
             , columns: [{ name: 'Title', displayName: 'عنوان مقاله' },
@@ -1861,7 +1862,6 @@
             , deleteService: articleService.remove
             , onAdd: article.main.changeState.add
             , onEdit: article.main.changeState.edit
-            , route: 'article'
             , globalSearch: true
             , displayNameFormat: ['Title']
             , initLoad: true
@@ -1870,38 +1870,43 @@
             }
         };
         article.froalaOption = angular.copy(froalaOption.main);
+
         function init() {
             loadingService.show();
-            $q.resolve().then(() => {
+            return $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
-                        cartable();
+                        article.main.changeState.cartable();
                         break;
                     case 'add':
-                        add();
+                        article.main.changeState.add();
                         break;
                     case 'edit':
-                        articleService.get($routeParams.id).then((result) => {
-                            edit(result);
-                        })
+                        article.main.changeState.edit({ ID: $routeParams.id });
                         break;
                 }
             }).finally(loadingService.hide);
         }
         function cartable() {
             $('.js-example-tags').empty();
-            clearModel();
-            article.state = 'cartable';
+            article.Model = {};
+            article.pic.listUploaded = [];
+            article.video.listUploaded = [];
+            article.main.state = 'cartable';
             $location.path('/article/cartable');
         }
         function add() {
             loadingService.show();
+            article.Model = {};
+            article.pic.listUploaded = [];
+            article.video.listUploaded = [];
+
             return $q.resolve().then(() => {
                 return fillDropCategory();
             }).then(() => {
                 return fillDropLanguage();
             }).then(() => {
-                article.state = 'add';
+                article.main.state = 'add';
                 $location.path('/article/add');
             }).finally(loadingService.hide);
 
@@ -1911,7 +1916,7 @@
             return $q.resolve().then(() => {
                 return articleService.get(model.ID);
             }).then((model) => {
-                article.Model = model;
+                article.Model = angular.copy(model);
                 if (article.Model.Tags !== null && article.Model.Tags.length > 0) {
                     var newOption = [];
                     for (var i = 0; i < article.Model.Tags.length; i++) {
@@ -1933,13 +1938,13 @@
                 article.video.listUploaded = [];
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
-                        if (result[i].PathType === 8)
+                        if (result[i].PathType === 4)
                             article.pic.listUploaded = [].concat(result[i]);
                         if (result[i].PathType === 7)
                             article.video.listUploaded = [].concat(result[i]);
                     }
                 }
-                article.state = 'edit';
+                article.main.state = 'edit';
                 $location.path(`/article/edit/${model.ID}`);
             }).finally(loadingService.hide);
         }
@@ -2004,10 +2009,10 @@
                 article.Model = result;
                 if (article.pic.list.length) {
                     article.pics = [];
-                    if (article.pic.listUploaded === 0) {
+                    if (article.pic.listUploaded.length === 0) {
                         article.pics.push({ ParentID: article.Model.ID, Type: 2, FileName: article.pic.list[0], PathType: article.pic.type });
+                        return attachmentService.add(article.pics);
                     }
-                    return attachmentService.add(article.pics);
                 }
                 return true;
             }).then(() => {
@@ -2062,10 +2067,6 @@
                 loadingService.hide();
             }).finally(loadingService.hide);
         }
-        function clearModel() {
-            article.Model = {};
-            article.pic.listUploaded = [];
-        }
         function clear() {
             loadingService.show();
             article.search.Model = {};
@@ -2078,6 +2079,7 @@
             return $q.resolve().then(() => {
                 return languageService.list({});
             }).then((result) => {
+                article.languageList = [];
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         article.languageList.push({ Name: result[i].Name, Model: result[i].ID });

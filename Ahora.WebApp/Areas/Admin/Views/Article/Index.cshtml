@@ -1,4 +1,4 @@
-﻿<section ng-show="state ==='cartable'">
+﻿<section ng-show="main.state ==='cartable'">
     <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
     <div class="card">
         <div class="card-header">
@@ -25,9 +25,9 @@
     <portal-grid obj="grid"></portal-grid>
 </section>
 
-<section ng-show="['add','edit'].indexOf(state) !== -1" id="articleSection">
-    <h2 class="main-title" ng-show="state==='add'">افزودن مقاله</h2>
-    <h2 class="main-title" ng-show="state==='edit'">ویرایش مقاله</h2>
+<section ng-show="['add','edit'].indexOf(main.state) !== -1" id="articleSection">
+    <h2 class="main-title" ng-show="main.state==='add'">افزودن مقاله</h2>
+    <h2 class="main-title" ng-show="main.state==='edit'">ویرایش مقاله</h2>
     <div>
         <div class="container">
             <div class="row">
@@ -131,8 +131,8 @@
             </uib-tabset>
         </div>
         <div class="btn-group-justified pull-left mb-5">
-            <button type="submit" ng-click="addArticle()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
-            <button type="submit" ng-click="editArticle()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+            <button type="submit" ng-click="addArticle()" ng-show="main.state==='add'" class="btn btn-success">ثبت</button>
+            <button type="submit" ng-click="editArticle()" ng-show="main.state==='edit'" class="btn btn-primary">ویرایش</button>
             <button ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
         </div>
     </div>

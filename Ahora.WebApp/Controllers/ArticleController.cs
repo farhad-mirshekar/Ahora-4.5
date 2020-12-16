@@ -37,7 +37,7 @@ namespace Ahora.WebApp.Controllers
         //GET: Article
         public ActionResult Index(int? page)
         {
-            var articlesResult = _service.List(new FM.Portal.Core.Model.ArticleListVM() { PageSize = Helper.CountShowArticle, PageIndex = page });
+            var articlesResult = _service.List(new ArticleListVM() { PageSize = Helper.CountShowArticle, PageIndex = page });
             if (!articlesResult.Success)
                 return View("Error");
             var articles = articlesResult.Data;
@@ -47,14 +47,18 @@ namespace Ahora.WebApp.Controllers
             pageInfo.TotalItems = articles.Select(x => x.Total).First();
             pageInfo.ItemsPerPage = Helper.CountShowArticle;
 
-            articles.ForEach(e =>
-            {
-                var attachmentResult = _attachmentService.List(e.ID);
-                e.Attachments = attachmentResult.Data;
-            });
-
             var articleList = new ArticleListModel();
-            articleList.AvailableArticles = articles;
+
+            foreach (var article in articles)
+            {
+                articleList.AvailableArticles.Add(article.ToModel());
+            }
+
+            articleList.AvailableArticles.ForEach(a =>
+            {
+                var attachmentResult = _attachmentService.List(a.ID);
+                a.PictureAttachments = attachmentResult.Data;
+            });
             articleList.PagingInfo = pageInfo;
 
             return View(articleList);
@@ -74,8 +78,8 @@ namespace Ahora.WebApp.Controllers
             var attachmentsResult = _attachmentService.List(articleDetail.ID);
             if (attachmentsResult.Success)
             {
-                articleDetail.VideoAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.video).ToList();
-                articleDetail.PictureAttachments = attachmentsResult.Data.Where(a => a.PathType == FM.Portal.Core.Model.PathType.article).ToList();
+                articleDetail.VideoAttachments = attachmentsResult.Data.Where(a => a.PathType == PathType.video).ToList();
+                articleDetail.PictureAttachments = attachmentsResult.Data.Where(a => a.PathType == PathType.article).ToList();
 
             }
 

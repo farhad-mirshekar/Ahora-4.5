@@ -34,55 +34,59 @@ namespace FM.Portal.FrameWork
 
         public string GetCurrentIpAddress()
         {
-
-            if (!IsRequestAvailable(_httpContext))
-                return string.Empty;
-
-            var result = "";
-            if (_httpContext.Request.Headers != null)
+            try
             {
-                //The X-Forwarded-For (XFF) HTTP header field is a de facto standard
-                //for identifying the originating IP address of a client
-                //connecting to a web server through an HTTP proxy or load balancer.
-                var forwardedHttpHeader = "X-FORWARDED-FOR";
-                if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["ForwardedHTTPheader"]))
+                if (!IsRequestAvailable(_httpContext))
+                    return string.Empty;
+
+                var result = "";
+                if (_httpContext.Request.Headers != null)
                 {
-                    //but in some cases server use other HTTP header
-                    //in these cases an administrator can specify a custom Forwarded HTTP header
-                    forwardedHttpHeader = ConfigurationManager.AppSettings["ForwardedHTTPheader"];
+                    //The X-Forwarded-For (XFF) HTTP header field is a de facto standard
+                    //for identifying the originating IP address of a client
+                    //connecting to a web server through an HTTP proxy or load balancer.
+                    var forwardedHttpHeader = "X-FORWARDED-FOR";
+                    if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["ForwardedHTTPheader"]))
+                    {
+                        //but in some cases server use other HTTP header
+                        //in these cases an administrator can specify a custom Forwarded HTTP header
+                        forwardedHttpHeader = ConfigurationManager.AppSettings["ForwardedHTTPheader"];
+                    }
+
+                    //it's used for identifying the originating IP address of a client connecting to a web server
+                    //through an HTTP proxy or load balancer. 
+                    string xff = _httpContext.Request.Headers.AllKeys
+                        .Where(x => forwardedHttpHeader.Equals(x, StringComparison.InvariantCultureIgnoreCase))
+                        .Select(k => _httpContext.Request.Headers[k])
+                        .FirstOrDefault();
+
+                    //if you want to exclude private IP addresses, then see http://stackoverflow.com/questions/2577496/how-can-i-get-the-clients-ip-address-in-asp-net-mvc
+                    if (!String.IsNullOrEmpty(xff))
+                    {
+                        string lastIp = xff.Split(new char[] { ',' }).FirstOrDefault();
+                        result = lastIp;
+                    }
                 }
 
-                //it's used for identifying the originating IP address of a client connecting to a web server
-                //through an HTTP proxy or load balancer. 
-                string xff = _httpContext.Request.Headers.AllKeys
-                    .Where(x => forwardedHttpHeader.Equals(x, StringComparison.InvariantCultureIgnoreCase))
-                    .Select(k => _httpContext.Request.Headers[k])
-                    .FirstOrDefault();
-
-                //if you want to exclude private IP addresses, then see http://stackoverflow.com/questions/2577496/how-can-i-get-the-clients-ip-address-in-asp-net-mvc
-                if (!String.IsNullOrEmpty(xff))
+                if (String.IsNullOrEmpty(result) && _httpContext.Request.UserHostAddress != null)
                 {
-                    string lastIp = xff.Split(new char[] { ',' }).FirstOrDefault();
-                    result = lastIp;
+                    result = _httpContext.Request.UserHostAddress;
                 }
-            }
 
-            if (String.IsNullOrEmpty(result) && _httpContext.Request.UserHostAddress != null)
-            {
-                result = _httpContext.Request.UserHostAddress;
+                //some validation
+                if (result == "::1")
+                    result = "127.0.0.1";
+                //remove port
+                if (!String.IsNullOrEmpty(result))
+                {
+                    int index = result.IndexOf(":", StringComparison.InvariantCultureIgnoreCase);
+                    if (index > 0)
+                        result = result.Substring(0, index);
+                }
+                return result;
             }
-
-            //some validation
-            if (result == "::1")
-                result = "127.0.0.1";
-            //remove port
-            if (!String.IsNullOrEmpty(result))
-            {
-                int index = result.IndexOf(":", StringComparison.InvariantCultureIgnoreCase);
-                if (index > 0)
-                    result = result.Substring(0, index);
-            }
-            return result;
+            catch(Exception e) { return "127.0.0.1"; }
+           
         }
 
         public string GetThisPageUrl(bool includeQueryString)

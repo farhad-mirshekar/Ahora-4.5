@@ -1393,6 +1393,12 @@
                 model.errors.push('سئو الزامی می باشد');
             if (!model.CategoryID || model.CategoryID === '')
                 model.errors.push('انتخاب موضوع الزامی می باشد');
+            if (!model.LanguageID || model.LanguageID === '')
+                model.errors.push('انتخاب ربان الزامی می باشد');
+            if (!model.ViewStatusType)
+                model.errors.push('وضعیت نمایش مقاله را مشخص نمایید');
+            if (!model.CommentStatusType)
+                model.errors.push('وضعیت نظر مقاله را مشخص نمایید');
 
             if (model.errors && model.errors.length > 0)
                 return $q.reject();
@@ -1426,8 +1432,14 @@
                 model.errors.push('سئو الزامی می باشد');
             if (!model.CategoryID || model.CategoryID === '')
                 model.errors.push('انتخاب موضوع الزامی می باشد');
+            if (!model.LanguageID || model.LanguageID === '')
+                model.errors.push('انتخاب ربان الزامی می باشد');
+            if (!model.ViewStatusType)
+                model.errors.push('وضعیت نمایش مقاله را مشخص نمایید');
+            if (!model.CommentStatusType)
+                model.errors.push('وضعیت نظر مقاله را مشخص نمایید');
 
-            if (model.Errors && model.Errors.length > 0)
+            if (model.errors && model.errors.length > 0)
                 return $q.reject();
 
             return $http({

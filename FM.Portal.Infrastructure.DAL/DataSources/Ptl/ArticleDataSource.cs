@@ -23,32 +23,32 @@ namespace FM.Portal.Infrastructure.DAL
             {
                 var param = new SqlParameter[2];
                 param[0] = new SqlParameter("@ID", ID);
-                param[1] = new SqlParameter("@ID", _requestInfo.UserId);
+                param[1] = new SqlParameter("@RemoverID", _requestInfo.UserId);
 
                 using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteArticle", param);
-                    if(result > 0)
+                    if (result > 0)
                         return Result.Successful();
 
                     return Result.Failure();
                 }
 
             }
-            catch (Exception) { return Result<int>.Failure(message: "خطایی اتفاق افتاده است"); }
+            catch (Exception e) { return Result.Failure(message: e.ToString()); }
         }
 
         public Result<Article> Get(Guid ID)
         {
             try
             {
-                Article obj = new Article();
-                SqlParameter[] param = new SqlParameter[1];
+                var obj = new Article();
+                var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetArticle", param))
+                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetArticle", param))
                     {
                         while (dr.Read())
                         {
@@ -68,10 +68,10 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.UserID = SQLHelper.CheckGuidNull(dr["UserID"]);
                             obj.VisitedCount = SQLHelper.CheckIntNull(dr["VisitedCount"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
-                            obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
-                            obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
                             obj.ReadingTime = SQLHelper.CheckStringNull(dr["ReadingTime"]);
                             obj.LanguageID = SQLHelper.CheckGuidNull(dr["LanguageID"]);
+                            obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
+                            obj.RemoverDate = SQLHelper.CheckDateTimeNull(dr["RemoverDate"]);
                         }
                     }
 
@@ -110,35 +110,32 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    lock (con)
-                    {
-                        SqlParameter[] param = new SqlParameter[13];
-                        param[0] = new SqlParameter("@ID", model.ID);
+                    var param = new SqlParameter[13];
+                    param[0] = new SqlParameter("@ID", model.ID);
 
-                        param[1] = new SqlParameter("@Body", model.Body);
-                        param[2] = new SqlParameter("@CategoryID", model.CategoryID);
-                        param[3] = new SqlParameter("@CommentStatusType", (byte)model.CommentStatusType);
-                        param[4] = new SqlParameter("@Description", model.Description);
-                        param[5] = new SqlParameter("@IsNewRecord", isNewRecord);
-                        param[6] = new SqlParameter("@ViewStatusType", (byte)model.ViewStatusType);
-                        param[7] = new SqlParameter("@MetaKeywords", model.MetaKeywords);
-                        param[8] = new SqlParameter("@Title", model.Title);
-                        param[9] = new SqlParameter("@UrlDesc", model.UrlDesc);
-                        param[10] = new SqlParameter("@UserID", _requestInfo.UserId);
-                        param[11] = new SqlParameter("@ReadingTime", model.ReadingTime);
-                        param[12] = new SqlParameter("@LanguageID", model.LanguageID);
+                    param[1] = new SqlParameter("@Body", model.Body);
+                    param[2] = new SqlParameter("@CategoryID", model.CategoryID);
+                    param[3] = new SqlParameter("@CommentStatusType", (byte)model.CommentStatusType);
+                    param[4] = new SqlParameter("@Description", model.Description);
+                    param[5] = new SqlParameter("@IsNewRecord", isNewRecord);
+                    param[6] = new SqlParameter("@ViewStatusType", (byte)model.ViewStatusType);
+                    param[7] = new SqlParameter("@MetaKeywords", model.MetaKeywords);
+                    param[8] = new SqlParameter("@Title", model.Title);
+                    param[9] = new SqlParameter("@UrlDesc", model.UrlDesc);
+                    param[10] = new SqlParameter("@UserID", _requestInfo.UserId);
+                    param[11] = new SqlParameter("@ReadingTime", model.ReadingTime);
+                    param[12] = new SqlParameter("@LanguageID", model.LanguageID);
 
-                       int result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyArticle", param);
-                        if (result > 0)
-                            return Get(model.ID);
-                        else
-                            return Result<Article>.Failure(message: "خطا در درج / ویرایش");
-                    }
+                    int result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyArticle", param);
+                    if (result > 0)
+                        return Get(model.ID);
+
+                    return Result<Article>.Failure(message: "خطا در درج / ویرایش");
                 }
             }
-            catch (Exception e) { throw; }
+            catch (Exception e) { return Result<Article>.Failure(message: e.ToString()); }
         }
     }
 }
