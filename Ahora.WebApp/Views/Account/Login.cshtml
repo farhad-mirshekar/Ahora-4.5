@@ -12,7 +12,7 @@
                         <div class="card card-signin my-5">
                             <div class="card-body">
                                 <h5 class="card-title text-center">@T("Account.Login.Title")</h5>
-                                @using (Ajax.BeginForm("Login", "Account", new AjaxOptions { HttpMethod = "POST", OnSuccess = "login.onSuccess", LoadingElementId = "loading", LoadingElementDuration = 300 }, new { @class = "form-horizontal", id = "frmLogin" }))
+                                @using (Ajax.BeginForm("Login", "Account", new AjaxOptions { HttpMethod = "POST", OnSuccess = "login.onSuccess", LoadingElementId = "loading", LoadingElementDuration = 400 }, new { @class = "form-horizontal", id = "frmLogin" }))
                                 {
                                     @Html.HiddenFor(l => l.ShowCaptcha)
                                     @Html.HiddenFor(l => l.ReturnUrl)

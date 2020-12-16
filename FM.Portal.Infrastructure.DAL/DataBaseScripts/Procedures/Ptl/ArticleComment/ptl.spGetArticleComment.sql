@@ -13,6 +13,10 @@ BEGIN
 		ArticleComment.*
 	FROM	
 		[ptl].[ArticleComment] ArticleComment
+	INNER JOIN
+		ptl.Article Article ON ArticleComment.ArticleID = Article.ID
 	WHERE 
 		ArticleComment.ID = @ID
+	AND ArticleComment.RemoverID IS NULL
+	AND Article.RemoverID IS NULL
 END

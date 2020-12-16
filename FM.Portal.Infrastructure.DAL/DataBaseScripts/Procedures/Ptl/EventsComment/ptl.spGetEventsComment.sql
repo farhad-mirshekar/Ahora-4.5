@@ -10,9 +10,14 @@ CREATE PROCEDURE ptl.spGetEventsComment
 AS
 BEGIN
 	SELECT 
-		EventsComment.*
+		EventsComment.*,
+		[Events].Title AS EventsTitle
 	FROM	
 		[ptl].[EventsComment] EventsComment
+	INNER JOIN
+		ptl.[Events] [Events] ON EventsComment.EventsID = [Events].ID
 	WHERE 
 		EventsComment.ID = @ID
+	AND EventsComment.RemoverID IS NULL
+	AND [Events].RemoverID IS NULL
 END

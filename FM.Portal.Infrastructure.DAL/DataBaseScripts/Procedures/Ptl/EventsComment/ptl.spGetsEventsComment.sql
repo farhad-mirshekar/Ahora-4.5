@@ -26,15 +26,16 @@ BEGIN
 	(
 		SELECT
 			EventsComment.*,
-			CONCAT(CreatorComment.FirstName , ' ' , CreatorComment.LastName) AS CreatorName
+			CONCAT(CreatorComment.FirstName , ' ' , CreatorComment.LastName) AS CreatorName,
+			[Events].Title As EventsTitle
 		FROM 
 			ptl.EventsComment EventsComment
 		INNER JOIN
-			ptl.Events Events ON EventsComment.EventsID = Events.ID
+			ptl.[Events] [Events] ON EventsComment.EventsID = Events.ID
 		INNER JOIN
 			org.[User] CreatorComment ON EventsComment.UserID = CreatorComment.ID
 		WHERE
-			Events.RemoverID IS NULL
+			[Events].RemoverID IS NULL
 		AND EventsComment.RemoverID IS NULL
 		AND (@EventsID IS NULL OR EventsComment.EventsID = @EventsID)
 		AND (@ParentID IS NULL OR EventsComment.ParentID = @ParentID)

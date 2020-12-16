@@ -1,11 +1,26 @@
-﻿<section ng-show="state ==='cartable'">
-    <h2 class="main-title">کارتابل مدیریت نظرات محصولات</h2>
+﻿<section ng-show="main.state ==='cartable'">
+    <h2 class="main-title">کارتابل مدیریت نظرات مقالات</h2>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-10">
+                    <strong>نوع درخواست:</strong>
+                    <div class="d-inline">
+                        <div class="d-inline-block p-1"><a ng-class="{ 'alert-link': search.Model.CommentType == 1 ,'text-success':search.Model.CommentType == 1 }" ng-click="search.Model.CommentType = 1;grid.getlist();">در حال بررسی</a></div>
+                        <div class="d-inline-block p-1"><a ng-class="{ 'alert-link': search.Model.CommentType == 2 ,'text-success':search.Model.CommentType == 2 }" ng-click="search.Model.CommentType = 2;grid.getlist();">تایید شده</a></div>
+                        <div class="d-inline-block p-1"><a ng-class="{ 'alert-link': search.Model.CommentType == 3 ,'text-success':search.Model.CommentType == 3 }" ng-click="search.Model.CommentType = 3;grid.getlist();">عدم تایید</a></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <portal-grid obj="grid"></portal-grid>
 </section>
 
-<section ng-show="['add','edit'].indexOf(state) !== -1" id="articleCommentSection">
-    <h2 class="main-title" ng-show="state ==='add'">افزودن</h2>
-    <h2 class="main-title" ng-show="state ==='edit'">ویرایش</h2>
+<section ng-show="['add','edit'].indexOf(main.) !== -1" id="articleCommentSection">
+    <h2 class="main-title" ng-show="main. ==='add'">افزودن</h2>
+    <h2 class="main-title" ng-show="main. ==='edit'">ویرایش</h2>
     <div class="container">
         <div class="row">
             <div class="col-md-12">
@@ -18,6 +33,12 @@
         </div>
     </div>
     <div class="card-body form-horizontal">
+        <div class="form-group">
+            <div class="col-md-10">
+                <label for="CategorySub" class="control-label">عنوان مقاله</label>
+                <span class="text-info">{{Model.ArticleTitle}}</span>
+            </div>
+        </div>
         <div class="form-group">
             <div class="col-md-10">
                 <label for="CategorySub" class="control-label">نظر</label>

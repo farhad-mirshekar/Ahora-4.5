@@ -31,7 +31,10 @@ namespace FM.Portal.Infrastructure.DAL
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteArticleComment", param);
-                    return Result.Successful();
+                    if(result > 0)
+                        return Result.Successful();
+                    
+                    return Result.Failure();
                 }
 
             }
@@ -64,10 +67,14 @@ namespace FM.Portal.Infrastructure.DAL
                             obj.CommentType = (CommentType)SQLHelper.CheckByteNull(dr["CommentType"]);
                             obj.ArticleID = SQLHelper.CheckGuidNull(dr["ArticleID"]);
                             obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
+                            obj.ArticleTitle = SQLHelper.CheckStringNull(dr["ArticleTitle"]);
                         }
                     }
                 }
+                if(obj.ID != Guid.Empty)
                 return Result<ArticleComment>.Successful(data: obj);
+
+                return Result<ArticleComment>.Successful(data: null);
             }
             catch (Exception e) { throw; }
         }
