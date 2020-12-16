@@ -13,9 +13,9 @@
             @foreach (var item in Model.AvailableEvents)
             {
                 <section class="card">
-                    @if (item.Attachments.Count > 0)
+                    @if (item.PictureAttachments.Count > 0)
                     {
-                        <img src="~/Content/TemporaryFiles/@item.Path/@item.Attachments.Where(a=>a.PathType == PathType.events).FirstOrDefault()" class="card-img-top p-3 w-75 p-3 mx-auto" alt="@item.Title" />
+                        <img src="~/Content/TemporaryFiles/@item.Path/@item.PictureAttachments.Where(a=>a.PathType == PathType.events).FirstOrDefault()" class="card-img-top p-3 w-75 p-3 mx-auto" alt="@item.Title" />
                     }
                     <div class="position-relative">
                         <div class="pull-left text-center mr-3">

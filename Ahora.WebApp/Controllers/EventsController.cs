@@ -38,13 +38,15 @@ namespace Ahora.WebApp.Controllers
                 return View("Error");
             var events = eventsResult.Data;
 
-            events.ForEach(e =>
+            foreach (var item in events)
+            {
+                eventsModel.AvailableEvents.Add(item.ToModel());
+            }
+            eventsModel.AvailableEvents.ForEach(e =>
             {
                 var attachmentResult = _attachmentService.List(e.ID);
-                e.Attachments = attachmentResult.Data;
+                e.PictureAttachments = attachmentResult.Data;
             });
-
-            eventsModel.AvailableEvents = events;
 
             var pageInfo = new PagingInfo();
             pageInfo.CurrentPage = page ?? 1;

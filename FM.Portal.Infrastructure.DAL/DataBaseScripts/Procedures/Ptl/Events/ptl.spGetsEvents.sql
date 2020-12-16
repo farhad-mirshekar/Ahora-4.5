@@ -38,7 +38,8 @@ BEGIN
 		LEFT JOIN
 			pbl.[Language] lng ON [Events].LanguageID = lng.ID
 		WHERE
-			Category.RemoverID IS NULL
+			[Events].RemoverID IS NULL
+		AND	Category.RemoverID IS NULL
 		AND	(@Title IS NULL OR [Events].Title LIKE CONCAT('%', @Title , '%'))
 		AND (@LanguageID IS NULL OR [Events].LanguageID = @LanguageID)
 	),TempCount AS
@@ -51,7 +52,7 @@ BEGIN
 
 	SELECT * 
 	FROM MainSelect , TempCount
-	ORDER BY [CreationDate]
+	ORDER BY [CreationDate] DESC
 	OFFSET ((@PageIndex - 1) * @PageSize) ROWS FETCH NEXT @PageSize ROWS ONLY
 	OPTION(RECOMPILE)
 END

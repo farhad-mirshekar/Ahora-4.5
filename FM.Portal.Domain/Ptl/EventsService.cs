@@ -5,27 +5,37 @@ using FM.Portal.Core;
 using FM.Portal.Core.Service;
 using FM.Portal.DataSource;
 using FM.Portal.Core.Common;
-using FM.Portal.FrameWork.MVC.Helpers.Files;
 using FM.Portal.Core.Extention.ReadingTime;
+using FM.Portal.FrameWork.MVC.Helpers.Files;
 using System.Linq;
+using FM.Portal.Core.Infrastructure;
 
 namespace FM.Portal.Domain
 {
-    public class EventsService :IEventsService
+    public class EventsService : IEventsService
     {
         private readonly IEventsDataSource _dataSource;
         private readonly ITagsService _tagsService;
-        private readonly IAttachmentService _attachmentService;
+        private readonly IActivityLogService _activityLogService;
+        private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly IUrlRecordService _urlRecordService;
+        private readonly IAttachmentService _attachmentService;
+        private readonly IWebHelper _webHelper;
         public EventsService(IEventsDataSource dataSource
-                            , ITagsService tagsService
-                            , IAttachmentService attachmentService
-                            , IUrlRecordService urlRecordService)
+                           , ITagsService tagsService
+                           , IActivityLogService activityLogService
+                           , ILocaleStringResourceService localeStringResourceService
+                           , IUrlRecordService urlRecordService
+                           , IAttachmentService attachmentService
+                           , IWebHelper webHelper)
         {
             _dataSource = dataSource;
             _tagsService = tagsService;
-            _attachmentService = attachmentService;
+            _activityLogService = activityLogService;
+            _localeStringResourceService = localeStringResourceService;
             _urlRecordService = urlRecordService;
+            _attachmentService = attachmentService;
+            _webHelper = webHelper;
         }
         public Result<Events> Add(Events model)
         {
@@ -34,17 +44,9 @@ namespace FM.Portal.Domain
                 return Result<Events>.Failure(message: validateResult.Message);
 
             model.ID = Guid.NewGuid();
-            if (model.Tags != null && model.Tags.Count > 0)
-            {
-                var tags = new List<Tags>();
-                foreach (var item in model.Tags)
-                {
-                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
-                }
-                _tagsService.Add(tags);
-            }
             model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
             var result = _dataSource.Insert(model);
+
             if (result.Success)
             {
                 _urlRecordService.Add(new UrlRecord()
@@ -54,7 +56,27 @@ namespace FM.Portal.Domain
                     EntityName = model.GetType().Name,
                     Enabled = EnableMenuType.فعال
                 });
+
+                if (model.Tags != null && model.Tags.Count > 0)
+                {
+                    var tags = new List<Tags>();
+                    foreach (var item in model.Tags)
+                    {
+                        tags.Add(new Tags { Name = item, DocumentID = model.ID });
+                    }
+                    _tagsService.Add(tags);
+                }
             }
+
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.AddEvents").Data ?? "افزودن رویداد",
+                EntityID = model.ID,
+                EntityName = model.GetType().Name,
+                IpAddress = _webHelper.GetCurrentIpAddress(),
+                SystemKeyword = "AddEvents"
+            });
+
             return result;
         }
 
@@ -78,6 +100,15 @@ namespace FM.Portal.Domain
             //    }
             //}
 
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.DeleteEvents").Data ?? "حذف رویداد",
+                EntityID = ID,
+                EntityName = "Events",
+                IpAddress = _webHelper.GetCurrentIpAddress(),
+                SystemKeyword = "DeleteEvents"
+            });
+
             return _dataSource.Delete(ID);
         }
         public Result<Events> Edit(Events model)
@@ -86,21 +117,9 @@ namespace FM.Portal.Domain
             if (!validateResult.Success)
                 return Result<Events>.Failure(message: validateResult.Message);
 
-            if (model.Tags != null && model.Tags.Count > 0)
-            {
-                var tags = new List<Tags>();
-                foreach (var item in model.Tags)
-                {
-                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
-                }
-                _tagsService.Add(tags);
-            }
-            else
-            {
-                _tagsService.Delete(model.ID);
-            }
             model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
             var result = _dataSource.Update(model);
+
             if (result.Success)
             {
                 var urlRecordResult = _urlRecordService.Get(null, model.ID);
@@ -109,14 +128,38 @@ namespace FM.Portal.Domain
                     urlRecordResult.Data.UrlDesc = model.UrlDesc;
                     _urlRecordService.Edit(urlRecordResult.Data);
                 }
+
+                if (model.Tags != null && model.Tags.Count > 0)
+                {
+                    var tags = new List<Tags>();
+                    foreach (var item in model.Tags)
+                    {
+                        tags.Add(new Tags { Name = item, DocumentID = model.ID });
+                    }
+                    _tagsService.Add(tags);
+                }
+                else
+                {
+                    _tagsService.Delete(model.ID);
+                }
             }
+
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.UpdateEvents").Data ?? "ویرایش رویداد",
+                EntityID = model.ID,
+                EntityName = model.GetType().Name,
+                IpAddress = _webHelper.GetCurrentIpAddress(),
+                SystemKeyword = "UpdateEvents"
+            });
+
             return result;
         }
 
         public Result<Events> Get(Guid ID)
         {
-            var events = _dataSource.Get(ID);
-            if (events.Success)
+            var Events = _dataSource.Get(ID);
+            if (Events.Success)
             {
                 var resultTag = _tagsService.List(ID);
                 if (resultTag.Success)
@@ -126,10 +169,10 @@ namespace FM.Portal.Domain
                     {
                         tags.Add(item.Name);
                     }
-                    events.Data.Tags = tags;
+                    Events.Data.Tags = tags;
                 }
             }
-            return events;
+            return Events;
         }
 
         public Result<List<Events>> List(EventsListVM listVM)
@@ -140,29 +183,29 @@ namespace FM.Portal.Domain
             return Result<List<Events>>.Failure();
         }
 
-        private Result ValidationModel(Events events)
+        private Result ValidationModel(Events model)
         {
             var errors = new List<string>();
 
-            if (string.IsNullOrEmpty(events.Body))
+            if (string.IsNullOrEmpty(model.Body))
                 errors.Add("متن اصلی رویداد الزامی می باشد");
 
-            if (string.IsNullOrEmpty(events.Description))
+            if (string.IsNullOrEmpty(model.Description))
                 errors.Add("توضیحات کوتاه رویداد الزامی می باشد");
 
-            if (string.IsNullOrEmpty(events.Title))
+            if (string.IsNullOrEmpty(model.Title))
                 errors.Add("عنوان رویداد الزامی می باشد");
 
-            if (string.IsNullOrEmpty(events.UrlDesc))
+            if (string.IsNullOrEmpty(model.UrlDesc))
                 errors.Add("سئو رویداد الزامی می باشد");
 
-            if (string.IsNullOrEmpty(events.MetaKeywords))
+            if (string.IsNullOrEmpty(model.MetaKeywords))
                 errors.Add("متاتگ رویداد الزامی می باشد");
 
-            if (events.CategoryID == Guid.Empty)
+            if (model.CategoryID == Guid.Empty)
                 errors.Add("انتخاب موضوع رویداد الزامی می باشد");
 
-            if (events.LanguageID == null || events.LanguageID == Guid.Empty)
+            if (model.LanguageID == null || model.LanguageID == Guid.Empty)
                 errors.Add("انتخاب زبان رویداد الزامی می باشد");
 
 

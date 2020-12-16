@@ -3042,7 +3042,6 @@
     eventsController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'eventsService', '$location', 'toaster', '$timeout', 'categoryPortalService', 'attachmentService', 'toolsService', 'enumService', 'froalaOption', 'languageService'];
     function eventsController($scope, $q, loadingService, $routeParams, eventsService, $location, toaster, $timeout, categoryPortalService, attachmentService, toolsService, enumService, froalaOption, languageService) {
         let events = $scope;
-        events.state = '';
         events.froalaOption = angular.copy(froalaOption.main);
 
         events.Model = {};
@@ -3063,7 +3062,7 @@
             add: add
         }
 
-        events.search = [];
+        events.search = {};
         events.search.Model = {};
 
         events.addEvents = addEvents;
@@ -3087,29 +3086,30 @@
                 return events.search.Model;
             }
         };
+
         init();
         function init() {
             loadingService.show();
-            $q.resolve().then(() => {
+            return $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
-                        cartable();
+                        events.main.changeState.cartable();
                         break;
                     case 'add':
-                        add();
+                        events.main.changeState.add();
                         break;
                     case 'edit':
-                        eventsService.get($routeParams.id).then((result) => {
-                            edit(result);
-                        })
+                        events.main.changeState.edit({ ID: $routeParams.id });
                         break;
                 }
             }).finally(loadingService.hide);
         }
+
         function cartable() {
             loadingService.show();
-            clearModel();
-            events.state = 'cartable';
+            $('.js-example-tags').empty();
+            events.Model = {};
+            events.main.state = 'cartable';
             $location.path('/events/cartable');
             loadingService.hide();
         }
@@ -3120,7 +3120,10 @@
             }).then(() => {
                 return fillDropLanguage();
             }).then(() => {
-                events.state = 'add';
+                events.Model = {};
+                events.pic.reset();
+                events.video.reset();
+                events.main.state = 'add';
                 $location.path('/events/add');
             }).finally(loadingService.hide);
 
@@ -3145,8 +3148,8 @@
             }).then(() => {
                 return attachmentService.list({ ParentID: events.Model.ID });
             }).then((result) => {
-                events.pic.listUploaded = [];
-                events.video.listUploaded = [];
+                events.pic.reset();
+                events.video.reset();
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         if (result[i].PathType === 8)
@@ -3155,8 +3158,7 @@
                             events.video.listUploaded = [].concat(result[i]);
                     }
                 }
-            }).then(() => {
-                events.state = 'edit';
+                events.main.state = 'edit';
                 $location.path(`/events/edit/${model.ID}`);
             })
         }
@@ -3201,9 +3203,6 @@
                 events.grid.getlist(false);
                 toaster.pop('success', '', 'رویداد جدید با موفقیت اضافه گردید');
                 loadingService.hide();
-                $timeout(function () {
-                    events.main.changeState.cartable();
-                }, 1000);//return cartable
             }).catch((error) => {
                 if (events.Model.errors.length === 0)
                     events.Model.errors = error.split('&&');
@@ -3243,6 +3242,9 @@
                 events.videos = [];
                 return attachmentService.list({ ParentID: events.Model.ID });
             }).then((result) => {
+                events.pic.reset();
+                events.video.reset();
+
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
                         if (result[i].PathType === 8)
@@ -3252,8 +3254,6 @@
                     }
                 }
 
-                events.pic.reset();
-                events.video.reset();
                 events.grid.getlist(false);
                 toaster.pop('success', '', 'رویداد جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
@@ -3282,10 +3282,6 @@
                 }
                 loadingService.hide();
             }).finally(loadingService.hide);
-        }
-        function clearModel() {
-            $('.js-example-tags').empty();
-            events.Model = {};
         }
         function clear() {
             loadingService.show();
