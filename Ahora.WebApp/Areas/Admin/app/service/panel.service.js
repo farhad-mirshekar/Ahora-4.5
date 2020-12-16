@@ -1394,7 +1394,7 @@
             if (!model.CategoryID || model.CategoryID === '')
                 model.errors.push('انتخاب موضوع الزامی می باشد');
             if (!model.LanguageID || model.LanguageID === '')
-                model.errors.push('انتخاب ربان الزامی می باشد');
+                model.errors.push('انتخاب زبان الزامی می باشد');
             if (!model.ViewStatusType)
                 model.errors.push('وضعیت نمایش مقاله را مشخص نمایید');
             if (!model.CommentStatusType)
@@ -1433,7 +1433,7 @@
             if (!model.CategoryID || model.CategoryID === '')
                 model.errors.push('انتخاب موضوع الزامی می باشد');
             if (!model.LanguageID || model.LanguageID === '')
-                model.errors.push('انتخاب ربان الزامی می باشد');
+                model.errors.push('انتخاب زبان الزامی می باشد');
             if (!model.ViewStatusType)
                 model.errors.push('وضعیت نمایش مقاله را مشخص نمایید');
             if (!model.CommentStatusType)
@@ -1549,17 +1549,23 @@
         function add(model) {
             model.errors = [];
             if (!model.Title || model.Title === '')
-                model.errors.push('عنوان مقاله الزامی می باشد');
+                model.errors.push('عنوان خبر الزامی می باشد');
             if (!model.Description || model.Description === '')
                 model.errors.push('توضیحات کوتاه الزامی می باشد');
             if (!model.Body || model.Body === '')
-                model.errors.push('متن اصلی مقاله الزامی می باشد');
+                model.errors.push('متن اصلی خبر الزامی می باشد');
             if (!model.MetaKeywords || model.MetaKeywords === '')
                 model.errors.push('متاتگ الزامی می باشد');
             if (!model.UrlDesc || model.UrlDesc === '')
                 model.errors.push('سئو الزامی می باشد');
             if (!model.CategoryID || model.CategoryID === '')
                 model.errors.push('انتخاب موضوع الزامی می باشد');
+            if (!model.LanguageID || model.LanguageID === '')
+                model.errors.push('انتخاب زبان الزامی می باشد');
+            if (!model.ViewStatusType)
+                model.errors.push('وضعیت نمایش خبر را مشخص نمایید');
+            if (!model.CommentStatusType)
+                model.errors.push('وضعیت نظر خبر را مشخص نمایید');
 
             if (model.errors && model.errors.length > 0)
                 return $q.reject();
@@ -1581,17 +1587,23 @@
         function edit(model) {
             model.errors = [];
             if (!model.Title || model.Title === '')
-                model.errors.push('عنوان مقاله الزامی می باشد');
+                model.errors.push('عنوان خبر الزامی می باشد');
             if (!model.Description || model.Description === '')
                 model.errors.push('توضیحات کوتاه الزامی می باشد');
             if (!model.Body || model.Body === '')
-                model.errors.push('متن اصلی مقاله الزامی می باشد');
+                model.errors.push('متن اصلی خبر الزامی می باشد');
             if (!model.MetaKeywords || model.MetaKeywords === '')
                 model.errors.push('متاتگ الزامی می باشد');
             if (!model.UrlDesc || model.UrlDesc === '')
                 model.errors.push('سئو الزامی می باشد');
             if (!model.CategoryID || model.CategoryID === '')
                 model.errors.push('انتخاب موضوع الزامی می باشد');
+            if (!model.LanguageID || model.LanguageID === '')
+                model.errors.push('انتخاب زبان الزامی می باشد');
+            if (!model.ViewStatusType)
+                model.errors.push('وضعیت نمایش خبر را مشخص نمایید');
+            if (!model.CommentStatusType)
+                model.errors.push('وضعیت نظر خبر را مشخص نمایید');
 
             if (model.errors && model.errors.length > 0)
                 return $q.reject();

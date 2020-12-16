@@ -1,20 +1,11 @@
-﻿<!--<div class="card-header">
-    <h3 class="main-title" ng-show="video.allowMultiple">آپلود ویدیو</h3>
-    <h3 class="main-title"  ng-show="!video.allowMultiple">آپلود ویدیو</h3>
-</div>-->
-
-<div class="container">
+﻿<div class="container">
     <div class="row">
         <div class="col-md-12" ng-show="(video.allowMultiple === false && main.listVideoUploaded.length === 0) || video.allowMultiple">
             <div class="upload-text">
-                <!--<div class="card-header">
-                    <span class="main-title">آپلود</span>
-                </div>-->
-
                 <file-pond config="filePondConfig"></file-pond>
             </div>
         </div>
-        <div class="col-md-12" ng-if="main.listVideoUploaded.length">
+        <div class="col-md-12" ng-if="obj.listVideoUploaded.length">
 
             <span class="main-title">ویدیوهای بارگذاری شده</span>
 

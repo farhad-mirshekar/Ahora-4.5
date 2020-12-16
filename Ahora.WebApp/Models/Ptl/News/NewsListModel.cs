@@ -1,11 +1,14 @@
-﻿using @Model = FM.Portal.Core.Model;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Ahora.WebApp.Models.Ptl
 {
     public class NewsListModel
     {
-        public List<Model.News> AvailableNews { get; set; }
+        public NewsListModel()
+        {
+            AvailableNews = new List<NewsModel>();
+        }
+        public List<NewsModel> AvailableNews { get; set; }
         public PagingInfo PagingInfo { get; set; }
     }
 }

@@ -1980,7 +1980,7 @@
                 article.video.reset();
                 if (result && result.length > 0) {
                     for (var i = 0; i < result.length; i++) {
-                        if (result[i].PathType === 8)
+                        if (result[i].PathType === 4)
                             article.pic.listUploaded = [].concat(result[i]);
                         if (result[i].PathType === 7)
                             article.video.listUploaded = [].concat(result[i]);
@@ -2098,23 +2098,30 @@
         let news = $scope;
         news.Model = {};
         news.main = {};
-        news.search = [];
+        news.search = {};
         news.search.Model = {};
         news.languageList = [];
 
         news.pic = { type: '3', allowMultiple: false, validTypes: 'image/jpeg' };
         news.pic.listUploaded = [];
         news.pic.list = [];
+
+        news.video = { type: '7', allowMultiple: false, validTypes: 'video/mp4' };
+        news.video.list = [];
+        news.video.listUploaded = [];
+
+
         news.main.changeState = {
             cartable: cartable,
             edit: edit,
             add: add
         }
-        news.state = '';
+
         news.froalaOption = angular.copy(froalaOption.main);
         news.addNews = addNews;
         news.editNews = editNews;
         news.search.clear = clear;
+
         news.ViewStatusType = toolsService.arrayEnum(enumService.ViewStatusType);
         news.CommentStatusType = toolsService.arrayEnum(enumService.CommentStatusType);
         news.grid = {
@@ -2126,37 +2133,40 @@
             , onEdit: news.main.changeState.edit
             , globalSearch: true
             , displayNameFormat: ['Title']
-            , initLoad: true
             , options: () => {
                 return news.search.Model;
             }
+            , initLoad: true
         };
 
         init();
 
         function init() {
             loadingService.show();
-            $q.resolve().then(() => {
+            return $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
-                        cartable();
+                        news.main.changeState.cartable();
                         break;
                     case 'add':
-                        add();
+                        news.main.changeState.add();
                         break;
                     case 'edit':
-                        newsService.get($routeParams.id).then((result) => {
-                            edit(result);
-                        })
+                        news.main.changeState.edit({ ID: $routeParams.id });
                         break;
                 }
             }).finally(loadingService.hide);
         }
+
         function cartable() {
+            loadingService.show();
+            news.Model = {};
+            news.pic.listUploaded = [];
+            news.video.listUploaded = [];
             $('.js-example-tags').empty();
-            news.state = 'cartable';
-            clearModel();
+            news.main.state = 'cartable';
             $location.path('/news/cartable');
+            loadingService.hide();
         }
         function add() {
             loadingService.show();
@@ -2166,7 +2176,9 @@
                 return fillDropLanguage();
             }).then(() => {
                 news.Model = {};
-                news.state = 'add';
+                news.pic.listUploaded = [];
+                news.video.listUploaded = [];
+                news.main.state = 'add';
                 $location.path('/news/add');
             }).finally(loadingService.hide);
 
@@ -2195,10 +2207,18 @@
             }).then(() => {
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
-                if (result && result.length > 0)
-                    news.pic.listUploaded = [].concat(result);
-            }).then(() => {
-                news.state = 'edit';
+                news.pic.listUploaded = [];
+                news.video.listUploaded = [];
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 3)
+                            news.pic.listUploaded = [].concat(result[i]);
+                        if (result[i].PathType === 7)
+                            news.video.listUploaded = [].concat(result[i]);
+                    }
+                }
+
+                news.main.state = 'edit';
                 $location.path(`/news/edit/${model.ID}`);
             }).finally(loadingService.hide);
         }
@@ -2206,30 +2226,42 @@
         function addNews() {
             loadingService.show();
             return $q.resolve().then(() => {
-                return newsService.add(news.Model)
+                return newsService.add(news.Model);
             }).then((result) => {
                 news.Model = result;
                 if (news.pic.list.length) {
                     news.pics = [];
-                    if (!news.pic.listUploaded) {
+                    if (news.pic.listUploaded.length === 0) {
                         news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
+                        return attachmentService.add(news.pics);
                     }
-                    return attachmentService.add(news.pics);
                 }
                 return true;
             }).then((result) => {
-                news.pics = [];
+                if (news.video.list.length) {
+                    news.videos = [];
+                    if (news.video.listUploaded.length === 0) {
+                        news.videos.push({ ParentID: news.Model.ID, Type: 2, FileName: news.video.list[0], PathType: news.video.type });
+                        return attachmentService.add(news.videos);
+                    }
+                }
+                return true;
+            }).then(() => {
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
-                if (result && result.length > 0)
-                    news.pic.listUploaded = [].concat(result);
                 news.pic.reset();
+                news.video.reset();
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 3)
+                            news.pic.listUploaded = [].concat(result[i]);
+                        if (result[i].PathType === 7)
+                            news.video.listUploaded = [].concat(result[i]);
+                    }
+                }
                 news.grid.getlist(false);
                 toaster.pop('success', '', 'خبر جدید با موفقیت اضافه گردید');
                 loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 1000);//return cartable
             }).catch((error) => {
                 if (news.Model.errors.length === 0)
                     news.Model.errors = error.split('&&');
@@ -2249,21 +2281,37 @@
                 news.Model = result;
                 if (news.pic.list.length) {
                     news.pics = [];
-                    if (!news.pic.listUploaded) {
-                        news.pics.push({ ParentID: news.Model.ID, Type: 1, FileName: news.pic.list[0], PathType: news.pic.type });
+                    if (news.pic.listUploaded.length === 0) {
+                        news.pics.push({ ParentID: news.Model.ID, Type: 2, FileName: news.pic.list[0], PathType: news.pic.type });
+                        return attachmentService.add(news.pics);
                     }
-                    return attachmentService.add(news.pics);
                 }
                 return true;
             }).then((result) => {
-                news.pics = [];
+                if (news.video.list.length) {
+                    news.videos = [];
+                    if (news.video.listUploaded.length === 0) {
+                        news.videos.push({ ParentID: news.Model.ID, Type: 2, FileName: news.video.list[0], PathType: news.video.type });
+                        return attachmentService.add(news.videos);
+                    }
+                }
+                return true;
+            }).then(() => {
                 return attachmentService.list({ ParentID: news.Model.ID });
             }).then((result) => {
-                if (result && result.length > 0)
-                    news.pic.listUploaded = [].concat(result);
                 news.pic.reset();
+                news.video.reset();
+
+                if (result && result.length > 0) {
+                    for (var i = 0; i < result.length; i++) {
+                        if (result[i].PathType === 3)
+                            news.pic.listUploaded = [].concat(result[i]);
+                        if (result[i].PathType === 7)
+                            news.video.listUploaded = [].concat(result[i]);
+                    }
+                }
                 news.grid.getlist(false);
-                toaster.pop('success', '', 'خبر با موفقیت ویرایش گردید');
+                toaster.pop('success', '', 'خبر جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
             }).catch((error) => {
                 if (news.Model.errors.length === 0)
@@ -2290,10 +2338,6 @@
                 }
                 loadingService.hide();
             }).finally(loadingService.hide);
-        }
-        function clearModel() {
-            news.Model = {};
-            news.pic.listUploaded = [];
         }
         function clear() {
             loadingService.show();

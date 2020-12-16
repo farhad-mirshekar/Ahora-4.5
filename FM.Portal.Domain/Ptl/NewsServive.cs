@@ -8,6 +8,7 @@ using FM.Portal.Core.Common;
 using FM.Portal.Core.Extention.ReadingTime;
 using FM.Portal.FrameWork.MVC.Helpers.Files;
 using System.Linq;
+using FM.Portal.Core.Infrastructure;
 
 namespace FM.Portal.Domain
 {
@@ -15,17 +16,26 @@ namespace FM.Portal.Domain
     {
         private readonly INewsDataSource _dataSource;
         private readonly ITagsService _tagsService;
-        private readonly IAttachmentService _attachmentService;
+        private readonly IActivityLogService _activityLogService;
+        private readonly ILocaleStringResourceService _localeStringResourceService;
         private readonly IUrlRecordService _urlRecordService;
+        private readonly IAttachmentService _attachmentService;
+        private readonly IWebHelper _webHelper;
         public NewsService(INewsDataSource dataSource
                            , ITagsService tagsService
+                           , IActivityLogService activityLogService
+                           , ILocaleStringResourceService localeStringResourceService
+                           , IUrlRecordService urlRecordService
                            , IAttachmentService attachmentService
-                            , IUrlRecordService urlRecordService)
+                           , IWebHelper webHelper)
         {
             _dataSource = dataSource;
             _tagsService = tagsService;
-            _attachmentService = attachmentService;
+            _activityLogService = activityLogService;
+            _localeStringResourceService = localeStringResourceService;
             _urlRecordService = urlRecordService;
+            _attachmentService = attachmentService;
+            _webHelper = webHelper;
         }
         public Result<News> Add(News model)
         {
@@ -34,17 +44,9 @@ namespace FM.Portal.Domain
                 return Result<News>.Failure(message: validateResult.Message);
 
             model.ID = Guid.NewGuid();
-            if (model.Tags != null && model.Tags.Count > 0)
-            {
-                var tags = new List<Tags>();
-                foreach (var item in model.Tags)
-                {
-                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
-                }
-                _tagsService.Add(tags);
-            }
             model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
             var result = _dataSource.Insert(model);
+
             if (result.Success)
             {
                 _urlRecordService.Add(new UrlRecord()
@@ -54,7 +56,27 @@ namespace FM.Portal.Domain
                     EntityName = model.GetType().Name,
                     Enabled = EnableMenuType.فعال
                 });
+
+                if (model.Tags != null && model.Tags.Count > 0)
+                {
+                    var tags = new List<Tags>();
+                    foreach (var item in model.Tags)
+                    {
+                        tags.Add(new Tags { Name = item, DocumentID = model.ID });
+                    }
+                    _tagsService.Add(tags);
+                }
             }
+
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.AddNews").Data ?? "افزودن خبر",
+                EntityID = model.ID,
+                EntityName = model.GetType().Name,
+                IpAddress = _webHelper.GetCurrentIpAddress(),
+                SystemKeyword = "AddNews"
+            });
+
             return result;
         }
 
@@ -78,6 +100,15 @@ namespace FM.Portal.Domain
             //    }
             //}
 
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.DeleteNews").Data ?? "حذف خبر",
+                EntityID = ID,
+                EntityName = "News",
+                IpAddress = _webHelper.GetCurrentIpAddress(),
+                SystemKeyword = "DeleteNews"
+            });
+
             return _dataSource.Delete(ID);
         }
         public Result<News> Edit(News model)
@@ -86,21 +117,9 @@ namespace FM.Portal.Domain
             if (!validateResult.Success)
                 return Result<News>.Failure(message: validateResult.Message);
 
-            if (model.Tags != null && model.Tags.Count > 0)
-            {
-                var tags = new List<Tags>();
-                foreach (var item in model.Tags)
-                {
-                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
-                }
-                _tagsService.Add(tags);
-            }
-            else
-            {
-                _tagsService.Delete(model.ID);
-            }
             model.ReadingTime = CalculateReadingTime.MinReadTime(model.Body);
             var result = _dataSource.Update(model);
+
             if (result.Success)
             {
                 var urlRecordResult = _urlRecordService.Get(null, model.ID);
@@ -109,7 +128,31 @@ namespace FM.Portal.Domain
                     urlRecordResult.Data.UrlDesc = model.UrlDesc;
                     _urlRecordService.Edit(urlRecordResult.Data);
                 }
+
+                if (model.Tags != null && model.Tags.Count > 0)
+                {
+                    var tags = new List<Tags>();
+                    foreach (var item in model.Tags)
+                    {
+                        tags.Add(new Tags { Name = item, DocumentID = model.ID });
+                    }
+                    _tagsService.Add(tags);
+                }
+                else
+                {
+                    _tagsService.Delete(model.ID);
+                }
             }
+
+            _activityLogService.Add(new ActivityLog()
+            {
+                Comment = _localeStringResourceService.GetResource("ActivityLog.UpdateNews").Data ?? "ویرایش خبر",
+                EntityID = model.ID,
+                EntityName = model.GetType().Name,
+                IpAddress = _webHelper.GetCurrentIpAddress(),
+                SystemKeyword = "UpdateNews"
+            });
+
             return result;
         }
 

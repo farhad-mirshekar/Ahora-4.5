@@ -4,33 +4,98 @@ using System.Collections.Generic;
 
 namespace Ahora.WebApp.Models.Ptl
 {
-    public class NewsModel
+    /// <summary>
+    /// خبر
+    /// </summary>
+    public class NewsModel : EntityModel
     {
-        public Guid ID { get; set; }
-        public string Path { get; }
-        public Guid? LanguageID { get; set; }
-        public string ReadingTime { get; set; }
-        public PathType PathType { get; set; }
-        public string FileName { get; set; }
-        public string CreatorName { get; set; }
-        public List<string> Tags { get; set; }
-        public string TrackingCode { get; set; }
-        public Guid? RemoverID { get; set; }
-        public Guid UserID { get; set; }
-        public Guid CategoryID { get; set; }
-        public ViewStatusType ViewStatusType { get; set; }
-        public string UrlDesc { get; set; }
-        public int DisLikeCount { get; set; }
-        public int LikeCount { get; set; }
-        public int VisitedCount { get; set; }
-        public CommentStatusType CommentStatusType { get; set; }
-        public string Description { get; set; }
-        public string MetaKeywords { get; set; }
-        public string Body { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public NewsModel()
+        {
+            Tags = new List<string>();
+        }
+        /// <summary>
+        /// عنوان خبر
+        /// </summary>
         public string Title { get; set; }
+        /// <summary>
+        /// تاریخ آخرین ویرایش
+        /// </summary>
+        public DateTime ModifiedDate { get; set; }
+        /// <summary>
+        /// متن اصلی
+        /// </summary>
+        public string Body { get; set; }
+        /// <summary>
+        /// متا 
+        /// </summary>
+        public string MetaKeywords { get; set; }
+        /// <summary>
+        /// توضیحات کوتاه خبر
+        /// </summary>
+        public string Description { get; set; }
+        /// <summary>
+        /// وضعیت نظرات خبر : باز یا بسته
+        /// </summary>
+        public CommentStatusType CommentStatusType { get; set; }
+        /// <summary>
+        /// تعداد بازدید خبر
+        /// </summary>
+        public int VisitedCount { get; set; }
+        /// <summary>
+        /// تعداد موافق خبر
+        /// </summary>
+        public int LikeCount { get; set; }
+        /// <summary>
+        /// تعداد مخالف خبر
+        /// </summary>
+        public int DisLikeCount { get; set; }
+        /// <summary>
+        /// توضیحات برای سئو
+        /// </summary>
+        public string UrlDesc { get; set; }
+        /// <summary>
+        /// نحوه نمایش خبر : نمایش یا عدم نمایش
+        /// </summary>
+        public ViewStatusType ViewStatusType { get; set; }
+        /// <summary>
+        /// آی دی دسته بندی
+        /// </summary>
+        public Guid CategoryID { get; set; }
+        /// <summary>
+        /// ایجاد کننده خبر
+        /// </summary>
+        public Guid UserID { get; set; }
+        /// <summary>
+        /// چه کسی حذف کرده
+        /// </summary>
+        public Guid? RemoverID { get; set; }
+        /// <summary>
+        /// لیست تگ ها
+        /// </summary>
+        public List<String> Tags { get; set; }
+        /// <summary>
+        /// مدت زمان خواندن خبر
+        /// </summary>
+        public string ReadingTime { get; set; }
+        /// <summary>
+        /// زبان خبر
+        /// </summary>
+        public Guid? LanguageID { get; set; }
+        /// <summary>
+        /// زمان حذف خبر
+        /// </summary>
+        public DateTime? RemoverDate { get; set; }
+
+        //for only show 
+        /// <summary>
+        /// نام ایجاد کننده خبر
+        /// </summary>
+        public string CreatorName { get; set; }
+        /// <summary>
+        /// مسیر عکس
+        /// </summary>
+        public string Path => "News";
         public int Total { get; set; }
-        public DateTime? CreationDate { get; set; }
         public List<Attachment> PictureAttachments { get; set; }
         public List<Attachment> VideoAttachments { get; set; }
     }

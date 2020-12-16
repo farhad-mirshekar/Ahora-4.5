@@ -30,24 +30,31 @@ namespace Ahora.WebApp.Controllers
         #region News
         public ActionResult Index(int? page)
         {
-            var newsResult = _service.List(new FM.Portal.Core.Model.NewsListVM() { PageSize = Helper.CountShowNews, PageIndex = page });
+            var newsResult = _service.List(new NewsListVM() { PageSize = Helper.CountShowNews, PageIndex = page });
             if (!newsResult.Success)
                 return View("Error");
             var news = newsResult.Data;
 
+            var articleList = new NewsListModel();
             var pageInfo = new PagingInfo();
             pageInfo.CurrentPage = page ?? 1;
             pageInfo.TotalItems = news.Select(x => x.Total).First();
             pageInfo.ItemsPerPage = Helper.CountShowNews;
 
-            news.ForEach(e =>
+
+
+            foreach (var item in news)
             {
-                var attachmentResult = _attachmentService.List(e.ID);
-                e.Attachments = attachmentResult.Data;
+                articleList.AvailableNews.Add(item.ToModel());
+            }
+            articleList.AvailableNews.ForEach(n =>
+            {
+                var attachmentResult = _attachmentService.List(n.ID);
+                n.PictureAttachments = attachmentResult.Data;
             });
 
-            var articleList = new NewsListModel();
-            articleList.AvailableNews = news;
+
+            
             articleList.PagingInfo = pageInfo;
 
             return View(articleList);

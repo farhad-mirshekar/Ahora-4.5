@@ -1,4 +1,4 @@
-﻿<div ng-show="state ==='cartable'">
+﻿<div ng-show="main.state ==='cartable'">
     <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
     <div class="card">
         <div class="card-header">
@@ -24,9 +24,9 @@
     </div>
     <portal-grid obj="grid"></portal-grid>
 </div>
-<section ng-show="['add','edit'].indexOf(state) !== -1">
-    <h2 class="main-title" ng-show="state==='add'">افزودن خبر جدید</h2>
-    <h2 class="main-title" ng-show="state==='edit'">ویرایش خبر</h2>
+<section ng-show="['add','edit'].indexOf(main.state) !== -1">
+    <h2 class="main-title" ng-show="main.state==='add'">افزودن خبر جدید</h2>
+    <h2 class="main-title" ng-show="main.state==='edit'">ویرایش خبر</h2>
     <div id="newsSection">
         <div class="container">
             <div class="row">
@@ -125,12 +125,15 @@
                     <uib-tab heading="آپلود">
                         <portal-upload obj="pic"></portal-upload>
                     </uib-tab>
+                    <uib-tab heading="بارگذاری ویدیو">
+                        <portal-upload obj="video"></portal-upload>
+                    </uib-tab>
                 </uib-tabset>
             </div>
         </div>
         <div class="btn-group-justified pull-left mb-5">
-            <button type="submit" ng-click="addNews()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
-            <button type="submit" ng-click="editNews()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+            <button type="submit" ng-click="addNews()" ng-show="main.state==='add'" class="btn btn-success">ثبت</button>
+            <button type="submit" ng-click="editNews()" ng-show="main.state==='edit'" class="btn btn-primary">ویرایش</button>
             <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
         </div>
     </div>

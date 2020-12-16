@@ -30,7 +30,7 @@ BEGIN
 		INNER JOIN 
 			org.[User] CreatorUser ON News.UserID = CreatorUser.ID
 		INNER JOIN
-			ptl.Category Category ON News.ID = Category.ID
+			ptl.Category Category ON News.CategoryID = Category.ID
 		LEFT JOIN
 			pbl.[Language] lng ON News.LanguageID = lng.ID
 		WHERE
