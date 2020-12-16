@@ -30,7 +30,7 @@ namespace Ahora.WebApp.Controllers
         #region News
         public ActionResult Index(int? page)
         {
-            var newsResult = _service.List(new NewsListVM() { PageSize = Helper.CountShowNews, PageIndex = page });
+            var newsResult = _service.List(new NewsListVM() { PageSize = Helper.CountShowNews, PageIndex = page, ViewStatusType = ViewStatusType.نمایش });
             if (!newsResult.Success)
                 return View("Error");
             var news = newsResult.Data;

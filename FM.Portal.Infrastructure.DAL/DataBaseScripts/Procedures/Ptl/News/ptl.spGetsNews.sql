@@ -7,6 +7,7 @@ GO
 CREATE PROCEDURE ptl.spGetsNews
 @Title NVARCHAR(100),
 @LanguageID UNIQUEIDENTIFIER,
+@ViewStatusType TINYINT,
 @PageSize INT,
 @PageIndex INT
 --WITH ENCRYPTION
@@ -38,6 +39,7 @@ BEGIN
 		AND Category.RemoverID IS NULL
 		AND (@Title IS NULL OR News.Title LIKE CONCAT ('%' , @Title , '%'))
 		AND (@LanguageID IS NULL OR News.LanguageID = @LanguageID)
+		AND (@ViewStatusType < 1 OR News.ViewStatusType = @ViewStatusType)
 	), TempCount AS
 	(
 		SELECT

@@ -114,13 +114,13 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public virtual ActionResult GetLastArticle()
         {
-            var result = _articleService.List(new ArticleListVM() { PageSize = Helper.CountShowArticle, LanguageID = CurrentLanguageID() });
+            var result = _articleService.List(new ArticleListVM() { PageSize = Helper.CountShowArticle, LanguageID = CurrentLanguageID() , ViewStatusType = ViewStatusType.نمایش });
             return PartialView(string.Format(ComponentUrl, "Article", "_PartialSideArticle.cshtml"), result.Data);
         }
         [ChildActionOnly]
         public virtual ActionResult GetLastNews()
         {
-            var result = _newsService.List(new NewsListVM() { PageSize = Helper.CountShowNews, LanguageID = CurrentLanguageID() });
+            var result = _newsService.List(new NewsListVM() { PageSize = Helper.CountShowNews, LanguageID = CurrentLanguageID(), ViewStatusType = ViewStatusType.نمایش });
             return PartialView(string.Format(ComponentUrl, "News", "_PartialSideNews.cshtml"), result.Data);
         }
         [ChildActionOnly]
@@ -147,7 +147,7 @@ namespace Ahora.WebApp.Controllers
         [ChildActionOnly]
         public ActionResult GetLastEvents()
         {
-            var result = _eventsService.List(new EventsListVM() { PageSize = Helper.CountShowEvents, LanguageID = CurrentLanguageID() });
+            var result = _eventsService.List(new EventsListVM() { PageSize = Helper.CountShowEvents, LanguageID = CurrentLanguageID(), ViewStatusType = ViewStatusType.نمایش });
             return PartialView(string.Format(ComponentUrl, "Events", "_PartialSideEvents.cshtml"), result.Data);
         }
         [ChildActionOnly]

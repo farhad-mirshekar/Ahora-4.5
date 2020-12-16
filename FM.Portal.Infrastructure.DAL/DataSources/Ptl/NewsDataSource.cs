@@ -35,7 +35,7 @@ namespace FM.Portal.Infrastructure.DAL
                 }
 
             }
-            catch (Exception) { return Result<int>.Failure(message: "خطایی اتفاق افتاده است"); }
+            catch (Exception) { return Result.Failure(message: "خطایی اتفاق افتاده است"); }
         }
 
         public Result<News> Get(Guid ID)
@@ -64,11 +64,12 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                var param = new SqlParameter[4];
+                var param = new SqlParameter[5];
                 param[0] = new SqlParameter("@Title", listVM.Title);
                 param[1] = new SqlParameter("@PageSize", listVM.PageSize);
                 param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
                 param[3] = new SqlParameter("@LanguageID", listVM.LanguageID);
+                param[4] = new SqlParameter("@ViewStatusType", (byte)listVM.ViewStatusType);
 
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsNews", param);
             }

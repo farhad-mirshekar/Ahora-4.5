@@ -7,6 +7,7 @@ GO
 CREATE PROCEDURE ptl.spGetsArticle
 @Title NVARCHAR(100),
 @LanguageID UNIQUEIDENTIFIER,
+@ViewStatusType TINYINT,
 @PageSize INT,
 @PageIndex INT
 --WITH ENCRYPTION
@@ -36,6 +37,7 @@ BEGIN
 			Category.RemoverID IS NULL
 		AND	(@Title IS NULL OR Article.Title LIKE CONCAT('%', @Title , '%'))
 		AND (@LanguageID IS NULL OR Article.LanguageID = @LanguageID)
+		AND (@ViewStatusType < 1 OR Article.ViewStatusType = @ViewStatusType)
 	),TempCount AS
 	(
 		SELECT 

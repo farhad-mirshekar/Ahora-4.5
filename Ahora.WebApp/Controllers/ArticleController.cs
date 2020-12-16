@@ -37,7 +37,7 @@ namespace Ahora.WebApp.Controllers
         //GET: Article
         public ActionResult Index(int? page)
         {
-            var articlesResult = _service.List(new ArticleListVM() { PageSize = Helper.CountShowArticle, PageIndex = page });
+            var articlesResult = _service.List(new ArticleListVM() { PageSize = Helper.CountShowArticle, PageIndex = page , ViewStatusType = ViewStatusType.نمایش });
             if (!articlesResult.Success)
                 return View("Error");
             var articles = articlesResult.Data;

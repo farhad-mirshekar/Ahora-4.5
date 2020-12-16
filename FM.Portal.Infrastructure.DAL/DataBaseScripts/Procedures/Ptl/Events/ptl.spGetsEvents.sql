@@ -7,6 +7,7 @@ GO
 CREATE PROCEDURE ptl.spGetsEvents
 @Title AS NVARCHAR(100),
 @LanguageID UNIQUEIDENTIFIER,
+@ViewStatusType TINYINT,
 @PageSize INT,
 @PageIndex INT
 --WITH ENCRYPTION
@@ -26,15 +27,11 @@ BEGIN
 		SELECT 
 			[Events].*,
 			CONCAT(CreatorUser.FirstName , ' ' ,CreatorUser.LastName) AS CreatorName
-			--attachment.PathType,
-			--attachment.[FileName]
 		FROM ptl.[Events] [Events]
 		INNER JOIN 
 			org.[User] CreatorUser ON [Events].UserID = CreatorUser.ID
 		INNER JOIN 
 			ptl.Category Category ON [Events].CategoryID = Category.ID
-		--LEFT JOIN
-		--	pbl.Attachment attachment ON [Events].ID = attachment.ParentID
 		LEFT JOIN
 			pbl.[Language] lng ON [Events].LanguageID = lng.ID
 		WHERE
@@ -42,6 +39,7 @@ BEGIN
 		AND	Category.RemoverID IS NULL
 		AND	(@Title IS NULL OR [Events].Title LIKE CONCAT('%', @Title , '%'))
 		AND (@LanguageID IS NULL OR [Events].LanguageID = @LanguageID)
+		AND (@ViewStatusType < 1 OR [Events].ViewStatusType = @ViewStatusType)
 	),TempCount AS
 	(
 		SELECT 

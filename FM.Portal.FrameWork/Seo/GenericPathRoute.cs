@@ -124,9 +124,9 @@ namespace FM.Portal.FrameWork.Seo
                             data.Values["SeName"] = urlRecord.UrlDesc;
                         }
                         break;
-                    case "event":
+                    case "events":
                         {
-                            data.Values["controller"] = "Event";
+                            data.Values["controller"] = "Events";
                             data.Values["action"] = "Detail";
                             data.Values["ID"] = urlRecord.EntityID;
                             data.Values["SeName"] = urlRecord.UrlDesc;

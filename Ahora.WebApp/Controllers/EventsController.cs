@@ -33,7 +33,7 @@ namespace Ahora.WebApp.Controllers
             ViewBag.Title = "لیست رویدادها";
             var eventsModel = new EventListModel();
 
-            var eventsResult = _service.List(new FM.Portal.Core.Model.EventsListVM() { PageSize = Helper.CountShowArticle, PageIndex = page });
+            var eventsResult = _service.List(new FM.Portal.Core.Model.EventsListVM() { PageSize = Helper.CountShowArticle, PageIndex = page, ViewStatusType = ViewStatusType.نمایش });
             if (!eventsResult.Success)
                 return View("Error");
             var events = eventsResult.Data;
