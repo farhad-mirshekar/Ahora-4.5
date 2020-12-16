@@ -180,7 +180,6 @@
     <Compile Include="Ptl\Banner\Banner.cs" />
     <Compile Include="Ptl\Banner\VM\BannerListVM.cs" />
     <Compile Include="Ptl\Category\Category.cs" />
-    <Compile Include="Ptl\Category\VM\GetCountCategoryVM.cs" />
     <Compile Include="Ptl\DynamicPage\DynamicPage.cs" />
     <Compile Include="Ptl\DynamicPage\VM\DynamicPageListVM.cs" />
     <Compile Include="Ptl\Events\Events.cs" />

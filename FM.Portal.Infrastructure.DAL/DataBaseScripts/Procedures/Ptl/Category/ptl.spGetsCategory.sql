@@ -13,9 +13,9 @@ BEGIN
 		cat.[Node].ToString() Node,
 		cat.[Node].GetAncestor(1).ToString() ParentNode,
 		cat.CreationDate,
-		cat.IncludeInLeftMenu,
-		cat.IncludeInTopMenu,
-		cat.Title
+		cat.Title,
+		cat.RemoverID,
+		cat.RemoverDate
 	FROM ptl.Category cat
 	WHERE
 		cat.RemoverID IS NULL

@@ -25,23 +25,22 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
             catch (Exception e) { throw; }
 
         }
-        private Result<Category> Modify(bool isNewrecord, Category model)
+        private Result<Category> Modify(bool IsNewrecord, Category model)
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[7];
+                    var param = new SqlParameter[5];
                     param[0] = new SqlParameter("@ID", model.ID);
+                    param[1] = new SqlParameter("@ParentID", model.ParentID);
+                    param[2] = new SqlParameter("@Title", model.Title);
+                    param[3] = new SqlParameter("@IsNewRecord", IsNewrecord);
+                    param[4] = new SqlParameter("@Node", model.Node);
 
-                    param[1] = new SqlParameter("@IncludeInTopMenu", model.IncludeInTopMenu);
-                    param[2] = new SqlParameter("@ParentID", model.ParentID);
-                    param[3] = new SqlParameter("@IncludeInLeftMenu", model.IncludeInLeftMenu);
-                    param[4] = new SqlParameter("@Title", model.Title);
-                    param[5] = new SqlParameter("@isNewRecord", isNewrecord);
-                    param[6] = new SqlParameter("@Node", model.Node);
-
-                    SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyCategory", param);
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifyCategory", param);
+                    if (result == 0)
+                        return Result<Category>.Failure();
 
                     return Get(model.ID);
                 }
@@ -50,13 +49,9 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
 
         }
         public Result<Category> Insert(Category model)
-        {
-            return Modify(true, model);
-        }
+        => Modify(true, model);
         public Result<Category> Update(Category model)
-        {
-            return Modify(false, model);
-        }
+        => Modify(false, model);
         public Result<Category> Get(Guid ID)
         {
             try
@@ -65,16 +60,16 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
                 var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetCategory", param))
+                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetCategory", param))
                     {
                         while (dr.Read())
                         {
-                            obj.IncludeInTopMenu = SQLHelper.CheckBoolNull(dr["IncludeInTopMenu"]);
+                            obj.RemoverID = SQLHelper.CheckGuidNull(dr["RemoverID"]);
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
-                            obj.IncludeInLeftMenu = SQLHelper.CheckBoolNull(dr["IncludeInLeftMenu"]);
+                            obj.RemoverDate = SQLHelper.CheckDateTimeNull(dr["RemoverDate"]);
                             obj.ParentID = SQLHelper.CheckGuidNull(dr["ParentID"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
                             obj.Node = SQLHelper.CheckStringNull(dr["Node"]);
@@ -86,7 +81,7 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
                 if (obj.ID != Guid.Empty)
                     return Result<Category>.Successful(data: obj);
 
-                return Result<Category>.Successful(data:null);
+                return Result<Category>.Successful(data: null);
             }
             catch (Exception e) { return Result<Category>.Failure(); }
 
@@ -99,7 +94,7 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
                 param[0] = new SqlParameter("@ID", ID);
                 param[1] = new SqlParameter("@RemoverID", _requestInfo.UserId);
 
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteCategory", param);
                     if (result > 0)

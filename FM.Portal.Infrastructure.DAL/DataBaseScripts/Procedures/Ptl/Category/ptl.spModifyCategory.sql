@@ -7,10 +7,8 @@ GO
 CREATE PROCEDURE ptl.spModifyCategory
 @ID UNIQUEIDENTIFIER,
 @Title NVARCHAR(50),
-@IncludeInTopMenu bit,
-@IncludeInLeftMenu bit,
 @ParentID UNIQUEIDENTIFIER,
-@isNewRecord bit,
+@IsNewRecord BIT,
 @Node HIERARCHYID
 --WITH ENCRYPTION
 AS
@@ -34,19 +32,17 @@ BEGIN
 	END
 	BEGIN TRY
 		BEGIN TRAN
-			IF @isNewRecord = 1 --insert
+			IF @IsNewRecord = 1 --insert
 				BEGIN
 					INSERT INTO [ptl].[Category]
-						(ID,[Title],[Node], [IncludeInTopMenu],[IncludeInLeftMenu], CreationDate)
+						(ID,[Title],[Node], CreationDate)
 					VALUES
-						(@ID, @Title , @NewNode , @IncludeInTopMenu,@IncludeInLeftMenu , GETDATE())
+						(@ID, @Title , @NewNode , GETDATE())
 				END
 			ELSE -- update
 				BEGIN
 					UPDATE [ptl].[Category]
 					SET
-						[IncludeInTopMenu] = @IncludeInTopMenu ,
-						[IncludeInLeftMenu] = @IncludeInLeftMenu ,
 						[Title] = @Title
 					WHERE
 						[ID] = @ID

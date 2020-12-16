@@ -1678,23 +1678,24 @@
     function categoryPortalController($scope, $q, categoryPortalService, loadingService, $routeParams, $location, toaster, toolsService) {
         let category = $scope;
         category.Model = {};
+        category.main = {};
+
         category.list = [];
         category.lists = [];
-        category.state = '';
 
+        category.main.changeState = {
+            cartable: cartable
+            , add: add
+        }
         category.addCategory = addCategory;
-        category.addSubCategory = addSubCategory;
         category.editCategory = editCategory;
         category.confirmRemove = confirmRemove;
-        category.changeState = {
-            cartable: cartable,
-            add: add
-        }
+
         init();
         category.tree = {
             data: []
             , colDefs: [
-                , { field: 'Title', displayName: 'نام' }
+                , { field: 'TitleCrumb', displayName: 'نام پدر' }
                 , {
                     field: ''
                     , displayName: ''
@@ -1706,7 +1707,7 @@
                         </div>`)
                     , cellTemplateScope: {
                         edit: edit,
-                        add: addSubCategory,
+                        add: add,
                         remove: remove
                     }
                 }
@@ -1719,21 +1720,7 @@
         function init() {
             loadingService.show();
             return $q.resolve().then(() => {
-                switch ($routeParams.state) {
-                    case 'cartable':
-                        cartable();
-                        loadingService.hide();
-                        break;
-                    case 'add':
-                        goToPageAdd();
-                        loadingService.hide();
-                        break;
-                    case 'edit':
-                        categoryPortalService.get($routeParams.id).then((result) => {
-                            edit(result);
-                        })
-                        break;
-                }
+                return cartable();
             }).finally(loadingService.hide);
 
 
@@ -1748,15 +1735,13 @@
                 $location.path('category-portal/cartable');
             }).finally(loadingService.hide);
         }
-        function edit(parent) {
+        function edit(model) {
             loadingService.show();
             return $q.resolve().then(() => {
-                return categoryPortalService.get(parent.ID);
+                return categoryPortalService.get(model.ID);
             }).then((result) => {
-                category.Model = result;
-                //    return categoryPortalService.listByNode({ Node: result.ParentNode });
-                //}).then((result) => {
-                category.state = 'edit';
+                category.Model = angular.copy(result);
+                category.main.state = 'edit';
                 $('#category-portal-modal').modal('show');
             }).finally(loadingService.hide)
         }
@@ -1764,7 +1749,7 @@
             loadingService.show();
             parent = parent || {};
             category.Model = { ParentID: parent.ID };
-            category.state = 'add';
+            category.main.state = 'add';
             $('#category-portal-modal').modal('show');
             loadingService.hide();
         }
@@ -1776,7 +1761,7 @@
             }).then((result) => {
                 toaster.pop('success', '', 'مجوز جدید با موفقیت اضافه گردید');
                 $('#category-portal-modal').modal('hide');
-                category.changeState.cartable();
+                category.main.changeState.cartable();
                 loadingService.hide();
             }).catch((error) => {
                 if (category.Model.errors.length === 0) {
@@ -1795,10 +1780,10 @@
             return $q.resolve().then(() => {
                 return categoryPortalService.edit(category.Model);
             }).then((result) => {
-                toaster.pop('success', '', 'دسته بندی جدید با موفقیت اضافه گردید');
+                toaster.pop('success', '', 'دسته بندی جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
                 $('#category-portal-modal').modal('hide');
-                category.changeState.cartable();
+                category.main.changeState.cartable();
             }).catch((error) => {
                 if (category.Model.errors.length === 0) {
                     category.Model.errors = error.split('&&');
@@ -1811,9 +1796,6 @@
             }).finally(loadingService.hide);
         }
 
-        function addSubCategory(parent) {
-            category.changeState.add(parent);
-        }
         function setTreeObject(categorys) {
             categorys.map((item) => {
                 if (item.ParentNode === '/')

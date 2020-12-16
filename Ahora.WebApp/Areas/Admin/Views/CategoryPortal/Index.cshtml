@@ -1,5 +1,5 @@
 ﻿<section>
-    <button class="btn btn-success btn-circle pull-left" ng-click="changeState.add();"><i class="fa fa-plus"></i></button>
+    <button class="btn btn-success btn-circle pull-left" ng-click="changeState.main.add();"><i class="fa fa-plus"></i></button>
     <tree-grid tree-data="tree.data"
                col-defs="tree.colDefs"
                expand-on="tree.expandingProperty"
@@ -17,8 +17,8 @@
     <div class="modal-dialog">
         <div class="modal-content" dir="rtl">
             <div class="modal-header">
-                <h2 class="main-title" ng-show="state==='edit'">ویرایش</h2>
-                <h2 class="main-title" ng-show="state==='add'">افزودن</h2>
+                <h2 class="main-title" ng-show="main.state==='edit'">ویرایش</h2>
+                <h2 class="main-title" ng-show="main.state==='add'">افزودن</h2>
             </div>
             <div class="modal-body">
                 <div class="row mb-2">
@@ -37,29 +37,11 @@
                             <input type="text" class="form-control" ng-model="Model.Title" />
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-6 col-md-offset-2">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="Model.IncludeInTopMenu"> در منو (بالا) قرار گیرد ؟
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-6 col-md-offset-2">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="Model.IncludeInLeftMenu"> در منو (چپ) قرار گیرد ؟
-                                </label>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="modal-footer pull-left">
-                <button type="submit" ng-click="addCategory()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
-                <button type="submit" ng-click="editCategory()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button type="submit" ng-click="addCategory()" ng-show="main.state==='add'" class="btn btn-success">ثبت</button>
+                <button type="submit" ng-click="editCategory()" ng-show="main.state==='edit'" class="btn btn-primary">ویرایش</button>
                 <button class="btn btn-cancel" data-dismiss="modal">انصراف</button>
             </div>
         </div>
