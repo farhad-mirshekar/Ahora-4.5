@@ -10,7 +10,6 @@ namespace FM.Portal.Core.Service.Ptl
         Result<Category> Edit(Category model);
         Result<List<Category>> List();
         Result<Category> Get(Guid ID);
-        Result<List<GetCountCategoryVM>> GetCountCategory();
         Result Delete(Guid ID);
         
     }

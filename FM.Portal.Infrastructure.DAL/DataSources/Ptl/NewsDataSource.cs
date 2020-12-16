@@ -21,9 +21,11 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[1];
+                var param = new SqlParameter[2];
                 param[0] = new SqlParameter("@ID", ID);
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                param[1] = new SqlParameter("@RemoverID", _requestInfo.UserId);
+
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteNews", param);
                     if (result > 0)

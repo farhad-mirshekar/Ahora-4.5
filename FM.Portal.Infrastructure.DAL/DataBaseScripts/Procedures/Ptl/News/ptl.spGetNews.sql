@@ -11,16 +11,15 @@ AS
 BEGIN
 	SELECT 
 		news.*,
-		CONCAT(creator.FirstName,' ' , creator.LastName) AS CreatorName,
-		attachment.[FileName],
-		attachment.PathType
+		CONCAT(creator.FirstName,' ' , creator.LastName) AS CreatorName
 	FROM	
 		[ptl].[News] news
 	INNER JOIN
 		[org].[User] creator ON news.UserID = creator.ID
-	LEFT JOIN
-		[pbl].[Attachment] attachment ON news.ID = attachment.ParentID
+	INNER JOIN
+		ptl.Category Category ON news.CategoryID = Category.ID
 	WHERE 
 		news.RemoverID IS NULL 
-		AND news.ID = @ID
+	AND news.ID = @ID
+	AND Category.RemoverID IS NULL
 END

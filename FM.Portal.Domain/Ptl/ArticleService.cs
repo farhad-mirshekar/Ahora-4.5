@@ -45,7 +45,7 @@ namespace FM.Portal.Domain
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
                 {
-                    tags.Add(new Tags { Name = item , DocumentID = model.ID });
+                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
                 }
                 _tagsService.Add(tags);
             }
@@ -66,23 +66,23 @@ namespace FM.Portal.Domain
 
         public Result Delete(Guid ID)
         {
-            var attachmentsRsult = _attachmentService.List(ID);
-            if (!attachmentsRsult.Success)
-                return Result.Failure();
+            //var attachmentsRsult = _attachmentService.List(ID);
+            //if (!attachmentsRsult.Success)
+            //    return Result.Failure();
 
-            var attachments = attachmentsRsult.Data;
+            //var attachments = attachmentsRsult.Data;
 
-            if (attachments.Count > 0)
-            {
-                _tagsService.Delete(ID);
+            //if (attachments.Count > 0)
+            //{
+            //    _tagsService.Delete(ID);
 
-                foreach (var item in attachments)
-                {
-                    string path = $"{Enum.GetName(typeof(PathType), item.PathType)}/{item.FileName}";
-                    _attachmentService.Delete(item.ID);
-                    FileHelper.DeleteFile(path);
-                }
-            }
+            //    foreach (var item in attachments)
+            //    {
+            //        string path = $"{Enum.GetName(typeof(PathType), item.PathType)}/{item.FileName}";
+            //        _attachmentService.Delete(item.ID);
+            //        FileHelper.DeleteFile(path);
+            //    }
+            //}
 
             return _dataSource.Delete(ID);
         }
@@ -98,7 +98,7 @@ namespace FM.Portal.Domain
                 var tags = new List<Tags>();
                 foreach (var item in model.Tags)
                 {
-                    tags.Add(new Tags { Name = item , DocumentID = model.ID });
+                    tags.Add(new Tags { Name = item, DocumentID = model.ID });
                 }
                 _tagsService.Add(tags);
             }
@@ -130,21 +130,28 @@ namespace FM.Portal.Domain
 
         public Result<Article> Get(Guid ID)
         {
-            var article = _dataSource.Get(ID);
-            if (article.Success)
+            var articleResult = _dataSource.Get(ID);
+            if (!articleResult.Success)
+                return Result<Article>.Failure(message: articleResult.Message);
+
+            var article = articleResult.Data;
+            if (article != null)
             {
                 var resultTag = _tagsService.List(ID);
-                if (resultTag.Success)
+                if (resultTag.Success && resultTag.Data.Count > 0)
                 {
                     List<string> tags = new List<string>();
                     foreach (var item in resultTag.Data)
                     {
                         tags.Add(item.Name);
                     }
-                    article.Data.Tags = tags;
+                    article.Tags = tags;
                 }
+
+                return Result<Article>.Successful(data: article);
             }
-            return article;
+            else
+                return Result<Article>.Failure();
         }
 
         public Result<List<Article>> List(ArticleListVM listVM)

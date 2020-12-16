@@ -60,23 +60,23 @@ namespace FM.Portal.Domain
 
         public Result Delete(Guid ID)
         {
-            var attachmentsRsult = _attachmentService.List(ID);
-            if (!attachmentsRsult.Success)
-                return Result.Failure();
+            //var attachmentsRsult = _attachmentService.List(ID);
+            //if (!attachmentsRsult.Success)
+            //    return Result.Failure();
 
-            var attachments = attachmentsRsult.Data;
+            //var attachments = attachmentsRsult.Data;
 
-            if (attachments.Count > 0)
-            {
-                _tagsService.Delete(ID);
+            //if (attachments.Count > 0)
+            //{
+            //    _tagsService.Delete(ID);
 
-                foreach (var item in attachments)
-                {
-                    string path = $"{Enum.GetName(typeof(PathType), item.PathType)}/{item.FileName}";
-                    _attachmentService.Delete(item.ID);
-                    FileHelper.DeleteFile(path);
-                }
-            }
+            //    foreach (var item in attachments)
+            //    {
+            //        string path = $"{Enum.GetName(typeof(PathType), item.PathType)}/{item.FileName}";
+            //        _attachmentService.Delete(item.ID);
+            //        FileHelper.DeleteFile(path);
+            //    }
+            //}
 
             return _dataSource.Delete(ID);
         }

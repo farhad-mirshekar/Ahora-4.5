@@ -1,5 +1,4 @@
 ﻿using FM.Portal.BaseModel;
-using FM.Portal.Core.Common;
 using System;
 
 namespace FM.Portal.Core.Model.Ptl
@@ -12,7 +11,8 @@ namespace FM.Portal.Core.Model.Ptl
         public string ParentNode { get; set; }
         public bool IncludeInTopMenu { get; set; }
         public bool IncludeInLeftMenu { get; set; }
-
-        //only show
+        public Guid? RemoverID { get; set; }
+        public DateTime? RemoverDate { get; set; }
+        public string TitleCrumb { get; set; }
     }
 }

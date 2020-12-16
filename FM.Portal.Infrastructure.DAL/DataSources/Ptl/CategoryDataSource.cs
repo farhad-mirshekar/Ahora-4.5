@@ -5,11 +5,17 @@ using FM.Portal.DataSource.Ptl;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using FM.Portal.Core.Owin;
 
 namespace FM.Portal.Infrastructure.DAL.Ptl
 {
-   public class CategoryDataSource : ICategoryDataSource
+    public class CategoryDataSource : ICategoryDataSource
     {
+        private readonly IRequestInfo _requestInfo;
+        public CategoryDataSource(IRequestInfo requestInfo)
+        {
+            _requestInfo = requestInfo;
+        }
         public DataTable List()
         {
             try
@@ -56,7 +62,7 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
             try
             {
                 var obj = new Category();
-                SqlParameter[] param = new SqlParameter[1];
+                var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
@@ -77,27 +83,22 @@ namespace FM.Portal.Infrastructure.DAL.Ptl
                     }
 
                 }
-                return Result<Category>.Successful(data: obj);
+                if (obj.ID != Guid.Empty)
+                    return Result<Category>.Successful(data: obj);
+
+                return Result<Category>.Successful(data:null);
             }
             catch (Exception e) { return Result<Category>.Failure(); }
-
-        }
-        public DataTable GetCountCategory()
-        {
-
-            try
-            {
-                return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetCountCategory", null);
-            }
-            catch (Exception e) { throw; }
 
         }
         public Result Delete(Guid ID)
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[1];
+                var param = new SqlParameter[2];
                 param[0] = new SqlParameter("@ID", ID);
+                param[1] = new SqlParameter("@RemoverID", _requestInfo.UserId);
+
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteCategory", param);

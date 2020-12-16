@@ -6,7 +6,8 @@ IF EXISTS(SELECT 1 FROM sys.procedures WHERE [object_id] = OBJECT_ID('ptl.spDele
 GO
 
 CREATE PROCEDURE ptl.spDeleteCategory
-	@ID UNIQUEIDENTIFIER
+	@ID UNIQUEIDENTIFIER,
+	@RemoverID UNIQUEIDENTIFIER
 --WITH ENCRYPTION
 AS
 BEGIN
@@ -20,7 +21,10 @@ BEGIN
 
 	BEGIN TRY
 		BEGIN TRAN
-			DELETE FROM ptl.Category 
+			UPDATE ptl.Category
+			SET
+				RemoverID = @RemoverID,
+				RemoverDate = GETDATE()
 			WHERE [Node].IsDescendantOf(@Node) = 1
 		COMMIT
 	END TRY

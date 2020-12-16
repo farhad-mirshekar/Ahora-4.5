@@ -33,7 +33,8 @@ BEGIN
 		LEFT JOIN ptl.Category Category ON Article.CategoryID = Category.ID
 		LEFT JOIN pbl.[Language] lng ON Article.LanguageID = lng.ID
 		WHERE
-			(@Title IS NULL OR Article.Title LIKE CONCAT('%', @Title , '%'))
+			Category.RemoverID IS NULL
+		AND	(@Title IS NULL OR Article.Title LIKE CONCAT('%', @Title , '%'))
 		AND (@LanguageID IS NULL OR Article.LanguageID = @LanguageID)
 	),TempCount AS
 	(

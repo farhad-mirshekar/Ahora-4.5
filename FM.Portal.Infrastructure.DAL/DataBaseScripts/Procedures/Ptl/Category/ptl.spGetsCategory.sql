@@ -17,5 +17,7 @@ BEGIN
 		cat.IncludeInTopMenu,
 		cat.Title
 	FROM ptl.Category cat
+	WHERE
+		cat.RemoverID IS NULL
 	ORDER BY [CreationDate]
 END

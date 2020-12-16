@@ -11,7 +11,6 @@ namespace FM.Portal.DataSource.Ptl
         Result<Category> Update(Category model);
         DataTable List();
         Result<Category> Get(Guid ID);
-        DataTable GetCountCategory();
         Result Delete(Guid ID);
     }
 }

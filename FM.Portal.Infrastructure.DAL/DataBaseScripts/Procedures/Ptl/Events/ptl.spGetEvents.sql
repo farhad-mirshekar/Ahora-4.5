@@ -10,17 +10,16 @@ CREATE PROCEDURE ptl.spGetEvents
 AS
 BEGIN
 	SELECT 
-		Events.*,
-		CONCAT(creator.FirstName,' ' , creator.LastName) AS CreatorName,
-		attachment.[FileName],
-		attachment.PathType
+		[Events].*,
+		CONCAT(creator.FirstName,' ' , creator.LastName) AS CreatorName
 	FROM	
-		[ptl].[Events] Events
+		[ptl].[Events] [Events]
 	INNER JOIN
-		[org].[User] creator ON Events.UserID = creator.ID
-	LEFT JOIN
-		[pbl].[Attachment] attachment ON Events.ID = attachment.ParentID
+		[org].[User] creator ON [Events].UserID = creator.ID
+	INNER JOIN 
+		ptl.Category Category ON [Events].CategoryID = Category.ID
 	WHERE 
-		Events.RemoverID IS NULL
-		AND Events.ID = @ID
+		[Events].RemoverID IS NULL
+	AND [Events].ID = @ID
+	AND Category.RemoverID IS NULL
 END

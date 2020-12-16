@@ -109,7 +109,6 @@
     <Compile Include="Common\DataBase\SqlHelper.cs" />
     <Compile Include="Encryption\HashHelper.cs" />
     <Compile Include="Tools\Extention\Category\CategoryExtention.cs" />
-    <Compile Include="Tools\Extention\Category\CategoryPortalExtention.cs" />
     <Compile Include="Tools\Extention\ReadingTime\CalculateReadingTime.cs" />
     <Compile Include="Tools\Extention\ReadingTime\CalculateWordsCount.cs" />
     <Compile Include="Infrastructure\AppDomainTypeFinder.cs" />

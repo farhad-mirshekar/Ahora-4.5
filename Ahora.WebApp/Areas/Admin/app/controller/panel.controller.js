@@ -1718,7 +1718,7 @@
         };
         function init() {
             loadingService.show();
-            $q.resolve().then(() => {
+            return $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
                         cartable();
@@ -1740,10 +1740,13 @@
         } // end init
 
         function cartable() {
-            categoryPortalService.list('cartable').then((result) => {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return categoryPortalService.list();
+            }).then((result) => {
                 setTreeObject(result);
-            });
-            $location.path('category-portal/cartable');
+                $location.path('category-portal/cartable');
+            }).finally(loadingService.hide);
         }
         function edit(parent) {
             loadingService.show();
@@ -2064,14 +2067,18 @@
         }
 
         function fillDropCategory() {
-            categoryPortalService.list('dropdown').then((result) => {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return categoryPortalService.list();
+            }).then((result) => {
                 article.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].ParentNode !== '/') {
-                        article.typecategory.push({ Name: result[i].Title, Model: result[i].ID });
+                        article.typecategory.push({ Name: result[i].TitleCrumb, Model: result[i].ID });
                     }
                 }
-            })
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
         function clearModel() {
             article.Model = {};
@@ -2287,14 +2294,18 @@
         }
 
         function fillDropCategory() {
-            categoryPortalService.list('dropdown').then((result) => {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return categoryPortalService.list();
+            }).then((result) => {
                 news.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].ParentNode !== '/') {
-                        news.typecategory.push({ Name: result[i].Title, Model: result[i].ID });
+                        news.typecategory.push({ Name: result[i].TitleCrumb, Model: result[i].ID });
                     }
                 }
-            })
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
         function clearModel() {
             news.Model = {};
@@ -3231,14 +3242,18 @@
         }
 
         function fillDropCategory() {
-            return categoryPortalService.list('dropdown').then((result) => {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return categoryPortalService.list();
+            }).then((result) => {
                 events.typecategory = [];
                 for (var i = 0; i < result.length; i++) {
                     if (result[i].ParentNode !== '/') {
-                        events.typecategory.push({ Name: result[i].Title, Model: result[i].ID });
+                        events.typecategory.push({ Name: result[i].TitleCrumb, Model: result[i].ID });
                     }
                 }
-            })
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
         function clearModel() {
             $('.js-example-tags').empty();

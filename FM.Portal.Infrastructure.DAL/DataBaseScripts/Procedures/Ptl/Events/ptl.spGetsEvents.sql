@@ -31,12 +31,15 @@ BEGIN
 		FROM ptl.[Events] [Events]
 		INNER JOIN 
 			org.[User] CreatorUser ON [Events].UserID = CreatorUser.ID
+		INNER JOIN 
+			ptl.Category Category ON [Events].CategoryID = Category.ID
 		--LEFT JOIN
 		--	pbl.Attachment attachment ON [Events].ID = attachment.ParentID
 		LEFT JOIN
 			pbl.[Language] lng ON [Events].LanguageID = lng.ID
 		WHERE
-			(@Title IS NULL OR [Events].Title LIKE CONCAT('%', @Title , '%'))
+			Category.RemoverID IS NULL
+		AND	(@Title IS NULL OR [Events].Title LIKE CONCAT('%', @Title , '%'))
 		AND (@LanguageID IS NULL OR [Events].LanguageID = @LanguageID)
 	),TempCount AS
 	(

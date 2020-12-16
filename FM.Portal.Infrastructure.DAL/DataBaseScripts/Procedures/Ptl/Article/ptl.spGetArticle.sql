@@ -18,9 +18,12 @@ BEGIN
 		[ptl].[Article] article
 	INNER JOIN
 		[org].[User] creator ON article.UserID = creator.ID
+	INNER JOIN
+		ptl.Category Category ON article.CategoryID = Category.ID
 	LEFT JOIN 
 		pbl.Attachment attachment ON article.ID = attachment.ParentID
 	WHERE 
 		article.RemoverID IS NULL
-		AND article.ID = @ID
+	AND Category.RemoverID IS NULL
+	AND article.ID = @ID
 END

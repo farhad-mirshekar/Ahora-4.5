@@ -1335,16 +1335,16 @@
                     return callbackService.onError({ result: result });
                 })
         }
-        function list(state) {
+        function list() {
             return $http({
                 method: 'post',
-                url: url + 'list/' + state,
+                url: url + 'list',
                 headers: {
                     'Content-Type': 'application/json',
                     Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
                 }
             }).then((result) => {
-                return callbackService.onSuccess({ result: result, request: url + 'List/' + state });
+                return callbackService.onSuccess({ result: result, request: url + 'List/' });
             }).catch((result) => {
                 return callbackService.onError({ result: result });
             })

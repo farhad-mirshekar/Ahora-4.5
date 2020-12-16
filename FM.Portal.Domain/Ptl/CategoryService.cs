@@ -6,6 +6,7 @@ using FM.Portal.DataSource.Ptl;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace FM.Portal.Domain.Ptl
 {
@@ -20,7 +21,7 @@ namespace FM.Portal.Domain.Ptl
                 return Result<Category>.Failure(message: validationResult.Message);
 
             model.ID = Guid.NewGuid();
-           return _dataSource.Insert(model);
+            return _dataSource.Insert(model);
         }
 
         public Result Delete(Guid ID)
@@ -36,19 +37,22 @@ namespace FM.Portal.Domain.Ptl
 
         public Result<Category> Get(Guid ID)
             => _dataSource.Get(ID);
-        public Result<List<GetCountCategoryVM>> GetCountCategory()
-        {
-            var table = ConvertDataTableToList.BindList<GetCountCategoryVM>(_dataSource.GetCountCategory());
-            if (table.Count > 0 || table.Count == 0)
-                return Result<List<GetCountCategoryVM>>.Successful(data: table);
-            return Result<List<GetCountCategoryVM>>.Failure();
-        }
 
         public Result<List<Category>> List()
         {
             var table = ConvertDataTableToList.BindList<Category>(_dataSource.List());
             if (table.Count > 0 || table.Count == 0)
+            {
+                if(table.Count > 0)
+                {
+                    table.ForEach(category =>
+                    {
+                        category.TitleCrumb = GetFormattedBreadCrumb(category);
+                    });
+                }
+
                 return Result<List<Category>>.Successful(data: table);
+            }
             return Result<List<Category>>.Failure();
         }
 
@@ -62,6 +66,40 @@ namespace FM.Portal.Domain.Ptl
                 return Result.Failure(message: string.Join("&&", errors));
 
             return Result.Successful();
+        }
+        private string GetFormattedBreadCrumb(Category category, string separator = ">>")
+        {
+            var categoryResult = Get(category.ID);
+            if (!categoryResult.Success)
+                throw new ArgumentNullException("category");
+
+            category = categoryResult.Data;
+            string result = string.Empty;
+
+            var alreadyProcessedCategoryIds = new List<Guid>() { };
+
+            while (category != null && category.ID != Guid.Empty &&  //not null
+                 !alreadyProcessedCategoryIds.Contains(category.ID)) //prevent circular references
+            {
+                if (String.IsNullOrEmpty(result))
+                {
+                    result = category.Title;
+                }
+                else
+                {
+                    result = string.Format("{0} {1} {2}", category.Title, separator, result);
+                }
+
+                alreadyProcessedCategoryIds.Add(SQLHelper.CheckGuidNull(category.ID));
+
+                categoryResult = Get(category.ParentID);
+                if (!categoryResult.Success)
+                    category = null;
+
+                category = categoryResult.Data;
+
+            }
+            return result;
         }
     }
 }
