@@ -4384,16 +4384,15 @@
         let gallery = $scope;
         gallery.Model = {};
         gallery.main = {};
-        gallery.Model.Errors = [];
+        gallery.Model.errors = [];
 
         gallery.pic = { type: '11', allowMultiple: true, validTypes: 'image/jpeg' };
         gallery.pic.list = [];
         gallery.pic.listUploaded = [];
 
-        gallery.search = [];
+        gallery.search = {};
         gallery.search.Model = {};
 
-        gallery.state = '';
         gallery.addGallery = addGallery;
         gallery.editGallery = editGallery;
         gallery.search.clear = clear;
@@ -4421,35 +4420,35 @@
                 return gallery.search.Model;
             }
         };
+
         function init() {
             loadingService.show();
             return $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
-                        cartable();
+                        gallery.main.changeState.cartable();
                         break;
                     case 'add':
-                        add();
+                        gallery.main.changeState.add();
                         break;
                     case 'edit':
-                        galleryService.get($routeParams.id).then((result) => {
-                            edit(result);
-                        })
+                        gallery.main.changeState.edit({ ID: $routeParams.id });
                         break;
                 }
             }).finally(loadingService.hide);
         }
+
         function cartable() {
             loadingService.show();
             clearModel();
-            gallery.state = 'cartable';
+            gallery.main.state = 'cartable';
             $location.path('/gallery/cartable');
             loadingService.hide();
         }
         function add() {
             loadingService.show();
             clearModel();
-            gallery.state = 'add';
+            gallery.main.state = 'add';
             $location.path('/gallery/add');
             loadingService.hide();
         }
@@ -4458,7 +4457,7 @@
             return $q.resolve().then(() => {
                 return galleryService.get(model.ID);
             }).then((model) => {
-                gallery.Model = model;
+                gallery.Model = angular.copy(model);
                 if (gallery.Model.Tags !== null && gallery.Model.Tags.length > 0) {
                     var newOption = [];
                     for (var i = 0; i < gallery.Model.Tags.length; i++) {
@@ -4473,7 +4472,7 @@
                 gallery.pic.reset();
                 if (result && result.length > 0)
                     gallery.pic.listUploaded = [].concat(result);
-                gallery.state = 'edit';
+                gallery.main.state = 'edit';
                 $location.path(`/gallery/edit/${gallery.Model.ID}`);
             }).finally(loadingService.hide);
         }
@@ -4502,7 +4501,6 @@
                 }
                 return true;
             }).then((result) => {
-                gallery.pics = [];
                 return attachmentService.list({ ParentID: gallery.Model.ID });
             }).then((result) => {
                 gallery.pic.reset();
@@ -4512,21 +4510,15 @@
                     }
                 }
                 gallery.grid.getlist();
-                gallery.main.changeState.cartable();
                 toaster.pop('success', '', 'گالری جدید با موفقیت اضافه گردید');
                 loadingService.hide();
             }).catch((error) => {
-                if (!error) {
-                    $('#content > div').animate({
-                        scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    var listError = error.split('&&');
-                    gallery.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
-                    }, 'slow');
-                }
+                if (gallery.Model.errors.length === 0)
+                    gallery.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#gallerySection').offset().top - $('#gallerySection').offsetParent().offset().top
+                }, 'slow');
 
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
@@ -4554,7 +4546,6 @@
                 }
                 return true;
             }).then((result) => {
-                gallery.pics = [];
                 return attachmentService.list({ ParentID: gallery.Model.ID });
             }).then((result) => {
                 gallery.pic.reset();
@@ -4567,17 +4558,12 @@
                 gallery.grid.getlist();
                 loadingService.hide();
             }).catch((error) => {
-                if (!error) {
-                    $('#content > div').animate({
-                        scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    var listError = error.split('&&');
-                    gallery.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#GallerySection').offset().top - $('#GallerySection').offsetParent().offset().top
-                    }, 'slow');
-                }
+                if (gallery.Model.errors.length === 0)
+                    gallery.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#gallerySection').offset().top - $('#gallerySection').offsetParent().offset().top
+                }, 'slow');
 
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);

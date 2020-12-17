@@ -1,4 +1,4 @@
-﻿<section ng-show="state ==='cartable'">
+﻿<section ng-show="main.state ==='cartable'">
     <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
     <div class="card">
         <div class="card-header">
@@ -25,15 +25,15 @@
     <portal-grid obj="grid"></portal-grid>
 </section>
 
-<section ng-show="['add','edit'].indexOf(state) !== -1">
-    <h2 class="main-title" ng-show="state==='add'">افزودن آلبوم</h2>
-    <h2 class="main-title" ng-show="state==='edit'">ویرایش البوم</h2>
+<section ng-show="['add','edit'].indexOf(main.state) !== -1">
+    <h2 class="main-title" ng-show="main.state==='add'">افزودن آلبوم</h2>
+    <h2 class="main-title" ng-show="main.state==='edit'">ویرایش البوم</h2>
     <div id="gallerySection">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div ng-show="Model.Errors.length" class="alert alert-danger">
-                        <ul ng-repeat="row in Model.Errors">
+                    <div ng-show="Model.errors.length" class="alert alert-danger">
+                        <ul ng-repeat="row in Model.errors">
                             <li>{{row}}</li>
                         </ul>
                     </div>
@@ -105,8 +105,8 @@
         </div>
     </div>
     <div class="btn-group-justified pull-left mb-5">
-        <button type="submit" ng-click="addGallery()" ng-show="state==='add'" class="btn btn-success">ثبت</button>
-        <button type="submit" ng-click="editGallery()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+        <button type="submit" ng-click="addGallery()" ng-show="main.state==='add'" class="btn btn-success">ثبت</button>
+        <button type="submit" ng-click="editGallery()" ng-show="main.state==='edit'" class="btn btn-primary">ویرایش</button>
         <button ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
     </div>
 </section>

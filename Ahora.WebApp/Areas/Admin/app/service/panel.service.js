@@ -3009,6 +3009,25 @@
         return service;
 
         function add(model) {
+            model.errors = [];
+            if (!model.Name)
+                model.errors.push('نام آلبوم را وارد نمایید');
+
+            if (!model.Description)
+                model.errors.push('توضیحات مربوط به آلبوم را وارد نمایید');
+
+            if (!model.Enabled)
+                model.errors.push('نمایش آلبوم را مشخص نمایید');
+
+            if (!model.UrlDesc)
+                model.errors.push('توضیحات سئو را وارد نمایید');
+
+            if (!model.MetaKeywords)
+                model.errors.push('متاتگ را وارد نمایید');
+
+            if (model.errors.length > 0)
+                return $q.reject();
+
             return $http({
                 method: 'POST',
                 url: url + 'add',
@@ -3025,6 +3044,25 @@
                 })
         }
         function edit(model) {
+            model.errors = [];
+            if (!model.Name)
+                model.errors.push('نام آلبوم را وارد نمایید');
+
+            if (!model.Description)
+                model.errors.push('توضیحات مربوط به آلبوم را وارد نمایید');
+
+            if (!model.Enabled)
+                model.errors.push('نمایش آلبوم را مشخص نمایید');
+
+            if (!model.UrlDesc)
+                model.errors.push('توضیحات سئو را وارد نمایید');
+
+            if (!model.MetaKeywords)
+                model.errors.push('متاتگ را وارد نمایید');
+
+            if (model.errors.length > 0)
+                return $q.reject();
+
             return $http({
                 method: 'POST',
                 url: url + 'edit',
