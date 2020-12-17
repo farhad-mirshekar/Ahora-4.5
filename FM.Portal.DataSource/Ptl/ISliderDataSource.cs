@@ -11,6 +11,6 @@ namespace FM.Portal.DataSource
         Result<Slider> Update(Slider model);
         DataTable List(SliderListVM listVM);
         Result<Slider> Get(Guid ID);
-        Result<int> Delete(Guid ID);
+        Result Delete(Guid ID);
     }
 }

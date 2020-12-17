@@ -8,11 +8,7 @@ CREATE PROCEDURE ptl.spDeleteSlider
 @ID UNIQUEIDENTIFIER
 AS
 BEGIN
-	SET NOCOUNT ON;
-	UPDATE 
-		ptl.Slider
-	SET
-		Deleted = 1
+	DELETE FROM ptl.Slider
 	WHERE
 		ID = @ID
 	RETURN @@ROWCOUNT

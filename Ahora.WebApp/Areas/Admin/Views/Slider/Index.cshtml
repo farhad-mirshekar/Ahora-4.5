@@ -1,4 +1,4 @@
-﻿<section ng-show="state ==='cartable'">
+﻿<section ng-show="main.state ==='cartable'">
     <button class="btn btn-success btn-circle pull-left" ng-click="main.changeState.add();"><i class="fa fa-plus"></i></button>
     <div class="card">
         <div class="card-header">
@@ -8,9 +8,9 @@
             <div class="row">
                 <div class="input-group col-md-6">
                     <div class="input-group-prepend">
-                        <span class="input-group-text">عنوان اسلایدر</span>
+                        <span class="input-group-text">عنوان تصویر کشویی</span>
                     </div>
-                    <input ng-model="search.Model.Title" maxlength="100" type="text" autofocus="" class="form-control meta" placeholder="عنان اسلایدر جهت جست و جو">
+                    <input ng-model="search.Model.Title" maxlength="100" type="text" autofocus="" class="form-control meta" placeholder="عنوان تصویر کشویی جهت جست و جو">
                     <div class="input-group-append">
                         <span class="input-group-text"> {{search.Model.Title.length > 0 ? search.Model.Title.length : 0}}/100</span>
                     </div>
@@ -24,15 +24,15 @@
     </div>
     <portal-grid obj="grid"></portal-grid>
 </section>
-<section ng-show="['add','edit'].indexOf(state) !== -1">
-    <h2 class="main-title" ng-show="state==='add'">افزودن اسلایدر</h2>
-    <h2 class="main-title" ng-show="state==='edit'">ویرایش اسلایدر</h2>
+<section ng-show="['add','edit'].indexOf(main.state) !== -1">
+    <h2 class="main-title" ng-show="main.state==='add'">افزودن تصویر کشویی</h2>
+    <h2 class="main-title" ng-show="main.state==='edit'">ویرایش تصویر کشویی</h2>
     <div id="sliderSection">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <div ng-show="Model.Errors.length" class="alert alert-danger">
-                        <ul ng-repeat="row in Model.Errors">
+                    <div ng-show="Model.errors.length" class="alert alert-danger">
+                        <ul ng-repeat="row in Model.errors">
                             <li>{{row}}</li>
                         </ul>
                     </div>
@@ -43,8 +43,8 @@
             <div class="form-horizontal">
                 <div class="form-group">
                     <div class="col-md-10">
-                        <label for="Title" class="control-label">عنوان اسلایدر</label>
-                        <input type="text" class="form-control" ng-model="Model.Title" placeholder="عنوان اسلایدر شما در قسمت اسلایدر در زیر عکس در سایت قرار می گیرد">
+                        <label for="Title" class="control-label">عنوان تصویر کشویی</label>
+                        <input type="text" class="form-control" ng-model="Model.Title" placeholder="عنوان تصویر کشویی شما در قسمت اسلایدر در زیر عکس در سایت قرار می گیرد">
                     </div>
                 </div>
                 <div class="form-group">
@@ -55,9 +55,15 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-10">
+                        <label for="Title" class="control-label">اولیویت</label>
+                        <input type="text" class="form-control" ng-model="Model.Priority" placeholder="اولویت نمایش تصویر کشویی را وارد نمایید">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
                         <label for="IsShow" class="control-label">نمایش</label>
                         <select class="form-control" ng-model="Model.Enabled">
-                            <option ng-repeat="row in typeEnable" ng-value="row.Model">{{row.Name}}</option>
+                            <option ng-repeat="row in enableMenuType" ng-value="row.Model">{{row.Name}}</option>
                         </select>
                     </div>
                 </div>
@@ -67,8 +73,8 @@
             </div>
         </div>
             <div class="btn-group-justified pull-left mb-5">
-                <button type="submit" ng-click="addSlider()" ng-show="state==='add'" class="btn btn-success">افزودن</button>
-                <button type="submit" ng-click="editSlider()" ng-show="state==='edit'" class="btn btn-primary">ویرایش</button>
+                <button type="submit" ng-click="addSlider()" ng-show="main.state==='add'" class="btn btn-success">افزودن</button>
+                <button type="submit" ng-click="editSlider()" ng-show="main.state==='edit'" class="btn btn-primary">ویرایش</button>
                 <button type="button" ng-click="main.changeState.cartable();" class="btn btn-cancel">بازگشت</button>
             </div>
     </div>

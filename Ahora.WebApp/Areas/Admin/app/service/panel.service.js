@@ -1870,11 +1870,14 @@
         return service;
 
         function add(model) {
-            model.Errors = [];
+            model.errors = [];
             if (!model.Title || model.Title === '')
-                model.Errors.push('عنوان اسلایدر الزامی می باشد');
+                model.errors.push('عنوان تصویر کشویی الزامی می باشد');
 
-            if (model.Errors && model.Errors.length > 0)
+            if (!model.Enabled)
+                model.errors.push('وضعیت نمایش تصویر کشویی را مشخص نمایید');
+
+            if (model.errors && model.errors.length > 0)
                 return $q.reject();
             return $http({
                 method: 'POST',
@@ -1892,11 +1895,14 @@
                 })
         }
         function edit(model) {
-            model.Errors = [];
+            model.errors = [];
             if (!model.Title || model.Title === '')
-                model.Errors.push('عنوان اسلایدر الزامی می باشد');
+                model.errors.push('عنوان تصویر کشویی الزامی می باشد');
 
-            if (model.Errors && model.Errors.length > 0)
+            if (!model.Enabled)
+                model.errors.push('وضعیت نمایش تصویر کشویی را مشخص نمایید');
+
+            if (model.errors && model.errors.length > 0)
                 return $q.reject();
 
             return $http({

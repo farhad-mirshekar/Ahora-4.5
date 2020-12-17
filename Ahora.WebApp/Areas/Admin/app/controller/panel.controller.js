@@ -2813,17 +2813,17 @@
     }
     //----------------------------------------------------------------------------------------------------------------------------------------
     app.controller('sliderController', sliderController);
-    sliderController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'sliderService', '$location', 'toaster', '$timeout', 'attachmentService', 'toolsService', 'enumService'];
-    function sliderController($scope, $q, loadingService, $routeParams, sliderService, $location, toaster, $timeout, attachmentService, toolsService, enumService) {
+    sliderController.$inject = ['$scope', '$q', 'loadingService', '$routeParams', 'sliderService', '$location', 'toaster', 'attachmentService', 'toolsService', 'enumService'];
+    function sliderController($scope, $q, loadingService, $routeParams, sliderService, $location, toaster, attachmentService, toolsService, enumService) {
         let slider = $scope;
         slider.Model = {};
-        slider.Model.Errors = [];
-        slider.state = '';
+
         slider.pic = { type: '5', allowMultiple: false, validTypes: 'image/jpeg' };
         slider.pic.list = [];
         slider.pic.listUploaded = [];
+
         slider.main = {};
-        slider.search = [];
+        slider.search = {};
         slider.search.Model = {};
         slider.main.changeState = {
             cartable: cartable,
@@ -2848,37 +2848,42 @@
         slider.addSlider = addSlider;
         slider.editSlider = editSlider;
         slider.search.clear = clear;
-        slider.typeEnable = toolsService.arrayEnum(enumService.ShowArticleType);
+        slider.enableMenuType = toolsService.arrayEnum(enumService.EnableMenuType);
         init();
+
         function init() {
             loadingService.show();
             return $q.resolve().then(() => {
                 switch ($routeParams.state) {
                     case 'cartable':
-                        cartable();
+                        slider.main.changeState.cartable();
                         loadingService.hide();
                         break;
                     case 'add':
-                        add();
+                        slider.main.changeState.add();
                         loadingService.hide();
                         break;
                     case 'edit':
-                        sliderService.get($routeParams.id).then((result) => {
-                            edit(result);
-                        })
+                        slider.main.changeState.edit({ ID: $routeParams.id });
                         loadingService.hide();
                         break;
                 }
             }).finally(loadingService.hide);
         }
+
         function cartable() {
-            slider.state = 'cartable';
+            loadingService.show();
+            slider.Model = {};
+            slider.main.state = 'cartable';
             $location.path('/slider/cartable');
+            loadingService.hide();
         }
         function add() {
             loadingService.show();
             return $q.resolve().then(() => {
-                slider.state = 'add';
+                slider.Model = {};
+                slider.pic.listUploaded = [];
+                slider.main.state = 'add';
                 $location.path('/slider/add');
             }).finally(loadingService.hide);
 
@@ -2886,15 +2891,18 @@
         function edit(model) {
             loadingService.show();
             return $q.resolve().then(() => {
-                slider.Model = model;
+                return sliderService.get(model.ID);
+            }).then((result) => {
+                slider.Model = angular.copy(result);
+                slider.main.state = 'edit';
+                $location.path(`/slider/edit/${model.ID}`);
+
                 return attachmentService.list({ ParentID: slider.Model.ID });
             }).then((result) => {
-                slider.pic.listUploaded = [];
+                slider.pic.reset();
+
                 if (result && result.length > 0)
                     slider.pic.listUploaded = [].concat(result);
-            }).then(() => {
-                slider.state = 'edit';
-                $location.path(`/slider/edit/${model.ID}`);
             }).catch(() => {
                 loadingService.hide();
             }).finally(loadingService.hide);
@@ -2905,41 +2913,34 @@
             return $q.resolve().then(() => {
                 return sliderService.add(slider.Model);
             }).then((result) => {
-                slider.Model = result;
+                slider.Model = angular.copy(result);
+
                 if (slider.pic.list.length) {
                     slider.pics = [];
                     if (slider.pic.listUploaded.length === 0) {
                         slider.pics.push({ ParentID: slider.Model.ID, Type: 2, FileName: slider.pic.list[0], PathType: slider.pic.type });
+                        return attachmentService.add(slider.pics);
                     }
-                    return attachmentService.add(slider.pics);
                 }
                 return true;
             }).then((result) => {
-                slider.pics = [];
                 return attachmentService.list({ ParentID: slider.Model.ID });
             }).then((result) => {
+                slider.pic.reset();
+
                 if (result && result.length > 0)
                     slider.pic.listUploaded = [].concat(result);
 
-                slider.pic.reset();
                 slider.grid.getlist();
                 toaster.pop('success', '', 'تصویر کشویی جدید با موفقیت اضافه گردید');
                 loadingService.hide();
-                $timeout(function () {
-                    cartable();
-                }, 1000);//return cartable
             }).catch((error) => {
-                if (error && error.length > 0) {
-                    var listError = error.split('&&');
-                    slider.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    $('#content > div').animate({
-                        scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
-                    }, 'slow');
-                }
+                if (slider.Model.errors.length === 0)
+                    slider.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
+                }, 'slow');
 
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
@@ -2949,41 +2950,39 @@
             return $q.resolve().then(() => {
                 return sliderService.edit(slider.Model);
             }).then((result) => {
+                slider.Model = angular.copy(result);
+
                 if (slider.pic.list.length) {
                     slider.pics = [];
                     if (slider.pic.listUploaded.length === 0) {
                         slider.pics.push({ ParentID: slider.Model.ID, Type: 2, FileName: slider.pic.list[0], PathType: slider.pic.type });
+                        return attachmentService.add(slider.pics);
                     }
-                    return attachmentService.add(slider.pics);
                 }
-                slider.Model = result;
                 return true;
             }).then((result) => {
-                slider.pics = [];
                 return attachmentService.list({ ParentID: slider.Model.ID });
             }).then((result) => {
+                slider.pic.reset();
+
                 if (result && result.length > 0)
                     slider.pic.listUploaded = [].concat(result);
-                slider.pic.reset();
+
                 slider.grid.getlist();
-                toaster.pop('success', '', 'تصویر کشویی جدید با موفقیت اضافه گردید');
+                toaster.pop('success', '', 'تصویر کشویی جدید با موفقیت ویرایش گردید');
                 loadingService.hide();
             }).catch((error) => {
-                if (!error) {
-                    var listError = error.split('&&');
-                    slider.Model.Errors = [].concat(listError);
-                    $('#content > div').animate({
-                        scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
-                    }, 'slow');
-                } else {
-                    $('#content > div').animate({
-                        scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
-                    }, 'slow');
-                }
+                if (slider.Model.errors.length === 0)
+                    slider.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#sliderSection').offset().top - $('#sliderSection').offsetParent().offset().top
+                }, 'slow');
 
                 toaster.pop('error', '', 'خطایی اتفاق افتاده است');
             }).finally(loadingService.hide);
         }
+
         function clear() {
             loadingService.show();
             slider.search.Model = {};

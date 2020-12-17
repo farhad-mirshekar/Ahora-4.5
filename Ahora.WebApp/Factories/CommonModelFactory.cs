@@ -1,8 +1,10 @@
 ﻿using Ahora.WebApp.Models.App;
+using Ahora.WebApp.Models.Ptl;
 using FM.Portal.Core.Caching;
 using FM.Portal.Core.Common;
 using FM.Portal.Core.Model;
 using FM.Portal.Core.Service;
+using FM.Portal.FrameWork.AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +20,14 @@ namespace Ahora.WebApp.Factories
         private readonly IAttachmentService _attachmentService;
         private readonly ICacheManager _cacheManager;
         private readonly ICategoryMapDiscountService _categoryMapDiscountService;
+        private readonly ISliderService _sliderService;
         public CommonModelFactory(IProductService productService
                                   , ICategoryService categoryService
                                   , IDiscountService discountService
                                   , IAttachmentService attachmentService
                                   , ICacheManager cacheManager
-                                  , ICategoryMapDiscountService categoryMapDiscountService)
+                                  , ICategoryMapDiscountService categoryMapDiscountService
+                                  , ISliderService sliderService)
         {
             _productService = productService;
             _categoryService = categoryService;
@@ -31,6 +35,7 @@ namespace Ahora.WebApp.Factories
             _attachmentService = attachmentService;
             _cacheManager = cacheManager;
             _categoryMapDiscountService = categoryMapDiscountService;
+            _sliderService = sliderService;
         }
         public List<ProductOverviewModel> TrendingProduct(Guid? LanguageID)
         {
@@ -160,6 +165,44 @@ namespace Ahora.WebApp.Factories
                 });
             }
             catch (Exception e) { return null; }
+        }
+
+        public SliderListModel Sliders(int Count)
+        {
+            try
+            {
+                var slidersResult = _sliderService.List(new SliderListVM() { PageSize = Count, Enabled = EnableMenuType.فعال });
+                if (!slidersResult.Success)
+                    return null;
+
+                var sliders = slidersResult.Data;
+
+                if(sliders != null && sliders.Count > 0)
+                {
+                    var sliderListModel = new SliderListModel();
+                    sliders.ForEach(slider =>
+                    {
+                        sliderListModel.AvailableSliders.Add(slider.ToModel());
+                    });
+
+                    sliderListModel.AvailableSliders.ForEach(slider =>
+                    {
+                        var attachmentResult = _attachmentService.List(slider.ID);
+                        if (attachmentResult.Success)
+                        {
+                            slider.PictureAttachments = attachmentResult.Data;
+                        }
+                    });
+
+                    return sliderListModel;
+                }
+
+                return null;
+            }
+            catch(Exception e)
+            {
+                return null;
+            }
         }
     }
 }

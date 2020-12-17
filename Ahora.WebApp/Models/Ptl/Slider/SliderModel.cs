@@ -1,11 +1,9 @@
-﻿using FM.Portal.BaseModel;
+﻿using FM.Portal.Core.Model;
+using System.Collections.Generic;
 
-namespace FM.Portal.Core.Model
+namespace Ahora.WebApp.Models.Ptl
 {
-    /// <summary>
-    /// تضاویر کشویی
-    /// </summary>
-   public class Slider : Entity
+    public class SliderModel : EntityModel
     {
         /// <summary>
         /// عنوان تصویر کشویی
@@ -28,5 +26,6 @@ namespace FM.Portal.Core.Model
         public int Total { get; set; }
         public string CreatorName { get; set; }
         public string Path => "slider";
+        public List<Attachment> PictureAttachments { get; set; }
     }
 }

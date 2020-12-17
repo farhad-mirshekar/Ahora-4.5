@@ -89,5 +89,12 @@ namespace FM.Portal.FrameWork.AutoMapper
             return Mapper.Map<RegisterModel, User>(model);
         }
         #endregion
+
+        #region Slider
+        public static SliderModel ToModel(this Slider entity)
+        {
+            return Mapper.Map<Slider, SliderModel>(entity);
+        }
+        #endregion
     }
 }

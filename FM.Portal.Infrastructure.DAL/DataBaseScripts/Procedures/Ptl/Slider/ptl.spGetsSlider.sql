@@ -6,6 +6,7 @@ GO
 
 CREATE PROCEDURE ptl.spGetsSlider
 @Title NVARCHAR(100),
+@Enabled TINYINT,
 @PageSize INT,
 @PageIndex INT
 --WITH ENCRYPTION
@@ -19,27 +20,14 @@ BEGIN
 		SET @PageSize = 10000000
 		SET @PageIndex = 1
 	END
-	;WITH Attachment AS
-	(
-		SELECT
-			Attachment.ParentID,
-			Attachment.[FileName],
-			Attachment.PathType
-		FROM pbl.Attachment Attachment 
-		INNER JOIN ptl.Slider Slider ON Attachment.ParentID = Slider.ID
-	),  MainSelect AS
+	;WITH MainSelect AS
 	(
 		SELECT 
-			Slider.*,
-			Attachment.[FileName],
-			Attachment.PathType
+			Slider.*
 		FROM 
 			ptl.Slider Slider
-		LEFT JOIN 
-			Attachment Attachment ON Slider.ID = Attachment.ParentID
 		WHERE 
-			Slider.Deleted = 0
-		AND Slider.[Enabled] = 1
+		  (@Enabled < 1 OR Slider.[Enabled] = @Enabled)
 		AND (@Title IS NULL OR Slider.Title LIKE CONCAT('%' , @Title , '%'))
 	),TempCount AS
 	(

@@ -31,6 +31,8 @@ namespace FM.Portal.FrameWork.AutoMapper
 
                 config.CreateMap<Product, ProductModel>();
                 config.CreateMap<RegisterModel, User>();
+
+                config.CreateMap<Slider,SliderModel>();
             });
         }
     }

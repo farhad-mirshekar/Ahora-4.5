@@ -10,13 +10,9 @@ CREATE PROCEDURE ptl.spGetSlider
 AS
 BEGIN
 	SELECT 
-		slider.*,
-		attachment.[FileName],
-		attachment.PathType
+		slider.*
 	FROM	
 		[ptl].[Slider] slider
-	LEFT JOIN
-		[pbl].[Attachment] attachment ON slider.ID = attachment.ParentID
 	WHERE 
 		(slider.ID = @ID) 
 END

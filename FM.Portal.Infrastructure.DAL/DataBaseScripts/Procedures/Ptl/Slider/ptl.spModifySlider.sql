@@ -10,13 +10,11 @@ CREATE PROCEDURE ptl.spModifySlider
 @Priority int,
 @Url NVARCHAR(max),
 @Enabled TINYINT,
-@IsNewRecord bit
+@IsNewRecord BIT
 WITH ENCRYPTION
 AS
 BEGIN
-	SET NOCOUNT ON;
-
-	IF @isNewRecord = 1 --insert
+	IF @IsNewRecord = 1 --insert
 		BEGIN
 			INSERT INTO [ptl].[Slider]
 				([ID],[Title],[Priority],[Url],[Enabled],[CreationDate])

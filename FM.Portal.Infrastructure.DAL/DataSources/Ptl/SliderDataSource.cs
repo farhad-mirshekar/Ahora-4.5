@@ -8,22 +8,25 @@ using System.Data.SqlClient;
 
 namespace FM.Portal.Infrastructure.DAL
 {
-   public class SliderDataSource : ISliderDataSource
+    public class SliderDataSource : ISliderDataSource
     {
-        public Result<int> Delete(Guid ID)
+        public Result Delete(Guid ID)
         {
             try
             {
-                SqlParameter[] param = new SqlParameter[1];
+                var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
                     var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spDeleteSlider", param);
-                    return Result<int>.Successful(data: result);
+                    if (result > 0)
+                        return Result.Successful();
+
+                    return Result.Failure();
                 }
 
             }
-            catch (Exception) { return Result<int>.Failure(message: "خطایی اتفاق افتاده است"); }
+            catch (Exception) { return Result.Failure(); }
         }
 
         public Result<Slider> Get(Guid ID)
@@ -31,75 +34,73 @@ namespace FM.Portal.Infrastructure.DAL
             try
             {
                 var obj = new Slider();
-                SqlParameter[] param = new SqlParameter[1];
+                var param = new SqlParameter[1];
                 param[0] = new SqlParameter("@ID", ID);
 
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    using (SqlDataReader dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetSlider", param))
+                    using (var dr = SQLHelper.ExecuteReader(con, CommandType.StoredProcedure, "ptl.spGetSlider", param))
                     {
                         while (dr.Read())
                         {
                             obj.CreationDate = SQLHelper.CheckDateTimeNull(dr["CreationDate"]);
                             obj.ID = SQLHelper.CheckGuidNull(dr["ID"]);
                             obj.Title = SQLHelper.CheckStringNull(dr["Title"]);
-                            obj.Deleted = SQLHelper.CheckBoolNull(dr["Deleted"]);
                             obj.Enabled = (EnableMenuType)SQLHelper.CheckByteNull(dr["Enabled"]);
-                            obj.FileName = SQLHelper.CheckStringNull(dr["FileName"]);
-                            obj.PathType = (PathType)SQLHelper.CheckByteNull(dr["PathType"]);
                             obj.Priority = SQLHelper.CheckIntNull(dr["Priority"]);
                             obj.Url = SQLHelper.CheckStringNull(dr["Url"]);
                         }
                     }
 
                 }
-                return Result<Slider>.Successful(data: obj);
+
+                if (obj.ID != Guid.Empty)
+                    return Result<Slider>.Successful(data: obj);
+
+                return Result<Slider>.Successful(data: null);
             }
             catch (Exception e) { return Result<Slider>.Failure(); }
         }
         public Result<Slider> Insert(Slider model)
-        {
-            model.ID = Guid.NewGuid();
-            return Modify(true, model);
-        }
+            => Modify(true, model);
 
         public DataTable List(SliderListVM listVM)
         {
             try
             {
-                var param = new SqlParameter[3];
+                var param = new SqlParameter[4];
                 param[0] = new SqlParameter("@Title", listVM?.Title);
                 param[1] = new SqlParameter("@PageSize", listVM.PageSize);
                 param[2] = new SqlParameter("@PageIndex", listVM.PageIndex);
+                param[3] = new SqlParameter("@Enabled", (byte)listVM.Enabled);
 
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "ptl.spGetsSlider", param);
             }
             catch (Exception e) { throw; }
         }
         public Result<Slider> Update(Slider model)
-        {
-            return Modify(false, model);
-        }
+        => Modify(false, model);
+
         private Result<Slider> Modify(bool IsNewRecord, Slider model)
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    lock (con)
-                    {
-                        SqlParameter[] param = new SqlParameter[6];
-                        param[0] = new SqlParameter("@ID", model.ID);
-                        param[1] = new SqlParameter("@Enabled", (byte)model.Enabled);
-                        param[2] = new SqlParameter("@Priority", model.Priority);
-                        param[3] = new SqlParameter("@Title", model.Title);
-                        param[4] = new SqlParameter("@IsNewRecord", IsNewRecord);
-                        param[5] = new SqlParameter("@Url", model.Url);
+                    var param = new SqlParameter[6];
+                    param[0] = new SqlParameter("@ID", model.ID);
+                    param[1] = new SqlParameter("@Enabled", (byte)model.Enabled);
+                    param[2] = new SqlParameter("@Priority", model.Priority);
+                    param[3] = new SqlParameter("@Title", model.Title);
+                    param[4] = new SqlParameter("@IsNewRecord", IsNewRecord);
+                    param[5] = new SqlParameter("@Url", model.Url);
 
-                        SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifySlider", param);
+                    var result = SQLHelper.ExecuteNonQuery(con, CommandType.StoredProcedure, "ptl.spModifySlider", param);
 
+                    if (result > 0)
                         return Get(model.ID);
-                    }
+
+                    return Result<Slider>.Failure();
                 }
             }
             catch (Exception e) { throw; }
