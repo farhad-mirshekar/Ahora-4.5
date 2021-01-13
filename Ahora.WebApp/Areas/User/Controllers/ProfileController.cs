@@ -25,7 +25,7 @@ namespace Ahora.WebApp.Areas.User.Controllers
         public ActionResult Edit(FM.Portal.Core.Model.User model)
         {
             model.Enabled = true;
-            var userResult = _service.Update(model);
+            var userResult = _service.Edit(model);
             if (!userResult.Success)
                 return View("Error");
             var user = userResult.Data;

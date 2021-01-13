@@ -20,9 +20,9 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[14];
+                    var param = new SqlParameter[14];
                     param[0] = new SqlParameter("@ID", model.ID);
                     param[1] = new SqlParameter("@isNewRecord", isNewRecord);
                     param[2] = new SqlParameter("@Enabled", model.Enabled);
@@ -38,14 +38,16 @@ namespace FM.Portal.Infrastructure.DAL
                     param[12] = new SqlParameter("@PasswordExpireDate", model.PasswordExpireDate);
                     param[13] = new SqlParameter("@Type", (byte)model.Type);
 
-                    SQLHelper.ExecuteNonQuery(con, System.Data.CommandType.StoredProcedure, param, "org.spModifyUser");
+                    var result = SQLHelper.ExecuteNonQuery(con, System.Data.CommandType.StoredProcedure, "org.spModifyUser", param);
+                    if (result > 0)
+                        return Get(model.ID, null, null, null, UserType.Unknown);
 
-                    return this.Get(model.ID, null, null, null, UserType.Unknown);
+                    return Result<User>.Failure();
                 }
             }
-            catch
+            catch (Exception e)
             {
-                return Result<User>.Failure();
+                return Result<User>.Failure(message: e.ToString());
             }
         }
         public Result<User> Get(Guid? ID, string Username, string Password, string NationalCode, UserType userType)
@@ -53,12 +55,12 @@ namespace FM.Portal.Infrastructure.DAL
             try
             {
                 var obj = new User();
-                SqlParameter[] param = new SqlParameter[5];
+                var param = new SqlParameter[5];
                 param[0] = new SqlParameter("@ID", ID.HasValue ? ID.Value : (object)DBNull.Value);
-                param[1] = new SqlParameter("@Username", string.IsNullOrEmpty(Username) ? (object)DBNull.Value : Username);
-                param[2] = new SqlParameter("@Password", string.IsNullOrEmpty(Password) ? (object)DBNull.Value : Password);
-                param[3] = new SqlParameter("@NationalCode", string.IsNullOrEmpty(NationalCode) ? (object)DBNull.Value : NationalCode);
-                param[4] = new SqlParameter("@UserType", userType);
+                param[1] = new SqlParameter("@Username", Username);
+                param[2] = new SqlParameter("@Password", Password);
+                param[3] = new SqlParameter("@NationalCode", NationalCode);
+                param[4] = new SqlParameter("@UserType", (byte)userType);
 
                 using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
@@ -79,10 +81,10 @@ namespace FM.Portal.Infrastructure.DAL
                     }
 
                 }
-                if(obj.ID != Guid.Empty)
+                if (obj.ID != Guid.Empty)
                     return Result<User>.Successful(data: obj);
-                else
-                    return Result<User>.Failure();
+
+                return Result<User>.Successful(data: null);
             }
             catch
             {
@@ -91,22 +93,19 @@ namespace FM.Portal.Infrastructure.DAL
         }
 
         public Result<User> Insert(User model)
-        {
-            return Modify(true, model);
-        }
+            => Modify(true, model);
+
 
         public Result<User> Update(User model)
-        {
-            return Modify(false, model);
-        }
+        => Modify(false, model);
 
         public Result SetPassword(SetPasswordVM model)
         {
             try
             {
-                using (SqlConnection con = new SqlConnection(SQLHelper.GetConnectionString()))
+                using (var con = new SqlConnection(SQLHelper.GetConnectionString()))
                 {
-                    SqlParameter[] param = new SqlParameter[3];
+                    var param = new SqlParameter[3];
                     param[0] = new SqlParameter("@ID", model.UserID);
                     param[1] = new SqlParameter("@Password", model.NewPassword);
                     param[2] = new SqlParameter("@PasswordExpireDate", DateTime.Now);
@@ -124,7 +123,6 @@ namespace FM.Portal.Infrastructure.DAL
         {
             try
             {
-
                 return SQLHelper.GetDataTable(CommandType.StoredProcedure, "org.spGetsUser", null);
             }
             catch (Exception e) { throw; }

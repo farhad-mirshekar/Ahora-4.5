@@ -197,16 +197,42 @@
     }
     //-------------------------------------------------------------------------------------------------------
     app.controller('profileController', profileController);
-    profileController.$inject = ['$scope', 'profileService', 'authenticationService'];
-    function profileController($scope, profileService, authenticationService) {
+    profileController.$inject = ['$scope', 'profileService', 'authenticationService', 'loadingService', '$q', 'toaster','positionService'];
+    function profileController($scope, profileService, authenticationService, loadingService, $q, toaster, positionService) {
         let profile = $scope;
+        profile.Model = {};
 
+        profile.save = save;
         init();
 
         function init() {
+            loadingService.show();
             return profileService.get(authenticationService.get('authorizationData').UserID).then((result) => {
-                profile.user = result;
-            })
+                profile.Model = angular.copy(result);
+            }).finally(loadingService.hide);
+        }
+
+        function save() {
+            loadingService.show();
+            return $q.resolve().then(() => {
+                return profileService.save(profile.Model);
+            }).then((result) => {
+                profile.Model = angular.copy(result);
+                toaster.pop('success', '', 'تغییرات با موفقیت انجام شد');
+
+                return positionService.list
+                loadingService.hide();
+            }).catch((error) => {
+                if (profile.Model.errors.length === 0)
+                    profile.Model.errors = error.split('&&');
+
+                $("html, body").animate({
+                    scrollTop: $('#profileSection').offset().top - $('#profileSection').offsetParent().offset().top
+                }, 'slow');
+
+                toaster.pop('error', '', 'خطایی اتفاق افتاده است');
+                loadingService.hide();
+            }).finally(loadingService.hide);
         }
     }
     //---------------------------------------------------------------------------------------------------------------------------------

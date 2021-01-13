@@ -230,7 +230,36 @@
         return service;
 
         function save(model) {
+            model.errors = [];
 
+            if (!model.FirstName)
+                model.errors.push('نام را وارد نمایید');
+
+            if (!model.LastName)
+                model.errors.push('نام خانوادگی را وارد نمایید');
+
+            if (!model.CellPhone)
+                model.errors.push('شماره همراه را وارد نمایید');
+
+            if (!model.NationalCode)
+                model.errors.push('کد ملی را وارد نمایید');
+
+            if (model.errors, length)
+                return $q.reject();
+
+            return $http({
+                method: 'POST',
+                url: url + `Edit`,
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + `Edit` });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+            })
         }
 
         function get(model) {
@@ -634,7 +663,8 @@
             list: list,
             setDefault: setDefault,
             get: get,
-            edit: edit
+            edit: edit,
+            listByUser: listByUser
         }
         return service;
 
@@ -709,6 +739,21 @@
                 }
             }).then(function (result) {
                 return callbackService.onSuccess({ result: result, request: url + 'edit' });
+            }).catch(function (result) {
+                return callbackService.onError({ result: result });
+            })
+        }
+        function listByUser(model) {
+            return $http({
+                method: 'POST',
+                url: url + 'listByUser',
+                data: model,
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + authenticationService.get('authorizationData').Access_Token
+                }
+            }).then(function (result) {
+                return callbackService.onSuccess({ result: result, request: url + 'listByUser' });
             }).catch(function (result) {
                 return callbackService.onError({ result: result });
             })

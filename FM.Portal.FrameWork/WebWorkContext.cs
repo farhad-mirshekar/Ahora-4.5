@@ -9,16 +9,13 @@ namespace FM.Portal.FrameWork
 {
     public class WebWorkContext : IWorkContext
     {
-        private readonly ILanguageService _languageService;
         private readonly IAuthenticationService _authenticationService;
         private readonly HttpContextBase _httpContext;
         private readonly IShoppingCartItemService _shoppingCartItemService;
-        public WebWorkContext(ILanguageService languageService
-                             , IAuthenticationService authenticationService
+        public WebWorkContext( IAuthenticationService authenticationService
                              , HttpContextBase httpContext
                              , IShoppingCartItemService shoppingCartItemService)
         {
-            _languageService = languageService;
             _authenticationService = authenticationService;
             _httpContext = httpContext;
             _shoppingCartItemService = shoppingCartItemService;

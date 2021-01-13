@@ -12,6 +12,10 @@ namespace FM.Portal.FrameWork.Unity
         {
             var container = new UnityContainer();
 
+            #region General
+            GeneralDependencyRegister.RegisterType(container);
+            #endregion
+
             #region DataSource
             ApplicationDataSourceDependencyRegister.RegisterType(container);
             OrganizationDataSourceDependencyRegister.RegisterType(container);
@@ -26,9 +30,7 @@ namespace FM.Portal.FrameWork.Unity
             PortalServicesDependencyRegister.RegisterType(container);
             #endregion
 
-            #region General
-            GeneralDependencyRegister.RegisterType(container);
-            #endregion
+         
 
             #region Factories
             FactoriesDependency.RegisterType(container);
