@@ -1,4 +1,4 @@
-﻿@*@model List<FM.Portal.Core.Model.Product>
+﻿@model List<Ahora.WebApp.Models.App.ProductModel>
 @{
     var columnWidth = "";
     if (Model.Count > 0)
@@ -49,7 +49,7 @@
                                         @foreach (var item in Model)
                                         {
                                             <td>
-                                                <img src="~/Content/TemporaryFiles/@item.Attachments.Select(x => x.Path).First()/@item.Attachments.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()" alt="@item.Name" class="img-box-product" />
+                                                <img src="~/Content/TemporaryFiles/Product/@item.PictureAttachments.Where(x => x.Type == AttachmentType.اصلی).Select(x => x.FileName).FirstOrDefault()" alt="@item.Name" width="300px" height="200px" />
                                             </td>
                                         }
 
@@ -68,7 +68,7 @@
                                         @foreach (var item in Model)
                                         {
                                             <td style="width: @columnWidth;">
-                                                <span class="text-danger">@item.CategoryName</span>
+                                                <span class="text-danger">@item.Category.Title</span>
                                             </td>
                                         }
                                     </tr>
@@ -167,8 +167,6 @@
                                                 }
 
                                             }
-
-                                            }
                                         </tr>
                                     }
                                 </table>
@@ -179,5 +177,5 @@
             }
         </div>
     </div>
-}*@
+}
 

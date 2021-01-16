@@ -10,6 +10,7 @@ using Ahora.WebApp.Models.App;
 using FM.Portal.FrameWork.AutoMapper;
 using Ahora.WebApp.Factories;
 using FM.Portal.Core.Infrastructure;
+using System.Collections.Generic;
 
 namespace Ahora.WebApp.Controllers
 {
@@ -146,7 +147,15 @@ namespace Ahora.WebApp.Controllers
 
             var compareProducts = compareProductsResult.Data;
             if (compareProducts.Count > 0)
-                return View(compareProducts);
+            {
+                var productsModel = new List<ProductModel>();
+                foreach (var product in compareProducts)
+                {
+                    productsModel.Add(_productModelFactory.GetProduct(product.ID));
+                }
+
+                return View(productsModel);
+            }
 
             return RedirectToRoute("Home");
         }
